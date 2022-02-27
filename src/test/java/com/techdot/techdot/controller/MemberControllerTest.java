@@ -1,10 +1,13 @@
 package com.techdot.techdot.controller;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,6 +19,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.domain.MemberRepo;
 
 @SpringBootTest
@@ -55,7 +59,9 @@ class MemberControllerTest {
 			.andExpect(view().name("redirect:/"));
 
 		// then
-		assertThat(memberRepo.existsByEmail("test@naver.com"));
+		Optional<Member> member = memberRepo.findByEmail("test@naver.com");
+		assertNotNull(member);
+		assertThat(!member.get().getPassword().equals("12345678"));
 		then(javaMailSender).should().send(any(SimpleMailMessage.class));
 	}
 

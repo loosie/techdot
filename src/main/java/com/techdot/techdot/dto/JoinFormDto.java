@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.Length;
 import lombok.Data;
 
 @Data
-public class MemberJoinFormDto {
+public class JoinFormDto {
 
 	@NotBlank
 	@Pattern(regexp = "^[ㄱ-ㅎ가-힣A-z0-9]{3,20}$", message = "공백없이 문자와 숫자로만 3자 이상 20자 이내로 입력이 가능합니다.")

@@ -30,18 +30,18 @@ public class Member {
 
 	private String password;
 
-	private String emailVerified;
+	private boolean emailVerified;
 
 	private String emailCheckToken;
 
 	@Lob
 	private String profileImage;
 
-	private Boolean termsCheck;
+	private boolean termsCheck;
 
 	@Builder
-	public Member(Long id, String email, String nickname, String password, String emailVerified,
-		String emailCheckToken, String profileImage, Boolean termsCheck) {
+	public Member(Long id, String email, String nickname, String password, boolean emailVerified,
+		String emailCheckToken, String profileImage, boolean termsCheck) {
 		this.id = id;
 		this.email = email;
 		this.nickname = nickname;
@@ -54,5 +54,11 @@ public class Member {
 
 	public void generateEmailCheckToken() {
 		this.emailCheckToken = UUID.randomUUID().toString();
+	}
+
+	public void EmailVerified() {
+		this.emailVerified = true;
+
+
 	}
 }

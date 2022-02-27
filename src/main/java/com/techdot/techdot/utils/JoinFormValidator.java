@@ -5,7 +5,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import com.techdot.techdot.domain.MemberRepo;
-import com.techdot.techdot.dto.MemberJoinFormDto;
+import com.techdot.techdot.dto.JoinFormDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,12 +17,12 @@ public class JoinFormValidator implements Validator {
 
 	@Override
 	public boolean supports(Class<?> clazz) {
-		return clazz.isAssignableFrom(MemberJoinFormDto.class);
+		return clazz.isAssignableFrom(JoinFormDto.class);
 	}
 
 	@Override
 	public void validate(Object target, Errors errors) {
-		MemberJoinFormDto joinForm = (MemberJoinFormDto)target;
+		JoinFormDto joinForm = (JoinFormDto)target;
 		if(memberRepo.existsByEmail(joinForm.getEmail())){
 			errors.rejectValue("email", "invalid.email", new Object[]{joinForm.getEmail()}, "이미 사용중인 이메일입니다.");
 			return;

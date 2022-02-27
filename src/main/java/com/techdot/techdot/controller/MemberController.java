@@ -1,9 +1,9 @@
 package com.techdot.techdot.controller;
 
+import java.util.Optional;
+
 import javax.validation.Valid;
 
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.techdot.techdot.dto.MemberJoinFormDto;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.domain.MemberRepo;
+import com.techdot.techdot.dto.JoinFormDto;
 import com.techdot.techdot.service.MemberService;
 import com.techdot.techdot.utils.JoinFormValidator;
 
@@ -27,6 +27,7 @@ public class MemberController {
 
 	private final JoinFormValidator joinFormValidator;
 	private final MemberService memberService;
+	private final MemberRepo memberRepo;
 
 
 	@InitBinder("joinForm")
@@ -35,22 +36,37 @@ public class MemberController {
 	}
 
 	@GetMapping("/join")
-	public String memberJoinForm(Model model) {
-		model.addAttribute("joinForm", new MemberJoinFormDto());
+	public String joinForm(Model model) {
+		model.addAttribute("joinForm", new JoinFormDto());
 		return "member/join";
 	}
 
 	@PostMapping("/join")
-	public String memberJoinFormRequest(@Valid @ModelAttribute("joinForm") MemberJoinFormDto joinForm, Errors errors) {
+	public String joinFormRequest(@Valid @ModelAttribute("joinForm") JoinFormDto joinForm, Errors errors) {
 		if (errors.hasErrors()) {
 			return "member/join";
 		}
-
 		memberService.save(joinForm);
-
 		return "redirect:/";
-
 	}
 
+	@GetMapping("/email-confirm")
+	public String checkEmailToken(String token, String email, Model model){
+		Optional<Member> opMember = memberRepo.findByEmail(email);
+		String view = "member/email-confirm";
+		if(opMember.isEmpty()){
+			model.addAttribute("error", "해당 이메일은 존재하지 않습니다.");
+			return view;
+		}
 
+		Member member = opMember.get();
+		if(!member.getEmailCheckToken().equals(token)){
+			model.addAttribute("error", "토큰 정보가 정확하지 않습니다.");
+			return view;
+		}
+
+		member.EmailVerified();
+		model.addAttribute("nickname", member.getNickname());
+		return view;
+	}
 }
