@@ -17,7 +17,7 @@
                     <small class="invalid-feedback">닉네임을 입력하세요.</small>
                     <small class="form-text text-danger" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}">Nickname Error</small>
                 </div>
-                <div class="form-group mb-3">
+                <div class="form-group mb-4">
                     <label for="email">이메일</label>
                     <input id="email" type="email" th:field="*{email}" class="form-control"
                            placeholder="techdot@email.com" aria-describedby="emailHelp" required>
@@ -25,7 +25,7 @@
                     <small class="form-text text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</small>
                 </div>
 
-                <div class="form-group mb-3">
+                <div class="form-group mb-4">
                     <label for="password">비밀번호</label>
                     <input id="password" type="password" th:field="*{password}" class="form-control"
                            placeholder="********" aria-describedby="passwordHelp" required minlength="8" maxlength="50">
@@ -35,7 +35,7 @@
                     <small class="form-text text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</small>
                 </div>
 
-                <div class="form-group mb-3">
+                <div class="form-group mb-4">
                     <label for="password-confirm">비밀번호 확인</label>
                     <input id="password-confirm" type="password" th:field="*{passwordConfirm}"  class="form-control"
                            placeholder="********" aria-describedby="passwordHelp" required minlength="8" maxlength="50">
@@ -45,7 +45,7 @@
                     <small class="form-text text-danger" th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}">Password Error</small>
                 </div>
 
-                <div class="form-check mb-3">
+                <div class="form-check mb-4">
                     <input type="checkbox" class="form-check-input" id="terms" th:field="*{termsCheck}" >
                     <label class="form-check-label" for="terms">
                         <a href="#">약관</a>에 동의합니다.
@@ -53,12 +53,13 @@
                     <small class="form-text text-danger" th:if="${#fields.hasErrors('termsCheck')}" th:errors="*{termsCheck}">Password Error</small>
                 </div>
 
-                <div class="form-group d-grid gap-2 col-6 mx-auto">
-                    <button id="join" class="btn btn-outline-dark" type="submit" aria-describedby="submitHelp">
+                <div class="form-group">
+                    <button id="join" class="btn btn-outline-dark btn-block" type="submit" aria-describedby="submitHelp">
                         가입하기</button>
                 </div>
             </form>
     </div>
+
 </div>
 <footer th:replace="/fragments/footer.html :: footer"></footer>
 <script th:replace="/fragments/form-validation.html :: form-validation"></script>

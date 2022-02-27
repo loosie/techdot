@@ -61,4 +61,8 @@ public class Member {
 
 
 	}
+
+	public boolean isSameToken(String token) {
+		return this.emailCheckToken.equals(token);
+	}
 }

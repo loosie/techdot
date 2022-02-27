@@ -46,7 +46,8 @@ public class MemberController {
 		if (errors.hasErrors()) {
 			return "member/join";
 		}
-		memberService.save(joinForm);
+		Member saveMember = memberService.save(joinForm);
+		memberService.login(saveMember);
 		return "redirect:/";
 	}
 
@@ -60,12 +61,13 @@ public class MemberController {
 		}
 
 		Member member = opMember.get();
-		if(!member.getEmailCheckToken().equals(token)){
+		if(!member.isSameToken(token)){
 			model.addAttribute("error", "토큰 정보가 정확하지 않습니다.");
 			return view;
 		}
 
 		member.completeEmailVerified();
+		memberService.login(member);
 		model.addAttribute("nickname", member.getNickname());
 		return view;
 	}

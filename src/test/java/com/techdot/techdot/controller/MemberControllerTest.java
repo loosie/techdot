@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -42,7 +43,8 @@ class MemberControllerTest {
 		mockMvc.perform(get("/join"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("member/join"))
-			.andExpect(model().attributeExists("joinForm"));
+			.andExpect(model().attributeExists("joinForm"))
+			.andExpect(unauthenticated());
 	}
 
 	@DisplayName("회원 가입 테스트 - 정상")
@@ -57,7 +59,8 @@ class MemberControllerTest {
 			.param("termsCheck", "true")
 			.with(csrf()))
 			.andExpect(status().is3xxRedirection())
-			.andExpect(view().name("redirect:/"));
+			.andExpect(view().name("redirect:/"))
+			.andExpect(authenticated());
 
 		// then
 		Optional<Member> member = memberRepo.findByEmail("test@naver.com");
@@ -77,7 +80,8 @@ class MemberControllerTest {
 			.param("termsCheck", "true")
 			.with(csrf()))
 			.andExpect(status().isOk())
-			.andExpect(view().name("member/join"));
+			.andExpect(view().name("member/join"))
+			.andExpect(unauthenticated());
 	}
 
 	@DisplayName("인증 메일 확인 - 정상")
@@ -98,7 +102,8 @@ class MemberControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(model().attributeDoesNotExist("error"))
 			.andExpect(model().attributeExists("nickname"))
-			.andExpect(view().name("member/email-confirm"));
+			.andExpect(view().name("member/email-confirm"))
+			.andExpect(authenticated());
 	}
 
 	@DisplayName("인증 메일 확인 - 입력값 오류")
@@ -109,7 +114,8 @@ class MemberControllerTest {
 			.param("email", "test@naver.com"))
 			.andExpect(status().isOk())
 			.andExpect(model().attributeExists("error"))
-			.andExpect(view().name("member/email-confirm"));
+			.andExpect(view().name("member/email-confirm"))
+			.andExpect(unauthenticated());
 	}
 
 }
