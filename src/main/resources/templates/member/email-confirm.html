@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace ="/fragments/header.html :: head"></head>
+<head th:replace ="fragments/header.html :: head"></head>
 
 <body class="bg-light">
-<nav th:replace="/fragments/navbar.html :: main-nav"></nav>
+<nav th:replace="fragments/navbar.html :: main-nav"></nav>
 
 <div class = "py-5 text-center" th:if="${error}">
     <p class="lead">닷스터디 이메일 확인</p>
