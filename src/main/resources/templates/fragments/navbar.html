@@ -2,9 +2,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.com"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<nav th:fragment="main-nav" class="navbar navbar-expand-sm navbar-dark bg-dark">
+<nav th:fragment="main-nav" class="navbar navbar-expand-sm navbar-dark bg-dark py-2 px-3">
     <a class="navbar-brand" href="/" th:href="@{/}">
-        <img src="/images/logo.png" width="35" height="35">
+        <img src="/images/logo.png" width="50" height="50">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -24,10 +24,10 @@
 
             <!-- TODO: login -->
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/login}">로그인</a>
+                <a class="nav-link" href="/login" th:href="@{/login}">로그인</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/join}">가입</a>
+                <a class="nav-link" href="/join" th:href="@{/join}">가입</a>
             </li>
 
             <li class="nav-item dropdown" >
