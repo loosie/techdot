@@ -12,13 +12,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.techdot.techdot.config.auth.MemberPrincipal;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.domain.MemberRepo;
 import com.techdot.techdot.dto.JoinFormDto;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class MemberService {
 
@@ -34,10 +37,11 @@ public class MemberService {
 		return newMember;
 	}
 
-	private void sendConfirmEmail(Member newMember) {
+	public void sendConfirmEmail(Member newMember) {
+		log.info("send confirm email : {} ", + newMember.getEmailSendTime());
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
 		mailMessage.setTo(newMember.getEmail());
-		mailMessage.setSubject("TechDot 이메일 인증");
+		mailMessage.setSubject("TechDot 이메일 인증" );
 		mailMessage.setText(
 			"/email-confirm?token=" + newMember.getEmailCheckToken() + "&email=" + newMember.getEmail());
 		javaMailSender.send(mailMessage);
@@ -56,9 +60,13 @@ public class MemberService {
 
 	public void login(Member saveMember) {
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-			saveMember.getNickname(),
+			new MemberPrincipal(saveMember),
 			saveMember.getPassword(),
 			List.of(new SimpleGrantedAuthority("ROLE_USER")));
 		SecurityContextHolder.getContext().setAuthentication(token);
+	}
+
+	public void sendEmailConfirmMessage(Member member) {
+
 	}
 }

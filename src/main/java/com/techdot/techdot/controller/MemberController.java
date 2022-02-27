@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.techdot.techdot.config.auth.CurrentUser;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.domain.MemberRepo;
 import com.techdot.techdot.dto.JoinFormDto;
@@ -48,13 +49,13 @@ public class MemberController {
 		}
 		Member saveMember = memberService.save(joinForm);
 		memberService.login(saveMember);
-		return "redirect:/";
+		return "member/check-email";
 	}
 
-	@GetMapping("/email-confirm")
-	public String checkEmailToken(String token, String email, Model model){
+	@GetMapping("/confirm-email")
+	public String emailConfirm(String token, String email, Model model){
 		Optional<Member> opMember = memberRepo.findByEmail(email);
-		String view = "member/email-confirm";
+		String view = "member/confirm-email";
 		if(opMember.isEmpty()){
 			model.addAttribute("error", "해당 이메일은 존재하지 않습니다.");
 			return view;
@@ -70,5 +71,23 @@ public class MemberController {
 		memberService.login(member);
 		model.addAttribute("nickname", member.getNickname());
 		return view;
+	}
+
+	@GetMapping("/check-email")
+	public String checkEmail(@CurrentUser Member member, Model model){
+		model.addAttribute("email", member.getEmail());
+		return "member/check-email";
+	}
+
+	@GetMapping("/resend-confirm-email")
+	public String resendEmailConfirm(@CurrentUser Member member, Model model){
+		model.addAttribute("email", member.getEmail());
+		if(!member.canSendConfirmEmail()){
+			model.addAttribute("error", "잠시 후에 다시 시도해주세요.");
+			return "member/check-email";
+		}
+
+		memberService.sendConfirmEmail(member);
+		return "member/check-email";
 	}
 }

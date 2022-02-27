@@ -23,13 +23,13 @@ public class JoinFormValidator implements Validator {
 	@Override
 	public void validate(Object target, Errors errors) {
 		JoinFormDto joinForm = (JoinFormDto)target;
-		if(memberRepo.existsByEmail(joinForm.getEmail())){
-			errors.rejectValue("email", "invalid.email", new Object[]{joinForm.getEmail()}, "이미 사용중인 이메일입니다.");
+		if(memberRepo.existsByNickname(joinForm.getNickname())){
+			errors.rejectValue("nickname", "invalid.nickname", new Object[]{joinForm.getNickname()}, "이미 사용중인 닉네임입니다.");
 			return;
 		}
 
-		if(memberRepo.existsByNickname(joinForm.getNickname())){
-			errors.rejectValue("nickname", "invalid.nickname", new Object[]{joinForm.getNickname()}, "이미 사용중인 닉네임입니다.");
+		if(memberRepo.existsByEmail(joinForm.getEmail())){
+			errors.rejectValue("email", "invalid.email", new Object[]{joinForm.getEmail()}, "이미 사용중인 이메일입니다.");
 			return;
 		}
 
