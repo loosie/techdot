@@ -65,7 +65,7 @@ public class MemberController {
 			return view;
 		}
 
-		member.EmailVerified();
+		member.completeEmailVerified();
 		model.addAttribute("nickname", member.getNickname());
 		return view;
 	}

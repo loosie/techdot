@@ -56,7 +56,7 @@ public class Member {
 		this.emailCheckToken = UUID.randomUUID().toString();
 	}
 
-	public void EmailVerified() {
+	public void completeEmailVerified() {
 		this.emailVerified = true;
 
 

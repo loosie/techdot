@@ -18,6 +18,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.domain.MemberRepo;
@@ -79,5 +80,36 @@ class MemberControllerTest {
 			.andExpect(view().name("member/join"));
 	}
 
+	@DisplayName("인증 메일 확인 - 정상")
+	@Transactional
+	@Test
+	void emailConfirm_success() throws Exception {
+		Member member = Member.builder()
+			.email("test@naver.com")
+			.password("12345678")
+			.nickname("loosie")
+			.build();
+		Member newMember = memberRepo.save(member);
+		newMember.generateEmailCheckToken();
+
+		mockMvc.perform(get("/email-confirm")
+			.param("token", newMember.getEmailCheckToken())
+			.param("email", newMember.getEmail()))
+			.andExpect(status().isOk())
+			.andExpect(model().attributeDoesNotExist("error"))
+			.andExpect(model().attributeExists("nickname"))
+			.andExpect(view().name("member/email-confirm"));
+	}
+
+	@DisplayName("인증 메일 확인 - 입력값 오류")
+	@Test
+	void emailConfirm_error_wrongInput() throws Exception {
+		mockMvc.perform(get("/email-confirm")
+			.param("token", "i'mtoken")
+			.param("email", "test@naver.com"))
+			.andExpect(status().isOk())
+			.andExpect(model().attributeExists("error"))
+			.andExpect(view().name("member/email-confirm"));
+	}
 
 }
