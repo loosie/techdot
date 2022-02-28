@@ -20,7 +20,6 @@ public class PrincipalDetails implements UserDetails {
 	private Member member;
 
 	public PrincipalDetails(Member member){
-		// super(member.getNickname(), member.getPassword(), List.of(new SimpleGrantedAuthority("ROLE_USER")));
 		this.member = member;
 	}
 
