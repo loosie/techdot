@@ -11,7 +11,9 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 
 import com.techdot.techdot.config.auth.PrincipalsDetailsService;
 
@@ -38,11 +40,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.logout()
 			.logoutSuccessUrl("/");
 
-		// TODO: remember-me not work
 		http.rememberMe()
 			.userDetailsService(principalsDetailsService)
 			.tokenRepository(tokenRepository())
-			.tokenValiditySeconds(60*60);
+			.tokenValiditySeconds(60*60*24);
 	}
 
 	@Bean
