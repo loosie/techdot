@@ -42,7 +42,7 @@ public class MemberService {
 		mailMessage.setTo(newMember.getEmail());
 		mailMessage.setSubject("TechDot 이메일 인증" );
 		mailMessage.setText(
-			"/email-confirm?token=" + newMember.getEmailCheckToken() + "&email=" + newMember.getEmail());
+			"/confirm-email?token=" + newMember.getEmailCheckToken() + "&email=" + newMember.getEmail());
 		javaMailSender.send(mailMessage);
 	}
 
