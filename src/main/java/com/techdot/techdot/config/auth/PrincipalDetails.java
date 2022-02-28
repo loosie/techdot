@@ -15,11 +15,11 @@ import lombok.Getter;
 
 // @CurrentUser -> @AuthenticationPrincipal 인증된 정보있을 경우 'member' get
 @Getter
-public class MemberPrincipal implements UserDetails {
+public class PrincipalDetails implements UserDetails {
 
 	private Member member;
 
-	public MemberPrincipal(Member member){
+	public PrincipalDetails(Member member){
 		// super(member.getNickname(), member.getPassword(), List.of(new SimpleGrantedAuthority("ROLE_USER")));
 		this.member = member;
 	}

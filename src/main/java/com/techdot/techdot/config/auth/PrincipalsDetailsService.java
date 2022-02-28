@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class MemberPrincipalsDetailsService implements UserDetailsService {
+public class PrincipalsDetailsService implements UserDetailsService {
 
 	private final MemberRepo memberRepo;
 
@@ -23,7 +23,7 @@ public class MemberPrincipalsDetailsService implements UserDetailsService {
 		Optional<Member> opMember = memberRepo.findByEmail(email);
 		if(!opMember.isEmpty()){
 			Member member = opMember.get();
-			return new MemberPrincipal(member);
+			return new PrincipalDetails(member);
 		}
 
 		throw new UsernameNotFoundException(email);
