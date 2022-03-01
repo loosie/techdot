@@ -98,5 +98,18 @@ public class MemberController {
 	}
 
 
+	@GetMapping("/{nickname}")
+	public String profile(@PathVariable String nickname, Model model, @CurrentUser Member member){
+		Optional<Member> opMember = memberRepo.findByNickname(nickname);
+		if(opMember.isEmpty()){
+			throw new IllegalArgumentException(nickname + "에 해당하는 사용자가 없습니다.");
+		}
+
+		Member findMember =  opMember.get();
+		model.addAttribute("profile", findMember);
+		model.addAttribute("member", member);
+		model.addAttribute("isOwner", findMember.equals(member));
+		return "/member/profile";
+	}
 
 }

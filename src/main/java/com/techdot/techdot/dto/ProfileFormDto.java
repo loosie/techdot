@@ -19,7 +19,7 @@ public class ProfileFormDto {
 	@Length(min =3, max=20)
 	private String nickname;
 
-	@Length(max = 100)
+	@Length(max = 50)
 	private String bio;
 
 	public ProfileFormDto(Member member) {

@@ -54,7 +54,6 @@
                 <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
                     <a class="nav-link dropdown-toggle" type="button" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
-                        <!-- authentication.name에 따라 각기 다른 이미지 생성 -->
                         <!-- TODO: profile image -->
                         프로필
                         <svg th:if="${#strings.isEmpty(member?.nickname)}" th:data-jdenticon-value="${#authentication.name}"
@@ -68,8 +67,8 @@
                         </h6>
 
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" th:href="@{'/profile/' + ${member.nickname}}">프로필</a>
-                        <a class="dropdown-item" href="#" th:href="@{'/settings'}">설정</a>
+                        <a class="dropdown-item" th:href="@{'/' + ${member.nickname}}">내 프로필</a>
+                        <a class="dropdown-item" href="#" th:href="@{${member.nickname} +'/profile'}">개인정보 설정</a>
 
                         <!--spring security logout 핸들러가 처리-->
                         <form class="form-inline my-2 my-lg-0" action="#" th:action="@{/logout}" method="post">
