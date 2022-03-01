@@ -35,7 +35,7 @@
     <div class="row justify-content-center">
 
         <div class="col-2 py-4">
-            <div th:replace="fragments/profile-menu.html :: settings-menu(currentMenu='profile')"></div>
+            <div th:replace="fragments/account-menu.html :: settings-menu(currentMenu='profile')"></div>
         </div>
 
         <form class="col-8" th:action="@{/profile}" th:object="${profileForm}" action="#" method="post" novalidate>

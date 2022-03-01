@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Optional;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.techdot.techdot.auth.WithCurrentUser;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.domain.MemberRepo;
 
@@ -36,6 +38,11 @@ class MemberControllerTest {
 
 	@MockBean
 	private JavaMailSender javaMailSender;
+
+	@AfterEach
+	void end(){
+		memberRepo.deleteAll();
+	}
 
 	@DisplayName("회원 가입 화면 뷰 테스트")
 	@Test
