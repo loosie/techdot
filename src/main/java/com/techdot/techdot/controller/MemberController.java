@@ -11,7 +11,9 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.techdot.techdot.config.auth.CurrentUser;
 import com.techdot.techdot.domain.Member;
@@ -43,12 +45,13 @@ public class MemberController {
 	}
 
 	@PostMapping("/join")
-	public String joinFormRequest(@Valid @ModelAttribute("joinForm") JoinFormDto joinForm, Errors errors) {
+	public String joinFormRequest(@Valid @ModelAttribute("joinForm") JoinFormDto joinForm,
+		Model model, Errors errors) {
 		if (errors.hasErrors()) {
 			return "member/join";
 		}
 		Member saveMember = memberService.save(joinForm);
-		memberService.login(saveMember);
+		model.addAttribute("email", saveMember.getEmail());
 		return "member/check-email";
 	}
 
@@ -74,14 +77,19 @@ public class MemberController {
 	}
 
 	@GetMapping("/check-email")
-	public String checkEmail(@CurrentUser Member member, Model model){
-		model.addAttribute("email", member.getEmail());
+	public String checkEmail(String email, Model model){
+		model.addAttribute("email", email);
 		return "member/check-email";
 	}
 
-	@GetMapping("/resend-confirm-email")
-	public String resendEmailConfirm(@CurrentUser Member member, Model model){
-		model.addAttribute("email", member.getEmail());
+	@GetMapping("/resend-confirm-email/{email}")
+	public String resendEmailConfirm(@PathVariable String email, Model model){
+		Optional<Member> opMember = memberRepo.findByEmail(email);
+		if(opMember.isEmpty()){
+			throw new IllegalArgumentException(email + "에 해당하는 사용자가 없습니다.");
+		}
+
+		Member member = opMember.get();
 		if(!member.canSendConfirmEmail()){
 			model.addAttribute("error", "잠시 후에 다시 시도해주세요.");
 			return "member/check-email";
@@ -90,4 +98,6 @@ public class MemberController {
 		memberService.sendConfirmEmail(member);
 		return "member/check-email";
 	}
+
+
 }

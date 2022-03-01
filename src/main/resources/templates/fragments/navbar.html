@@ -22,7 +22,7 @@
             </ul>
 
 
-            <ul class="navbar-nav justify-content-end">
+            <ul class="navbar-nav justify-contenst-end">
                 <li class="nav-item" sec:authorize="!isAuthenticated()">
                     <a class="nav-link" href="/login" th:href="@{/login}">로그인</a>
                 </li>
@@ -36,10 +36,10 @@
                         <!-- authentication.name에 따라 각기 다른 이미지 생성 -->
                         <!-- TODO: profile image -->
                         프로필
-    <!--                    <svg th:if="${#strings.isEmpty(member?.profileImage)}" th:data-jdenticon-value="${#authentication.name}"-->
-    <!--                         width="24" height="24" class="rounded border bg-light"></svg>-->
-    <!--                    <img th:if="${!#strings.isEmpty(member?.profileImage)}" th:src="${member.profileImage}"-->
-    <!--                         width="24" height="24" class="rounded border"/>-->
+                        <svg th:if="${#strings.isEmpty(member?.nickname)}" th:data-jdenticon-value="${#authentication.name}"
+                             width="24" height="24" class="rounded border bg-light"></svg>
+                        <img th:if="${!#strings.isEmpty(member?.profileImage)}" th:src="${member.profileImage}"
+                             width="24" height="24" class="rounded border"/>
                     </a>
                     <div class="dropdown-menu dropdown-menu-sm-right" aria-labelledby="userDropdown">
                         <h6 class="dropdown-header">
@@ -47,7 +47,7 @@
                         </h6>
 
                         <!-- TODO: dropdown -->
-                        <a class="dropdown-item" th:href="@{'/profile/' + ${#authentication.name}}">프로필</a>
+<!--                        <a class="dropdown-item" th:href="@{'/profile/' + ${member.nickname}}">프로필</a>-->
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#" th:href="@{'/settings/profile'}">설정</a>
 

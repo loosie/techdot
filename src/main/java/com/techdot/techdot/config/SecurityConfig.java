@@ -30,8 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-			.mvcMatchers("/", "/join", "/login", "/email-confirm", "/resend-email-confirm").permitAll()
-			.mvcMatchers(HttpMethod.GET, "/profile/*").permitAll()
+			.mvcMatchers("/", "/join", "/login", "/check-email", "/confirm-email", "/resend-confirm-email/*").permitAll()
 			.anyRequest().authenticated();
 
 		http.formLogin()
