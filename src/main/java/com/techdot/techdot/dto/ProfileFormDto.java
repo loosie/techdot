@@ -5,9 +5,13 @@ import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.techdot.techdot.domain.Member;
+
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class ProfileFormDto {
 
 	@NotBlank
@@ -18,6 +22,8 @@ public class ProfileFormDto {
 	@Length(max = 100)
 	private String bio;
 
-	private Boolean termsCheck;
-
+	public ProfileFormDto(Member member) {
+		this.nickname = member.getNickname();
+		this.bio = member.getBio();
+	}
 }

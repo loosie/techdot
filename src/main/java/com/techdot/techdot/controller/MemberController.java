@@ -18,7 +18,6 @@ import com.techdot.techdot.config.auth.CurrentUser;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.domain.MemberRepo;
 import com.techdot.techdot.dto.JoinFormDto;
-import com.techdot.techdot.dto.ProfileFormDto;
 import com.techdot.techdot.service.MemberService;
 import com.techdot.techdot.utils.JoinFormValidator;
 
@@ -39,14 +38,13 @@ public class MemberController {
 	}
 
 	@GetMapping("/join")
-	public String joinForm(Model model) {
+	public String join(Model model) {
 		model.addAttribute("joinForm", new JoinFormDto());
 		return "member/join";
 	}
 
 	@PostMapping("/join")
-	public String joinFormRequest(
-		@Valid @ModelAttribute("joinForm") JoinFormDto joinForm,
+	public String joinForm(@Valid @ModelAttribute("joinForm") JoinFormDto joinForm,
 		Errors errors, Model model) {
 		if (errors.hasErrors()) {
 			return "member/join";
@@ -99,21 +97,6 @@ public class MemberController {
 		return "member/check-email";
 	}
 
-	@GetMapping("/profile/{nickname}")
-	public String profile(@PathVariable String nickname, Model model, @CurrentUser Member member){
-		Optional<Member> opMember = memberRepo.findByNickname(nickname);
-		if(opMember.isEmpty()){
-			throw new IllegalArgumentException(nickname + "에 해당하는 사용자가 없습니다.");
-		}
-
-		Member findMember =  opMember.get();
-		if(!member.equals(findMember)){
-			throw new IllegalArgumentException("다른 유저 프로필에 접근할 수 없습니다.");
-		}
-
-		model.addAttribute("member", findMember);
-		return "member/profile";
-	}
 
 
 }

@@ -69,7 +69,7 @@
 
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" th:href="@{'/profile/' + ${member.nickname}}">프로필</a>
-                        <a class="dropdown-item" href="#" th:href="@{'/settings/profile'}">설정</a>
+                        <a class="dropdown-item" href="#" th:href="@{'/settings'}">설정</a>
 
                         <!--spring security logout 핸들러가 처리-->
                         <form class="form-inline my-2 my-lg-0" action="#" th:action="@{/logout}" method="post">

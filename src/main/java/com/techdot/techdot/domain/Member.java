@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 
+import com.techdot.techdot.dto.ProfileFormDto;
+
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -94,5 +96,10 @@ public class Member {
 		}
 
 		return false;
+	}
+
+	public void updateProfile(ProfileFormDto profileForm) {
+		this.nickname = profileForm.getNickname();
+		this.bio = profileForm.getBio();
 	}
 }

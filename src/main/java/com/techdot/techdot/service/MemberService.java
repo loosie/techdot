@@ -15,6 +15,7 @@ import com.techdot.techdot.config.auth.PrincipalDetails;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.domain.MemberRepo;
 import com.techdot.techdot.dto.JoinFormDto;
+import com.techdot.techdot.dto.ProfileFormDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -68,5 +69,12 @@ public class MemberService {
 			saveMember.getPassword(),
 			List.of(new SimpleGrantedAuthority("ROLE_USER")));
 		SecurityContextHolder.getContext().setAuthentication(token);
+	}
+
+	public void updateProfile(Member member, ProfileFormDto profileForm) {
+		member.updateProfile(profileForm);
+
+		//TODO : 프로필 이미지 수정
+		memberRepo.save(member);
 	}
 }
