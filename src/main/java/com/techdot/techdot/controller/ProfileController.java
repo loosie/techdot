@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -26,35 +25,49 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProfileController {
 
-	private static final String PROFILE_VIEW_NAME = "settings/profile";
-	private static final String PROFILE_VIEW_URL = "/profile";
+	static final String PROFILE_SETTINGS_VIEW_NAME = "settings/profile";
+	static final String PROFILE_VIEW_URL = "/profile";
 
 	private final MemberRepo memberRepo;
 	private final MemberService memberService;
 
-	@GetMapping("/{nickname}/profile")
-	public String profile(@PathVariable String nickname, Model model, @CurrentUser Member member) {
+	@GetMapping("/{nickname}")
+	public String profileView(@PathVariable String nickname, Model model, @CurrentUser Member member) {
 		Optional<Member> opMember = memberRepo.findByNickname(nickname);
 		if (opMember.isEmpty()) {
 			throw new IllegalArgumentException(nickname + "에 해당하는 사용자가 없습니다.");
 		}
 
 		Member findMember = opMember.get();
-		if(!findMember.equals(member)){
-			throw new AccessDeniedException(nickname +" 접근 권한이 없습니다.");
+		model.addAttribute("profile", findMember);
+		model.addAttribute("member", member);
+		model.addAttribute("isOwner", findMember.equals(member));
+		return "/member" + PROFILE_VIEW_URL;
+	}
+
+	@GetMapping("/{nickname}" + PROFILE_VIEW_URL)
+	public String profileSettingsView(@PathVariable String nickname, Model model, @CurrentUser Member member) {
+		Optional<Member> opMember = memberRepo.findByNickname(nickname);
+		if (opMember.isEmpty()) {
+			throw new IllegalArgumentException(nickname + "에 해당하는 사용자가 없습니다.");
+		}
+
+		Member findMember = opMember.get();
+		if (!findMember.equals(member)) {
+			// throw new AccessDeniedException(nickname +" 접근 권한이 없습니다.");
+			return "redirect:/" + member.getNickname() + PROFILE_VIEW_URL;
 		}
 
 		model.addAttribute("member", member);
-		return PROFILE_VIEW_NAME;
+		return PROFILE_SETTINGS_VIEW_NAME;
 	}
 
-	@PostMapping("/profile")
-	public String profileForm(@Valid @ModelAttribute("profileForm") ProfileFormDto profileForm, Errors errors,
+	@PostMapping(PROFILE_VIEW_URL)
+	public String profileSettingsForm(@Valid @ModelAttribute("profileForm") ProfileFormDto profileForm, Errors errors,
 		Model model, @CurrentUser Member member, RedirectAttributes rttr) {
 		if (errors.hasErrors()) {
 			model.addAttribute(member);
-			return PROFILE_VIEW_NAME;
-
+			return PROFILE_SETTINGS_VIEW_NAME;
 		}
 
 		memberService.updateProfile(member, profileForm);

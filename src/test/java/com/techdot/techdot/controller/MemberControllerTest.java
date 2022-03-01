@@ -50,7 +50,6 @@ class MemberControllerTest {
 	@DisplayName("회원 가입 테스트 - 정상")
 	@Test
 	void memberJoin_success() throws Exception {
-		// given when
 		mockMvc.perform(post("/join")
 			.param("nickname", "loosie")
 			.param("email", "test@naver.com")
@@ -58,14 +57,15 @@ class MemberControllerTest {
 			.param("passwordConfirm", "12345678")
 			.param("termsCheck", "true")
 			.with(csrf()))
-			.andExpect(status().is3xxRedirection())
-			.andExpect(view().name("redirect:/"))
-			.andExpect(authenticated());
+			.andExpect(status().isOk())
+			.andExpect(view().name("member/check-email"))
+			.andExpect(unauthenticated());
 
 		// then
 		Optional<Member> member = memberRepo.findByEmail("test@naver.com");
 		assertNotNull(member);
 		assertThat(!member.get().getPassword().equals("12345678"));
+		assertFalse(member.get().getEmailVerified());
 		then(javaMailSender).should().send(any(SimpleMailMessage.class));
 	}
 
@@ -88,6 +88,7 @@ class MemberControllerTest {
 	@Transactional
 	@Test
 	void emailConfirm_success() throws Exception {
+		// given
 		Member member = Member.builder()
 			.email("test@naver.com")
 			.password("12345678")
@@ -96,25 +97,25 @@ class MemberControllerTest {
 		Member newMember = memberRepo.save(member);
 		newMember.generateEmailCheckToken();
 
-		mockMvc.perform(get("/email-confirm")
+		mockMvc.perform(get("/confirm-email")
 			.param("token", newMember.getEmailCheckToken())
 			.param("email", newMember.getEmail()))
 			.andExpect(status().isOk())
 			.andExpect(model().attributeDoesNotExist("error"))
 			.andExpect(model().attributeExists("nickname"))
-			.andExpect(view().name("member/email-confirm"))
+			.andExpect(view().name("member/confirm-email"))
 			.andExpect(authenticated());
 	}
 
 	@DisplayName("인증 메일 확인 - 입력값 오류")
 	@Test
 	void emailConfirm_error_wrongInput() throws Exception {
-		mockMvc.perform(get("/email-confirm")
+		mockMvc.perform(get("/confirm-email")
 			.param("token", "i'mtoken")
 			.param("email", "test@naver.com"))
 			.andExpect(status().isOk())
 			.andExpect(model().attributeExists("error"))
-			.andExpect(view().name("member/email-confirm"))
+			.andExpect(view().name("member/confirm-email"))
 			.andExpect(unauthenticated());
 	}
 

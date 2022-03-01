@@ -49,7 +49,7 @@ class MainControllerTest {
 		memberRepo.deleteAll();
 	}
 
-	@DisplayName("이메일로 로그인 하기")
+	@DisplayName("로그인 하기")
 	@Test
 	void login_success() throws Exception {
 		mockMvc.perform(post("/login")
@@ -58,7 +58,7 @@ class MainControllerTest {
 			.with(csrf()))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/"))
-			.andExpect(authenticated().withUsername("loosie"));
+			.andExpect(authenticated().withUsername("test@naver.com"));
 
 	}
 
