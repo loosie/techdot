@@ -31,7 +31,9 @@ public class Member {
 
 	private String password;
 
-	private boolean emailVerified;
+	private String bio;
+
+	private Boolean emailVerified;
 
 	private String emailCheckToken;
 
@@ -42,17 +44,18 @@ public class Member {
 	@Lob
 	private String profileImage;
 
-	private boolean termsCheck;
+	private Boolean termsCheck;
 
 	@Builder
-	public Member(Long id, String email, String nickname, String password, boolean emailVerified,
-		String emailCheckToken, LocalDateTime emailCheckTokenSendAt, Integer emailSendTime,
-		String profileImage, boolean termsCheck) {
+	public Member(Long id, String email, String nickname, String password, String bio, Boolean emailVerified,
+		String emailCheckToken, LocalDateTime emailCheckTokenSendAt, Integer emailSendTime, String profileImage,
+		Boolean termsCheck) {
 		this.id = id;
 		this.email = email;
 		this.nickname = nickname;
 		this.password = password;
-		this.emailVerified = emailVerified;
+		this.bio = bio;
+		this.emailVerified = false;
 		this.emailCheckToken = emailCheckToken;
 		this.emailCheckTokenSendAt = emailCheckTokenSendAt;
 		this.emailSendTime = emailSendTime;

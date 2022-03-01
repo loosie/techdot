@@ -4,8 +4,8 @@
 <head th:replace ="fragments/header.html :: head"></head>
 
 <body class="bg-light">
-<nav th:replace="fragments/navbar.html :: main-nav"></nav>
-<div class = "alert alert-warning" role = "alert" th:if="${member != null && !member.emailVerified}">
+<nav th:replace="fragments/navbar.html :: auth-nav"></nav>
+<div class = "alert alert-warning" role = "alert" th:if="${member != null && member.emailVerified == false}">
     TechDot 가입을 완료하려면 <a href="#" th:href="@{/check-email}" class="alert-link"> 계정 인증 이메일을 확인 </a>하세요.
 </div>
 

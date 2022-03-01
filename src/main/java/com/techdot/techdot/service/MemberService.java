@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
+@Transactional
 @RequiredArgsConstructor
 public class MemberService {
 
@@ -28,7 +29,6 @@ public class MemberService {
 	private final JavaMailSender javaMailSender;
 	private final PasswordEncoder passwordEncoder;
 
-	@Transactional
 	public Member save(JoinFormDto joinForm) {
 		Member newMember = saveMember(joinForm);
 		newMember.generateEmailCheckToken();
@@ -57,15 +57,16 @@ public class MemberService {
 		return memberRepo.save(member);
 	}
 
+	public void completeLogin(Member member) {
+		member.completeEmailVerified();
+		login(member);
+	}
+
 	public void login(Member saveMember) {
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
 			new PrincipalDetails(saveMember),
 			saveMember.getPassword(),
 			List.of(new SimpleGrantedAuthority("ROLE_USER")));
 		SecurityContextHolder.getContext().setAuthentication(token);
-	}
-
-	public void sendEmailConfirmMessage(Member member) {
-
 	}
 }
