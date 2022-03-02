@@ -19,12 +19,13 @@ public class PrincipalDetailsService implements UserDetailsService {
 
 	private final MemberRepo memberRepo;
 
-	@Transactional(readOnly = true)
+	@Transactional
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		Optional<Member> opMember = memberRepo.findByEmail(email);
 		if(!opMember.isEmpty()){
 			Member member = opMember.get();
+			member.updateEmailCheckToken(); // 로그인할 때마다 token 값 갱신
 			return new PrincipalDetails(member);
 		}
 

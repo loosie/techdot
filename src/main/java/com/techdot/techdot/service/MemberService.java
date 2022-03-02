@@ -10,7 +10,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.Errors;
 
 import com.techdot.techdot.config.auth.PrincipalDetails;
 import com.techdot.techdot.domain.Member;
@@ -65,10 +64,10 @@ public class MemberService {
 		login(member);
 	}
 
-	public void login(Member saveMember) {
+	public void login(Member member) {
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-			new PrincipalDetails(saveMember),
-			saveMember.getPassword(),
+			new PrincipalDetails(member),
+			member.getPassword(),
 			List.of(new SimpleGrantedAuthority("ROLE_USER")));
 		SecurityContextHolder.getContext().setAuthentication(token);
 	}
@@ -82,5 +81,15 @@ public class MemberService {
 		member.updatePassword(passwordEncoder.encode(passwordForm.getNewPassword()));
 		memberRepo.save(member);
 
+	}
+
+	public void sendLoginLink(Member member) {
+		log.info("send login email : {} ", + member.getEmailSendTime());
+		SimpleMailMessage mailMessage = new SimpleMailMessage();
+		mailMessage.setTo(member.getEmail());
+		mailMessage.setSubject("TechDot 이메일 인증" );
+		mailMessage.setText(
+			"/login-by-email?token=" + member.getEmailCheckToken() + "&email=" + member.getEmail());
+		javaMailSender.send(mailMessage);
 	}
 }

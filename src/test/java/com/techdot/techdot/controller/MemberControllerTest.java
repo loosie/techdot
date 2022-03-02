@@ -118,11 +118,55 @@ class MemberControllerTest {
 	@Test
 	void emailConfirm_error_wrongInput() throws Exception {
 		mockMvc.perform(get("/confirm-email")
-			.param("token", "i'mtoken")
+			.param("token", "testToken")
 			.param("email", "test@naver.com"))
 			.andExpect(status().isOk())
 			.andExpect(model().attributeExists("error"))
 			.andExpect(view().name("member/confirm-email"))
+			.andExpect(unauthenticated());
+	}
+
+	// 인증 메일 확인 테스트와 동일
+	@DisplayName("이메일로 로그인하기 - 정상")
+	@Transactional
+	@Test
+	void emailLogin_sucess() throws Exception {
+		// given
+		Member member = Member.builder()
+			.email("test@naver.com")
+			.password("12345678")
+			.nickname("loosie")
+			.build();
+		Member newMember = memberRepo.save(member);
+		newMember.generateEmailCheckToken();
+
+		mockMvc.perform(get("/login-by-email")
+			.param("token", newMember.getEmailCheckToken())
+			.param("email", newMember.getEmail()))
+			.andExpect(status().is3xxRedirection())
+			.andExpect(redirectedUrl("/accounts/password"))
+			.andExpect(authenticated());
+	}
+
+	// 인증 메일 확인 테스트와 동일
+	@DisplayName("이메일로 로그인하기 - 입력값 오류")
+	@Transactional
+	@Test
+	void emailLogin_error_wrongValue() throws Exception {
+		// given
+		Member member = Member.builder()
+			.email("test@naver.com")
+			.password("12345678")
+			.nickname("loosie")
+			.build();
+		Member newMember = memberRepo.save(member);
+		newMember.generateEmailCheckToken();
+
+		mockMvc.perform(get("/login-by-email")
+			.param("token", "testToken")
+			.param("email", newMember.getEmail()))
+			.andExpect(status().isOk())
+			.andExpect(view().name("member/email-login"))
 			.andExpect(unauthenticated());
 	}
 

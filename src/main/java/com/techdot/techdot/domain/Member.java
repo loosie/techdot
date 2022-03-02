@@ -73,6 +73,10 @@ public class Member {
 		this.emailSendTime = 1;
 	}
 
+	public void updateEmailCheckToken() {
+		this.emailCheckToken = UUID.randomUUID().toString();
+	}
+
 	public void completeEmailVerified() {
 		this.emailVerified = true;
 	}
@@ -80,7 +84,6 @@ public class Member {
 	public boolean isSameToken(String token) {
 		return this.emailCheckToken.equals(token);
 	}
-
 
 	public boolean canSendConfirmEmail() {
 		// 5초에 1번씩 총 5회 전송 가능
@@ -109,4 +112,10 @@ public class Member {
 	public void updatePassword(String newPassword) {
 		this.password = newPassword;
 	}
+
+	public boolean isValidToken(String token) {
+		return this.emailCheckToken.equals(token);
+	}
+
+
 }

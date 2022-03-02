@@ -8,8 +8,6 @@
 <div class="log-container container py-5">
     <h2 class="text-center py-5">로그인</h2>
     <div class="row justify-content-center py-12">
-
-
         <form class="needs-validation col-sm-6" action="#" th:action="@{/login}" method="post" novalidate>
             <div class="form-group mb-4">
                 <label for="username">이메일</label>
@@ -23,12 +21,11 @@
                 <label for="password">비밀번호</label>
                 <input id="password" type="password" name="password" class="form-control"
                        placeholder="********" aria-describedby="passwordHelp" required>
-                <small id="passwordHelp" class="form-text text-muted">
+                <small id="passwordHelp" >
                     비밀번호를 모르시나요? <a href="#" th:href="@{/email-login}">이메일로 로그인하기</a>
                 </small>
                 <small class="invalid-feedback">패스워드를 입력하세요.</small>
             </div>
-
             <div th:if="${param.error}" class="alert alert-danger" role = "alert">
                 이메일 혹은 패스워드가 정확하지 않습니다.
             </div>
