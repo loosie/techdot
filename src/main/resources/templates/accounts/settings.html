@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.com">
+
+<head th:replace="fragments/header.html :: head"></head>
+
+<body class="bg-light">
+<nav th:replace="fragments/navbar.html :: auth-nav"></nav>
+
+<div class="container py-5">
+    <div class="row mt-5 justify-content-center">
+        <div class="col-2 py-4">
+            <div th:replace="fragments/accounts-menu.html :: settings-menu(currentMenu='settings')"></div>
+        </div>
+
+        <div class="col-8">
+            <h1 class="my-4">설정</h1>
+            <div class="dropdown-divider mb-4"></div>
+            <div th:if="${message}" class="alert alert-info alert-dismissible fade show mt-3" role="alert">
+                <span th:text="${message}">완료</span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2 class="text-danger mb-4">계정 삭제</h2>
+                    <div class="alert alert-danger mb-4" role="alert">
+                        해당 기능은 이용할 수 없습니다.
+                    </div>
+                    <button class="btn btn-outline-danger disabled">계정 삭제</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+</div>
+<footer th:replace="fragments/footer.html :: footer"></footer>
+<script th:replace="fragments/form-validation.html :: form-validation"></script>
+</body>
+</html>

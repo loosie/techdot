@@ -38,6 +38,9 @@ public class AccountsController {
 	static final String ACCOUNTS_PASSWORD_VIEW_NAME = "accounts/password";
 	static final String ACCOUNTS_PASSWORD_VIEW_URL = ACCOUNTS_MAIN_VIEW_URL + "/password";
 
+	static final String ACCOUNTS_SETTING_VIEW_NAME = "accounts/settings";
+	static final String ACCOUNTS_SETTING_VIEW_URL = "/settings";
+
 	private final MemberRepo memberRepo;
 	private final MemberService memberService;
 	private final ProfileFormValidator profileFormValidator;
@@ -108,4 +111,12 @@ public class AccountsController {
 		redirectAttributes.addFlashAttribute("message", "비밀번호가 정상적으로 변경되었습니다.");
 		return "redirect:" + ACCOUNTS_PASSWORD_VIEW_URL;
 	}
+
+	@GetMapping(ACCOUNTS_SETTING_VIEW_URL)
+	public String accountsSettingView(Model model, @CurrentUser Member member) {
+		model.addAttribute(member);
+		return ACCOUNTS_SETTING_VIEW_NAME;
+	}
+
+
 }

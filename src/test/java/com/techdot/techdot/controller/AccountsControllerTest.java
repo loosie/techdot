@@ -171,4 +171,14 @@ class AccountsControllerTest {
 			.andExpect(model().attributeExists("member"));
 	}
 
+
+	@WithCurrentUser(TEST_EMAIL)
+	@DisplayName("설정 뷰")
+	@Test
+	void accountsSettingView() throws Exception {
+		mockMvc.perform(get(ACCOUNTS_SETTING_VIEW_URL))
+			.andExpect(status().isOk())
+			.andExpect(model().attributeExists("member"));
+	}
+
 }
