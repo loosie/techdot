@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 
+import com.techdot.techdot.dto.PasswordFormDto;
 import com.techdot.techdot.dto.ProfileFormDto;
 
 import lombok.Builder;
@@ -103,5 +104,9 @@ public class Member {
 		this.nickname = profileForm.getNickname();
 		this.bio = profileForm.getBio();
 		this.profileImage = profileForm.getProfileImage();
+	}
+
+	public void updatePassword(String newPassword) {
+		this.password = newPassword;
 	}
 }

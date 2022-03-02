@@ -10,11 +10,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.Errors;
 
 import com.techdot.techdot.config.auth.PrincipalDetails;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.domain.MemberRepo;
 import com.techdot.techdot.dto.JoinFormDto;
+import com.techdot.techdot.dto.PasswordFormDto;
 import com.techdot.techdot.dto.ProfileFormDto;
 
 import lombok.RequiredArgsConstructor;
@@ -73,8 +75,12 @@ public class MemberService {
 
 	public void updateProfile(Member member, ProfileFormDto profileForm) {
 		member.updateProfile(profileForm);
-
-		//TODO : 프로필 이미지 수정
 		memberRepo.save(member);
+	}
+
+	public void updatePassword(Member member, PasswordFormDto passwordForm) {
+		member.updatePassword(passwordEncoder.encode(passwordForm.getNewPassword()));
+		memberRepo.save(member);
+
 	}
 }
