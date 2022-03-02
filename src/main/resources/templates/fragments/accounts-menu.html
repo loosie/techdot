@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.com">
+
+<div th:fragment="settings-menu (currentMenu)" class="list-group">
+    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'profile'}? active" href="#" th:href="@{/accounts} ">내 정보</a>
+    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'password'}? active" href="#" th:href="@{/accounts/password} ">비밀번호 변경</a>
+    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'settings'}? active" href="#" th:href="@{/settings}">설정</a>
+<!--    <a class="list-group-item list-group-item-action list-group-item-danger" th:classappend="${currentMenu == 'member'}? active" href="#" th:href="@{/settings/account}">계정</a>-->
+</div>
+
+</html>

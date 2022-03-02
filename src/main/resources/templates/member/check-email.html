@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace ="fragments/header.html :: head"></head>
+
+<body class="bg-light">
+<nav th:replace="fragments/navbar.html :: main-nav"></nav>
+
+<div class = "container">
+    <div class = "py-5 text-center">
+        <h2 class="mb-4">TechDot 가입</h2>
+        <p class="lead mb-4">TechDot 서비스를 사용하려면 인증 이메일을 확인하세요.</p>
+
+        <div>
+            <p class="lead" th:text="${email}">example@email.com</p>
+            <a class="btn btn-outline-info" th:href="@{'/resend-confirm-email/'+${email}}">
+                인증 이메일 다시 보내기
+            </a>
+
+            <div class = "py-5 text-center" th:if="${error}">
+                <div class ="alert alert-danger" role="alert" th:text="${error}"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

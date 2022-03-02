@@ -2,64 +2,87 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.com"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<nav th:fragment="main-nav" class="navbar navbar-expand-sm navbar-dark bg-dark">
+<head>
+    <script src="/node_modules/jdenticon/dist/jdenticon.js"></script>
+</head>
+<nav th:fragment="main-nav" class="navbar navbar-expand-sm navbar-dark bg-dark py-2 px-3">
     <a class="navbar-brand" href="/" th:href="@{/}">
-        <img src="/images/logo.png" width="35" height="35">
+        <img src="/images/logo.png" width="50" height="50">
     </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-<!--                TODO: search -->
+                <!--                TODO: search -->
                 <form th:action="@{/search/}" class="form-inline" method="get">
                     <input class="form-control mr-sm-2" name="keyword" type="search" placeholder="검색" aria-label="Search" />
                 </form>
             </li>
         </ul>
 
-        <ul class="navbar-nav justify-content-end">
-
-            <!-- TODO: login -->
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/login}">로그인</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/join}">가입</a>
-            </li>
-
-            <li class="nav-item dropdown" >
-                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">
-                    <!-- authentication.name에 따라 각기 다른 이미지 생성 -->
-                    <!-- TODO: profile image -->
-                    <svg th:if="${#strings.isEmpty(member?.profileImage)}" th:data-jdenticon-value="${#authentication.name}"
-                         width="24" height="24" class="rounded border bg-light"></svg>
-                    <img th:if="${!#strings.isEmpty(member?.profileImage)}" th:src="${member.profileImage}"
-                         width="24" height="24" class="rounded border"/>
-                </a>
-                <div class="dropdown-menu dropdown-menu-sm-right" aria-labelledby="userDropdown">
-                    <h6 class="dropdown-header">
-                        <span sec:authentication="name">Username</span>
-                    </h6>
-
-                    <!-- TODO: dropdown -->
-                    <a class="dropdown-item" th:href="@{'/profile/' + ${#authentication.name}}">프로필</a>
-                    <a class="dropdown-item" >스터디</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#" th:href="@{'/settings/profile'}">설정</a>
-
-                    <!--spring security logout 핸들러가 처리-->
-                    <form class="form-inline my-2 my-lg-0" action="#" th:action="@{/logout}" method="post">
-                        <button class="dropdown-item" type="submit">로그아웃</button>
-                    </form>
-                </div>
-            </li>
-        </ul>
     </div>
 </nav>
 
 
+<nav th:fragment="auth-nav" class="navbar navbar-expand-sm navbar-dark bg-dark py-2 px-3">
+        <a class="navbar-brand" href="/" th:href="@{/}">
+            <img src="/images/logo.png" width="50" height="50">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent2" aria-controls="navbarSupportedContent2" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent2">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+    <!--                TODO: search -->
+                    <form th:action="@{/search/}" class="form-inline" method="get">
+                        <input class="form-control mr-sm-2" name="keyword" type="search" placeholder="검색" aria-label="Search" />
+                    </form>
+                </li>
+            </ul>
+
+
+            <ul class="navbar-nav justify-contenst-end">
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="nav-link" href="/login" th:href="@{/login}">로그인</a>
+                </li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="nav-link" href="/join" th:href="@{/join}">가입</a>
+                </li>
+
+                <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                    <a class="nav-link dropdown-toggle" type="button" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <svg th:if="${#strings.isEmpty(member.profileImage)}" class="j-profile-img img-fluid float-left  img-thumbnail"
+                             th:data-jdenticon-value="${#authentication.name}" width="24" height="24"></svg>
+                        <img th:if="${!#strings.isEmpty(member.profileImage)}" class="profile-img img-fluid float-left  img-thumbnail"
+                             th:src="${member.profileImage}"
+                             width="24" height="24"/>
+                    </a>
+
+
+
+                    <div class="dropdown-menu dropdown-menu-sm-right" aria-labelledby="userDropdown">
+                        <h6 class="dropdown-header">
+                            <span sec:authentication="name">Username</span>
+                        </h6>
+
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" th:href="@{'/' + ${member.nickname}}">내 프로필</a>
+<!--                        <a class="dropdown-item" href="#" th:href="@{${member.nickname} +'/accou'}">개인정보 설정</a>-->
+                        <a class="dropdown-item" href="#" th:href="@{'/accounts'}">개인정보 설정</a>
+
+                        <!--spring security logout 핸들러가 처리-->
+                        <form class="form-inline my-2 my-lg-0" action="#" th:action="@{/logout}" method="post">
+                            <button class="dropdown-item" type="submit">로그아웃</button>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </div>
+</nav>
 </html>
