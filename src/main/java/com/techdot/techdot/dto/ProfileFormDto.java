@@ -22,8 +22,11 @@ public class ProfileFormDto {
 	@Length(max = 50)
 	private String bio;
 
+	private String profileImage;
+
 	public ProfileFormDto(Member member) {
 		this.nickname = member.getNickname();
 		this.bio = member.getBio();
+		this.profileImage = member.getProfileImage();
 	}
 }

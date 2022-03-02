@@ -2,6 +2,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.com"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
+<head>
+    <script src="/node_modules/jdenticon/dist/jdenticon.js"></script>
+</head>
 <nav th:fragment="main-nav" class="navbar navbar-expand-sm navbar-dark bg-dark py-2 px-3">
     <a class="navbar-brand" href="/" th:href="@{/}">
         <img src="/images/logo.png" width="50" height="50">
@@ -54,13 +57,15 @@
                 <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
                     <a class="nav-link dropdown-toggle" type="button" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
-                        <!-- TODO: profile image -->
-                        프로필
-                        <svg th:if="${#strings.isEmpty(member?.nickname)}" th:data-jdenticon-value="${#authentication.name}"
-                             width="24" height="24" class="rounded border bg-light"></svg>
-                        <img th:if="${!#strings.isEmpty(member?.profileImage)}" th:src="${member.profileImage}"
-                             width="24" height="24" class="rounded border"/>
+                        <svg th:if="${#strings.isEmpty(member.profileImage)}" class="j-profile-img img-fluid float-left  img-thumbnail"
+                             th:data-jdenticon-value="${#authentication.name}" width="24" height="24"></svg>
+                        <img th:if="${!#strings.isEmpty(member.profileImage)}" class="profile-img img-fluid float-left  img-thumbnail"
+                             th:src="${member.profileImage}"
+                             width="24" height="24"/>
                     </a>
+
+
+
                     <div class="dropdown-menu dropdown-menu-sm-right" aria-labelledby="userDropdown">
                         <h6 class="dropdown-header">
                             <span sec:authentication="name">Username</span>

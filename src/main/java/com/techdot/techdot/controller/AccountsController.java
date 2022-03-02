@@ -49,6 +49,7 @@ public class AccountsController {
 	@GetMapping(ACCOUNTS_VIEW_URL)
 	public String profileSettingsView(Model model, @CurrentUser Member member) {
 		model.addAttribute("member", member);
+		model.addAttribute("profileForm", new ProfileFormDto(member));
 		return ACCOUNT_SETTINGS_VIEW_NAME;
 	}
 

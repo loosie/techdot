@@ -102,5 +102,6 @@ public class Member {
 	public void updateProfile(ProfileFormDto profileForm) {
 		this.nickname = profileForm.getNickname();
 		this.bio = profileForm.getBio();
+		this.profileImage = profileForm.getProfileImage();
 	}
 }
