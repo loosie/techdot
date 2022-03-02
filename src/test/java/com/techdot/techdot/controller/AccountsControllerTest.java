@@ -63,14 +63,14 @@ class AccountsControllerTest {
 			.andExpect(model().attributeExists("member"));
 	}
 
-
 	@WithCurrentUser(TEST_EMAIL)
 	@DisplayName("프로필 수정하기 - 정상")
 	@Test
 	void updateProfile_success() throws Exception {
 		String bio = "소개를 수정하는 경우";
 		mockMvc.perform(post(ACCOUNTS_MAIN_VIEW_URL)
-			.param("nickname", TEST_NICKNAME)
+			.param("curNickname", TEST_NICKNAME)
+			.param("newNickname", TEST_NICKNAME)
 			.param("bio", bio)
 			.with(csrf()))
 			.andExpect(status().is3xxRedirection())
@@ -83,12 +83,13 @@ class AccountsControllerTest {
 	}
 
 	@WithCurrentUser(TEST_EMAIL)
-	@DisplayName("프로필 수정하기 - 입력값 에러")
+	@DisplayName("프로필 수정하기 - 입력값 에러 - 소개글 범위 초과")
 	@Test
 	void updateProfile_error_wrongInput() throws Exception {
 		String bio = "소개를 수정하는 길이가 너무 긴 경우.소개를 수정하는 길이가 너무 긴 경우.소개를 수정하는 길이가 너무 긴 경우.소개를 수정하는 길이가 너무 긴 경우.";
 		mockMvc.perform(post(ACCOUNTS_MAIN_VIEW_URL)
-			.param("nickname", TEST_NICKNAME)
+			.param("curNickname", TEST_NICKNAME)
+			.param("newNickname", TEST_NICKNAME)
 			.param("bio", bio)
 			.with(csrf()))
 			.andExpect(status().isOk())
@@ -99,6 +100,32 @@ class AccountsControllerTest {
 		// then
 		Member findMember = memberRepo.findByNickname(TEST_NICKNAME).orElseThrow(NullPointerException::new);
 		assertNull(findMember.getBio());
+	}
+
+	@WithCurrentUser(TEST_EMAIL)
+	@DisplayName("프로필 수정하기 - 입력값 에러 - 닉네임 중복")
+	@Test
+	void updateProfile_error_duplicatedNickname() throws Exception {
+		// given
+		Member newMember = memberRepo.save(Member.builder()
+			.email("test2@naver.com")
+			.password("12345678")
+			.nickname("test")
+			.build());
+
+		mockMvc.perform(post(ACCOUNTS_MAIN_VIEW_URL)
+			.param("curNickname", "test")
+			.param("newNickname", TEST_NICKNAME)
+			.param("bio", "bio")
+			.with(csrf()))
+			.andExpect(status().isOk())
+			.andExpect(view().name(ACCOUNTS_PROFILE_VIEW_NAME))
+			.andExpect(model().attributeExists("member"))
+			.andExpect(model().hasErrors());
+
+		// then
+		Member findMember = memberRepo.findByNickname(TEST_NICKNAME).orElseThrow(NullPointerException::new);
+		assertFalse(findMember.equals(newMember));
 	}
 
 	@WithCurrentUser(TEST_EMAIL)
@@ -129,7 +156,6 @@ class AccountsControllerTest {
 		assertTrue(passwordEncoder.matches(newPw, findMember.getPassword()));
 	}
 
-
 	@WithCurrentUser(TEST_EMAIL)
 	@DisplayName("비밀번호 변경하기 - 입력값 에러")
 	@Test
@@ -137,7 +163,7 @@ class AccountsControllerTest {
 		String newPw = "1234567890";
 		mockMvc.perform(post(ACCOUNTS_PASSWORD_VIEW_URL)
 			.param("newPassword", newPw)
-			.param("newPasswordConfirm", newPw+"abc")
+			.param("newPasswordConfirm", newPw + "abc")
 			.with(csrf()))
 			.andExpect(status().isOk())
 			.andExpect(view().name(ACCOUNTS_PASSWORD_VIEW_NAME))
