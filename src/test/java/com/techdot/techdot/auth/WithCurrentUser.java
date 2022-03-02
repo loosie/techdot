@@ -9,6 +9,5 @@ import org.springframework.security.test.context.support.WithSecurityContext;
 @WithSecurityContext(factory = WithMemberSecurityContextFactory.class)
 public @interface WithCurrentUser {
 
-	String email();
-	String nickname();
+	String value();
 }

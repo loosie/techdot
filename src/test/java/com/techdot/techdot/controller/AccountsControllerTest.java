@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.techdot.techdot.auth.WithCurrentUser;
@@ -21,7 +22,7 @@ import com.techdot.techdot.service.MemberService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class ProfileControllerTest {
+class AccountsControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -30,7 +31,7 @@ class ProfileControllerTest {
 	private MemberRepo memberRepo;
 
 	@Autowired
-	private MemberService memberService;
+	private PasswordEncoder passwordEncoder;
 
 	private final String TEST_EMAIL = "test@naver.com";
 	private final String TEST_NICKNAME = "loosie";
@@ -40,7 +41,7 @@ class ProfileControllerTest {
 		memberRepo.deleteAll();
 	}
 
-	@WithCurrentUser(email = TEST_EMAIL, nickname = TEST_NICKNAME)
+	@WithCurrentUser(TEST_EMAIL)
 	@DisplayName("프로필 뷰")
 	@Test
 	void profileForm() throws Exception {
@@ -52,7 +53,7 @@ class ProfileControllerTest {
 			.andExpect(model().attributeExists("isOwner"));
 	}
 
-	@WithCurrentUser(email = TEST_EMAIL, nickname = TEST_NICKNAME)
+	@WithCurrentUser(TEST_EMAIL)
 	@DisplayName("프로필 설정 뷰")
 	@Test
 	void profileSettingsView() throws Exception {
@@ -63,7 +64,7 @@ class ProfileControllerTest {
 	}
 
 
-	@WithCurrentUser(email = TEST_EMAIL, nickname = TEST_NICKNAME)
+	@WithCurrentUser(TEST_EMAIL)
 	@DisplayName("프로필 수정하기 - 정상")
 	@Test
 	void updateProfile_success() throws Exception {
@@ -81,7 +82,7 @@ class ProfileControllerTest {
 		assertEquals(findMember.getBio(), bio);
 	}
 
-	@WithCurrentUser(email = TEST_EMAIL, nickname = TEST_NICKNAME)
+	@WithCurrentUser(TEST_EMAIL)
 	@DisplayName("프로필 수정하기 - 입력값 에러")
 	@Test
 	void updateProfile_error_wrongInput() throws Exception {
@@ -98,6 +99,49 @@ class ProfileControllerTest {
 		// then
 		Member findMember = memberRepo.findByNickname(TEST_NICKNAME).orElseThrow(NullPointerException::new);
 		assertNull(findMember.getBio());
+	}
+
+	@WithCurrentUser(TEST_EMAIL)
+	@DisplayName("비밀번호 변경 뷰")
+	@Test
+	void updatePasswordView() throws Exception {
+		mockMvc.perform(get(ACCOUNTS_PASSWORD_VIEW_URL))
+			.andExpect(status().isOk())
+			.andExpect(model().attributeExists("member"))
+			.andExpect(model().attributeExists("passwordForm"));
+	}
+
+	@WithCurrentUser(TEST_EMAIL)
+	@DisplayName("비밀번호 변경하기 - 정상")
+	@Test
+	void updatePassword_success() throws Exception {
+		String newPw = "1234567890";
+		mockMvc.perform(post(ACCOUNTS_PASSWORD_VIEW_URL)
+			.param("newPassword", newPw)
+			.param("newPasswordConfirm", newPw)
+			.with(csrf()))
+			.andExpect(status().is3xxRedirection())
+			.andExpect(redirectedUrl(ACCOUNTS_PASSWORD_VIEW_URL))
+			.andExpect(flash().attributeExists("message"));
+
+		// then
+		Member findMember = memberRepo.findByEmail(TEST_EMAIL).orElseThrow(NullPointerException::new);
+		assertTrue(passwordEncoder.matches(newPw, findMember.getPassword()));
+	}
+
+
+	@WithCurrentUser(TEST_EMAIL)
+	@DisplayName("비밀번호 변경하기 - 입력값 에러")
+	@Test
+	void updatePassword_error_unMatchedPassword() throws Exception {
+		String newPw = "1234567890";
+		mockMvc.perform(post(ACCOUNTS_PASSWORD_VIEW_URL)
+			.param("newPassword", newPw)
+			.param("newPasswordConfirm", newPw+"abc")
+			.with(csrf()))
+			.andExpect(status().isOk())
+			.andExpect(view().name(ACCOUNTS_PASSWORD_VIEW_NAME))
+			.andExpect(model().attributeExists("member"));
 	}
 
 }

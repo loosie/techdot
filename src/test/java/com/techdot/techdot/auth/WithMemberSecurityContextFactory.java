@@ -22,10 +22,8 @@ public class WithMemberSecurityContextFactory implements WithSecurityContextFact
 
 	@Override
 	public SecurityContext createSecurityContext(WithCurrentUser withCurrentUser) {
-		String email = withCurrentUser.email();
-		String nickname = withCurrentUser.nickname();
-
-		createMember(email, nickname);
+		String email = withCurrentUser.value();
+		createMember(email);
 
 		UserDetails principal = principalDetailsService.loadUserByUsername(email);
 		Authentication authentication = new UsernamePasswordAuthenticationToken(principal, principal.getPassword(), principal.getAuthorities());
@@ -34,9 +32,9 @@ public class WithMemberSecurityContextFactory implements WithSecurityContextFact
 		return context;
 	}
 
-	private void createMember(String email, String nickname) {
+	private void createMember(String email) {
 		JoinFormDto joinFormDto = new JoinFormDto();
-		joinFormDto.setNickname(nickname);
+		joinFormDto.setNickname("loosie");
 		joinFormDto.setEmail(email);
 		joinFormDto.setPassword("12345678");
 		joinFormDto.setTermsCheck(true);
