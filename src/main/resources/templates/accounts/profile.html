@@ -22,10 +22,12 @@
             </div>
 
             <div class="row mt-3">
-                <form class="col-sm-8" th:action="@{/accounts}" th:object="${profileForm}" action="#" method="post" novalidate>
+                <form class="needs-validation col-sm-8" th:action="@{/accounts}" th:object="${profileForm}" action="#" method="post" novalidate>
+                    <input id="curNickname" type="hidden" th:field="*{curNickname}" class="form-control" />
                     <div class="form-group mb-4">
                         <label for="nicknameFormControlInput1">닉네임</label>
-                        <input type="text" class="form-control" id="nicknameFormControlInput1"  th:field="*{nickname}" placeholder="닉네임">
+                        <input type="text" class="form-control" id="nicknameFormControlInput1" th:field="*{newNickname}" placeholder="닉네임">
+                        <small class="form-text text-danger" th:if="${#fields.hasErrors('newNickname')}" th:errors="*{newNickname}">Nickname Error</small>
                     </div>
 
                     <div class="form-group mb-4">
@@ -83,6 +85,7 @@
 
 </div>
 <footer th:replace="fragments/footer.html :: footer"></footer>
+<script th:replace="fragments/form-validation.html :: form-validation"></script>
 
 <link  href="/node_modules/cropper/dist/cropper.css" rel="stylesheet">
 <script src="/node_modules/cropper/dist/cropper.js"></script>

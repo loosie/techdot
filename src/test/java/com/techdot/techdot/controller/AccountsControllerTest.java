@@ -141,6 +141,7 @@ class AccountsControllerTest {
 			.with(csrf()))
 			.andExpect(status().isOk())
 			.andExpect(view().name(ACCOUNTS_PASSWORD_VIEW_NAME))
+			.andExpect(model().hasErrors())
 			.andExpect(model().attributeExists("member"));
 	}
 

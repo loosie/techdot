@@ -22,6 +22,7 @@ import com.techdot.techdot.dto.PasswordFormDto;
 import com.techdot.techdot.dto.ProfileFormDto;
 import com.techdot.techdot.service.MemberService;
 import com.techdot.techdot.utils.PasswordFormValidator;
+import com.techdot.techdot.utils.ProfileFormValidator;
 
 import lombok.RequiredArgsConstructor;
 
@@ -39,10 +40,16 @@ public class AccountsController {
 
 	private final MemberRepo memberRepo;
 	private final MemberService memberService;
+	private final ProfileFormValidator profileFormValidator;
 
 	@InitBinder("passwordForm")
-	public void initBinder(WebDataBinder webDataBinder){
+	public void pwInitBinder(WebDataBinder webDataBinder){
 		webDataBinder.addValidators(new PasswordFormValidator());
+	}
+
+	@InitBinder("profileForm")
+	public void profileInitBinder(WebDataBinder webDataBinder){
+		webDataBinder.addValidators(profileFormValidator);
 	}
 
 	@GetMapping("/{nickname}")
