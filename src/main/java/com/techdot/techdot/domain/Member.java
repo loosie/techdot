@@ -66,7 +66,7 @@ public class Member {
 		Assert.notNull(nickname, "member.nickname 값이 존재하지 않습니다.");
 		Assert.notNull(password, "member.password 값이 존재하지 않습니다.");
 		Assert.notNull(emailVerified, "member.emailVerified 값이 존재하지 않습니다.");
-		Assert.notNull(termsCheck, "member.termsCheck 값이 존재하지 않습니다.");
+		Assert.isTrue(termsCheck, "member.termsCheck 값이 올바르지 않습니다.");
 
 		this.email = email;
 		this.nickname = nickname;
@@ -89,13 +89,10 @@ public class Member {
 		this.emailVerified = true;
 	}
 
-	public boolean isSameToken(String token) {
-		return this.emailCheckToken.equals(token);
-	}
-
 	public boolean canSendConfirmEmail() {
 		// 5초에 1번씩 총 5회 전송 가능
-		if(emailSendTime < 5 && this.emailCheckTokenSendAt.isBefore(LocalDateTime.now().minusSeconds(5))){
+		if(emailSendTime == 1 ||
+			(emailSendTime < 5 && this.emailCheckTokenSendAt.isBefore(LocalDateTime.now().minusSeconds(5)))){
 			this.emailCheckTokenSendAt = LocalDateTime.now();
 			this.emailSendTime += 1;
 			return true;
@@ -120,6 +117,7 @@ public class Member {
 	public void updatePassword(String newPassword) {
 		this.password = newPassword;
 	}
+
 
 	public boolean isValidToken(String token) {
 		return this.emailCheckToken.equals(token);
