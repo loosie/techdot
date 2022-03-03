@@ -33,7 +33,7 @@ public class MemberService {
 
 	public Member save(JoinFormDto joinForm) {
 		Member newMember = saveMember(joinForm);
-		newMember.generateEmailCheckToken();
+		// newMember.generateEmailCheckToken();
 		sendConfirmEmail(newMember);
 		return newMember;
 	}
@@ -55,7 +55,7 @@ public class MemberService {
 			.password(passwordEncoder.encode(joinForm.getPassword()))
 			.termsCheck(joinForm.getTermsCheck())
 			.build();
-
+		member.generateEmailCheckToken();
 		return memberRepo.save(member);
 	}
 
