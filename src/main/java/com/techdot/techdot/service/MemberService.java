@@ -52,6 +52,7 @@ public class MemberService {
 			.email(joinForm.getEmail())
 			.nickname(joinForm.getNickname())
 			.password(passwordEncoder.encode(joinForm.getPassword()))
+			.emailVerified(false)
 			.termsCheck(joinForm.getTermsCheck())
 			.build();
 		member.generateEmailCheckToken();

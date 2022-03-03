@@ -11,7 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
-import javax.persistence.Transient;
 
 import org.springframework.util.Assert;
 
@@ -62,19 +61,17 @@ public class Member {
 	private List<Post> posts = new ArrayList<>();
 
 	@Builder
-	public Member(Long id, String email, String nickname, String password, String bio, Boolean emailVerified,
-		String emailCheckToken, LocalDateTime emailCheckTokenSendAt, Integer emailSendTime, String profileImage,
-		Boolean termsCheck) {
-		this.id = id;
+	public Member(String email, String nickname, String password, Boolean emailVerified, Boolean termsCheck) {
+		Assert.notNull(email, "member.email 값이 존재하지 않습니다.");
+		Assert.notNull(nickname, "member.nickname 값이 존재하지 않습니다.");
+		Assert.notNull(password, "member.password 값이 존재하지 않습니다.");
+		Assert.notNull(emailVerified, "member.emailVerified 값이 존재하지 않습니다.");
+		Assert.notNull(termsCheck, "member.termsCheck 값이 존재하지 않습니다.");
+
 		this.email = email;
 		this.nickname = nickname;
 		this.password = password;
-		this.bio = bio;
-		this.emailVerified = false;
-		this.emailCheckToken = emailCheckToken;
-		this.emailCheckTokenSendAt = emailCheckTokenSendAt;
-		this.emailSendTime = emailSendTime;
-		this.profileImage = profileImage;
+		this.emailVerified = emailVerified;
 		this.termsCheck = termsCheck;
 	}
 

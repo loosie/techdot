@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.springframework.util.Assert;
+
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -42,7 +44,11 @@ public class Post {
 	private Member member;
 
 	@Builder
-	public Post(Long id, String title, String content, String link, PostType type) {
+	public Post(String title, String content, String link, PostType type) {
+		Assert.notNull(title, "post.title 값이 존재하지 않습니다.");
+		Assert.notNull(link, "post.link 값이 존재하지 않습니다.");
+		Assert.notNull(content, "post.content 값이 존재하지 않습니다.");
+
 		this.title = title;
 		this.content = content;
 		this.link = link;
@@ -51,6 +57,11 @@ public class Post {
 
 	@Builder(builderClassName = "ByMemberBuilder", builderMethodName = "ByMemberBuilder")
 	public Post(Member member){
+		Assert.notNull(member, "post.member 값이 존재하지 않습니다.");
+
 		this.member = member;
+		if(!member.getPosts().contains(this)) {
+			member.getPosts().add(this);
+		}
 	}
 }
