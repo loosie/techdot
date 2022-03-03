@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.techdot.techdot.auth.WithCurrentUser;
 import com.techdot.techdot.domain.Member;
-import com.techdot.techdot.repository.MemberRepo;
+import com.techdot.techdot.repository.MemberRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -27,7 +27,7 @@ class AccountsControllerTest {
 	private MockMvc mockMvc;
 
 	@Autowired
-	private MemberRepo memberRepo;
+	private MemberRepository memberRepo;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;

@@ -17,7 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.techdot.techdot.config.auth.CurrentUser;
 import com.techdot.techdot.domain.Member;
-import com.techdot.techdot.repository.MemberRepo;
+import com.techdot.techdot.repository.MemberRepository;
 import com.techdot.techdot.dto.PasswordFormDto;
 import com.techdot.techdot.dto.ProfileFormDto;
 import com.techdot.techdot.service.MemberService;
@@ -41,7 +41,7 @@ public class AccountsController {
 	static final String ACCOUNTS_SETTING_VIEW_NAME = "accounts/settings";
 	static final String ACCOUNTS_SETTING_VIEW_URL = "/settings";
 
-	private final MemberRepo memberRepo;
+	private final MemberRepository memberRepo;
 	private final MemberService memberService;
 	private final ProfileFormValidator profileFormValidator;
 

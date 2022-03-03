@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.techdot.techdot.config.auth.PrincipalDetails;
 import com.techdot.techdot.domain.Member;
-import com.techdot.techdot.repository.MemberRepo;
+import com.techdot.techdot.repository.MemberRepository;
 import com.techdot.techdot.dto.JoinFormDto;
 import com.techdot.techdot.dto.PasswordFormDto;
 import com.techdot.techdot.dto.ProfileFormDto;
@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MemberService {
 
-	private final MemberRepo memberRepo;
+	private final MemberRepository memberRepo;
 	private final JavaMailSender javaMailSender;
 	private final PasswordEncoder passwordEncoder;
 

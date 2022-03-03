@@ -15,5 +15,5 @@ logging:
       hibernate:
         SQL: debug
         type:
-          descriptor: trace
+          descriptor: debug # trace: sql 내용 분석용
 

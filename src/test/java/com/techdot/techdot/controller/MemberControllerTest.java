@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.techdot.techdot.domain.Member;
-import com.techdot.techdot.repository.MemberRepo;
+import com.techdot.techdot.repository.MemberRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -33,7 +33,7 @@ class MemberControllerTest {
 	private MockMvc mockMvc;
 
 	@Autowired
-	private MemberRepo memberRepo;
+	private MemberRepository memberRepo;
 
 	@MockBean
 	private JavaMailSender javaMailSender;

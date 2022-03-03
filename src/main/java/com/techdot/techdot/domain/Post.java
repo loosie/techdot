@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 import org.springframework.util.Assert;
@@ -19,7 +20,8 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
-@Getter @EqualsAndHashCode(of ="id")
+@Getter
+@EqualsAndHashCode(of = "id")
 public class Post {
 
 	@Id
@@ -36,6 +38,9 @@ public class Post {
 	@Column(nullable = false, unique = true)
 	private String link;
 
+	@Lob
+	private String thumbnailImage;
+
 	@Enumerated(EnumType.STRING)
 	private PostType type;
 
@@ -44,7 +49,7 @@ public class Post {
 	private Member member;
 
 	@Builder
-	public Post(String title, String content, String link, PostType type, Member member) {
+	public Post(String title, String content, String link, String thumbnailImage, PostType type, Member member) {
 		Assert.notNull(title, "post.title 값이 존재하지 않습니다.");
 		Assert.notNull(link, "post.link 값이 존재하지 않습니다.");
 		Assert.notNull(content, "post.content 값이 존재하지 않습니다.");
@@ -53,12 +58,13 @@ public class Post {
 		this.content = content;
 		this.link = link;
 		this.type = type;
+		this.thumbnailImage = thumbnailImage;
 		addMember(member);
 	}
 
-	private void addMember(Member member){
+	private void addMember(Member member) {
 		this.member = member;
-		if(!member.getPosts().contains(this)) {
+		if (!member.getPosts().contains(this)) {
 			member.getPosts().add(this);
 		}
 	}

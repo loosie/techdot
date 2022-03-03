@@ -14,7 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.techdot.techdot.repository.MemberRepo;
+import com.techdot.techdot.repository.MemberRepository;
 import com.techdot.techdot.dto.JoinFormDto;
 import com.techdot.techdot.service.MemberService;
 
@@ -29,7 +29,7 @@ class MainControllerTest {
 	private MemberService memberService;
 
 	@Autowired
-	private MemberRepo memberRepo;
+	private MemberRepository memberRepo;
 
 	@BeforeEach
 	void setUp(){
