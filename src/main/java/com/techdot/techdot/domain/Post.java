@@ -44,24 +44,23 @@ public class Post {
 	private Member member;
 
 	@Builder
-	public Post(String title, String content, String link, PostType type) {
+	public Post(String title, String content, String link, PostType type, Member member) {
 		Assert.notNull(title, "post.title 값이 존재하지 않습니다.");
 		Assert.notNull(link, "post.link 값이 존재하지 않습니다.");
 		Assert.notNull(content, "post.content 값이 존재하지 않습니다.");
-
+		Assert.notNull(member, "post.member 값이 존재하지 않습니다.");
 		this.title = title;
 		this.content = content;
 		this.link = link;
 		this.type = type;
+		addMember(member);
 	}
 
-	@Builder(builderClassName = "ByMemberBuilder", builderMethodName = "ByMemberBuilder")
-	public Post(Member member){
-		Assert.notNull(member, "post.member 값이 존재하지 않습니다.");
-
+	private void addMember(Member member){
 		this.member = member;
 		if(!member.getPosts().contains(this)) {
 			member.getPosts().add(this);
 		}
 	}
+
 }

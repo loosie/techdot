@@ -11,7 +11,7 @@ class MemberTest {
 
 	@DisplayName("멤버 생성하기 - 성공")
 	@Test
-	void memberCreate_success(){
+	void member_create_success() {
 		Member member = Member.builder()
 			.nickname("loosie")
 			.password("12345678")
@@ -25,7 +25,7 @@ class MemberTest {
 
 	@DisplayName("멤버 생성 실패 - 입력값 오류 password null")
 	@Test
-	void memberCreate_fail_null(){
+	void member_create_fail_nullValue() {
 		assertThrows(IllegalArgumentException.class, () -> Member.builder()
 			.nickname("loosie") // password null
 			.termsCheck(true)
@@ -36,7 +36,7 @@ class MemberTest {
 
 	@DisplayName("멤버 생성 실패 - 입력값 오류 termsCheck 값은 항상 true이어야 합니다.")
 	@Test
-	void memberCreate_fail_invalidInput(){
+	void member_create_fail_invalidInput() {
 		assertThrows(IllegalArgumentException.class, () -> Member.builder()
 			.nickname("loosie")
 			.password("12345678")
@@ -48,7 +48,8 @@ class MemberTest {
 
 	@DisplayName("멤버 이메일 체크 토큰 생성 - 성공")
 	@Test
-	void memberGenerateEmailCheckToken_success(){
+	void member_generateEmailCheckToken_success() {
+		// given
 		Member member = Member.builder()
 			.nickname("loosie")
 			.password("12345678")
@@ -58,6 +59,7 @@ class MemberTest {
 			.build();
 		member.generateEmailCheckToken();
 
+		// when, then
 		assertNotNull(member.getEmailCheckToken());
 		assertNotNull(member.getEmailCheckTokenSendAt());
 		assertEquals(member.getEmailSendTime(), 1);
@@ -65,7 +67,7 @@ class MemberTest {
 
 	@DisplayName("멤버 이메일 인증 토큰 업데이트하기")
 	@Test
-	void memberUpdateEmailCheckToken(){
+	void member_updateEmailCheckToken() {
 		// given
 		Member member = Member.builder()
 			.nickname("loosie")
@@ -84,13 +86,9 @@ class MemberTest {
 		assertNotEquals(firstToken, member.getEmailCheckToken());
 	}
 
-	// public void updateEmailCheckToken() {
-	// 	this.emailCheckToken = UUID.randomUUID().toString();
-	// }
-
 	@DisplayName("멤버 이메일 인증 완료하기")
 	@Test
-	void member_completeEmailVerified(){
+	void member_completeEmailVerified() {
 		// given
 		Member member = Member.builder()
 			.nickname("loosie")
@@ -109,7 +107,7 @@ class MemberTest {
 
 	@DisplayName("멤버 확인 이메일 전송하기")
 	@Test
-	void member_sendConfirmEmail(){
+	void member_sendConfirmEmail() {
 		// given
 		Member member = Member.builder()
 			.nickname("loosie")
@@ -129,7 +127,7 @@ class MemberTest {
 
 	@DisplayName("멤버 프로필 업데이트하기")
 	@Test
-	void member_updateProfile(){
+	void member_updateProfile() {
 		// given
 		Member member = Member.builder()
 			.nickname("loosie")
@@ -155,7 +153,7 @@ class MemberTest {
 
 	@DisplayName("멤버 비밀번호 업데이트하기")
 	@Test
-	void member_updatePassword(){
+	void member_updatePassword() {
 		// given
 		Member member = Member.builder()
 			.nickname("loosie")
@@ -172,10 +170,9 @@ class MemberTest {
 		assertTrue(member.getPassword().equals("87654321"));
 	}
 
-
 	@DisplayName("멤버 토큰 유효한지 검사하기")
 	@Test
-	void member_has_a_validToken(){
+	void member_has_a_validToken() {
 		// given
 		Member member = Member.builder()
 			.nickname("loosie")
@@ -188,6 +185,6 @@ class MemberTest {
 
 		// when, then
 		assertTrue(member.isValidToken(member.getEmailCheckToken()));
-		assertFalse(member.isValidToken(member.getEmailCheckToken()+"11"));
+		assertFalse(member.isValidToken(member.getEmailCheckToken() + "11"));
 	}
 }
