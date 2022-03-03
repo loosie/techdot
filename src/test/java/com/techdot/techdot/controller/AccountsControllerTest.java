@@ -17,8 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.techdot.techdot.auth.WithCurrentUser;
 import com.techdot.techdot.domain.Member;
-import com.techdot.techdot.domain.MemberRepo;
-import com.techdot.techdot.service.MemberService;
+import com.techdot.techdot.repository.MemberRepo;
 
 @SpringBootTest
 @AutoConfigureMockMvc

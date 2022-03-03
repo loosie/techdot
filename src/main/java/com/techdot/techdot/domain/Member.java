@@ -1,16 +1,20 @@
 package com.techdot.techdot.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
-import com.techdot.techdot.dto.PasswordFormDto;
+import org.springframework.util.Assert;
+
 import com.techdot.techdot.dto.ProfileFormDto;
 
 import lombok.Builder;
@@ -25,18 +29,21 @@ public class Member {
 
 	@Id
 	@GeneratedValue
+	@Column(name = "member_id")
 	private Long id;
 
-	@Column(unique = true)
+	@Column(nullable = false, unique = true)
 	private String email;
 
-	@Column(unique = true)
+	@Column(nullable = false, unique = true)
 	private String nickname;
 
+	@Column(nullable = false)
 	private String password;
 
 	private String bio;
 
+	@Column(nullable = false)
 	private Boolean emailVerified;
 
 	private String emailCheckToken;
@@ -48,7 +55,11 @@ public class Member {
 	@Lob
 	private String profileImage;
 
+	@Column(nullable = false)
 	private Boolean termsCheck;
+
+	@OneToMany(mappedBy = "member")
+	private List<Post> posts = new ArrayList<>();
 
 	@Builder
 	public Member(Long id, String email, String nickname, String password, String bio, Boolean emailVerified,

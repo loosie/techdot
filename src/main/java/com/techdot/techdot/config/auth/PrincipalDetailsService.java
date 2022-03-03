@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.techdot.techdot.domain.Member;
-import com.techdot.techdot.domain.MemberRepo;
+import com.techdot.techdot.repository.MemberRepo;
 
 import lombok.RequiredArgsConstructor;
 

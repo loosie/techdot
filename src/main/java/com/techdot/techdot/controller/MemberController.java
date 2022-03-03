@@ -17,7 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.techdot.techdot.config.auth.CurrentUser;
 import com.techdot.techdot.domain.Member;
-import com.techdot.techdot.domain.MemberRepo;
+import com.techdot.techdot.repository.MemberRepo;
 import com.techdot.techdot.dto.JoinFormDto;
 import com.techdot.techdot.service.MemberService;
 import com.techdot.techdot.utils.JoinFormValidator;

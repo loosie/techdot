@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.techdot.techdot.config.auth.PrincipalDetails;
 import com.techdot.techdot.domain.Member;
-import com.techdot.techdot.domain.MemberRepo;
+import com.techdot.techdot.repository.MemberRepo;
 import com.techdot.techdot.dto.JoinFormDto;
 import com.techdot.techdot.dto.PasswordFormDto;
 import com.techdot.techdot.dto.ProfileFormDto;
@@ -33,7 +33,6 @@ public class MemberService {
 
 	public Member save(JoinFormDto joinForm) {
 		Member newMember = saveMember(joinForm);
-		// newMember.generateEmailCheckToken();
 		sendConfirmEmail(newMember);
 		return newMember;
 	}
@@ -80,7 +79,6 @@ public class MemberService {
 	public void updatePassword(Member member, PasswordFormDto passwordForm) {
 		member.updatePassword(passwordEncoder.encode(passwordForm.getNewPassword()));
 		memberRepo.save(member);
-
 	}
 
 	public void sendLoginLink(Member member) {
