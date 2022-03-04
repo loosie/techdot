@@ -57,7 +57,7 @@ public class Member {
 	@Column(nullable = false)
 	private Boolean termsCheck;
 
-	@OneToMany(mappedBy = "member")
+	@OneToMany(mappedBy = "manager")
 	private List<Post> posts = new ArrayList<>();
 
 	@Builder

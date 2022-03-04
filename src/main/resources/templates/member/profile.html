@@ -7,26 +7,11 @@
 <nav th:replace="fragments/navbar.html :: auth-nav"></nav>
 
 <div class="container py-5">
+
+    <div th:replace="fragments/profile-info.html :: profile-info"></div>
     <div class="row justify-content-center py-12">
-            <!-- Avatar -->
-        <div class="col-2">
-            <svg th:if="${#strings.isEmpty(profile.profileImage)}" class="j-profile-img img-fluid float-left rounded img-thumbnail"
-                 th:data-jdenticon-value="${#authentication.name}" width="125" height="125"></svg>
-            <img th:if="${!#strings.isEmpty(profile.profileImage)}" class="profile-img img-fluid float-left rounded img-thumbnail"
-                 th:src="${profile.profileImage}"
-                 width="125" height="125"/>
-        </div>
-        <div class="col-6">
-            <h2 th:text="${profile.nickname}"></h2>
-            <p class="card-text" style="white-space: pre-line; width: 100%" th:text="${profile.bio}"></p>
-            <div th:if="${isOwner}">
-                <a class="btn btn-outline-primary  pull-right" href="#" th:href="@{/accounts}">프로필 수정</a>
-            </div>
-        </div>
-
-
+        <nav th:replace="fragments/profile-menu.html :: profile-menu(profileMenu='likes')"></nav>
     </div>
-
 
 
     <div class="row justify-content-center">

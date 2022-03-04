@@ -3,6 +3,7 @@ package com.techdot.techdot;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +14,7 @@ import com.techdot.techdot.domain.PostType;
 
 import lombok.RequiredArgsConstructor;
 
+@Profile("local")
 @Component
 @RequiredArgsConstructor
 public class initData {
@@ -21,7 +23,7 @@ public class initData {
 
 	@PostConstruct
 	void init(){
-		// initService.init1();
+		initService.init1();
 	}
 
 	@Component
@@ -42,13 +44,23 @@ public class initData {
 			member.generateEmailCheckToken();
 			em.persist(member);
 
+			Member member2 = Member.builder()
+				.email("test1@naver.com")
+				.nickname("loosie2")
+				.password(passwordEncoder.encode("test1@naver.com"))
+				.emailVerified(true)
+				.termsCheck(true)
+				.build();
+			member2.generateEmailCheckToken();
+			em.persist(member2);
+
 			Post shortPost = Post.builder()
 				.title("loosie 티스토리 블로그 미리보기 techDot 기술 큐레이션 서비스" + 0)
 				.type(PostType.VIDEO)
 				.link("http://loosie.tistory.com/" + 122)
 				.content("어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌")
-				.owner("loosie")
-				.member(member)
+				.writer("loosie")
+				.manager(member)
 				.build();
 			em.persist(shortPost);
 
@@ -58,8 +70,8 @@ public class initData {
 					.type(PostType.BLOG)
 					.link("http://loosie.tistory.com/" + 123+i)
 					.content("어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌")
-					.owner("loosie")
-					.member(member)
+					.writer("loosie")
+					.manager(member)
 					.build();
 				em.persist(post);
 			}
@@ -72,8 +84,8 @@ public class initData {
 					+ "어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저"
 					+ "쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저"
 					+ "쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌")
-				.owner("loosie")
-				.member(member)
+				.writer("loosie")
+				.manager(member)
 				.build();
 			em.persist(longPost);
 		}

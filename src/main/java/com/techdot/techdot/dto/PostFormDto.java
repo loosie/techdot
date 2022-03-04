@@ -22,11 +22,14 @@ public class PostFormDto {
 	@NotBlank
 	private String content;
 
+	private String beforeLink;
+
 	@NotBlank
 	@Pattern(regexp = "https?://(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)", message = "올바른 입력 형태가 아닙니다.")
 	private String link;
 
-	private String owner;
+	@NotBlank
+	private String writer;
 
 	private PostType type;
 
@@ -35,8 +38,9 @@ public class PostFormDto {
 	public PostFormDto(Post post) {
 		this.title = post.getTitle();
 		this.content = post.getContent();
+		this.beforeLink = post.getLink();
 		this.link = post.getLink();
-		this.owner = post.getOwner();
+		this.writer = post.getWriter();
 		this.type = post.getType();
 		this.thumbnailImage = post.getThumbnailImage();
 	}

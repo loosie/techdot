@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.com">
+
+<form th:fragment="postForm (request)" class="needs-validation" th:action="@{${request}}" th:object="${postForm}" method="post" novalidate>
+    <div class="form-group mb-4">
+        <label for="title">제목</label>
+        <input id="title" type="text" th:field="*{title}" class="form-control"
+               placeholder="제목을 입력하세요" aria-describedby="titleHelp" required max="50">
+        <small class="invalid-feedback">50자 이내로 게시글 제목을 입력하세요.</small>
+        <small class="form-text text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</small>
+    </div>
+
+    <div class="form-group mb-4">
+        <label for="writer">작성자</label>
+        <input id="writer" type="text" th:field="*{writer}" class="form-control"
+               placeholder="작성자를 입력하세요" aria-describedby="writerHelp" required>
+        <small class="invalid-feedback">작성자를 입력하세요.</small>
+        <small class="form-text text-danger" th:if="${#fields.hasErrors('writer')}" th:errors="*{writer}">Owner Error</small>
+    </div>
+
+    <div class="form-group mb-4">
+        <select class="form-select" th:field="*{type}" aria-label="post-type-select">
+            <option th:each="postTypeOpt : ${T(com.techdot.techdot.domain.PostType).values()}"
+                    th:value="${postTypeOpt}" th:text="${postTypeOpt}"></option>
+        </select>
+    </div>
+
+    <div class="form-group mb-4">
+        <label for="link">게시글 링크</label>
+        <input id="link" type="text" th:field="*{link}" class="form-control"
+               placeholder="링크를 입력하세요" aria-describedby="linkHelp" required>
+        <small class="invalid-feedback">게시글 링크를 입력하세요.</small>
+        <small class="form-text text-danger" th:if="${#fields.hasErrors('link')}" th:errors="*{link}">Link Error</small>
+    </div>
+
+    <div class="form-group mb-4">
+        <label for="content">게시글 내용</label>
+        <textarea id="content" type="text" th:field="*{content}" class="form-control"
+                  placeholder="내용을 입력하세요." aria-describedby="contentHelp" required max="255" rows="4"> </textarea>
+        <small class="invalid-feedback">100자 이내로 게시글 제목을 입력하세요.</small>
+        <small class="form-text text-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Content Error</small>
+    </div>
+
+    <div class="form-group">
+        <input id="thumbnailImage" type="hidden" th:field="*{thumbnailImage}" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <button class="btn btn-dark pull-right" type="submit" aria-describedby="submitHelp">
+            저장</button>
+    </div>
+</form>
+
+</html>

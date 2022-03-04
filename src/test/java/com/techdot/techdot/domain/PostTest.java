@@ -26,27 +26,28 @@ class PostTest {
 			.content("content.content...")
 			.link("http://~~~.com")
 			.type(PostType.BLOG)
-			.owner("naver")
-			.member(member)
+			.writer("naver")
+			.manager(member)
 			.build();
 
 		assertEquals(post.getTitle(), "title1");
-		assertEquals(post.getMember(), member);
+		assertEquals(post.getManager(), member);
 		assertEquals(post.getType(), PostType.BLOG);
 	}
 
-	@DisplayName("게시글 생성하기 - 입력값 오류 member null")
+	@DisplayName("게시글 생성하기 - 입력값 오류 manager null")
 	@Test
 	void post_create_fail_nullValue() {
 		assertThrows(IllegalArgumentException.class, () -> Post.builder()
 			.title("title1") // member null
 			.content("content.content...")
 			.link("http://~~~.com")
-			.owner("naver")
+			.writer("naver")
 			.type(PostType.BLOG)
 			.build());
 	}
 
+	@DisplayName("게시글 링크 정규식 테스트")
 	@Test
 	void postLink_regex(){
 		String regex = "https?://(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@!:%_\\+.~#?&//=]*)";

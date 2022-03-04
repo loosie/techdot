@@ -1,5 +1,6 @@
 package com.techdot.techdot.controller;
 
+import static com.techdot.techdot.controller.MemberController.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
@@ -22,6 +23,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.techdot.techdot.auth.WithCurrentUser;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.repository.MemberRepository;
 
@@ -42,6 +44,9 @@ class MemberControllerTest {
 	void end(){
 		memberRepo.deleteAll();
 	}
+
+	private final String TEST_EMAIL = "test@naver.com";
+	private final String TEST_NICKNAME = "testNickname";
 
 	@DisplayName("회원 가입 화면 뷰 테스트")
 	@Test
@@ -179,4 +184,15 @@ class MemberControllerTest {
 			.andExpect(unauthenticated());
 	}
 
+	@WithCurrentUser(TEST_EMAIL)
+	@DisplayName("프로필 뷰")
+	@Test
+	void profileForm() throws Exception {
+		mockMvc.perform(get("/" + TEST_NICKNAME))
+			.andExpect(status().isOk())
+			.andExpect(view().name(MEMBER_PROFILE_VIEW_NAME))
+			.andExpect(model().attributeExists("member"))
+			.andExpect(model().attributeExists("profile"))
+			.andExpect(model().attributeExists("isOwner"));
+	}
 }

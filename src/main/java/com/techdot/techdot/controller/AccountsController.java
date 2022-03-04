@@ -1,7 +1,5 @@
 package com.techdot.techdot.controller;
 
-import java.util.Optional;
-
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -11,13 +9,11 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.techdot.techdot.config.auth.CurrentUser;
 import com.techdot.techdot.domain.Member;
-import com.techdot.techdot.repository.MemberRepository;
 import com.techdot.techdot.dto.PasswordFormDto;
 import com.techdot.techdot.dto.ProfileFormDto;
 import com.techdot.techdot.service.MemberService;
@@ -30,7 +26,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AccountsController {
 
-	static final String MEMBER_PROFILE_VIEW_NAME = "member/profile";
 
 	static final String ACCOUNTS_PROFILE_VIEW_NAME = "accounts/profile";
 	static final String ACCOUNTS_MAIN_VIEW_URL = "/accounts"; // default: profile
@@ -41,7 +36,6 @@ public class AccountsController {
 	static final String ACCOUNTS_SETTING_VIEW_NAME = "accounts/settings";
 	static final String ACCOUNTS_SETTING_VIEW_URL = "/settings";
 
-	private final MemberRepository memberRepo;
 	private final MemberService memberService;
 	private final ProfileFormValidator profileFormValidator;
 
@@ -55,19 +49,7 @@ public class AccountsController {
 		webDataBinder.addValidators(profileFormValidator);
 	}
 
-	@GetMapping("/{nickname}")
-	public String profileView(@PathVariable String nickname, Model model, @CurrentUser Member member) {
-		Optional<Member> opMember = memberRepo.findByNickname(nickname);
-		if (opMember.isEmpty()) {
-			throw new IllegalArgumentException(nickname + "에 해당하는 사용자가 없습니다.");
-		}
 
-		Member findMember = opMember.get();
-		model.addAttribute("profile", findMember);
-		model.addAttribute(member);
-		model.addAttribute("isOwner", findMember.equals(member));
-		return MEMBER_PROFILE_VIEW_NAME;
-	}
 
 	@GetMapping(ACCOUNTS_MAIN_VIEW_URL)
 	public String profileSettingView(Model model, @CurrentUser Member member) {

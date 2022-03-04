@@ -1,6 +1,7 @@
 package com.techdot.techdot.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -90,5 +91,14 @@ public class MemberService {
 		mailMessage.setText(
 			"/login-by-email?token=" + member.getEmailCheckToken() + "&email=" + member.getEmail());
 		javaMailSender.send(mailMessage);
+	}
+
+	public Member findByNickname(String nickname) {
+		Optional<Member> opMember = memberRepo.findByNickname(nickname);
+		if (opMember.isEmpty()) {
+			throw new IllegalArgumentException(nickname + "에 해당하는 사용자가 없습니다.");
+		}
+
+		return opMember.get();
 	}
 }

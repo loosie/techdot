@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 
 import org.springframework.util.Assert;
 
+import com.techdot.techdot.dto.PostFormDto;
+
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -39,7 +41,7 @@ public class Post {
 	private String link;
 
 	@Column(nullable = false)
-	private String owner;
+	private String writer;
 
 	@Lob
 	private String thumbnailImage;
@@ -49,30 +51,42 @@ public class Post {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")
-	private Member member;
+	private Member manager;
 
 	@Builder
-	public Post(String title, String content, String owner, String link, String thumbnailImage, PostType type, Member member) {
+	public Post(String title, String content, String writer, String link, String thumbnailImage, PostType type, Member manager) {
 		Assert.notNull(title, "post.title 값이 존재하지 않습니다.");
 		Assert.notNull(link, "post.link 값이 존재하지 않습니다.");
-		Assert.notNull(owner, "post.owner 값이 존재하지 않습니다.");
+		Assert.notNull(writer, "post.owner 값이 존재하지 않습니다.");
 		Assert.notNull(content, "post.content 값이 존재하지 않습니다.");
-		Assert.notNull(member, "post.member 값이 존재하지 않습니다.");
+		Assert.notNull(manager, "post.member 값이 존재하지 않습니다.");
 
 		this.title = title;
 		this.content = content;
 		this.link = link;
-		this.owner = owner;
+		this.writer = writer;
 		this.type = type;
 		this.thumbnailImage = thumbnailImage;
-		setMember(member);
+		setManager(manager);
 	}
 
-	private void setMember(Member member) {
-		this.member = member;
-		if (!member.getPosts().contains(this)) {
-			member.getPosts().add(this);
+	private void setManager(Member manager) {
+		this.manager = manager;
+		if (!manager.getPosts().contains(this)) {
+			manager.getPosts().add(this);
 		}
 	}
 
+	public void update(PostFormDto postForm) {
+		this.title = postForm.getTitle();
+		this.content = postForm.getContent();
+		this.type = postForm.getType();
+		this.link = postForm.getLink();
+		this.writer = postForm.getWriter();
+		this.thumbnailImage = postForm.getThumbnailImage();
+	}
+
+	public boolean isManager(Member member) {
+		return manager.equals(member);
+	}
 }

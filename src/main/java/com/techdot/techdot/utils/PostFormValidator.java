@@ -26,6 +26,11 @@ public class PostFormValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 		PostFormDto postForm = (PostFormDto)target;
 
+		// 변경되지 않은 링크는 중복 예외
+		if(!postForm.getBeforeLink().isEmpty() && postForm.getBeforeLink().equals(postForm.getLink())){
+			return;
+		}
+
 		if(postRepo.existsByLink(postForm.getLink())){
 			errors.rejectValue("link", "duplicate.link", "이미 등록된 url입니다.");
 		}

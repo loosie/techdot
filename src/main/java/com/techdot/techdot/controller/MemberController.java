@@ -28,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberController {
 
+	static final String MEMBER_PROFILE_VIEW_NAME = "member/profile";
 	static final String EMAIL_LOGIN_VIEW_NAME = "member/email-login";
 
 	private final JoinFormValidator joinFormValidator;
@@ -147,6 +148,16 @@ public class MemberController {
 
 		memberService.login(member);
 		return "redirect:/accounts/password";
+	}
+
+	@GetMapping("/{nickname}")
+	public String profileView(@PathVariable String nickname, Model model, @CurrentUser Member member) {
+		Member findMember = memberService.findByNickname(nickname);
+
+		model.addAttribute("profile", findMember);
+		model.addAttribute(member);
+		model.addAttribute("isOwner", findMember.equals(member));
+		return MEMBER_PROFILE_VIEW_NAME;
 	}
 
 }

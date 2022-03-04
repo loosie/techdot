@@ -40,17 +40,6 @@ class AccountsControllerTest {
 		memberRepo.deleteAll();
 	}
 
-	@WithCurrentUser(TEST_EMAIL)
-	@DisplayName("프로필 뷰")
-	@Test
-	void profileForm() throws Exception {
-		mockMvc.perform(get("/" + TEST_NICKNAME))
-			.andExpect(status().isOk())
-			.andExpect(view().name(MEMBER_PROFILE_VIEW_NAME))
-			.andExpect(model().attributeExists("member"))
-			.andExpect(model().attributeExists("profile"))
-			.andExpect(model().attributeExists("isOwner"));
-	}
 
 	@WithCurrentUser(TEST_EMAIL)
 	@DisplayName("프로필 설정 뷰")
