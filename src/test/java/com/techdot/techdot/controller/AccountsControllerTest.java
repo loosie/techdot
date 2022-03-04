@@ -33,7 +33,7 @@ class AccountsControllerTest {
 	private PasswordEncoder passwordEncoder;
 
 	private final String TEST_EMAIL = "test@naver.com";
-	private final String TEST_NICKNAME = "loosie";
+	private final String TEST_NICKNAME = "testNickname";
 
 	@AfterEach
 	void end() {
@@ -77,7 +77,7 @@ class AccountsControllerTest {
 			.andExpect(flash().attributeExists("message"));
 
 		// then
-		Member findMember = memberRepo.findByNickname("loosie").orElseThrow(NullPointerException::new);
+		Member findMember = memberRepo.findByNickname(TEST_NICKNAME).orElseThrow(NullPointerException::new);
 		assertEquals(findMember.getBio(), bio);
 	}
 
@@ -110,6 +110,8 @@ class AccountsControllerTest {
 			.email("test2@naver.com")
 			.password("12345678")
 			.nickname("test")
+			.emailVerified(true)
+			.termsCheck(true)
 			.build());
 
 		mockMvc.perform(post(ACCOUNTS_MAIN_VIEW_URL)

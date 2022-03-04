@@ -56,7 +56,6 @@ class MainControllerTest {
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/"))
 			.andExpect(authenticated().withUsername("test@naver.com"));
-
 	}
 
 	@DisplayName("로그인 실패 - 가입되지 않은 이메일")

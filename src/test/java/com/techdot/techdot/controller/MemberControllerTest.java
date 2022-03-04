@@ -45,7 +45,7 @@ class MemberControllerTest {
 
 	@DisplayName("회원 가입 화면 뷰 테스트")
 	@Test
-	void memberJoinForm() throws Exception {
+	void memberJoinView() throws Exception {
 		mockMvc.perform(get("/join"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("member/join"))
@@ -57,7 +57,7 @@ class MemberControllerTest {
 	@Test
 	void memberJoin_success() throws Exception {
 		mockMvc.perform(post("/join")
-			.param("nickname", "loosie")
+			.param("nickname", "testnickname")
 			.param("email", "test@naver.com")
 			.param("password", "12345678")
 			.param("passwordConfirm", "12345678")
@@ -98,11 +98,14 @@ class MemberControllerTest {
 		Member member = Member.builder()
 			.email("test@naver.com")
 			.password("12345678")
-			.nickname("loosie")
+			.emailVerified(false)
+			.termsCheck(true)
+			.nickname("testNickname")
 			.build();
 		Member newMember = memberRepo.save(member);
 		newMember.generateEmailCheckToken();
 
+		// when, then
 		mockMvc.perform(get("/confirm-email")
 			.param("token", newMember.getEmailCheckToken())
 			.param("email", newMember.getEmail()))
@@ -111,6 +114,9 @@ class MemberControllerTest {
 			.andExpect(model().attributeExists("nickname"))
 			.andExpect(view().name("member/confirm-email"))
 			.andExpect(authenticated());
+
+		// then
+		assertTrue(newMember.getEmailVerified());
 	}
 
 	@DisplayName("인증 메일 확인 - 입력값 오류")
@@ -134,7 +140,9 @@ class MemberControllerTest {
 		Member member = Member.builder()
 			.email("test@naver.com")
 			.password("12345678")
-			.nickname("loosie")
+			.nickname("testNickname")
+			.emailVerified(false)
+			.termsCheck(true)
 			.build();
 		Member newMember = memberRepo.save(member);
 		newMember.generateEmailCheckToken();
@@ -156,7 +164,9 @@ class MemberControllerTest {
 		Member member = Member.builder()
 			.email("test@naver.com")
 			.password("12345678")
-			.nickname("loosie")
+			.nickname("testNickname")
+			.emailVerified(false)
+			.termsCheck(true)
 			.build();
 		Member newMember = memberRepo.save(member);
 		newMember.generateEmailCheckToken();

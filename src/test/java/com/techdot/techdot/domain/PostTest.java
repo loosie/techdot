@@ -2,6 +2,7 @@ package com.techdot.techdot.domain;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.DisplayName;
@@ -25,6 +26,7 @@ class PostTest {
 			.content("content.content...")
 			.link("http://~~~.com")
 			.type(PostType.BLOG)
+			.owner("naver")
 			.member(member)
 			.build();
 
@@ -40,22 +42,19 @@ class PostTest {
 			.title("title1") // member null
 			.content("content.content...")
 			.link("http://~~~.com")
+			.owner("naver")
 			.type(PostType.BLOG)
 			.build());
 	}
 
 	@Test
-	void link_regex(){
-		String regex = "https?://(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)";
+	void postLink_regex(){
+		String regex = "https?://(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@!:%_\\+.~#?&//=]*)";
 		Pattern compile = Pattern.compile(regex);
 
-		System.out.println(compile.matcher("http://www.naver.com").matches());
-		System.out.println(compile.matcher("http://naver.com").matches());
-		System.out.println(compile.matcher("http://bit.ly/").matches());
-		System.out.println(compile.matcher("http://bit.ly/asd1-sq").matches());
-		System.out.println(compile.matcher("https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-JPA-%ED%99%9C%EC%9A%A9-1/dashboard").matches());
-		System.out.println(compile.matcher("https://loosie.tistory.com/758").matches());
-		System.out.println(compile.matcher("https://velog.io/@youns1121/failed-to-lazily-initialize-a-collection-of-role-could-not-initialize-proxy-no-Session").matches());
+		List<String> links = List.of("http://www.naver.com", "https://www.google.com/search?q=abcd!&rlz=1C5CHFA_enKR910KR910&oq=abcd!&aqs=chrome..69i57j0i512l9.1903j0j4&sourceid=chrome&ie=UTF-8", "http://bit.ly/", "http://bit.ly/asd1-sq",
+			"https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-JPA-%ED%99%9C%EC%9A%A9-1/dashboard", "https://loosie.tistory.com/758", "https://velog.io/@youns1121/failed-to-lazily-initialize-a-collection-of-role-could-not-initialize-proxy-no-Session" );
 
+		links.stream().forEach(link -> assertTrue(compile.matcher(link).matches()));
 	}
 }
