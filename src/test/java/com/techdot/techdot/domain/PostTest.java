@@ -2,6 +2,8 @@ package com.techdot.techdot.domain;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.regex.Pattern;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -40,5 +42,20 @@ class PostTest {
 			.link("http://~~~.com")
 			.type(PostType.BLOG)
 			.build());
+	}
+
+	@Test
+	void link_regex(){
+		String regex = "https?://(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)";
+		Pattern compile = Pattern.compile(regex);
+
+		System.out.println(compile.matcher("http://www.naver.com").matches());
+		System.out.println(compile.matcher("http://naver.com").matches());
+		System.out.println(compile.matcher("http://bit.ly/").matches());
+		System.out.println(compile.matcher("http://bit.ly/asd1-sq").matches());
+		System.out.println(compile.matcher("https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-JPA-%ED%99%9C%EC%9A%A9-1/dashboard").matches());
+		System.out.println(compile.matcher("https://loosie.tistory.com/758").matches());
+		System.out.println(compile.matcher("https://velog.io/@youns1121/failed-to-lazily-initialize-a-collection-of-role-could-not-initialize-proxy-no-Session").matches());
+
 	}
 }

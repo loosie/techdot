@@ -21,7 +21,7 @@ public class PostService {
 	private final MemberRepository memberRepo;
 
 	public void post(PostFormDto postForm, Member member) {
-		// 멤버 조회 (영속성 상태 붙이기 위함) select 1 번
+		// 엔티티 조회
 		Member writer = memberRepo.findById(member.getId()).orElseThrow(NullPointerException::new);
 
 		// 게시글 생성
@@ -31,6 +31,7 @@ public class PostService {
 			.thumbnailImage(postForm.getThumbnailImage())
 			.content(postForm.getContent())
 			.type(postForm.getType())
+			.owner(postForm.getOwner())
 			.member(writer) // getPost() -> select 1번 (모든 게시글 불러옴)
 			.build();
 

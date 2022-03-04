@@ -32,11 +32,14 @@ public class Post {
 	@Column(nullable = false)
 	private String title;
 
-	@Column(nullable = false)
+	@Lob @Column(nullable = false)
 	private String content;
 
 	@Column(nullable = false, unique = true)
 	private String link;
+
+	@Column(nullable = false)
+	private String owner;
 
 	@Lob
 	private String thumbnailImage;
@@ -49,20 +52,23 @@ public class Post {
 	private Member member;
 
 	@Builder
-	public Post(String title, String content, String link, String thumbnailImage, PostType type, Member member) {
+	public Post(String title, String content, String owner, String link, String thumbnailImage, PostType type, Member member) {
 		Assert.notNull(title, "post.title 값이 존재하지 않습니다.");
 		Assert.notNull(link, "post.link 값이 존재하지 않습니다.");
+		Assert.notNull(owner, "post.owner 값이 존재하지 않습니다.");
 		Assert.notNull(content, "post.content 값이 존재하지 않습니다.");
 		Assert.notNull(member, "post.member 값이 존재하지 않습니다.");
+
 		this.title = title;
 		this.content = content;
 		this.link = link;
+		this.owner = owner;
 		this.type = type;
 		this.thumbnailImage = thumbnailImage;
-		addMember(member);
+		setMember(member);
 	}
 
-	private void addMember(Member member) {
+	private void setMember(Member member) {
 		this.member = member;
 		if (!member.getPosts().contains(this)) {
 			member.getPosts().add(this);

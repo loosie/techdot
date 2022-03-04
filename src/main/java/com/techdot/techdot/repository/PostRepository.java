@@ -7,4 +7,5 @@ import com.techdot.techdot.domain.Post;
 
 @Transactional(readOnly = true)
 public interface PostRepository extends JpaRepository<Post, Long> {
+	boolean existsByLink(String link);
 }

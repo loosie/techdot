@@ -8,16 +8,18 @@
 <div class="container py-5">
     <h2 class="text-center py-5 px-3">게시글 업로드</h2>
     <div class="row justify-content-center py-12">
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <div class="card text-center">
                 <div class="card-header">
                     썸네일 이미지
                 </div>
-
                 <div id="current-thumbnail-image" class="mt-3">
-                    <img th:if="${!#strings.isEmpty(postForm.thumbnailImage)}" class="profile-img rounded"
+                    <img th:if="${#strings.isEmpty(postForm.thumbnailImage)}" class="thumbnail-img rounded"
+                         src="/images/default_thumbnail.png"
+                         width="320" height="192"  alt="name" />
+                    <img th:if="${!#strings.isEmpty(postForm.thumbnailImage)}" class="thumbnail-img rounded"
                          th:src="${postForm.thumbnailImage}"
-                         width="330" height="160" alt="name" th:alt="${member.nickname}"/>
+                         width="320" height="192"  alt="name" />
                 </div>
                 <div id="new-thumbnail-image" class="mt-3"></div>
                 <div class="card-body">
@@ -43,6 +45,14 @@
                 </div>
 
                 <div class="form-group mb-4">
+                    <label for="owner">작성자</label>
+                    <input id="owner" type="text" th:field="*{owner}" class="form-control"
+                           placeholder="제목을 입력하세요" aria-describedby="ownerHelp" required>
+                    <small class="invalid-feedback">작성자를 입력하세요.</small>
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('owner')}" th:errors="*{owner}">Owner Error</small>
+                </div>
+
+                <div class="form-group mb-4">
                     <select class="form-select" th:field="*{type}" aria-label="post-type-select">
                         <option th:each="postTypeOpt : ${T(com.techdot.techdot.domain.PostType).values()}"
                             th:value="${postTypeOpt}" th:text="${postTypeOpt}"></option>
@@ -60,7 +70,7 @@
                 <div class="form-group mb-4">
                     <label for="content">게시글 내용</label>
                     <textarea id="content" type="text" th:field="*{content}" class="form-control"
-                              placeholder="내용을 입력하세요." aria-describedby="contentHelp" required max="100" rows="4"> </textarea>
+                              placeholder="내용을 입력하세요." aria-describedby="contentHelp" required max="255" rows="4"> </textarea>
                     <small class="invalid-feedback">100자 이내로 게시글 제목을 입력하세요.</small>
                     <small class="form-text text-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Content Error</small>
                 </div>
@@ -97,7 +107,6 @@
         $resetBtn.hide();
 
         // 이미지 파일 선택하면 해당 파일 읽어오고 저장하는 로직
-        // profile-image-file (프로필 이미지 변경 선택)
         $("#thumbnail-image-file").change(function(e) {
             if (e.target.files.length === 1) {
                 const reader = new FileReader();
@@ -118,7 +127,8 @@
                         $currentThumbnailImage.hide();
 
                         let $newImage = $(img);
-                        $newImage.cropper({aspectRatio: 1});
+                        // $newImage.cropper({aspectRatio: 1});
+                        $newImage.cropper({aspectRatio: 5/3});
                         cropper = $newImage.data('cropper');
 
                         $confirmBtn.show();
