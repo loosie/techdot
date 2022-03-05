@@ -69,4 +69,12 @@ public class PostService {
 		// 게시글 전체 조회
 		return byManager;
 	}
+
+	public Page<Post> findAll(Pageable pageable) {
+		return postRepo.findAll(pageable);
+	}
+
+	public Post findById(Long id) {
+		return postRepo.findById(id).orElseThrow(NullPointerException::new);
+	}
 }

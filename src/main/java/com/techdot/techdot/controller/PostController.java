@@ -4,11 +4,15 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -18,15 +22,20 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.techdot.techdot.config.auth.CurrentUser;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.domain.Post;
 import com.techdot.techdot.dto.PostFormDto;
+import com.techdot.techdot.dto.PostQueryDto;
+import com.techdot.techdot.repository.PostRepository;
+import com.techdot.techdot.repository.PostRepositoryQueryImpl;
 import com.techdot.techdot.service.PostService;
 import com.techdot.techdot.utils.PostFormValidator;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -67,9 +76,6 @@ public class PostController {
 		Page<Post> postPage = postService.findByManager(member, pageable);
 
 		String sortProperty = "id";
-		// if(!pageable.getSort().toString().contains("id")){
-		//
-		// }
 		model.addAttribute(member);
 		model.addAttribute("postPage", postPage);
 		model.addAttribute("sortProperty", sortProperty);
@@ -99,6 +105,15 @@ public class PostController {
 		postService.updatePost(id, postForm);
 		redirectAttributes.addFlashAttribute("message", "게시글이 정상적으로 수정되었습니다.");
 		return "redirect:/post/" + id + "/edit";
+	}
+
+
+
+	@GetMapping("/display")
+	public ResponseEntity displayPosts(@RequestParam Long id){
+		Post post = postService.findById(id);
+
+		return new ResponseEntity<>(post, HttpStatus.OK);
 	}
 
 }

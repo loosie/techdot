@@ -64,7 +64,7 @@ public class initData {
 				.build();
 			em.persist(shortPost);
 
-			for(int i=0; i<20; i++) {
+			for(int i=1; i<=100; i++) {
 				Post post = Post.builder()
 					.title("loosie 티스토리 블로그 미리보기 techDot 기술 큐레이션 서비스" + i)
 					.type(PostType.BLOG)
@@ -77,9 +77,9 @@ public class initData {
 			}
 
 			Post longPost = Post.builder()
-				.title("loosie 티스토리 블로그 미리보기 techDot 기술 큐레이션 서비스" + 0)
+				.title("loosie 티스토리 블로그 미리보기 techDot 기술 큐레이션 서비스" + 101)
 				.type(PostType.VIDEO)
-				.link("http://loosie.tistory.com/" + 99)
+				.link("http://loosie.tistory.com/" + 1)
 				.content("어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌"
 					+ "어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저"
 					+ "쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저"
