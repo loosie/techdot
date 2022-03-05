@@ -1,5 +1,6 @@
 package com.techdot.techdot.controller;
 
+import static com.techdot.techdot.controller.MemberController.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
@@ -24,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.techdot.techdot.auth.WithCurrentUser;
 import com.techdot.techdot.domain.Member;
-import com.techdot.techdot.domain.MemberRepo;
+import com.techdot.techdot.repository.MemberRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -34,7 +35,7 @@ class MemberControllerTest {
 	private MockMvc mockMvc;
 
 	@Autowired
-	private MemberRepo memberRepo;
+	private MemberRepository memberRepo;
 
 	@MockBean
 	private JavaMailSender javaMailSender;
@@ -44,9 +45,12 @@ class MemberControllerTest {
 		memberRepo.deleteAll();
 	}
 
+	private final String TEST_EMAIL = "test@naver.com";
+	private final String TEST_NICKNAME = "testNickname";
+
 	@DisplayName("회원 가입 화면 뷰 테스트")
 	@Test
-	void memberJoinForm() throws Exception {
+	void memberJoinView() throws Exception {
 		mockMvc.perform(get("/join"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("member/join"))
@@ -58,7 +62,7 @@ class MemberControllerTest {
 	@Test
 	void memberJoin_success() throws Exception {
 		mockMvc.perform(post("/join")
-			.param("nickname", "loosie")
+			.param("nickname", "testnickname")
 			.param("email", "test@naver.com")
 			.param("password", "12345678")
 			.param("passwordConfirm", "12345678")
@@ -99,11 +103,14 @@ class MemberControllerTest {
 		Member member = Member.builder()
 			.email("test@naver.com")
 			.password("12345678")
-			.nickname("loosie")
+			.emailVerified(false)
+			.termsCheck(true)
+			.nickname("testNickname")
 			.build();
 		Member newMember = memberRepo.save(member);
 		newMember.generateEmailCheckToken();
 
+		// when, then
 		mockMvc.perform(get("/confirm-email")
 			.param("token", newMember.getEmailCheckToken())
 			.param("email", newMember.getEmail()))
@@ -112,6 +119,9 @@ class MemberControllerTest {
 			.andExpect(model().attributeExists("nickname"))
 			.andExpect(view().name("member/confirm-email"))
 			.andExpect(authenticated());
+
+		// then
+		assertTrue(newMember.getEmailVerified());
 	}
 
 	@DisplayName("인증 메일 확인 - 입력값 오류")
@@ -135,7 +145,9 @@ class MemberControllerTest {
 		Member member = Member.builder()
 			.email("test@naver.com")
 			.password("12345678")
-			.nickname("loosie")
+			.nickname("testNickname")
+			.emailVerified(false)
+			.termsCheck(true)
 			.build();
 		Member newMember = memberRepo.save(member);
 		newMember.generateEmailCheckToken();
@@ -157,7 +169,9 @@ class MemberControllerTest {
 		Member member = Member.builder()
 			.email("test@naver.com")
 			.password("12345678")
-			.nickname("loosie")
+			.nickname("testNickname")
+			.emailVerified(false)
+			.termsCheck(true)
 			.build();
 		Member newMember = memberRepo.save(member);
 		newMember.generateEmailCheckToken();
@@ -170,4 +184,15 @@ class MemberControllerTest {
 			.andExpect(unauthenticated());
 	}
 
+	@WithCurrentUser(TEST_EMAIL)
+	@DisplayName("프로필 뷰")
+	@Test
+	void profileForm() throws Exception {
+		mockMvc.perform(get("/" + TEST_NICKNAME))
+			.andExpect(status().isOk())
+			.andExpect(view().name(MEMBER_PROFILE_VIEW_NAME))
+			.andExpect(model().attributeExists("member"))
+			.andExpect(model().attributeExists("profile"))
+			.andExpect(model().attributeExists("isOwner"));
+	}
 }

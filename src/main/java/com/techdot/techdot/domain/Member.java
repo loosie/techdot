@@ -1,16 +1,20 @@
 package com.techdot.techdot.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 
-import com.techdot.techdot.dto.PasswordFormDto;
+import org.springframework.util.Assert;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.techdot.techdot.dto.ProfileFormDto;
 
 import lombok.Builder;
@@ -25,18 +29,21 @@ public class Member {
 
 	@Id
 	@GeneratedValue
+	@Column(name = "member_id")
 	private Long id;
 
-	@Column(unique = true)
+	@Column(nullable = false, unique = true)
 	private String email;
 
-	@Column(unique = true)
+	@Column(nullable = false, unique = true)
 	private String nickname;
 
+	@Column(nullable = false)
 	private String password;
 
 	private String bio;
 
+	@Column(nullable = false)
 	private Boolean emailVerified;
 
 	private String emailCheckToken;
@@ -48,22 +55,24 @@ public class Member {
 	@Lob
 	private String profileImage;
 
+	@Column(nullable = false)
 	private Boolean termsCheck;
 
+	@OneToMany(mappedBy = "manager")
+	private List<Post> posts = new ArrayList<>();
+
 	@Builder
-	public Member(Long id, String email, String nickname, String password, String bio, Boolean emailVerified,
-		String emailCheckToken, LocalDateTime emailCheckTokenSendAt, Integer emailSendTime, String profileImage,
-		Boolean termsCheck) {
-		this.id = id;
+	public Member(String email, String nickname, String password, Boolean emailVerified, Boolean termsCheck) {
+		Assert.notNull(email, "member.email 값이 존재하지 않습니다.");
+		Assert.notNull(nickname, "member.nickname 값이 존재하지 않습니다.");
+		Assert.notNull(password, "member.password 값이 존재하지 않습니다.");
+		Assert.notNull(emailVerified, "member.emailVerified 값이 존재하지 않습니다.");
+		Assert.isTrue(termsCheck, "member.termsCheck 값이 올바르지 않습니다.");
+
 		this.email = email;
 		this.nickname = nickname;
 		this.password = password;
-		this.bio = bio;
-		this.emailVerified = false;
-		this.emailCheckToken = emailCheckToken;
-		this.emailCheckTokenSendAt = emailCheckTokenSendAt;
-		this.emailSendTime = emailSendTime;
-		this.profileImage = profileImage;
+		this.emailVerified = emailVerified;
 		this.termsCheck = termsCheck;
 	}
 
@@ -81,13 +90,10 @@ public class Member {
 		this.emailVerified = true;
 	}
 
-	public boolean isSameToken(String token) {
-		return this.emailCheckToken.equals(token);
-	}
-
 	public boolean canSendConfirmEmail() {
 		// 5초에 1번씩 총 5회 전송 가능
-		if(emailSendTime < 5 && this.emailCheckTokenSendAt.isBefore(LocalDateTime.now().minusSeconds(5))){
+		if(emailSendTime == 1 ||
+			(emailSendTime < 5 && this.emailCheckTokenSendAt.isBefore(LocalDateTime.now().minusSeconds(5)))){
 			this.emailCheckTokenSendAt = LocalDateTime.now();
 			this.emailSendTime += 1;
 			return true;
@@ -112,6 +118,7 @@ public class Member {
 	public void updatePassword(String newPassword) {
 		this.password = newPassword;
 	}
+
 
 	public boolean isValidToken(String token) {
 		return this.emailCheckToken.equals(token);

@@ -17,8 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.techdot.techdot.auth.WithCurrentUser;
 import com.techdot.techdot.domain.Member;
-import com.techdot.techdot.domain.MemberRepo;
-import com.techdot.techdot.service.MemberService;
+import com.techdot.techdot.repository.MemberRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -28,30 +27,19 @@ class AccountsControllerTest {
 	private MockMvc mockMvc;
 
 	@Autowired
-	private MemberRepo memberRepo;
+	private MemberRepository memberRepo;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	private final String TEST_EMAIL = "test@naver.com";
-	private final String TEST_NICKNAME = "loosie";
+	private final String TEST_NICKNAME = "testNickname";
 
 	@AfterEach
 	void end() {
 		memberRepo.deleteAll();
 	}
 
-	@WithCurrentUser(TEST_EMAIL)
-	@DisplayName("프로필 뷰")
-	@Test
-	void profileForm() throws Exception {
-		mockMvc.perform(get("/" + TEST_NICKNAME))
-			.andExpect(status().isOk())
-			.andExpect(view().name(MEMBER_PROFILE_VIEW_NAME))
-			.andExpect(model().attributeExists("member"))
-			.andExpect(model().attributeExists("profile"))
-			.andExpect(model().attributeExists("isOwner"));
-	}
 
 	@WithCurrentUser(TEST_EMAIL)
 	@DisplayName("프로필 설정 뷰")
@@ -78,7 +66,7 @@ class AccountsControllerTest {
 			.andExpect(flash().attributeExists("message"));
 
 		// then
-		Member findMember = memberRepo.findByNickname("loosie").orElseThrow(NullPointerException::new);
+		Member findMember = memberRepo.findByNickname(TEST_NICKNAME).orElseThrow(NullPointerException::new);
 		assertEquals(findMember.getBio(), bio);
 	}
 
@@ -111,6 +99,8 @@ class AccountsControllerTest {
 			.email("test2@naver.com")
 			.password("12345678")
 			.nickname("test")
+			.emailVerified(true)
+			.termsCheck(true)
 			.build());
 
 		mockMvc.perform(post(ACCOUNTS_MAIN_VIEW_URL)

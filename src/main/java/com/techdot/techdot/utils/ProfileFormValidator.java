@@ -4,8 +4,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import com.techdot.techdot.domain.Member;
-import com.techdot.techdot.domain.MemberRepo;
+import com.techdot.techdot.repository.MemberRepository;
 import com.techdot.techdot.dto.ProfileFormDto;
 
 import lombok.RequiredArgsConstructor;
@@ -14,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProfileFormValidator implements Validator {
 
-	private final MemberRepo memberRepo;
+	private final MemberRepository memberRepo;
 
 	@Override
 	public boolean supports(Class<?> clazz) {

@@ -1,6 +1,7 @@
 package com.techdot.techdot.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -13,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.techdot.techdot.config.auth.PrincipalDetails;
 import com.techdot.techdot.domain.Member;
-import com.techdot.techdot.domain.MemberRepo;
+import com.techdot.techdot.repository.MemberRepository;
 import com.techdot.techdot.dto.JoinFormDto;
 import com.techdot.techdot.dto.PasswordFormDto;
 import com.techdot.techdot.dto.ProfileFormDto;
@@ -27,13 +28,12 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MemberService {
 
-	private final MemberRepo memberRepo;
+	private final MemberRepository memberRepo;
 	private final JavaMailSender javaMailSender;
 	private final PasswordEncoder passwordEncoder;
 
 	public Member save(JoinFormDto joinForm) {
 		Member newMember = saveMember(joinForm);
-		newMember.generateEmailCheckToken();
 		sendConfirmEmail(newMember);
 		return newMember;
 	}
@@ -53,9 +53,10 @@ public class MemberService {
 			.email(joinForm.getEmail())
 			.nickname(joinForm.getNickname())
 			.password(passwordEncoder.encode(joinForm.getPassword()))
+			.emailVerified(false)
 			.termsCheck(joinForm.getTermsCheck())
 			.build();
-
+		member.generateEmailCheckToken();
 		return memberRepo.save(member);
 	}
 
@@ -80,7 +81,6 @@ public class MemberService {
 	public void updatePassword(Member member, PasswordFormDto passwordForm) {
 		member.updatePassword(passwordEncoder.encode(passwordForm.getNewPassword()));
 		memberRepo.save(member);
-
 	}
 
 	public void sendLoginLink(Member member) {
@@ -91,5 +91,14 @@ public class MemberService {
 		mailMessage.setText(
 			"/login-by-email?token=" + member.getEmailCheckToken() + "&email=" + member.getEmail());
 		javaMailSender.send(mailMessage);
+	}
+
+	public Member findByNickname(String nickname) {
+		Optional<Member> opMember = memberRepo.findByNickname(nickname);
+		if (opMember.isEmpty()) {
+			throw new IllegalArgumentException(nickname + "에 해당하는 사용자가 없습니다.");
+		}
+
+		return opMember.get();
 	}
 }

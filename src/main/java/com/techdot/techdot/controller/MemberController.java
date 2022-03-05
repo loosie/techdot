@@ -17,7 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.techdot.techdot.config.auth.CurrentUser;
 import com.techdot.techdot.domain.Member;
-import com.techdot.techdot.domain.MemberRepo;
+import com.techdot.techdot.repository.MemberRepository;
 import com.techdot.techdot.dto.JoinFormDto;
 import com.techdot.techdot.service.MemberService;
 import com.techdot.techdot.utils.JoinFormValidator;
@@ -28,11 +28,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberController {
 
+	static final String MEMBER_PROFILE_VIEW_NAME = "member/profile";
 	static final String EMAIL_LOGIN_VIEW_NAME = "member/email-login";
 
 	private final JoinFormValidator joinFormValidator;
 	private final MemberService memberService;
-	private final MemberRepo memberRepo;
+	private final MemberRepository memberRepo;
 
 	@InitBinder("joinForm")
 	public void initBinder(WebDataBinder webDataBinder) {
@@ -66,7 +67,7 @@ public class MemberController {
 		}
 
 		Member member = opMember.get();
-		if (!member.isSameToken(token)) {
+		if (!member.isValidToken(token)) {
 			model.addAttribute("error", "토큰 정보가 정확하지 않습니다.");
 			return view;
 		}
@@ -147,6 +148,16 @@ public class MemberController {
 
 		memberService.login(member);
 		return "redirect:/accounts/password";
+	}
+
+	@GetMapping("/{nickname}")
+	public String profileView(@PathVariable String nickname, Model model, @CurrentUser Member member) {
+		Member findMember = memberService.findByNickname(nickname);
+
+		model.addAttribute("profile", findMember);
+		model.addAttribute(member);
+		model.addAttribute("isOwner", findMember.equals(member));
+		return MEMBER_PROFILE_VIEW_NAME;
 	}
 
 }

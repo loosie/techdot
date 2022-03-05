@@ -54,17 +54,21 @@
                     <a class="nav-link" href="/join" th:href="@{/join}">가입</a>
                 </li>
 
+                <!--    TODO: ONLY MANAGER-->
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link btn btn-outline-primary" th:href="@{/new-post}">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                    </a>
+                </li>
                 <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
                     <a class="nav-link dropdown-toggle" type="button" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
-                        <svg th:if="${#strings.isEmpty(member.profileImage)}" class="j-profile-img img-fluid float-left  img-thumbnail"
+                        <svg th:if="${#strings.isEmpty(member.profileImage)}" class="j-profile-img img-fluid float-left  nav-img"
                              th:data-jdenticon-value="${#authentication.name}" width="24" height="24"></svg>
-                        <img th:if="${!#strings.isEmpty(member.profileImage)}" class="profile-img img-fluid float-left  img-thumbnail"
+                        <img th:if="${!#strings.isEmpty(member.profileImage)}" class="profile-img img-fluid float-left  nav-img"
                              th:src="${member.profileImage}"
                              width="24" height="24"/>
                     </a>
-
-
 
                     <div class="dropdown-menu dropdown-menu-sm-right" aria-labelledby="userDropdown">
                         <h6 class="dropdown-header">

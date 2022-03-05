@@ -12,7 +12,7 @@
 
     <style>
         .container {
-            max-width: 1240px;
+            max-width: 1440px;
         }
 
         .log-container {
@@ -34,7 +34,7 @@
             border-radius: 50% !important;
         }
 
-        .img-thumbnail{
+        .nav-img{
             padding: 0 !important;
             border: 0 !important;
         }
@@ -45,8 +45,24 @@
             border-radius: 50%;
         }
 
+        .thumbnail-img,
+        #cropped-new-thumbnail-image{
+            width: 320px;
+            height: 192px;
+        }
+
         .card {
             font-size: 0.9rem;
+        }
+
+        a, a:hover {
+            text-decoration:none !important
+        }
+
+        @media (min-width: 770px) {
+            .card{
+                max-width: 320px;
+            }
         }
 
     </style>

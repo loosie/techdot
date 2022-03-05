@@ -34,7 +34,7 @@ public class WithMemberSecurityContextFactory implements WithSecurityContextFact
 
 	private void createMember(String email) {
 		JoinFormDto joinFormDto = new JoinFormDto();
-		joinFormDto.setNickname("loosie");
+		joinFormDto.setNickname("testNickname");
 		joinFormDto.setEmail(email);
 		joinFormDto.setPassword("12345678");
 		joinFormDto.setTermsCheck(true);
