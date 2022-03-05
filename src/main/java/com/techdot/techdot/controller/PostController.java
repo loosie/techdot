@@ -4,6 +4,11 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -57,10 +62,17 @@ public class PostController {
 	}
 
 	@GetMapping("/my-upload")
-	public String myUploadPostsView(@CurrentUser Member member, Model model) {
-		List<Post> postList = postService.getMemberPosts(member.getNickname());
+	public String myUploadPostsView(@CurrentUser Member member, Model model,
+		@PageableDefault(size = 10, page = 0, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+		Page<Post> postPage = postService.findByManager(member, pageable);
+
+		String sortProperty = "id";
+		// if(!pageable.getSort().toString().contains("id")){
+		//
+		// }
 		model.addAttribute(member);
-		model.addAttribute("postList", postList);
+		model.addAttribute("postPage", postPage);
+		model.addAttribute("sortProperty", sortProperty);
 		return "accounts/my-upload";
 	}
 

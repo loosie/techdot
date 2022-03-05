@@ -3,6 +3,9 @@ package com.techdot.techdot.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,5 +59,14 @@ public class PostService {
 		Post post = postRepo.findById(postId).orElseThrow(NullPointerException::new);
 		post.update(postForm);
 		postRepo.save(post);
+	}
+
+	public Page<Post> findByManager(Member member, Pageable pageable) {
+		// 엔티티 조회
+		// Member manager = memberRepo.findByNickname(nickname).orElseThrow(NullPointerException::new);
+		Page<Post> byManager = postRepo.findByManager(member, pageable);
+
+		// 게시글 전체 조회
+		return byManager;
 	}
 }

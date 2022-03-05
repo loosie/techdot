@@ -23,8 +23,8 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="post, index : ${postList}">
-                <th th:text="${index.index}" scope="row">#</th>
+            <tr th:each="post, index : ${postPage}">
+                <th th:text="${postPage.getNumber()*postPage.getPageable().getPageSize() + index.index}" scope="row">#</th>
                 <td th:text="${post.title}">title</td>
                 <td>
                     <a th:href="@{'/post/' + ${post.id} + '/edit'}" class="btn btn-secondary">수정</a>
@@ -35,7 +35,38 @@
             </tr>
             </tbody>
         </table>
+
+        <div class="row mt-5 justify-content-center">
+            <div class="col-8 py-4">
+                <nav>
+                    <ul class="pagination justify-content-center mt-3">
+                        <li class="page-item" th:classappend="${!postPage.hasPrevious()}? disabled"}>
+                            <a class="page-link" href="#" th:href="@{'/my-upload?page=' + ${postPage.getNumber()-1} + '&sort=' + ${sortProperty} + ',desc'}" aria-label="Previous"
+                               tabindex="-1" aria-disabled="true">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+
+                        <li class="page-item" th:classappend="${i == postPage.getNumber()}? active"
+                            th:each="i: ${#numbers.sequence(0, postPage.getTotalPages() - 1)}">
+                            <a th:href="@{'/my-upload?page=' + ${i} + '&sort=' + ${sortProperty} + ',desc'}"
+                               class="page-link" href="#" th:text="${i + 1}">1</a>
+                        </li>
+                        <li class="page-item" th:classappend="${!postPage.hasNext()}? disabled">
+                            <a th:href="@{'/my-upload?page=' + ${postPage.getNumber()+1} + '&sort=' + ${sortProperty} + ',desc'}"
+                               class="page-link">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+
+
+                    </ul>
+                </nav>
+            </div>
+        </div>
     </div>
+
+
 </div>
 
 
