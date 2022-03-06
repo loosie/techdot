@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.techdot.techdot.config.auth.PrincipalDetails;
 import com.techdot.techdot.domain.Member;
+import com.techdot.techdot.exception.UserNotExistedException;
 import com.techdot.techdot.repository.MemberRepository;
 import com.techdot.techdot.dto.JoinFormDto;
 import com.techdot.techdot.dto.PasswordFormDto;
@@ -93,12 +94,20 @@ public class MemberService {
 		javaMailSender.send(mailMessage);
 	}
 
-	public Member findByNickname(String nickname) {
+	public Member findByNickname(String nickname, String redirectView) {
 		Optional<Member> opMember = memberRepo.findByNickname(nickname);
 		if (opMember.isEmpty()) {
-			throw new IllegalArgumentException(nickname + "에 해당하는 사용자가 없습니다.");
+			throw new UserNotExistedException(nickname + "에 해당하는 사용자가 없습니다.", redirectView);
 		}
 
+		return opMember.get();
+	}
+
+	public Member findByEmail(String email, String redirectView) {
+		Optional<Member> opMember = memberRepo.findByEmail(email);
+		if (opMember.isEmpty()) {
+			throw new UserNotExistedException(email + "은 유효한 이메일이 아닙니다.", redirectView);
+		}
 		return opMember.get();
 	}
 }

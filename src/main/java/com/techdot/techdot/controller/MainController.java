@@ -16,8 +16,6 @@ import com.techdot.techdot.config.auth.CurrentUser;
 import com.techdot.techdot.domain.CategoryName;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.dto.PostQueryDto;
-import com.techdot.techdot.repository.CategoryRepository;
-import com.techdot.techdot.repository.PostRepository;
 import com.techdot.techdot.repository.PostRepositoryQueryImpl;
 
 import lombok.RequiredArgsConstructor;
@@ -27,7 +25,6 @@ import lombok.RequiredArgsConstructor;
 public class MainController {
 
 	private final PostRepositoryQueryImpl postRepositoryQuery;
-	private final PostRepository postRepository;
 
 	@GetMapping("/")
 	public String home(@CurrentUser Member member, Model model){
@@ -38,18 +35,11 @@ public class MainController {
 	}
 
 	@GetMapping("/category/{name}")
-	public String home_cs(@PathVariable String name,
-		@CurrentUser Member member, Model model){
+	public String home_cs(@PathVariable String name, @CurrentUser Member member, Model model){
 		if(member != null){
 			model.addAttribute(member);
 		}
 		return "main/" + name;
-	}
-
-	@GetMapping("/posts/scroll")
-	public ResponseEntity<List<PostQueryDto>> postScroll(@PageableDefault(page=0, size=12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
-		List<PostQueryDto> posts = postRepositoryQuery.findAllDto(pageable);
-		return new ResponseEntity<>(posts, HttpStatus.OK);
 	}
 
 	@GetMapping("/posts/{categoryName}")

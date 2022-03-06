@@ -11,7 +11,7 @@
 
 
     <style>
-        .container  {
+        .container {
             max-width: 1440px;
         }
 
@@ -22,6 +22,9 @@
         .navbar {
             background-color: #1a1b1e !important;
             width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 9999;
         }
 
         img {
@@ -35,7 +38,7 @@
             border-radius: 50% !important;
         }
 
-        .nav-img{
+        .nav-img {
             padding: 0 !important;
             border: 0 !important;
         }
@@ -47,7 +50,7 @@
         }
 
         .thumbnail-img,
-        #cropped-new-thumbnail-image{
+        #cropped-new-thumbnail-image {
             width: 320px;
             height: 192px;
         }
@@ -56,24 +59,28 @@
             font-size: 0.9rem;
         }
 
-        .nav-tabs {
-            border-top: 1px solid #1a1b1e ;
+        .main-nav-tabs {
+            border-top: 1px solid #1a1b1e;
             border-bottom: 1px solid #1a1b1e !important;
-            width:100%
+            width: 100%
         }
 
 
-        .nav-link.active {
+        .main-nav-link.active {
             color: #fff !important;
             background-color: #1a1b1e !important;
         }
 
+        .main-nav-link:hover {
+            background-color: #fff !important;
+        }
+
         a, a:hover {
-            text-decoration:none !important
+            text-decoration: none !important;
         }
 
         @media (min-width: 770px) {
-            .card{
+            .card {
                 max-width: 320px;
             }
         }
