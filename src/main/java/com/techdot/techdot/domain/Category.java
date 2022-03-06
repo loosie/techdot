@@ -26,7 +26,7 @@ public class Category {
 	private Long id;
 
 	@Enumerated(EnumType.STRING)
-	private CategoryName name; // CS, 알고리즘, 백엔드, 프론트엔드, 보안, 자기개발
+	private CategoryName name; // CS, 알고리즘, 백엔드, 프론트엔드, 보안, DevOps, 자기개발
 
 	@Builder
 	public Category(CategoryName name) {

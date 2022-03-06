@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 			.mvcMatchers("/join", "/login").not().fullyAuthenticated()
 			.mvcMatchers("/", "/check-email",  "/email-login", "/login-by-email", "/confirm-email", "/resend-confirm-email/*",
-				"/post/scrollList", "/display"
+				"/posts/*", "/category/*"
 			).permitAll()
 			.anyRequest().authenticated();
 

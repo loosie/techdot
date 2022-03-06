@@ -59,6 +59,9 @@ public class initData {
 			Category cs = Category.builder()
 				.name(CategoryName.CS).build();
 			em.persist(cs);
+			Category algo = Category.builder()
+				.name(CategoryName.Algorithm).build();
+			em.persist(algo);
 			Category backend = Category.builder()
 				.name(CategoryName.Backend).build();
 			em.persist(backend);
@@ -68,6 +71,12 @@ public class initData {
 			Category security = Category.builder()
 				.name(CategoryName.Security).build();
 			em.persist(security);
+			Category DevOps = Category.builder()
+				.name(CategoryName.DevOps).build();
+			em.persist(DevOps);
+			Category Motivation = Category.builder()
+				.name(CategoryName.Motivation).build();
+			em.persist(Motivation);
 
 			Post shortPost = Post.builder()
 				.title("loosie 티스토리 블로그 미리보기 techDot 기술 큐레이션 서비스" + 0)

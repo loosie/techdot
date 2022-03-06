@@ -10,11 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.techdot.techdot.config.auth.CurrentUser;
+import com.techdot.techdot.domain.CategoryName;
 import com.techdot.techdot.domain.Member;
-import com.techdot.techdot.domain.Post;
 import com.techdot.techdot.dto.PostQueryDto;
+import com.techdot.techdot.repository.CategoryRepository;
 import com.techdot.techdot.repository.PostRepository;
 import com.techdot.techdot.repository.PostRepositoryQueryImpl;
 
@@ -29,17 +31,36 @@ public class MainController {
 
 	@GetMapping("/")
 	public String home(@CurrentUser Member member, Model model){
-		// model.addAttribute("postList", postRepository.findAll());
 		if(member != null){
 			model.addAttribute(member);
 		}
 		return "index";
 	}
 
-	@GetMapping("/post/scrollList")
+	@GetMapping("/category/{name}")
+	public String home_cs(@PathVariable String name,
+		@CurrentUser Member member, Model model){
+		if(member != null){
+			model.addAttribute(member);
+		}
+		return "main/" + name;
+	}
+
+	@GetMapping("/posts/scroll")
 	public ResponseEntity<List<PostQueryDto>> postScroll(@PageableDefault(page=0, size=12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
-		List<PostQueryDto> allByDto = postRepositoryQuery.findAllByDto(pageable);
-		return new ResponseEntity<>(allByDto, HttpStatus.OK);
+		List<PostQueryDto> posts = postRepositoryQuery.findAllDto(pageable);
+		return new ResponseEntity<>(posts, HttpStatus.OK);
+	}
+
+	@GetMapping("/posts/{categoryName}")
+	public ResponseEntity<List<PostQueryDto>> postScrollByCategoryName(@PathVariable String categoryName,
+		@PageableDefault(page=0, size=12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
+		if(categoryName.equals("All")){
+			return new ResponseEntity<>(postRepositoryQuery.findAllDto(pageable), HttpStatus.OK);
+		}
+
+		List<PostQueryDto> posts = postRepositoryQuery.findAllDtoByCategoryName(CategoryName.valueOf(categoryName), pageable);
+		return new ResponseEntity<>(posts, HttpStatus.OK);
 	}
 
 	@GetMapping("/login")
