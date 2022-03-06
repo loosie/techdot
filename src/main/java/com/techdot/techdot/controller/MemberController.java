@@ -79,6 +79,10 @@ public class MemberController {
 
 	@GetMapping("/check-email")
 	public String checkEmail(@CurrentUser Member member, String email, Model model) {
+		if(member.getEmailVerified()){
+			return "redirect:/";
+		}
+
 		if(member != null){
 			model.addAttribute("email", member.getEmail());
 			return "member/check-email";
