@@ -34,13 +34,12 @@
 
         <div class="col-sm-7">
             <div th:replace="fragments/message.html :: message"></div>
-<!--            '/post/' + ${postId} + '/edit'-->
             <form class="needs-validation" th:action="@{${requestUrl}}" th:object="${postForm}" method="post" novalidate>
                 <div class="form-group mb-4">
                     <label for="title">제목</label>
                     <input id="title" type="text" th:field="*{title}" class="form-control"
-                           placeholder="제목을 입력하세요" aria-describedby="titleHelp" required max="50">
-                    <small class="invalid-feedback">50자 이내로 게시글 제목을 입력하세요.</small>
+                           placeholder="제목을 입력하세요" aria-describedby="titleHelp" required max="100">
+                    <small class="invalid-feedback">100자 이내로 게시글 제목을 입력하세요.</small>
                     <small class="form-text text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</small>
                 </div>
 
@@ -80,7 +79,7 @@
                 <div class="form-group mb-4">
                     <label for="content">게시글 내용</label>
                     <textarea id="content" type="text" th:field="*{content}" class="form-control"
-                              placeholder="내용을 입력하세요." aria-describedby="contentHelp" required max="255" rows="4"> </textarea>
+                              placeholder="내용을 입력하세요." aria-describedby="contentHelp" required max="100" rows="3"> </textarea>
                     <small class="invalid-feedback">100자 이내로 게시글 제목을 입력하세요.</small>
                     <small class="form-text text-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Content Error</small>
                 </div>
@@ -100,6 +99,8 @@
     </div>
 </div>
 <footer th:replace="fragments/footer.html :: footer"></footer>
+<script th:replace="fragments/form-validation.html :: form-validation"></script>
+
 <link  href="/node_modules/cropper/dist/cropper.css" rel="stylesheet">
 <script src="/node_modules/cropper/dist/cropper.js"></script>
 <script src="/node_modules/jquery-cropper/dist/jquery-cropper.js"></script>

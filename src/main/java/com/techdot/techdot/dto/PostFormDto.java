@@ -18,10 +18,11 @@ import lombok.NoArgsConstructor;
 public class PostFormDto {
 
 	@NotBlank
-	@Length(max = 200)
+	@Length(max = 100)
 	private String title;
 
 	@NotBlank
+	@Length(max = 100)
 	private String content;
 
 	private String beforeLink;

@@ -10,13 +10,12 @@
 <div class="alert alert-warning" role="alert" th:if="${member != null && member.emailVerified == false}">
     TechDot 가입을 완료하려면 <a href="#" th:href="@{/check-email}" class="alert-link"> 계정 인증 이메일을 확인 </a>하세요.
 </div>
-<div class="container"/>
-<div class="row justify-content-center py-12">
-<!--    <div class="col-1 py-4">-->
-<!--        <div th:replace="fragments/accounts-menu.html :: settings-menu(currentMenu='profile')"></div>-->
-<!--    </div>-->
-
-    <div class="col-sm-10 py-5">
+<div class="container">
+<div class="row  py-3">
+    <nav th:replace="fragments/main-view-menu.html :: main-menu(mainMenu='all')"></nav>
+</div>
+<div class="row justify-content-center py-1">
+    <div class="col-sm-11 py-2">
         <div class="row post-list" id="post-list">
         </div>
         <!-- Pagination List -->
