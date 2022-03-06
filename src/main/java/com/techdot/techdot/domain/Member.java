@@ -58,8 +58,6 @@ public class Member {
 	@Column(nullable = false)
 	private Boolean termsCheck;
 
-	@OneToMany(mappedBy = "manager")
-	private List<Post> posts = new ArrayList<>();
 
 	@Builder
 	public Member(String email, String nickname, String password, Boolean emailVerified, Boolean termsCheck) {

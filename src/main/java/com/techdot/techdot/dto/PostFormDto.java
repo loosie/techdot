@@ -5,6 +5,8 @@ import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.techdot.techdot.domain.Category;
+import com.techdot.techdot.domain.CategoryName;
 import com.techdot.techdot.domain.Post;
 import com.techdot.techdot.domain.PostType;
 
@@ -33,6 +35,8 @@ public class PostFormDto {
 
 	private PostType type;
 
+	private CategoryName categoryName;
+
 	private String thumbnailImage;
 
 	public PostFormDto(Post post) {
@@ -42,6 +46,7 @@ public class PostFormDto {
 		this.link = post.getLink();
 		this.writer = post.getWriter();
 		this.type = post.getType();
+		this.categoryName = post.getCategory().getName();
 		this.thumbnailImage = post.getThumbnailImage();
 	}
 }

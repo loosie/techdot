@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.techdot.techdot.config.auth.CurrentUser;
 import com.techdot.techdot.domain.Member;
+import com.techdot.techdot.domain.Post;
 import com.techdot.techdot.dto.PostQueryDto;
+import com.techdot.techdot.repository.PostRepository;
 import com.techdot.techdot.repository.PostRepositoryQueryImpl;
 
 import lombok.RequiredArgsConstructor;
@@ -23,9 +25,11 @@ import lombok.RequiredArgsConstructor;
 public class MainController {
 
 	private final PostRepositoryQueryImpl postRepositoryQuery;
+	private final PostRepository postRepository;
 
 	@GetMapping("/")
 	public String home(@CurrentUser Member member, Model model){
+		// model.addAttribute("postList", postRepository.findAll());
 		if(member != null){
 			model.addAttribute(member);
 		}
@@ -34,7 +38,6 @@ public class MainController {
 
 	@GetMapping("/post/scrollList")
 	public ResponseEntity<List<PostQueryDto>> postScroll(@PageableDefault(page=0, size=12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
-
 		List<PostQueryDto> allByDto = postRepositoryQuery.findAllByDto(pageable);
 		return new ResponseEntity<>(allByDto, HttpStatus.OK);
 	}

@@ -8,6 +8,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.techdot.techdot.domain.Category;
+import com.techdot.techdot.domain.CategoryName;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.domain.Post;
 import com.techdot.techdot.domain.PostType;
@@ -23,7 +25,7 @@ public class initData {
 
 	@PostConstruct
 	void init(){
-		initService.init1();
+		initService.init();
 	}
 
 	@Component
@@ -33,7 +35,7 @@ public class initData {
 		private final EntityManager em;
 		private final PasswordEncoder passwordEncoder;
 
-		public void init1(){
+		public void init(){
 			Member member = Member.builder()
 				.email("jong9712@naver.com")
 				.nickname("loosie")
@@ -54,6 +56,19 @@ public class initData {
 			member2.generateEmailCheckToken();
 			em.persist(member2);
 
+			Category cs = Category.builder()
+				.name(CategoryName.CS).build();
+			em.persist(cs);
+			Category backend = Category.builder()
+				.name(CategoryName.Backend).build();
+			em.persist(backend);
+			Category frontend = Category.builder()
+				.name(CategoryName.Frontend).build();
+			em.persist(frontend);
+			Category security = Category.builder()
+				.name(CategoryName.Security).build();
+			em.persist(security);
+
 			Post shortPost = Post.builder()
 				.title("loosie 티스토리 블로그 미리보기 techDot 기술 큐레이션 서비스" + 0)
 				.type(PostType.VIDEO)
@@ -61,10 +76,11 @@ public class initData {
 				.content("어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌")
 				.writer("loosie")
 				.manager(member)
+				.category(cs)
 				.build();
 			em.persist(shortPost);
 
-			for(int i=1; i<=100; i++) {
+			for(int i=1; i<=30; i++) {
 				Post post = Post.builder()
 					.title("loosie 티스토리 블로그 미리보기 techDot 기술 큐레이션 서비스" + i)
 					.type(PostType.BLOG)
@@ -72,6 +88,20 @@ public class initData {
 					.content("어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌")
 					.writer("loosie")
 					.manager(member)
+					.category(backend)
+					.build();
+				em.persist(post);
+			}
+
+			for(int i=31; i<=60; i++) {
+				Post post = Post.builder()
+					.title("loosie 티스토리 블로그 미리보기 techDot 기술 큐레이션 서비스" + i)
+					.type(PostType.BLOG)
+					.link("http://loosie.tistory.com/" + 123+i)
+					.content("어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌")
+					.writer("loosie")
+					.manager(member)
+					.category(frontend)
 					.build();
 				em.persist(post);
 			}
@@ -86,6 +116,7 @@ public class initData {
 					+ "쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌")
 				.writer("loosie")
 				.manager(member)
+				.category(security)
 				.build();
 			em.persist(longPost);
 		}

@@ -53,9 +53,18 @@
                 </div>
 
                 <div class="form-group mb-4">
-                    <select class="form-select" th:field="*{type}" aria-label="post-type-select">
+                    <label for="type">게시글 타입</label>
+                    <select id="type" class="form-select" th:field="*{type}" aria-label="post-type-select">
                         <option th:each="postTypeOpt : ${T(com.techdot.techdot.domain.PostType).values()}"
                                 th:value="${postTypeOpt}" th:text="${postTypeOpt}"></option>
+                    </select>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="category">게시글 카테고리</label>
+                    <select id="category" class="form-select" th:field="*{categoryName}" aria-label="post-category-select">
+                        <option th:each="categoryOpt : ${T(com.techdot.techdot.domain.CategoryName).values()}"
+                                th:value="${categoryOpt}" th:text="${categoryOpt}"></option>
                     </select>
                 </div>
 

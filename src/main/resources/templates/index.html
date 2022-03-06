@@ -12,6 +12,10 @@
 </div>
 <div class="container"/>
 <div class="row justify-content-center py-12">
+<!--    <div class="col-1 py-4">-->
+<!--        <div th:replace="fragments/accounts-menu.html :: settings-menu(currentMenu='profile')"></div>-->
+<!--    </div>-->
+
     <div class="col-sm-10 py-5">
         <div class="row post-list" id="post-list">
         </div>
@@ -50,7 +54,7 @@
     function getPostImage(data) {
         const image = new Image();
         image.className = 'post-list__item__image post-list__item__image--loading';
-        if(data.thumbnailImage == null){
+        if(data.thumbnailImage == null || data.thumbnailImage == ''){
             image.src = '/images/default_thumbnail.png'
         }else{
             image.src = data.thumbnailImage;
@@ -64,7 +68,11 @@
     function getCardContent(data){
         const body = document.createElement('div');
         body.className ='card-body';
-        body.style = 'overflow: hidden; height: 190px';
+        body.style = 'overflow: hidden; height: 210px';
+
+        const category = document.createElement('small');
+        category.textContent = data.categoryName;
+        body.appendChild(category)
 
         const link1 = document.createElement('a');
         link1.href= data.link;
