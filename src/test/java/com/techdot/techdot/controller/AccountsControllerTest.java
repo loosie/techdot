@@ -168,6 +168,30 @@ class AccountsControllerTest {
 	void accountsSettingView() throws Exception {
 		mockMvc.perform(get(ACCOUNTS_SETTING_VIEW_URL))
 			.andExpect(status().isOk())
+			.andExpect(view().name(ACCOUNTS_SETTING_VIEW_NAME))
+			.andExpect(model().attributeExists("member"));
+	}
+
+	// TODO : ADMIN
+	@WithCurrentUser(TEST_EMAIL)
+	@DisplayName("카테고리 관리 뷰")
+	@Test
+	void accountsSettingCategoryView() throws Exception {
+		mockMvc.perform(get(ACCOUNTS_CATEGORY_VIEW_URL))
+			.andExpect(status().isOk())
+			.andExpect(view().name(ACCOUNTS_CATEGORY_VIEW_NAME))
+			.andExpect(model().attributeExists("member"));
+	}
+
+	// TODO : ADMIN
+	@WithCurrentUser(TEST_EMAIL)
+	@DisplayName("게시글 관리 뷰")
+	@Test
+	void accountsMyUploadView() throws Exception {
+		mockMvc.perform(get(ACCOUNTS_MY_UPLOAD_VIEW_URL))
+			.andExpect(status().isOk())
+			.andExpect(view().name(ACCOUNTS_MY_UPLOAD_VIEW_NAME))
+			.andExpect(model().attributeExists("postPage"))
 			.andExpect(model().attributeExists("member"));
 	}
 
