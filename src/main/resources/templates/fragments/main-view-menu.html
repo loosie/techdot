@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.com">
 
-<nav th:fragment="main-menu (mainMenu)" class="row justify-content-center nav main-nav-tabs" style="height: 3.25rem">
-    <a class="nav-item main-nav-link nav-link text-dark my-auto" href="#"
+<nav th:fragment="main-menu (mainMenu)" class="col nav main-nav-tabs">
+    <a class="nav-item main-nav-link nav-link text-dark my-2" href="#"
        th:classappend="${mainMenu == 'All'}? 'active active-box'" th:href="@{'/'}">
         All
     </a>
@@ -10,27 +10,27 @@
     <!--    <a class="nav-item nav-link text-dark" th:each="categoryOpt : ${T(com.techdot.techdot.domain.CategoryName).values()}"-->
     <!--       th:value="${categoryOpt}" th:text="${categoryOpt} + '- '+ ${@Category}" href="#" th:classappend="${mainMenu == categoryOpt.name}? active active-box" th:href="@{'/category/' + cs}">-->
     <!--    </a>-->
-    <a class="nav-item main-nav-link nav-link text-dark my-auto" href="#"
+    <a class="nav-item main-nav-link nav-link text-dark my-2" href="#"
        th:classappend="${mainMenu == 'CS'}? 'active active-box'" th:href="@{'/category/cs'}">
         CS
     </a>
-    <a class="nav-item main-nav-link nav-link  text-dark my-auto" href="#"
+    <a class="nav-item main-nav-link nav-link  text-dark my-2" href="#"
        th:classappend="${mainMenu == 'Backend'}? 'active active-box'" th:href="@{'/category/backend'}">
         Backend
     </a>
-    <a class="nav-item main-nav-link nav-link text-dark my-auto" href="#"
+    <a class="nav-item main-nav-link nav-link text-dark my-2" href="#"
        th:classappend="${mainMenu == 'Frontend'}? 'active active-box'" th:href="@{'/category/frontend'}">
         Frontend
     </a>
-    <a class="nav-item main-nav-link nav-link text-dark my-auto" href="#"
+    <a class="nav-item main-nav-link nav-link text-dark my-2" href="#"
        th:classappend="${mainMenu == 'DevOps'}? 'active active-box'" th:href="@{'/category/devops'}">
         DevOps
     </a>
-    <a class="nav-item main-nav-link nav-link text-dark my-auto" href="#"
+    <a class="nav-item main-nav-link nav-link text-dark my-2" href="#"
        th:classappend="${mainMenu == 'Security'}? 'active active-box'" th:href="@{'/category/security'}">
         Security
     </a>
-    <a class="nav-item main-nav-link nav-link text-dark my-auto" href="#"
+    <a class="nav-item main-nav-link nav-link text-dark my-2" href="#"
        th:classappend="${mainMenu == 'Motivation'}? 'active active-box'" th:href="@{'/category/motivation'}">
         Motivation
     </a>

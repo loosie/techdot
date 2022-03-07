@@ -9,11 +9,11 @@
 </div>
 
 <div class="container main-view-container" th:id="${mainMenu}">
-    <div class="row justify-content-center py-3">
-        <nav th:replace="fragments/main-view-menu.html :: main-menu(mainMenu = ${mainMenu})"></nav>
-    </div>
     <div class="row justify-content-center py-1">
-        <div class="col-sm-11 py-2">
+        <div class="col-1 py-4">
+            <nav th:replace="fragments/main-view-menu.html :: main-menu(mainMenu = ${mainMenu})"></nav>
+        </div>
+        <div class="col-sm-10">
             <div class="row post-list" id="post-list">
             </div>
             <!-- Pagination List -->
