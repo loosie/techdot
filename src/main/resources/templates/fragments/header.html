@@ -11,10 +11,6 @@
 
 
     <style>
-        /*.container {*/
-        /*    max-width: 1720px;*/
-        /*}*/
-
         @media (min-width: 1200px) {
             .container, .container-lg, .container-md, .container-sm, .container-xl {
                 max-width: 1760px;
@@ -65,28 +61,30 @@
             font-size: 0.9rem;
         }
 
+        .list-group-item{
+            border-radius: 5%;
+        }
+
         .main-nav-tabs {
             top: 10%;
             position: sticky;
             z-index: 9998;
-            border-width: 2px;
+            border-radius: 5%;
         }
-
 
         .main-nav-link.active {
             color: #fff !important;
             background-color: #1a1b1e !important;
-            /*width: 100%;*/
             border-radius: 5%;
         }
 
         .main-nav-link:hover {
-            background-color: #fff !important;
-            /*width: 100%;*/
+            background-color: #1a1b1e !important;
+            color: #ffffff !important;
         }
 
         a, a:hover {
-            text-decoration: none !important;
+            /*text-decoration: none !important;*/
         }
 
         @media (min-width: 770px) {
