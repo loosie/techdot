@@ -71,7 +71,6 @@ public class Post {
 		Assert.notNull(writer, "post.owner 값이 존재하지 않습니다.");
 		Assert.notNull(content, "post.content 값이 존재하지 않습니다.");
 		Assert.notNull(manager, "post.member 값이 존재하지 않습니다.");
-		Assert.notNull(category, "post.category 값이 존재하지 않습니다.");
 
 		this.title = title;
 		this.content = content;

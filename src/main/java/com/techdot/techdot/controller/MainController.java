@@ -27,16 +27,16 @@ public class MainController {
 	private final PostRepositoryQueryImpl postRepositoryQuery;
 
 	@GetMapping("/")
-	public String home(@CurrentUser Member member, Model model){
-		if(member != null){
+	public String home(@CurrentUser Member member, Model model) {
+		if (member != null) {
 			model.addAttribute(member);
 		}
 		return "index";
 	}
 
 	@GetMapping("/category/{categoryName}")
-	public String home_cs(@PathVariable String categoryName, @CurrentUser Member member, Model model){
-		if(member != null){
+	public String home_cs(@PathVariable String categoryName, @CurrentUser Member member, Model model) {
+		if (member != null) {
 			model.addAttribute(member);
 		}
 		return CategoryName.valueOf(categoryName).getViewName();
@@ -44,17 +44,18 @@ public class MainController {
 
 	@GetMapping("/posts/{categoryName}")
 	public ResponseEntity<List<PostQueryDto>> postScrollByCategoryName(@PathVariable String categoryName,
-		@PageableDefault(page=0, size=12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
-		if(categoryName.equals("All")){
+		@PageableDefault(page = 0, size = 12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+		if (categoryName.equals("All")) {
 			return new ResponseEntity<>(postRepositoryQuery.findAllDto(pageable), HttpStatus.OK);
 		}
 
-		List<PostQueryDto> posts = postRepositoryQuery.findAllDtoByCategoryName(CategoryName.valueOf(categoryName), pageable);
+		List<PostQueryDto> posts = postRepositoryQuery.findDtoByCategoryName(CategoryName.valueOf(categoryName),
+			pageable);
 		return new ResponseEntity<>(posts, HttpStatus.OK);
 	}
 
 	@GetMapping("/login")
-	public String login(){
+	public String login() {
 		return "login";
 	}
 }

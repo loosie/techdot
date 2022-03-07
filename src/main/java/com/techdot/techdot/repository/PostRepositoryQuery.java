@@ -14,5 +14,5 @@ public interface PostRepositoryQuery {
 
 	List<PostQueryDto> findAllDto(Pageable pageable);
 
-	List<PostQueryDto> findAllDtoByCategoryName(CategoryName category, Pageable pageable);
+	List<PostQueryDto> findDtoByCategoryName(CategoryName category, Pageable pageable);
 }

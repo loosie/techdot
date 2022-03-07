@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import com.techdot.techdot.domain.CategoryName;
+import com.techdot.techdot.domain.PostType;
 import com.techdot.techdot.dto.PostQueryDto;
 
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class PostRepositoryQueryImpl  implements PostRepositoryQuery{
 			.getResultList();
 	}
 
-	public List<PostQueryDto> findAllDtoByCategoryName(CategoryName categoryName, Pageable pageable) {
+	public List<PostQueryDto> findDtoByCategoryName(CategoryName categoryName, Pageable pageable) {
 		return em.createQuery(
 			"select new com.techdot.techdot.dto.PostQueryDto(p.title, p.content, p.link, p.writer, p.type,  p.thumbnailImage, c.name)" +
 				" from Post p" +
