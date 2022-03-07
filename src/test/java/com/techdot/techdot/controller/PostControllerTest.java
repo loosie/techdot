@@ -1,15 +1,13 @@
 package com.techdot.techdot.controller;
 
-import static com.techdot.techdot.controller.AccountsController.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import java.util.Optional;
-
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +17,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.techdot.techdot.auth.WithCurrentUser;
+import com.techdot.techdot.domain.Category;
+import com.techdot.techdot.domain.CategoryName;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.domain.Post;
 import com.techdot.techdot.domain.PostType;
+import com.techdot.techdot.repository.CategoryRepository;
 import com.techdot.techdot.repository.MemberRepository;
 import com.techdot.techdot.repository.PostRepository;
 
@@ -33,15 +34,24 @@ class PostControllerTest {
 	private MockMvc mockMvc;
 
 	@Autowired
-	private PostRepository postRepo;
+	private PostRepository postRepository;
 
 	@Autowired
-	private MemberRepository memberRepo;
+	private MemberRepository memberRepository;
+
+	@Autowired
+	private CategoryRepository categoryRepository;
+
+	@BeforeEach
+	void setUp(){
+		categoryRepository.save(Category.builder().name(CategoryName.CS).build());
+	}
 
 	@AfterEach
 	void end() {
-		postRepo.deleteAll();
-		memberRepo.deleteAll();
+		postRepository.deleteAll();
+		categoryRepository.deleteAll();
+		memberRepository.deleteAll();
 	}
 
 	private final String TEST_EMAIL = "test@naver.com";
@@ -67,6 +77,7 @@ class PostControllerTest {
 			.param("beforeLink", "http://google.com/")
 			.param("link", "http://google.com")
 			.param("writer", "google")
+			.param("categoryName", "CS")
 			.param("type", "BLOG")
 			.with(csrf()))
 			.andExpect(status().is3xxRedirection())
@@ -84,6 +95,7 @@ class PostControllerTest {
 			.param("beforeLink", "http://google.com/")
 			.param("link", "//google.com")
 			.param("writer", "google")
+			.param("categoryName", "CS")
 			.param("type", "BLOG")
 			.with(csrf()))
 			.andExpect(status().isOk())
@@ -98,16 +110,18 @@ class PostControllerTest {
 	@Test
 	void updatePost_success() throws Exception {
 		// given
-		Member member = memberRepo.findByEmail(TEST_EMAIL).get();
+		Member member = memberRepository.findByEmail(TEST_EMAIL).get();
+		Category category = categoryRepository.findByName(CategoryName.CS).get();
 		Post post = Post.builder()
 			.title("title")
 			.content("content")
 			.writer("google")
 			.link("http://google.com/")
 			.type(PostType.BLOG)
+			.category(category)
 			.manager(member)
 			.build();
-		Post save = postRepo.save(post);
+		Post save = postRepository.save(post);
 
 		// when, then
 		mockMvc.perform(post("/post/"+save.getId()+"/edit")
@@ -116,6 +130,7 @@ class PostControllerTest {
 			.param("beforeLink", "http://google.com/")
 			.param("link", "http://google.com/asdasd")
 			.param("writer", "google")
+			.param("categoryName", "CS")
 			.param("type", "BLOG")
 			.with(csrf()))
 			.andExpect(status().is3xxRedirection())
@@ -123,7 +138,7 @@ class PostControllerTest {
 			.andExpect(authenticated());
 
 		// then
-		Post changePost = postRepo.findById(save.getId()).get();
+		Post changePost = postRepository.findById(save.getId()).get();
 		assertEquals("updateTitle", changePost.getTitle());
 	}
 
@@ -133,16 +148,18 @@ class PostControllerTest {
 	@Test
 	void updatePost_fail_notAuth() throws Exception {
 		// given
-		Member member = memberRepo.findByEmail(TEST_EMAIL).get();
+		Member member = memberRepository.findByEmail(TEST_EMAIL).get();
+		Category category = categoryRepository.findByName(CategoryName.CS).get();
 		Post post = Post.builder()
 			.title("title")
 			.content("content")
 			.writer("google")
 			.link("http://google.com/")
 			.type(PostType.BLOG)
+			.category(category)
 			.manager(member)
 			.build();
-		Post save = postRepo.save(post);
+		Post save = postRepository.save(post);
 
 		// when, then
 		mockMvc.perform(post("/post/"+save.getId()+"/edit")
@@ -151,6 +168,7 @@ class PostControllerTest {
 			.param("beforeLink", "http://google.com/")
 			.param("link", "oogle.com/asdasd")
 			.param("writer", "google")
+			.param("categoryName", "CS")
 			.param("type", "BLOG")
 			.with(csrf()))
 			.andExpect(status().isOk())

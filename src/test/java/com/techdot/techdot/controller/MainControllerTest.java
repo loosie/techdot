@@ -5,6 +5,8 @@ import static org.springframework.security.test.web.servlet.response.SecurityMoc
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.Arrays;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.techdot.techdot.domain.CategoryName;
 import com.techdot.techdot.repository.MemberRepository;
 import com.techdot.techdot.dto.JoinFormDto;
 import com.techdot.techdot.service.MemberService;
@@ -78,6 +81,22 @@ class MainControllerTest {
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/"))
 			.andExpect(unauthenticated());
+	}
+
+	@DisplayName("카테고리 별로 메인 뷰 보여주기")
+	@Test
+	void mainView_ByCategoryName() throws Exception {
+		Arrays.stream(CategoryName.values()).forEach(categoryName -> {
+			try {
+				mockMvc.perform(get("/category/" + categoryName.name()))
+					.andExpect(status().isOk())
+					.andExpect(view().name(categoryName.getViewName()))
+					.andExpect(unauthenticated());
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		});
+
 	}
 
 }

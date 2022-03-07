@@ -21,11 +21,16 @@ class PostTest {
 			.emailVerified(false)
 			.build();
 
+		Category category = Category.builder()
+			.name(CategoryName.CS)
+			.build();
+
 		Post post = Post.builder()
 			.title("title1")
 			.content("content.content...")
 			.link("http://~~~.com")
 			.type(PostType.BLOG)
+			.category(category)
 			.writer("naver")
 			.manager(member)
 			.build();
@@ -35,7 +40,7 @@ class PostTest {
 		assertEquals(post.getType(), PostType.BLOG);
 	}
 
-	@DisplayName("게시글 생성하기 - 입력값 오류 manager null")
+	@DisplayName("게시글 생성하기 - 입력값 오류 manager, category null")
 	@Test
 	void post_create_fail_nullValue() {
 		assertThrows(IllegalArgumentException.class, () -> Post.builder()

@@ -9,9 +9,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.techdot.techdot.domain.Category;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.domain.Post;
 import com.techdot.techdot.dto.PostFormDto;
+import com.techdot.techdot.repository.CategoryRepository;
 import com.techdot.techdot.repository.MemberRepository;
 import com.techdot.techdot.repository.PostRepository;
 
@@ -23,10 +25,17 @@ import lombok.RequiredArgsConstructor;
 public class PostService {
 	private final PostRepository postRepo;
 	private final MemberRepository memberRepo;
+	private final CategoryRepository categoryRepository;
 
+	// 쿼리 발생 횟수
+	// validator url 중복 조회
+	// manger 조회
+	// category 조회
+	// post insert
 	public void post(PostFormDto postForm, Member member) {
 		// 엔티티 조회
 		Member manager = memberRepo.findById(member.getId()).orElseThrow(NullPointerException::new);
+		Category category = categoryRepository.findByName(postForm.getCategoryName()).orElseThrow(NullPointerException::new);
 
 		// 게시글 생성
 		Post newPost = Post.builder()
@@ -36,20 +45,14 @@ public class PostService {
 			.content(postForm.getContent())
 			.type(postForm.getType())
 			.writer(postForm.getWriter())
-			.manager(manager) // getPost() -> select 1번 (모든 게시글 불러옴)
+			.manager(manager)
+			.category(category)
 			.build();
 
 		// 게시글 저장
-		postRepo.save(newPost); // insert 1번
+		postRepo.save(newPost);
 	}
 
-	public List<Post> getMemberPosts(String nickname) {
-		// 엔티티 조회
-		Member manager = memberRepo.findByNickname(nickname).orElseThrow(NullPointerException::new);
-
-		// 게시글 전체 조회
-		return manager.getPosts();
-	}
 
 	public Post getPostById(Long id) {
 		return postRepo.getById(id);
@@ -62,19 +65,7 @@ public class PostService {
 	}
 
 	public Page<Post> findByManager(Member member, Pageable pageable) {
-		// 엔티티 조회
-		// Member manager = memberRepo.findByNickname(nickname).orElseThrow(NullPointerException::new);
-		Page<Post> byManager = postRepo.findByManager(member, pageable);
-
-		// 게시글 전체 조회
-		return byManager;
+		return postRepo.findByManager(member, pageable);
 	}
 
-	public Page<Post> findAll(Pageable pageable) {
-		return postRepo.findAll(pageable);
-	}
-
-	public Post findById(Long id) {
-		return postRepo.findById(id).orElseThrow(NullPointerException::new);
-	}
 }

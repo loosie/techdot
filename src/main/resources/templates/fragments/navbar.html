@@ -6,28 +6,30 @@
     <script src="/node_modules/jdenticon/dist/jdenticon.js"></script>
 </head>
 <nav th:fragment="main-nav" class="navbar navbar-expand-sm navbar-dark bg-dark py-2 px-3">
-    <a class="navbar-brand" href="/" th:href="@{/}">
-        <img src="/images/logo.png" width="50" height="50">
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+    <div class="container">
+        <a class="navbar-brand" href="/" th:href="@{/}">
+            <img src="/images/logo.png" width="50" height="50">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <!--                TODO: search -->
-                <form th:action="@{/search/}" class="form-inline" method="get">
-                    <input class="form-control mr-sm-2" name="keyword" type="search" placeholder="검색" aria-label="Search" />
-                </form>
-            </li>
-        </ul>
-
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <!--                TODO: search -->
+                    <form th:action="@{/search/}" class="form-inline" method="get">
+                        <input class="form-control mr-sm-2" name="keyword" type="search" placeholder="검색" aria-label="Search" />
+                    </form>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>
 
 
 <nav th:fragment="auth-nav" class="navbar navbar-expand-sm navbar-dark bg-dark py-2 px-3">
+    <div class="container">
         <a class="navbar-brand" href="/" th:href="@{/}">
             <img src="/images/logo.png" width="50" height="50">
         </a>
@@ -88,5 +90,6 @@
                 </li>
             </ul>
         </div>
+    </div>
 </nav>
 </html>

@@ -58,17 +58,6 @@ public class PostController {
 		return "redirect:/";
 	}
 
-	@GetMapping("/my-upload")
-	public String myUploadPostsView(@CurrentUser Member member, Model model,
-		@PageableDefault(size = 10, page = 0, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
-		Page<Post> postPage = postService.findByManager(member, pageable);
-
-		String sortProperty = "id";
-		model.addAttribute(member);
-		model.addAttribute("postPage", postPage);
-		model.addAttribute("sortProperty", sortProperty);
-		return "accounts/my-upload";
-	}
 
 	@GetMapping("/post/{id}/edit")
 	public String updatePostView(@PathVariable Long id, @CurrentUser Member member, Model model) {

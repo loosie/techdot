@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.com">
+
+<nav th:fragment="category-menu (categoryMenu)" class="col justify-content-center nav main-nav-tabs">
+    <a class="nav-item main-nav-link nav-link text-dark my-2" href="#"
+       th:classappend="${categoryMenu == 'All'}? 'active active-box'" th:href="@{'/'}">
+        All
+    </a>
+    <!--    TODO: enum displayValue 값 가져오기 -->
+    <!--    <a class="nav-item nav-link text-dark" th:each="categoryOpt : ${T(com.techdot.techdot.domain.CategoryName).values()}"-->
+    <!--       th:value="${categoryOpt}" th:text="${categoryOpt} + '- '+ ${@Category}" href="#" th:classappend="${mainMenu == categoryOpt.name}? active active-box" th:href="@{'/category/' + cs}">-->
+    <!--    </a>-->
+    <a class="nav-item main-nav-link nav-link text-dark my-2" href="#"
+       th:classappend="${categoryMenu == 'CS'}? 'active active-box'" th:href="@{'/category/CS'}">
+        CS
+    </a>
+    <a class="nav-item main-nav-link nav-link  text-dark my-2" href="#"
+       th:classappend="${categoryMenu == 'Backend'}? 'active active-box'" th:href="@{'/category/Backend'}">
+        Backend
+    </a>
+    <a class="nav-item main-nav-link nav-link text-dark my-2" href="#"
+       th:classappend="${categoryMenu == 'Frontend'}? 'active active-box'" th:href="@{'/category/Frontend'}">
+        Frontend
+    </a>
+    <a class="nav-item main-nav-link nav-link text-dark my-2" href="#"
+       th:classappend="${categoryMenu == 'DevOps'}? 'active active-box'" th:href="@{'/category/DevOps'}">
+        DevOps
+    </a>
+    <a class="nav-item main-nav-link nav-link text-dark my-2" href="#"
+       th:classappend="${categoryMenu == 'Security'}? 'active active-box'" th:href="@{'/category/Security'}">
+        Security
+    </a>
+    <a class="nav-item main-nav-link nav-link text-dark my-2" href="#"
+       th:classappend="${categoryMenu == 'Motivation'}? 'active active-box'" th:href="@{'/category/Motivation'}">
+        Motivation
+    </a>
+
+
+</nav>
+</html>
