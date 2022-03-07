@@ -24,8 +24,8 @@ public class initData {
 	private final InitService initService;
 
 	@PostConstruct
-	void init(){
-		initService.init();
+	void init() {
+		// initService.init();
 	}
 
 	@Component
@@ -59,9 +59,6 @@ public class initData {
 			Category cs = Category.builder()
 				.name(CategoryName.CS).build();
 			em.persist(cs);
-			Category algo = Category.builder()
-				.name(CategoryName.Algorithm).build();
-			em.persist(algo);
 			Category backend = Category.builder()
 				.name(CategoryName.Backend).build();
 			em.persist(backend);

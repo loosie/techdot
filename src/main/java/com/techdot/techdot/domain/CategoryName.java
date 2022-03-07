@@ -4,21 +4,18 @@ import lombok.Getter;
 
 @Getter
 public enum CategoryName {
-	CS("CS"),
-	Algorithm("Algorithm"),
-	Backend("Backend"),
-	Frontend("Frontend"),
-	Security("Security"),
-	DevOps("DevOps"),
-	Motivation("Motivation");
+	CS("CS", "/main/cs"),
+	Backend("Backend", "/main/backend"),
+	Frontend("Frontend", "/main/frontend"),
+	Security("Security", "/main/security"),
+	DevOps("DevOps", "/main/devops"),
+	Motivation("Motivation", "/main/motivation");
 
-	public final String displayValue;
+	private final String displayValue;
+	private final String viewName;
 
-	private CategoryName(String displayValue) {
+	private CategoryName(String displayValue, String viewName) {
 		this.displayValue = displayValue;
-	}
-
-	public String getDisplayValue() {
-		return displayValue;
+		this.viewName = viewName;
 	}
 }

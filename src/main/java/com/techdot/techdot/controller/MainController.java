@@ -34,12 +34,12 @@ public class MainController {
 		return "index";
 	}
 
-	@GetMapping("/category/{name}")
-	public String home_cs(@PathVariable String name, @CurrentUser Member member, Model model){
+	@GetMapping("/category/{categoryName}")
+	public String home_cs(@PathVariable String categoryName, @CurrentUser Member member, Model model){
 		if(member != null){
 			model.addAttribute(member);
 		}
-		return "main/" + name;
+		return CategoryName.valueOf(categoryName).getViewName();
 	}
 
 	@GetMapping("/posts/{categoryName}")

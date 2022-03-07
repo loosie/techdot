@@ -33,7 +33,6 @@ public class MemberController {
 
 	private final JoinFormValidator joinFormValidator;
 	private final MemberService memberService;
-	private final MemberRepository memberRepo;
 
 	@InitBinder("joinForm")
 	public void initBinder(WebDataBinder webDataBinder) {
@@ -61,12 +60,7 @@ public class MemberController {
 	public String emailConfirm(String token, String email, Model model) {
 		String view = "member/confirm-email";
 		Member member = memberService.findByEmail(email, view);
-		// Optional<Member> opMember = memberRepo.findByEmail(email);
-		// if (opMember.isEmpty()) {
-		// 	model.addAttribute("error", "해당 이메일은 존재하지 않습니다.");
-		// 	return view;
-		// }
-		// Member member = opMember.get();
+
 		if (!member.isValidToken(token)) {
 			model.addAttribute("error", "토큰 정보가 정확하지 않습니다.");
 			return view;
