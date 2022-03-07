@@ -72,7 +72,8 @@
         body.className = 'card-body';
         body.style = 'overflow: hidden; height: 210px';
 
-        const category = document.createElement('small');
+        const category = document.createElement('span');
+        category.className = 'badge badge-light';
         category.textContent = data.categoryName;
         body.appendChild(category)
 
@@ -99,7 +100,7 @@
         return body;
     }
 
-    function getCardEnd() {
+    function getCardEnd(data) {
         const end = document.createElement('div');
         end.className = 'card-body';
 
@@ -116,7 +117,7 @@
         small1.appendChild(icon);
 
         const writerText = document.createElement('span');
-        writerText.textContent = 'loosie';
+        writerText.textContent = data.writer;
         small1.appendChild(writerText);
 
         const small2 = document.createElement('small');
@@ -124,17 +125,25 @@
         writerBody.appendChild(small2);
 
         const postType = document.createElement('span');
-        postType.textContent = 'BLOG';
+        postType.className= 'badge badge-pill'
+        if(data.type === 'BLOG') {
+            postType.className += ' badge-blog'
+            postType.textContent = 'Blog';
+        }
+        if(data.type === 'VIDEO') {
+            postType.className += ' badge-video'
+            postType.textContent = 'Video';
+        }
         small2.appendChild(postType);
 
         return end;
     }
 
     function getPost(data) {
-        const articleImage = getPostImage(data);
-        const article = document.createElement('div');
-        article.className = 'post-list__item card mb shadow-sm';
-        article.appendChild(articleImage);
+        const postImage = getPostImage(data);
+        const post = document.createElement('div');
+        post.className = 'post-list__item card mb shadow-sm';
+        post.appendChild(postImage);
 
         const cardContent = getCardContent(data);
         const cardEnd = getCardEnd(data);
@@ -142,15 +151,15 @@
         const link = document.createElement('a');
         link.href = data.link;
         link.className = 'text-dark';
-        article.appendChild(link);
+        post.appendChild(link);
 
-        link.appendChild(articleImage);
-        article.appendChild(cardContent);
-        article.appendChild(cardEnd);
-        return article;
+        link.appendChild(postImage);
+        post.appendChild(cardContent);
+        post.appendChild(cardEnd);
+        return post;
     }
 
-    function getArticlePage(data) {
+    function getPostPage(data) {
         const pageElement = document.createElement('div');
         pageElement.className = 'post-list__page col-md-3 py-3';
         pageElement.appendChild(getPost(data));
@@ -193,14 +202,14 @@
             }
 
             for (var i = 0; i < result.length; i++) {
-                articleList.appendChild(getArticlePage(result[i]));
+                postList.appendChild(getPostPage(result[i]));
             }
             addPaginationPage(page);
         });
     }
 
     /* * Main */
-    const articleList = document.getElementById('post-list');
+    const postList = document.getElementById('post-list');
     const container = document.getElementsByClassName('main-view-container');
     const viewName = container[0].id;
     const articleListPagination = document.getElementById('post-list-pagination');
