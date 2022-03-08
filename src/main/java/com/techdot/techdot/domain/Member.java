@@ -14,7 +14,6 @@ import javax.persistence.OneToMany;
 
 import org.springframework.util.Assert;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.techdot.techdot.dto.ProfileFormDto;
 
 import lombok.Builder;

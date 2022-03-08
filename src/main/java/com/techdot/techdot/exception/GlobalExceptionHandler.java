@@ -36,4 +36,5 @@ public class GlobalExceptionHandler {
 		model.addAttribute("error", ex.getMessage());
 		return ex.getViewName();
 	}
+
 }

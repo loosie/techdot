@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="fragments/header.html :: head"></head>
+
+<body class="bg-light">
+<nav th:replace="fragments/navbar.html :: auth-nav"></nav>
+
+<div class="container py-5">
+
+    <div th:replace="fragments/profile-info.html :: profile-info"></div>
+    <div class="row justify-content-center py-12">
+        <nav th:replace="fragments/profile-menu.html :: profile-menu(profileMenu='likes')"></nav>
+    </div>
+
+    <div class="col-sm-10 py-5">
+        <div class="row">
+            <div class="col-md-3 py-3" th:each="post: ${likePostList}">
+                <div class="card mb shadow-sm">
+                    <a th:href="@{${post.link}}" class="text-dark">
+                        <img th:if="${!#strings.isEmpty(post.thumbnailImage)}" th:src="${post.thumbnailImage}"
+                             class="card-img-top" th:alt="${post.title}">
+                        <img th:if="${#strings.isEmpty(post.thumbnailImage)}" src="/images/default_thumbnail.png"
+                             class="card-img-top" th:alt="${post.title}">
+                    </a>
+                    <div class="card-body" style="overflow: hidden; height: 210px">
+                        <small class="text-muted">
+                            <span th:text="${post.category.name}"></span>
+                        </small>
+                        <a th:href="@{${post.link}}" class="text-dark" style="font-weight: bold">
+                            <h5 class="card-title context" th:text="${post.title}"></h5>
+                        </a>
+                        <a th:href="@{${post.link}}" class="text-dark">
+                            <p class="card-text" th:text="${post.content}">link</p>
+                        </a>
+                        <a th:href="@{${post.link}}" class="text-dark">
+                            <p class="card-text context">
+                            </p>
+                        </a>
+                    </div>
+
+                    <div class="card-body" style="padding: 0.5rem 1.25rem 0.5rem">
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="fa fa-user-circle"></i>
+                                <span th:text="${post.writer}"></span>
+                            </small>
+                            <small class="text-muted">
+                                <span th:text="${post.type}"></span>
+                            </small>
+                            <div th:if="member != null">
+                                <input  class="like-button" type="checkbox" name="p_id" th:id="${post.id}" hidden/>
+                                <label th:for="${post.id}">
+                                    <i class="fa fa-heart-o"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<footer th:replace="fragments/footer.html :: footer"></footer>
+
+</body>
+</html>

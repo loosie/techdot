@@ -17,6 +17,14 @@
             }
         }
 
+        img {
+            max-width: 100%;
+        }
+
+        a, a:hover {
+            text-decoration: none !important;
+        }
+
         .log-container {
             max-width: 1080px !important;
         }
@@ -29,12 +37,15 @@
             z-index: 9999;
         }
 
-        img {
-            max-width: 100%;
+        .nav-img {
+            padding: 0 !important;
+            border: 0 !important;
         }
 
-        a, a:hover {
-            /*text-decoration: none !important;*/
+
+        .card {
+            border-radius: 5%;
+            font-size: 0.9rem;
         }
 
         @media (min-width: 770px) {
@@ -43,20 +54,11 @@
             }
         }
 
-        .card {
-            border-radius: 5%;
-        }
-
         .cropper-view-box,
         .cropper-face,
         .j-profile-img,
         .profile-img {
             border-radius: 50% !important;
-        }
-
-        .nav-img {
-            padding: 0 !important;
-            border: 0 !important;
         }
 
         #cropped-new-profile-image {
@@ -71,10 +73,6 @@
             height: 192px;
         }
 
-        .card {
-            font-size: 0.9rem;
-        }
-
         .post-list__item__image {
             border-radius: 5% 5% 0 0;
             width: 100%;
@@ -85,21 +83,21 @@
             border-radius: 5%;
         }
 
-        .main-nav-tabs {
+        .main-right-nav-tabs {
             top: 10%;
             position: sticky;
             z-index: 9998;
             border-radius: 5%;
         }
 
-        .main-nav-link.active {
+        .main-right-nav-link.active {
             color: #fff !important;
             background-color: #1a1b1e !important;
             border-color: #1a1b1e !important;
             border-radius: 5%;
         }
 
-        .main-nav-link:hover {
+        .main-right-nav-link:hover {
             background-color: #1a1b1e !important;
             color: #ffffff !important;
         }

@@ -7,6 +7,7 @@ import lombok.Data;
 
 @Data
 public class PostQueryDto {
+	private Long postId;
 	private String title;
 	private String content;
 	private String link;
@@ -15,7 +16,8 @@ public class PostQueryDto {
 	private String thumbnailImage;
 	private CategoryName categoryName;
 
-	public PostQueryDto(String title, String content, String link, String writer, PostType type, String thumbnailImage, CategoryName categoryName) {
+	public PostQueryDto(Long postId, String title, String content, String link, String writer, PostType type, String thumbnailImage, CategoryName categoryName) {
+		this.postId = postId;
 		this.title = title;
 		this.content = content;
 		this.link = link;

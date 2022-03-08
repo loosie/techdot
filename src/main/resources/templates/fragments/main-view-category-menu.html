@@ -1,32 +1,32 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.com">
 
-<div th:fragment="category-menu (categoryMenu)" class="list-group justify-content-center nav main-nav-tabs">
+<div th:fragment="category-menu (categoryMenu)" class="list-group justify-content-center nav main-right-nav-tabs">
     <a class="list-group-item list-group-item-action main-nav-link" href="#"
        th:classappend="${categoryMenu == 'All'}? 'active active-box'" th:href="@{'/'}">
         All
     </a>
-    <a class="list-group-item list-group-item-action main-nav-link" href="#"
+    <a class="list-group-item list-group-item-action main-right-nav-link" href="#"
        th:classappend="${categoryMenu == 'CS'}? 'active active-box'" th:href="@{'/category/CS'}">
         CS
     </a>
-    <a class="list-group-item list-group-item-action main-nav-link" href="#"
+    <a class="list-group-item list-group-item-action main-right-nav-link" href="#"
        th:classappend="${categoryMenu == 'Backend'}? 'active active-box'" th:href="@{'/category/Backend'}">
         Backend
     </a>
-    <a class="list-group-item list-group-item-action main-nav-link" href="#"
+    <a class="list-group-item list-group-item-action main-right-nav-link" href="#"
        th:classappend="${categoryMenu == 'Frontend'}? 'active active-box'" th:href="@{'/category/Frontend'}">
         Frontend
     </a>
-    <a class="list-group-item list-group-item-action main-nav-link" href="#"
+    <a class="list-group-item list-group-item-action main-right-nav-link" href="#"
        th:classappend="${categoryMenu == 'DevOps'}? 'active active-box'" th:href="@{'/category/DevOps'}">
         DevOps
     </a>
-    <a class="list-group-item list-group-item-action main-nav-link" href="#"
+    <a class="list-group-item list-group-item-action main-right-nav-link" href="#"
        th:classappend="${categoryMenu == 'Security'}? 'active active-box'" th:href="@{'/category/Security'}">
         Security
     </a>
-    <a class="list-group-item list-group-item-action main-nav-link" href="#"
+    <a class="list-group-item list-group-item-action main-right-nav-link" href="#"
        th:classappend="${categoryMenu == 'Motivation'}? 'active active-box'" th:href="@{'/category/Motivation'}">
         Motivation
     </a>

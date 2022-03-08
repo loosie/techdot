@@ -10,7 +10,7 @@
 
 <div class="container main-view-container" th:id="${mainMenu}">
     <div class="row justify-content-center py-1">
-        <div class="col-2 py-4">
+        <div class="col py-4">
             <nav th:replace="fragments/main-view-category-menu.html :: category-menu(categoryMenu = ${mainMenu})"></nav>
         </div>
 
@@ -101,12 +101,12 @@
     }
 
     function getCardEnd(data) {
-        const end = document.createElement('div');
-        end.className = 'card-body';
+        const footer = document.createElement('div');
+        footer.className = 'card-body';
 
         const writerBody = document.createElement('div');
         writerBody.className = 'd-flex justify-content-between align-items-center';
-        end.appendChild(writerBody);
+        footer.appendChild(writerBody);
 
         const small1 = document.createElement('small');
         small1.className = 'text-muted';
@@ -136,7 +136,27 @@
         }
         small2.appendChild(postType);
 
-        return end;
+        const customLikeBox = document.createElement("custom-like-box");
+
+        const likeInput = document.createElement("input");
+        likeInput.type = "checkbox";
+        likeInput.className = "like-button";
+        likeInput.id = data.postId;
+        likeInput.hidden = true;
+        customLikeBox.appendChild(likeInput)
+
+        const likeLabel = document.createElement("label");
+        likeLabel.setAttribute("for", data.postId);
+        likeLabel.style = 'margin-bottom: 0;'
+        customLikeBox.appendChild(likeLabel)
+
+        const likes = document.createElement("i");
+        likes.className="fa fa-heart-o"; // TODO: isLike? o : x
+        likes.setAttribute("aria-hidden", "true")
+        likeLabel.appendChild(likes);
+
+        writerBody.appendChild(customLikeBox);
+        return footer;
     }
 
     function getPost(data) {
@@ -191,7 +211,6 @@
             data: {
                 page: page, // current page
                 size: postsPerPageSize, //page size
-                categoryName: viewName
             },
             dataType: 'json'
         }).done(function (result) {
@@ -220,6 +239,46 @@
         addPage(++page, viewName);
     }; /*]]>*/
 </script>
+<script type="application/javascript" th:inline="javascript">
+    $(function () {
+        const likeButton = $(".like-button");
 
+        likeButton.on("click", onClickFunc)
+        function onClickFunc(e) {
+            const customLikeBox = e.target.parentElement.classList;
+            console.log(e.target.parentElement.classList.contains("like-active"));
+            if (customLikeBox.contains("like-active")) {
+                likeRequest("remove", e);
+            } else {
+                likeRequest("add", e);
+            }
+        }
+
+        function likeRequest(action, e) {
+            $.ajax({
+                url: "/like/" + action,
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({
+                    postId: e.target.id
+                })
+            }).done(function (data, status) {
+                // TODO: redirect login
+                console.log(status);
+                const customLikeBox = e.target.parentElement;
+                customLikeBox.querySelector('i').remove();
+                const like = document.createElement('i');
+                if(action==='remove'){
+                    customLikeBox.className = 'custom-like-box';
+                    like.className = 'fa fa-heart-o';
+                }else{
+                    customLikeBox.className = 'custom-like-box like-active';
+                    like.className = 'fa fa-heart';
+                }
+                customLikeBox.children[1].appendChild(like);
+            })
+        }
+    })
+</script>
 </body>
 </html>

@@ -2,10 +2,6 @@ package com.techdot.techdot.controller;
 
 import javax.validation.Valid;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -54,7 +50,7 @@ public class PostController {
 			return "post/form";
 		}
 
-		postService.post(postForm, member);
+		postService.save(postForm, member.getId());
 		return "redirect:/";
 	}
 
@@ -62,7 +58,7 @@ public class PostController {
 	@GetMapping("/post/{id}/edit")
 	public String updatePostView(@PathVariable Long id, @CurrentUser Member member, Model model) {
 		Post post = postService.getPostById(id);
-		if(!post.isManager(member)){
+		if(!post.isManager(member)){ // TODO: AuthException
 			return "redirect:/";
 		}
 		model.addAttribute(member);

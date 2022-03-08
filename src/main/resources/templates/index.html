@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
-<head th:replace="fragments/header.html :: head">
-    <meta name="_csrf" content="${_csrf.token}"/>
-</head>
+<head th:replace="fragments/header.html :: head"/>
 
 <body th:replace="fragments/main-view.html :: main-view(mainMenu = 'All')"></body>
 

@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.techdot.techdot.config.auth.CurrentUser;
 import com.techdot.techdot.domain.CategoryName;
+import com.techdot.techdot.domain.Like;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.dto.PostQueryDto;
+import com.techdot.techdot.repository.LikeRepository;
+import com.techdot.techdot.repository.PostRepository;
 import com.techdot.techdot.repository.PostRepositoryQueryImpl;
 
 import lombok.RequiredArgsConstructor;

@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.techdot.techdot.config.auth.CurrentUser;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.dto.JoinFormDto;
+import com.techdot.techdot.repository.LikeRepository;
 import com.techdot.techdot.service.MemberService;
 import com.techdot.techdot.utils.JoinFormValidator;
 
@@ -140,5 +141,6 @@ public class MemberController {
 		model.addAttribute("isOwner", findMember.equals(member));
 		return MEMBER_PROFILE_VIEW_NAME;
 	}
+
 
 }
