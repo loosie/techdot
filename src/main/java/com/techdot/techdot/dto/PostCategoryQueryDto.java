@@ -6,7 +6,7 @@ import com.techdot.techdot.domain.PostType;
 import lombok.Data;
 
 @Data
-public class PostQueryDto {
+public class PostCategoryQueryDto {
 	private Long postId;
 	private String title;
 	private String content;
@@ -15,8 +15,9 @@ public class PostQueryDto {
 	private PostType type;
 	private String thumbnailImage;
 	private CategoryName categoryName;
+	private Boolean isMemberLike = false;
 
-	public PostQueryDto(Long postId, String title, String content, String link, String writer, PostType type, String thumbnailImage, CategoryName categoryName) {
+	public PostCategoryQueryDto(Long postId, String title, String content, String link, String writer, PostType type, String thumbnailImage, CategoryName categoryName) {
 		this.postId = postId;
 		this.title = title;
 		this.content = content;

@@ -3,17 +3,15 @@ package com.techdot.techdot.repository;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import com.techdot.techdot.domain.CategoryName;
-import com.techdot.techdot.domain.Like;
-import com.techdot.techdot.domain.PostType;
-import com.techdot.techdot.dto.PostQueryDto;
+import com.techdot.techdot.domain.Post;
+import com.techdot.techdot.dto.PostCategoryQueryDto;
 
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @Repository
@@ -22,32 +20,41 @@ public class PostRepositoryQueryImpl implements PostRepositoryQuery {
 
 	private final EntityManager em;
 
-	@Override
-	public List<PostQueryDto> findAllDto(Pageable pageable) {
-		return em.createQuery(
-			"select new com.techdot.techdot.dto.PostQueryDto(p.id, p.title, p.content, p.link, p.writer, p.type,  p.thumbnailImage, c.name)"
-				+
-				" from Post p" +
-				" join p.category c"
-			, PostQueryDto.class)
+	public List<PostCategoryQueryDto> findAllDtoWithCategoryByCategoryName(String categoryName, Pageable pageable) {
+		String sql = "select new com.techdot.techdot.dto.PostCategoryQueryDto(p.id, p.title, p.content, p.link, p.writer, p.type,  p.thumbnailImage, c.name)" +
+			" from Post p" +
+			" join p.category c";
+		if(categoryName.equals("All")){
+			return em.createQuery(sql, PostCategoryQueryDto.class)
+				.setFirstResult(pageable.getPageSize() * (pageable.getPageNumber() - 1))
+				.setMaxResults(pageable.getPageSize())
+				.getResultList();
+		}
+
+		sql += " where p.category.name = :categoryName";
+		return em.createQuery(sql, PostCategoryQueryDto.class)
+			.setParameter("categoryName", CategoryName.valueOf(categoryName))
 			.setFirstResult(pageable.getPageSize() * (pageable.getPageNumber() - 1))
 			.setMaxResults(pageable.getPageSize())
 			.getResultList();
 	}
 
-	public List<PostQueryDto> findDtoByCategoryName(CategoryName categoryName, Pageable pageable) {
-		return em.createQuery(
-			"select new com.techdot.techdot.dto.PostQueryDto(p.id, p.title, p.content, p.link, p.writer, p.type,  p.thumbnailImage, c.name)"
-				+
-				" from Post p" +
-				" join p.category c" +
-				" where p.category.name = :categoryName"
-			, PostQueryDto.class)
-			.setParameter("categoryName", categoryName)
-			.setFirstResult(pageable.getPageSize() * (pageable.getPageNumber() - 1))
-			.setMaxResults(pageable.getPageSize())
+	public List<Long> findAllWithLikesAndCategoryByMemberIdAndCategoryName(Long memberId, String categoryName) {
+		String sql = "select p.id" +
+			" from Post p" +
+			" join p.category c" +
+			" join p.likes l" +
+			" where l.member.id = :memberId";
+		if(categoryName.equals("All")){
+			return em.createQuery(sql, Long.class)
+				.setParameter("memberId", memberId)
+				.getResultList();
+		}
+
+		sql += " and p.category.name = :categoryName";
+		return em.createQuery(sql, Long.class)
+			.setParameter("memberId", memberId)
+			.setParameter("categoryName", CategoryName.valueOf(categoryName))
 			.getResultList();
 	}
-
-
 }

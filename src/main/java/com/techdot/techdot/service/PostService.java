@@ -1,10 +1,8 @@
 package com.techdot.techdot.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,10 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.techdot.techdot.domain.Category;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.domain.Post;
+import com.techdot.techdot.dto.PostCategoryQueryDto;
 import com.techdot.techdot.dto.PostFormDto;
 import com.techdot.techdot.repository.CategoryRepository;
 import com.techdot.techdot.repository.MemberRepository;
 import com.techdot.techdot.repository.PostRepository;
+import com.techdot.techdot.repository.PostRepositoryQueryImpl;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,6 +26,7 @@ public class PostService {
 	private final PostRepository postRepo;
 	private final MemberRepository memberRepo;
 	private final CategoryRepository categoryRepository;
+	private final PostRepositoryQueryImpl postRepositoryQuery;
 
 	// 쿼리 발생 횟수
 	// validator url 중복 조회
@@ -68,4 +69,22 @@ public class PostService {
 		return postRepo.findByManager(member, pageable);
 	}
 
+	public List<PostCategoryQueryDto> findAllWithMemberLikesByCategory(Long memberId, String categoryName, Pageable pageable) {
+		// Post ByCategory 조회
+		List<PostCategoryQueryDto> allPosts = postRepositoryQuery.findAllDtoWithCategoryByCategoryName(categoryName, pageable);
+
+		// Member가 Like한 Post 조회
+		List<Long> likePosts = postRepositoryQuery.findAllWithLikesAndCategoryByMemberIdAndCategoryName(memberId, categoryName);
+
+		// 	Like한 Post 업데이트
+		for(int i=0; i<allPosts.size(); i++){
+			PostCategoryQueryDto post = allPosts.get(i);
+			if(likePosts.contains(post.getPostId())){
+				post.setIsMemberLike(true);
+			}
+		}
+
+		return allPosts;
+
+	}
 }

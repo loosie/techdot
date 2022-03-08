@@ -1,6 +1,8 @@
 package com.techdot.techdot.domain;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -63,6 +65,10 @@ public class Post {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="category_id")
 	private Category category;
+
+	@OneToMany(mappedBy = "post")
+	private List<Like> likes = new ArrayList<>();
+
 
 	@Builder
 	public Post(String title, String content, String writer, String link, String thumbnailImage, PostType type, Member manager, Category category) {

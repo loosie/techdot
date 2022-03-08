@@ -125,12 +125,12 @@
         writerBody.appendChild(small2);
 
         const postType = document.createElement('span');
-        postType.className= 'badge badge-pill'
-        if(data.type === 'BLOG') {
+        postType.className = 'badge badge-pill'
+        if (data.type === 'BLOG') {
             postType.className += ' badge-blog'
             postType.textContent = 'Blog';
         }
-        if(data.type === 'VIDEO') {
+        if (data.type === 'VIDEO') {
             postType.className += ' badge-video'
             postType.textContent = 'Video';
         }
@@ -143,6 +143,7 @@
         likeInput.className = "like-button";
         likeInput.id = data.postId;
         likeInput.hidden = true;
+        likeInput.addEventListener("click", onClickFunc); // like-button event 등록
         customLikeBox.appendChild(likeInput)
 
         const likeLabel = document.createElement("label");
@@ -151,7 +152,11 @@
         customLikeBox.appendChild(likeLabel)
 
         const likes = document.createElement("i");
-        likes.className="fa fa-heart-o"; // TODO: isLike? o : x
+        if (data.isMemberLike) {
+            likes.className = "fa fa-heart";
+        }else{
+            likes.className = "fa fa-heart-o";
+        }
         likes.setAttribute("aria-hidden", "true")
         likeLabel.appendChild(likes);
 
@@ -201,7 +206,7 @@
 
     const postsPerPageSize = 12;
     var flag = true;
-
+    var likeButton = $(".like-button");
     // ajax로 서버에 post 데이터 요청
     function addPage(page, viewName) {
         $.ajax({
@@ -214,7 +219,7 @@
             },
             dataType: 'json'
         }).done(function (result) {
-            console.log(result);
+            // console.log(result);
             if (result.length == 0) {
                 flag = false;
                 return;
@@ -224,6 +229,9 @@
                 postList.appendChild(getPostPage(result[i]));
             }
             addPaginationPage(page);
+
+            // like-button 갱신
+            likeButton = $(".like-button");
         });
     }
 
@@ -233,51 +241,61 @@
     const viewName = container[0].id;
     const articleListPagination = document.getElementById('post-list-pagination');
     let page = 0; // 초기 페이지 로드
+
     addPage(++page, viewName);
+    likeButton = $(".like-button");
+    // likeButton.on("click", onClickFunc)
+
     window.onscroll = function () {
         if (!flag || (getScrollTop() < getDocumentHeight() - window.innerHeight - 100)) return; // 스크롤이 페이지 하단에 도달할 경우 새 페이지 로드
         addPage(++page, viewName);
     }; /*]]>*/
+
+
+    /* like button logic */
+    function onClickFunc(e) {
+        const customLikeBox = e.target.parentElement.classList;
+        console.log(e.target.parentElement.classList.contains("like-active"));
+        if (customLikeBox.contains("like-active")) {
+            likeRequest("remove", e);
+        } else {
+            likeRequest("add", e);
+        }
+    }
+
+    function likeRequest(action, e) {
+        $.ajax({
+            url: "/like/" + action,
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({
+                postId: e.target.id
+            })
+        }).done(function (data, status) {
+            console.log('[(${#authentication.name})]');
+            if('[(${#authentication.name})]' == 'anonymousUser'){
+                window.location.href = "/login";
+                return;
+            }
+            console.log(status);
+            const customLikeBox = e.target.parentElement;
+            customLikeBox.querySelector('i').remove();
+            const like = document.createElement('i');
+            if(action==='remove'){
+                customLikeBox.className = 'custom-like-box';
+                like.className = 'fa fa-heart-o';
+            }else{
+                customLikeBox.className = 'custom-like-box like-active';
+                like.className = 'fa fa-heart';
+            }
+            customLikeBox.children[1].appendChild(like);
+        })
+    }
+
 </script>
 <script type="application/javascript" th:inline="javascript">
     $(function () {
-        const likeButton = $(".like-button");
 
-        likeButton.on("click", onClickFunc)
-        function onClickFunc(e) {
-            const customLikeBox = e.target.parentElement.classList;
-            console.log(e.target.parentElement.classList.contains("like-active"));
-            if (customLikeBox.contains("like-active")) {
-                likeRequest("remove", e);
-            } else {
-                likeRequest("add", e);
-            }
-        }
-
-        function likeRequest(action, e) {
-            $.ajax({
-                url: "/like/" + action,
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify({
-                    postId: e.target.id
-                })
-            }).done(function (data, status) {
-                // TODO: redirect login
-                console.log(status);
-                const customLikeBox = e.target.parentElement;
-                customLikeBox.querySelector('i').remove();
-                const like = document.createElement('i');
-                if(action==='remove'){
-                    customLikeBox.className = 'custom-like-box';
-                    like.className = 'fa fa-heart-o';
-                }else{
-                    customLikeBox.className = 'custom-like-box like-active';
-                    like.className = 'fa fa-heart';
-                }
-                customLikeBox.children[1].appendChild(like);
-            })
-        }
     })
 </script>
 </body>
