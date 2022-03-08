@@ -131,15 +131,6 @@ public class MemberController {
 		return "redirect:/accounts/password";
 	}
 
-	// @GetMapping("/{nickname}")
-	// public String profileView(@PathVariable String nickname, Model model, @CurrentUser Member member) {
-	// 	Member findMember = memberService.findByNickname(nickname, "redirect:/");
-	//
-	// 	model.addAttribute("profile", findMember);
-	// 	model.addAttribute(member);
-	// 	model.addAttribute("isOwner", findMember.equals(member));
-	// 	return MEMBER_PROFILE_VIEW_NAME;
-	// }
 
 	@GetMapping("/me/likes")
 	public String MyLikesView(@CurrentUser Member member, Model model) {

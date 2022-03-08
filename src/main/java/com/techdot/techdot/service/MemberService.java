@@ -94,15 +94,6 @@ public class MemberService {
 		javaMailSender.send(mailMessage);
 	}
 
-	public Member findByNickname(String nickname, String redirectView) {
-		Optional<Member> opMember = memberRepository.findByNickname(nickname);
-		if (opMember.isEmpty()) {
-			throw new UserNotExistedException(nickname + "에 해당하는 사용자가 없습니다.", redirectView);
-		}
-
-		return opMember.get();
-	}
-
 	public Member findByEmail(String email, String redirectView) {
 		Optional<Member> opMember = memberRepository.findByEmail(email);
 		if (opMember.isEmpty()) {
