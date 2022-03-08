@@ -23,8 +23,8 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 @RequiredArgsConstructor
 public class PostService {
-	private final PostRepository postRepo;
-	private final MemberRepository memberRepo;
+	private final PostRepository postRepository;
+	private final MemberRepository memberRepository;
 	private final CategoryRepository categoryRepository;
 	private final PostRepositoryQueryImpl postRepositoryQuery;
 
@@ -35,7 +35,7 @@ public class PostService {
 	// post insert
 	public void save(PostFormDto postForm, Long memberId) {
 		// 엔티티 조회
-		Member manager = memberRepo.findById(memberId).get(); // 이미 인증된 객체
+		Member manager = memberRepository.findById(memberId).get(); // 이미 인증된 객체
 		Category category = categoryRepository.findByName(postForm.getCategoryName()).orElseThrow(NullPointerException::new);
 
 		// 게시글 생성
@@ -51,25 +51,25 @@ public class PostService {
 			.build();
 
 		// 게시글 저장
-		postRepo.save(newPost);
+		postRepository.save(newPost);
 	}
 
 
 	public Post getPostById(Long id) {
-		return postRepo.getById(id);
+		return postRepository.getById(id);
 	}
 
 	public void updatePost(Long postId, PostFormDto postForm) {
-		Post post = postRepo.findById(postId).orElseThrow(NullPointerException::new);
+		Post post = postRepository.findById(postId).orElseThrow(NullPointerException::new);
 		post.update(postForm);
-		postRepo.save(post);
+		postRepository.save(post);
 	}
 
 	public Page<Post> findByManager(Member member, Pageable pageable) {
-		return postRepo.findByManager(member, pageable);
+		return postRepository.findByManager(member, pageable);
 	}
 
-	public List<PostCategoryQueryDto> findAllWithMemberLikesByCategory(Long memberId, String categoryName, Pageable pageable) {
+	public List<PostCategoryQueryDto> getPostsByCategoryClassifiedIsMemberLike(Long memberId, String categoryName, Pageable pageable) {
 		// Post ByCategory 조회
 		List<PostCategoryQueryDto> allPosts = postRepositoryQuery.findAllDtoWithCategoryByCategoryName(categoryName, pageable);
 
@@ -83,8 +83,12 @@ public class PostService {
 				post.setIsMemberLike(true);
 			}
 		}
-
 		return allPosts;
+	}
 
+	public List<PostCategoryQueryDto> getMemberLikesPosts(Long memberId, Pageable pageable) {
+		List<PostCategoryQueryDto> allLikePosts = postRepositoryQuery.findAllWithLikesByMemberId(memberId, pageable);
+		allLikePosts.stream().forEach(post -> post.setIsMemberLike(true));
+		return allLikePosts;
 	}
 }

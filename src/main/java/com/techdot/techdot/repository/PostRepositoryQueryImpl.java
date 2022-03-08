@@ -3,7 +3,6 @@ package com.techdot.techdot.repository;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
@@ -56,5 +55,18 @@ public class PostRepositoryQueryImpl implements PostRepositoryQuery {
 			.setParameter("memberId", memberId)
 			.setParameter("categoryName", CategoryName.valueOf(categoryName))
 			.getResultList();
+	}
+
+	public List<PostCategoryQueryDto> findAllWithLikesByMemberId(Long memberId, Pageable pageable) {
+		String sql = "select new com.techdot.techdot.dto.PostCategoryQueryDto(p.id, p.title, p.content, p.link, p.writer, p.type,  p.thumbnailImage, c.name)" +
+			" from Post p" +
+			" join p.category c" +
+			" join p.likes l" +
+			" where l.member.id = :memberId";
+			return em.createQuery(sql, PostCategoryQueryDto.class)
+				.setParameter("memberId", memberId)
+				.setFirstResult(pageable.getPageSize() * (pageable.getPageNumber() - 1))
+				.setMaxResults(pageable.getPageSize())
+				.getResultList();
 	}
 }

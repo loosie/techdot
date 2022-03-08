@@ -153,8 +153,10 @@
 
         const likes = document.createElement("i");
         if (data.isMemberLike) {
+            customLikeBox.className = 'custom-like-box like-active';
             likes.className = "fa fa-heart";
         }else{
+            customLikeBox.className = 'custom-like-box';
             likes.className = "fa fa-heart-o";
         }
         likes.setAttribute("aria-hidden", "true")
@@ -244,7 +246,6 @@
 
     addPage(++page, viewName);
     likeButton = $(".like-button");
-    // likeButton.on("click", onClickFunc)
 
     window.onscroll = function () {
         if (!flag || (getScrollTop() < getDocumentHeight() - window.innerHeight - 100)) return; // 스크롤이 페이지 하단에 도달할 경우 새 페이지 로드
@@ -293,10 +294,6 @@
     }
 
 </script>
-<script type="application/javascript" th:inline="javascript">
-    $(function () {
 
-    })
-</script>
 </body>
 </html>

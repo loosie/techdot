@@ -1,7 +1,14 @@
 package com.techdot.techdot.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -16,7 +23,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.techdot.techdot.config.auth.CurrentUser;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.domain.Post;
+import com.techdot.techdot.dto.PostCategoryQueryDto;
 import com.techdot.techdot.dto.PostFormDto;
+import com.techdot.techdot.repository.PostRepositoryQueryImpl;
 import com.techdot.techdot.service.PostService;
 import com.techdot.techdot.utils.PostFormValidator;
 
@@ -27,6 +36,7 @@ import lombok.RequiredArgsConstructor;
 public class PostController {
 
 	private final PostService postService;
+	private final PostRepositoryQueryImpl postRepositoryQuery;
 	private final PostFormValidator postFormValidator;
 
 	@InitBinder("postForm")
@@ -78,6 +88,27 @@ public class PostController {
 		postService.updatePost(id, postForm);
 		redirectAttributes.addFlashAttribute("message", "게시글이 정상적으로 수정되었습니다.");
 		return "redirect:/post/" + id + "/edit";
+	}
+
+	@GetMapping("/posts/{categoryName}")
+	public ResponseEntity<List<PostCategoryQueryDto>> postScrollByCategoryName(@PathVariable String categoryName,
+		@PageableDefault(page = 0, size = 12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+		@CurrentUser Member member) {
+		if (member != null) {
+			return new ResponseEntity<>(postService.getPostsByCategoryClassifiedIsMemberLike(
+				member.getId(), categoryName, pageable), HttpStatus.OK);
+		}
+
+		return new ResponseEntity<>(postRepositoryQuery.findAllDtoWithCategoryByCategoryName(categoryName, pageable),
+			HttpStatus.OK);
+	}
+
+	@GetMapping("/posts/me/likes")
+	public ResponseEntity<List<PostCategoryQueryDto>> getScrollPostsByMemberLikes(
+		@PageableDefault(page = 0, size = 12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+		@CurrentUser Member member) {
+		List<PostCategoryQueryDto> allLikePosts = postService.getMemberLikesPosts(member.getId(), pageable);
+		return new ResponseEntity<>(allLikePosts, HttpStatus.OK);
 	}
 
 }
