@@ -169,7 +169,6 @@
         }
     }
 
-    console.log('[(${requestUrl})]' + '[(${viewName})]');
     const postsPerPageSize = 12;
     var flag = true;
     var likeButton = $(".like-button");
@@ -204,7 +203,6 @@
     /* * Main */
     const postList = document.getElementById('post-list');
     const container = document.getElementsByClassName('main-view-container');
-    // const viewName = container[0].id;
     const articleListPagination = document.getElementById('post-list-pagination');
     let page = 0; // 초기 페이지 로드
 
@@ -220,7 +218,6 @@
     /* like button logic */
     function onClickFunc(e) {
         const customLikeBox = e.target.parentElement.classList;
-        console.log(e.target.parentElement.classList.contains("like-active"));
         if (customLikeBox.contains("like-active")) {
             likeRequest("remove", e);
         } else {
@@ -242,9 +239,10 @@
                 window.location.href = "/login";
                 return;
             }
-            console.log(status);
+            // console.log(status);
             const customLikeBox = e.target.parentElement;
             customLikeBox.querySelector('i').remove();
+
             const like = document.createElement('i');
             if(action==='remove'){
                 customLikeBox.className = 'custom-like-box';

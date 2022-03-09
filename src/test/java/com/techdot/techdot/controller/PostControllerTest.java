@@ -177,4 +177,7 @@ class PostControllerTest {
 			.andExpect(view().name("post/updateForm"))
 			.andExpect(authenticated());
 	}
+
+	// TODO: @GetMapping("/posts/{categoryName}")
+	// TODO: @GetMapping("/posts/me/likes")
 }

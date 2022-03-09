@@ -8,6 +8,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.util.Assert;
+
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -33,6 +35,9 @@ public class Like {
 
 	@Builder
 	public Like(Post post, Member member) {
+		Assert.notNull(post, "like.post 값이 존재하지 않습니다.");
+		Assert.notNull(member, "like.member 값이 존재하지 않습니다.");
+
 		this.post = post;
 		this.member = member;
 	}

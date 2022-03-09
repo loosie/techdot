@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.techdot.techdot.domain.Category;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.domain.Post;
-import com.techdot.techdot.dto.PostCategoryQueryDto;
+import com.techdot.techdot.dto.PostQueryDto;
 import com.techdot.techdot.dto.PostFormDto;
 import com.techdot.techdot.repository.CategoryRepository;
 import com.techdot.techdot.repository.MemberRepository;
@@ -69,16 +69,16 @@ public class PostService {
 		return postRepository.findByManager(member, pageable);
 	}
 
-	public List<PostCategoryQueryDto> getPostsByCategoryClassifiedIsMemberLike(Long memberId, String categoryName, Pageable pageable) {
+	public List<PostQueryDto> getPostsByCategoryClassifiedIsMemberLike(Long memberId, String categoryName, Pageable pageable) {
 		// Post ByCategory 조회
-		List<PostCategoryQueryDto> allPosts = postRepositoryQuery.findAllDtoWithCategoryByCategoryName(categoryName, pageable);
+		List<PostQueryDto> allPosts = postRepositoryQuery.findWithCategory(categoryName, pageable);
 
 		// Member가 Like한 Post 조회
-		List<Long> likePosts = postRepositoryQuery.findAllWithLikesAndCategoryByMemberIdAndCategoryName(memberId, categoryName);
+		List<Long> likePosts = postRepositoryQuery.findIdWithLikesAndCategoryByMember(memberId, categoryName);
 
 		// 	Like한 Post 업데이트
 		for(int i=0; i<allPosts.size(); i++){
-			PostCategoryQueryDto post = allPosts.get(i);
+			PostQueryDto post = allPosts.get(i);
 			if(likePosts.contains(post.getPostId())){
 				post.setIsMemberLike(true);
 			}
@@ -86,8 +86,8 @@ public class PostService {
 		return allPosts;
 	}
 
-	public List<PostCategoryQueryDto> getMemberLikesPosts(Long memberId, Pageable pageable) {
-		List<PostCategoryQueryDto> allLikePosts = postRepositoryQuery.findAllWithLikesByMemberId(memberId, pageable);
+	public List<PostQueryDto> getMemberLikesPosts(Long memberId, Pageable pageable) {
+		List<PostQueryDto> allLikePosts = postRepositoryQuery.findWithCategoryAndLikesByMember(memberId, pageable);
 		allLikePosts.stream().forEach(post -> post.setIsMemberLike(true));
 		return allLikePosts;
 	}

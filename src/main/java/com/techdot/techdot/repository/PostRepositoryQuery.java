@@ -5,12 +5,15 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.techdot.techdot.dto.PostCategoryQueryDto;
+import com.techdot.techdot.dto.PostQueryDto;
 
 
 @Transactional(readOnly = true)
 public interface PostRepositoryQuery {
 
-	List<PostCategoryQueryDto> findAllDtoWithCategoryByCategoryName(String categoryName, Pageable pageable);
+	List<PostQueryDto> findWithCategory(String categoryName, Pageable pageable);
 
+	List<Long> findIdWithLikesAndCategoryByMember(Long memberId, String categoryName);
+
+	List<PostQueryDto> findWithCategoryAndLikesByMember(Long memberId, Pageable pageable);
 }

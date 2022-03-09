@@ -34,9 +34,6 @@ public class LikeController {
 
 	@PostMapping("/like/remove")
 	public ResponseEntity likeRemove(@CurrentUser Member member, @RequestBody LikeFormDto likeForm) {
-		System.out.println(member);
-		System.out.println(likeForm.toString());
-
 		likeService.remove(member.getId(), likeForm.getPostId());
 		return ResponseEntity.ok().build();
 	}

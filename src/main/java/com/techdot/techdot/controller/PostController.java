@@ -23,7 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.techdot.techdot.config.auth.CurrentUser;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.domain.Post;
-import com.techdot.techdot.dto.PostCategoryQueryDto;
+import com.techdot.techdot.dto.PostQueryDto;
 import com.techdot.techdot.dto.PostFormDto;
 import com.techdot.techdot.repository.PostRepositoryQueryImpl;
 import com.techdot.techdot.service.PostService;
@@ -91,7 +91,7 @@ public class PostController {
 	}
 
 	@GetMapping("/posts/{categoryName}")
-	public ResponseEntity<List<PostCategoryQueryDto>> postScrollByCategoryName(@PathVariable String categoryName,
+	public ResponseEntity<List<PostQueryDto>> postScrollByCategoryName(@PathVariable String categoryName,
 		@PageableDefault(page = 0, size = 12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
 		@CurrentUser Member member) {
 		if (member != null) {
@@ -99,15 +99,15 @@ public class PostController {
 				member.getId(), categoryName, pageable), HttpStatus.OK);
 		}
 
-		return new ResponseEntity<>(postRepositoryQuery.findAllDtoWithCategoryByCategoryName(categoryName, pageable),
+		return new ResponseEntity<>(postRepositoryQuery.findWithCategory(categoryName, pageable),
 			HttpStatus.OK);
 	}
 
 	@GetMapping("/posts/me/likes")
-	public ResponseEntity<List<PostCategoryQueryDto>> getScrollPostsByMemberLikes(
+	public ResponseEntity<List<PostQueryDto>> getScrollPostsByMemberLikes(
 		@PageableDefault(page = 0, size = 12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
 		@CurrentUser Member member) {
-		List<PostCategoryQueryDto> allLikePosts = postService.getMemberLikesPosts(member.getId(), pageable);
+		List<PostQueryDto> allLikePosts = postService.getMemberLikesPosts(member.getId(), pageable);
 		return new ResponseEntity<>(allLikePosts, HttpStatus.OK);
 	}
 

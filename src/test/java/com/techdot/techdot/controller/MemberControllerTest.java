@@ -185,14 +185,14 @@ class MemberControllerTest {
 	}
 
 	@WithCurrentUser(TEST_EMAIL)
-	@DisplayName("프로필 뷰")
+	@DisplayName("내 프로필 (내가 좋아요한 게시글) 뷰")
 	@Test
 	void profileForm() throws Exception {
-		mockMvc.perform(get("/" + TEST_NICKNAME))
+		mockMvc.perform(get("/me/likes"))
 			.andExpect(status().isOk())
-			.andExpect(view().name(MEMBER_PROFILE_VIEW_NAME))
-			.andExpect(model().attributeExists("member"))
-			.andExpect(model().attributeExists("profile"))
-			.andExpect(model().attributeExists("isOwner"));
+			.andExpect(view().name(MEMBER_ME_LIKES_VIEW_NAME))
+			.andExpect(model().attributeExists("member"));
 	}
+
+
 }

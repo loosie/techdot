@@ -1,7 +1,5 @@
 package com.techdot.techdot.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -27,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberController {
 
-	static final String MEMBER_PROFILE_VIEW_NAME = "member/profile";
+	static final String MEMBER_ME_LIKES_VIEW_NAME = "member/likes";
 	public static final String EMAIL_LOGIN_VIEW_NAME = "member/email-login";
 
 	private final JoinFormValidator joinFormValidator;
@@ -131,13 +129,10 @@ public class MemberController {
 		return "redirect:/accounts/password";
 	}
 
-
 	@GetMapping("/me/likes")
 	public String MyLikesView(@CurrentUser Member member, Model model) {
 		model.addAttribute(member);
-		return "member/likes";
+		return MEMBER_ME_LIKES_VIEW_NAME;
 	}
-
-
 
 }

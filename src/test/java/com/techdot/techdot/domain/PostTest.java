@@ -10,35 +10,6 @@ import org.junit.jupiter.api.Test;
 
 class PostTest {
 
-	@DisplayName("게시글 생성하기 - 성공")
-	@Test
-	void post_create_success() {
-		Member member = Member.builder()
-			.nickname("loosie")
-			.password("12345678")
-			.termsCheck(true)
-			.email("jong9712@naver.com")
-			.emailVerified(false)
-			.build();
-
-		Category category = Category.builder()
-			.name(CategoryName.CS)
-			.build();
-
-		Post post = Post.builder()
-			.title("title1")
-			.content("content.content...")
-			.link("http://~~~.com")
-			.type(PostType.BLOG)
-			.category(category)
-			.writer("naver")
-			.manager(member)
-			.build();
-
-		assertEquals(post.getTitle(), "title1");
-		assertEquals(post.getManager(), member);
-		assertEquals(post.getType(), PostType.BLOG);
-	}
 
 	@DisplayName("게시글 생성하기 - 입력값 오류 manager, category null")
 	@Test
