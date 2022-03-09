@@ -83,9 +83,9 @@ class MainControllerTest {
 			.andExpect(unauthenticated());
 	}
 
-	@DisplayName("카테고리 별로 메인 뷰 보여주기")
+	@DisplayName("카테고리 별로 뷰 보여주기")
 	@Test
-	void mainView_ByCategoryName() throws Exception {
+	void mainByCategoryView() {
 		Arrays.stream(CategoryName.values()).forEach(categoryName -> {
 			try {
 				mockMvc.perform(get("/category/" + categoryName.name()))

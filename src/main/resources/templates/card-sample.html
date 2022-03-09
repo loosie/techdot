@@ -5,45 +5,121 @@
     <title>Title</title>
 </head>
 <body>
-<div class="col-sm-10 py-5">
-    <div class="row">
-        <div class="col-md-3 py-3" th:each="post: ${postList}">
-            <div class="card mb shadow-sm">
-                <a th:href="@{${post.link}}" class="text-dark">
-                    <img th:if="${!#strings.isEmpty(post.thumbnailImage)}" th:src="${post.thumbnailImage}" class="card-img-top" th:alt="${post.title}" >
-                    <img th:if="${#strings.isEmpty(post.thumbnailImage)}"  src="/images/default_thumbnail.png" class="card-img-top" th:alt="${post.title}" >
-                </a>
-                <div class="card-body" style="overflow: hidden; height: 210px">
-                    <small class="text-muted">
-                        <span th:text="${post.category.name}"></span>
-                    </small>
-                    <a th:href="@{${post.link}}" class="text-dark" style="font-weight: bold">
-                        <h5 class="card-title context" th:text="${post.title}"></h5>
-                    </a>
-                    <a th:href="@{${post.link}}" class="text-dark">
-                        <p class="card-text" th:text="${post.content}">link</p>
-                    </a>
-                    <a th:href="@{${post.link}}" class="text-dark">
-                        <p class="card-text context">
-                        </p>
-                    </a>
-                </div>
+<nav th:replace="fragments/navbar.html :: auth-nav"></nav>
 
-                <div class="card-body" style="padding: 0.5rem 1.25rem 0.5rem">
+<div class="alert alert-warning" role="alert" th:if="${member != null && member.emailVerified == false}">
+    TechDot 가입을 완료하려면 <a href="#" th:href="@{/check-email}" class="alert-link"> 계정 인증 이메일을 확인 </a>하세요.
+</div>
+<div class="container main-view-container" th:id="${mainMenu}">
+    <div class="row justify-content-center py-1">
+        <div class="col-2 py-4">
+            <nav th:replace="fragments/main-view-category-menu.html :: category-menu(categoryMenu = ${mainMenu})"></nav>
+        </div>
 
-                    <div class="d-flex justify-content-between align-items-center">
-                        <small class="text-muted">
-                            <i class="fa fa-user-circle"></i>
-                            <span th:text="${post.writer}"></span>
-                        </small>
-                        <small class="text-muted">
-                            <span th:text="${post.type}"></span>
-                        </small>
+        <div class="col-sm-10 py-5">
+            <div class="row">
+                <div class="col-md-3 py-3" th:each="post: ${postList}">
+                    <div class="card mb shadow-sm">
+                        <a th:href="@{${post.link}}" class="text-dark">
+                            <img th:if="${!#strings.isEmpty(post.thumbnailImage)}" th:src="${post.thumbnailImage}"
+                                 class="card-img-top" th:alt="${post.title}">
+                            <img th:if="${#strings.isEmpty(post.thumbnailImage)}" src="/images/default_thumbnail.png"
+                                 class="card-img-top" th:alt="${post.title}">
+                        </a>
+                        <div class="card-body" style="overflow: hidden; height: 210px">
+                            <small class="text-muted">
+                                <span th:text="${post.category.name}"></span>
+                            </small>
+                            <a th:href="@{${post.link}}" class="text-dark" style="font-weight: bold">
+                                <h5 class="card-title context" th:text="${post.title}"></h5>
+                            </a>
+                            <a th:href="@{${post.link}}" class="text-dark">
+                                <p class="card-text" th:text="${post.content}">link</p>
+                            </a>
+                            <a th:href="@{${post.link}}" class="text-dark">
+                                <p class="card-text context">
+                                </p>
+                            </a>
+                        </div>
+
+                        <div class="card-body" style="padding: 0.5rem 1.25rem 0.5rem">
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fa fa-user-circle"></i>
+                                    <span th:text="${post.writer}"></span>
+                                </small>
+                                <small class="text-muted">
+                                    <span th:text="${post.type}"></span>
+                                </small>
+                                <div class="custom-like-box">
+                                    <input class="like-button" type="checkbox" name="p_id" th:id="${post.id}"
+                                           th:value="${post.id}" hidden/>
+                                    <label th:for="${post.id}">
+                                        <i class="fa fa-heart-o dislike"></i>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 </div>
+
+<script type="application/javascript" th:inline="javascript" th:fragment="ajax-csrf-header">
+    $(function () {
+        var csrfToken = /*[[${_csrf.token}]]*/ null;
+        var csrfHeader = /*[[${_csrf.headerName}]]*/ null;
+        $(document).ajaxSend(function (e, xhr, options) {
+            xhr.setRequestHeader(csrfHeader, csrfToken);
+        });
+    });
+</script>
+<script type="application/javascript" th:inline="javascript">
+    $(function () {
+
+        const likeButton = $(".like-button");
+
+        likeButton.on("click", onClickFunc)
+
+        function onClickFunc(e) {
+            const customLikeBox = e.target.parentElement.classList;
+            console.log(e.target.parentElement.classList.contains("like-active"));
+            if (customLikeBox.contains("like-active")) {
+                likeRequest("remove", e);
+            } else {
+                likeRequest("add", e);
+            }
+        }
+
+        function likeRequest(action, e) {
+            $.ajax({
+                url: "/like/" + action,
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({
+                    postId: e.target.id
+                })
+            }).done(function (data, status) {
+                console.log(status);
+                const customLikeBox = e.target.parentElement;
+                customLikeBox.querySelector('i').remove();
+                const like = document.createElement('i');
+                if(action==='remove'){
+                    customLikeBox.className = 'custom-like-box';
+                    like.className = 'fa fa-heart-o';
+                }else{
+                    customLikeBox.className = 'custom-like-box like-active';
+                    like.className = 'fa fa-heart';
+                }
+                customLikeBox.children[1].appendChild(like);
+            })
+        }
+    })
+</script>
+
 </body>
 </html>

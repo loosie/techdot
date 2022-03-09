@@ -1,7 +1,5 @@
 package com.techdot.techdot.exception;
 
-import static com.techdot.techdot.controller.MemberController.*;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -36,4 +34,5 @@ public class GlobalExceptionHandler {
 		model.addAttribute("error", ex.getMessage());
 		return ex.getViewName();
 	}
+
 }

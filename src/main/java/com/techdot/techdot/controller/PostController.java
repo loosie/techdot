@@ -1,11 +1,14 @@
 package com.techdot.techdot.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -21,6 +24,7 @@ import com.techdot.techdot.config.auth.CurrentUser;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.domain.Post;
 import com.techdot.techdot.dto.PostFormDto;
+import com.techdot.techdot.dto.PostQueryDto;
 import com.techdot.techdot.service.PostService;
 import com.techdot.techdot.utils.PostFormValidator;
 
@@ -54,15 +58,14 @@ public class PostController {
 			return "post/form";
 		}
 
-		postService.post(postForm, member);
+		postService.save(postForm, member.getId());
 		return "redirect:/";
 	}
-
 
 	@GetMapping("/post/{id}/edit")
 	public String updatePostView(@PathVariable Long id, @CurrentUser Member member, Model model) {
 		Post post = postService.getPostById(id);
-		if(!post.isManager(member)){
+		if (!post.isManager(member)) { // TODO: AuthException
 			return "redirect:/";
 		}
 		model.addAttribute(member);
@@ -84,4 +87,18 @@ public class PostController {
 		return "redirect:/post/" + id + "/edit";
 	}
 
+	@GetMapping("/posts/{categoryName}")
+	public ResponseEntity<List<PostQueryDto>> getPostsByCategory_scrolling(@PathVariable String categoryName,
+		@PageableDefault(page = 0, size = 12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+		@CurrentUser Member member) {
+		return new ResponseEntity<>(
+			postService.getPostsByCategory_andIfMember_memberLikes(member, categoryName, pageable), HttpStatus.OK);
+	}
+
+	@GetMapping("/posts/me/likes")
+	public ResponseEntity<List<PostQueryDto>> getPostsByMemberLikes_scrolling(
+		@PageableDefault(page = 0, size = 12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+		@CurrentUser Member member) {
+		return new ResponseEntity<>(postService.getPostsByMemberLikes(member.getId(), pageable), HttpStatus.OK);
+	}
 }

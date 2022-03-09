@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MemberService {
 
-	private final MemberRepository memberRepo;
+	private final MemberRepository memberRepository;
 	private final JavaMailSender javaMailSender;
 	private final PasswordEncoder passwordEncoder;
 
@@ -58,7 +58,7 @@ public class MemberService {
 			.termsCheck(joinForm.getTermsCheck())
 			.build();
 		member.generateEmailCheckToken();
-		return memberRepo.save(member);
+		return memberRepository.save(member);
 	}
 
 	public void completeLogin(Member member) {
@@ -76,12 +76,12 @@ public class MemberService {
 
 	public void updateProfile(Member member, ProfileFormDto profileForm) {
 		member.updateProfile(profileForm);
-		memberRepo.save(member);
+		memberRepository.save(member);
 	}
 
 	public void updatePassword(Member member, PasswordFormDto passwordForm) {
 		member.updatePassword(passwordEncoder.encode(passwordForm.getNewPassword()));
-		memberRepo.save(member);
+		memberRepository.save(member);
 	}
 
 	public void sendLoginLink(Member member) {
@@ -94,17 +94,8 @@ public class MemberService {
 		javaMailSender.send(mailMessage);
 	}
 
-	public Member findByNickname(String nickname, String redirectView) {
-		Optional<Member> opMember = memberRepo.findByNickname(nickname);
-		if (opMember.isEmpty()) {
-			throw new UserNotExistedException(nickname + "에 해당하는 사용자가 없습니다.", redirectView);
-		}
-
-		return opMember.get();
-	}
-
 	public Member findByEmail(String email, String redirectView) {
-		Optional<Member> opMember = memberRepo.findByEmail(email);
+		Optional<Member> opMember = memberRepository.findByEmail(email);
 		if (opMember.isEmpty()) {
 			throw new UserNotExistedException(email + "은 유효한 이메일이 아닙니다.", redirectView);
 		}

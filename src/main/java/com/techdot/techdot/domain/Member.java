@@ -1,8 +1,6 @@
 package com.techdot.techdot.domain;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -10,11 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
-import javax.persistence.OneToMany;
 
 import org.springframework.util.Assert;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.techdot.techdot.dto.ProfileFormDto;
 
 import lombok.Builder;

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="fragments/header.html :: head"></head>
+
+<body class="bg-light">
+<nav th:replace="fragments/navbar.html :: auth-nav"></nav>
+
+<div class="container main-view-container py-5">
+
+    <div class="row justify-content-center py-5">
+        <div class="col-10 py-3">
+            <h1 th:text="${member.nickname}"></h1>
+        </div>
+
+        <nav th:replace="fragments/profile-menu.html :: profile-menu(profileMenu='likes')"></nav>
+    </div>
+
+    <div class="row justify-content-center py-3">
+        <div class="col-sm-10">
+            <div class="row post-list" id="post-list">
+            </div>
+            <!-- Pagination List -->
+            <ul class="post-list__pagination post-list__pagination--inactive" id="post-list-pagination"
+                style="display: none"></ul>
+        </div>
+    </div>
+
+
+</div>
+<footer th:replace="fragments/footer.html :: footer"></footer>
+
+
+<script type="text/javascript" th:inline="javascript" th:replace="fragments/ajax-csrf-header.html :: ajax-csrf-header" ></script>
+<script type="text/javascript" th:inline="javascript" th:replace="fragments/post-factory.html :: post-factory(requestUrl = '/posts/me/likes', viewName='')" ></script>
+
+</body>
+</html>

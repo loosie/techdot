@@ -1,6 +1,5 @@
 package com.techdot.techdot.controller;
 
-
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -26,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberController {
 
-	static final String MEMBER_PROFILE_VIEW_NAME = "member/profile";
+	static final String MEMBER_ME_LIKES_VIEW_NAME = "member/likes";
 	public static final String EMAIL_LOGIN_VIEW_NAME = "member/email-login";
 
 	private final JoinFormValidator joinFormValidator;
@@ -71,11 +70,11 @@ public class MemberController {
 
 	@GetMapping("/check-email")
 	public String checkEmail(@CurrentUser Member member, String email, Model model) {
-		if(member.getEmailVerified()){
+		if (member.getEmailVerified()) {
 			return "redirect:/";
 		}
 
-		if(member != null){
+		if (member != null) {
 			model.addAttribute("email", member.getEmail());
 			return "member/check-email";
 		}
@@ -117,7 +116,6 @@ public class MemberController {
 		return "redirect:/email-login";
 	}
 
-
 	@GetMapping("/login-by-email")
 	public String loginByEmail(String token, String email, Model model) {
 		Member member = memberService.findByEmail(email, EMAIL_LOGIN_VIEW_NAME);
@@ -131,14 +129,10 @@ public class MemberController {
 		return "redirect:/accounts/password";
 	}
 
-	@GetMapping("/{nickname}")
-	public String profileView(@PathVariable String nickname, Model model, @CurrentUser Member member) {
-		Member findMember = memberService.findByNickname(nickname, "redirect:/");
-
-		model.addAttribute("profile", findMember);
+	@GetMapping("/me/likes")
+	public String MyLikesView(@CurrentUser Member member, Model model) {
 		model.addAttribute(member);
-		model.addAttribute("isOwner", findMember.equals(member));
-		return MEMBER_PROFILE_VIEW_NAME;
+		return MEMBER_ME_LIKES_VIEW_NAME;
 	}
 
 }
