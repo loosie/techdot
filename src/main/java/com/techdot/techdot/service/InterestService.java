@@ -1,5 +1,6 @@
 package com.techdot.techdot.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -8,13 +9,15 @@ import com.techdot.techdot.domain.Category;
 import com.techdot.techdot.domain.CategoryName;
 import com.techdot.techdot.domain.Interest;
 import com.techdot.techdot.domain.Member;
+import com.techdot.techdot.dto.InterestCategoryResponseDto;
 import com.techdot.techdot.repository.CategoryRepository;
 import com.techdot.techdot.repository.InterestRepository;
 import com.techdot.techdot.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
-@Service
+@Service @Slf4j
 @RequiredArgsConstructor
 public class InterestService {
 
@@ -51,5 +54,16 @@ public class InterestService {
 		}
 
 		interestRepository.delete(interest.get());
+	}
+
+	public List<InterestCategoryResponseDto>  getInterestCategoriesByMember(Member member) {
+		List<InterestCategoryResponseDto> allCategories = interestRepository.findAllWithCategoryByMember(
+			member.getId());
+		for(int i=0; i<allCategories.size(); i++){
+			log.debug("interest = " + allCategories.get(i));
+		}
+
+		return allCategories;
+
 	}
 }
