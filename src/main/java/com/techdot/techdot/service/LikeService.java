@@ -26,7 +26,7 @@ public class LikeService {
 		Member findMember = memberRepository.findById(memberId).get(); // 이미 인증된 객체
 		Post findPost = postRepository.findById(postId).orElseThrow(NullPointerException::new);
 
-		if(likeRepository.existsByMemberAndPost(findMember, findPost)){
+		if(likeRepository.findByMemberAndPost(findMember, findPost).isPresent()){
 			throw new RuntimeException("이미 좋아요를 누른 게시글입니다.");
 		}
 

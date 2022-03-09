@@ -12,7 +12,4 @@ import com.techdot.techdot.domain.Post;
 @Transactional(readOnly = true)
 public interface LikeRepository extends JpaRepository<Like, Long> {
 	Optional<Like> findByMemberAndPost(Member me, Post post);
-
-	boolean existsByMemberAndPost(Member member, Post post);
-
 }

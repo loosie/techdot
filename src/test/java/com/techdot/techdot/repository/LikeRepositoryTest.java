@@ -75,18 +75,7 @@ class LikeRepositoryTest {
 		assertEquals(saveLike.getMember(), member);
 	}
 
-	@DisplayName("멤버와 게시글로 좋아요 존재여부 확인하기")
-	@Test
-	void like_existsByMemberAndPost(){
-		Like like = Like.builder()
-			.member(member)
-			.post(post)
-			.build();
-		likeRepository.save(like);
 
-		// when, then
-		assertTrue(likeRepository.existsByMemberAndPost(member, post));
-	}
 
 	@DisplayName("멤버와 게시글로 좋아요 조회하기")
 	@Test

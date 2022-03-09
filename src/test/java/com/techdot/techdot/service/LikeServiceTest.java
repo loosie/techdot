@@ -72,7 +72,7 @@ class LikeServiceTest {
 		// given
 		given(memberRepository.findById(1L)).willReturn(Optional.of(member));
 		given(postRepository.findById(1L)).willReturn(Optional.of(post));
-		given(likeRepository.existsByMemberAndPost(member, post)).willReturn(false);
+		given(likeRepository.findByMemberAndPost(member, post)).willReturn(Optional.empty());
 
 		// when
 		likeService.add(1L, 1L);
@@ -80,7 +80,7 @@ class LikeServiceTest {
 		// then
 		then(memberRepository).should(times(1)).findById(any());
 		then(postRepository).should(times(1)).findById(any());
-		then(likeRepository).should(times(1)).existsByMemberAndPost(any(), any());
+		then(likeRepository).should(times(1)).findByMemberAndPost(any(), any());
 		then(likeRepository).should(times(1)).save(Like.builder().member(member).post(post).build());
 
 	}
