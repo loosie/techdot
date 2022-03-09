@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.com">
+<html lang="en" xmlns:th="http://www.thymeleaf.com"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <div th:fragment="category-menu (categoryMenu)" class="list-group justify-content-center nav main-right-nav-tabs">
     <a class="list-group-item list-group-item-action main-right-nav-link" href="#"
        th:classappend="${categoryMenu == 'All'}? 'active active-box'" th:href="@{'/'}">
         All
+    </a>
+    <a sec:authorize="isAuthenticated()" class="list-group-item list-group-item-action main-right-nav-link" href="#"
+       th:classappend="${categoryMenu == 'MyInterests'}? 'active active-box'" th:href="@{'/me/interests'}">
+        My Interests
     </a>
     <a class="list-group-item list-group-item-action main-right-nav-link" href="#"
        th:classappend="${categoryMenu == 'CS'}? 'active active-box'" th:href="@{'/category/CS'}">

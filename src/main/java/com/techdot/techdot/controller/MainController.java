@@ -32,4 +32,11 @@ public class MainController {
 		}
 		return CategoryName.valueOf(categoryName).getViewName();
 	}
+
+	@GetMapping("/me/interests")
+	public String MyInterestsView(@CurrentUser Member member, Model model){
+		// TODO : 관심 카테고리 post 불러오기 (postController에서 동적으로)
+		model.addAttribute(member);
+		return "main/my-interests";
+	}
 }
