@@ -64,11 +64,10 @@ public class PostController {
 		return "redirect:/";
 	}
 
-
 	@GetMapping("/post/{id}/edit")
 	public String updatePostView(@PathVariable Long id, @CurrentUser Member member, Model model) {
 		Post post = postService.getPostById(id);
-		if(!post.isManager(member)){ // TODO: AuthException
+		if (!post.isManager(member)) { // TODO: AuthException
 			return "redirect:/";
 		}
 		model.addAttribute(member);
@@ -91,24 +90,17 @@ public class PostController {
 	}
 
 	@GetMapping("/posts/{categoryName}")
-	public ResponseEntity<List<PostQueryDto>> postScrollByCategoryName(@PathVariable String categoryName,
+	public ResponseEntity<List<PostQueryDto>> getPostsByCategory_scrolling(@PathVariable String categoryName,
 		@PageableDefault(page = 0, size = 12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
 		@CurrentUser Member member) {
-		if (member != null) {
-			return new ResponseEntity<>(postService.getPostsByCategoryClassifiedIsMemberLike(
-				member.getId(), categoryName, pageable), HttpStatus.OK);
-		}
-
-		return new ResponseEntity<>(postRepositoryQuery.findWithCategory(categoryName, pageable),
-			HttpStatus.OK);
+		return new ResponseEntity<>(
+			postService.getPostsByCategory_andIfMember_memberLikes(member, categoryName, pageable), HttpStatus.OK);
 	}
 
 	@GetMapping("/posts/me/likes")
-	public ResponseEntity<List<PostQueryDto>> getScrollPostsByMemberLikes(
+	public ResponseEntity<List<PostQueryDto>> getPostsByMemberLikes_scrolling(
 		@PageableDefault(page = 0, size = 12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
 		@CurrentUser Member member) {
-		List<PostQueryDto> allLikePosts = postService.getMemberLikesPosts(member.getId(), pageable);
-		return new ResponseEntity<>(allLikePosts, HttpStatus.OK);
+		return new ResponseEntity<>(postService.getPostsByMemberLikes(member.getId(), pageable), HttpStatus.OK);
 	}
-
 }

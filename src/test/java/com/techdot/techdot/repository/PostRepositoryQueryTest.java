@@ -81,7 +81,7 @@ class PostRepositoryQueryTest {
 	@Test
 	void find_post_withCategory() {
 		// when
-		List<PostQueryDto> result = postRepositoryQuery.findWithCategory("All", PageRequest.of(1, 1));
+		List<PostQueryDto> result = postRepositoryQuery.findWithCategoryByCategoryName("All", PageRequest.of(1, 1));
 		PostQueryDto post = result.get(0);
 
 		// then

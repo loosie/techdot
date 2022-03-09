@@ -36,7 +36,8 @@ public class PostService {
 	public void save(PostFormDto postForm, Long memberId) {
 		// 엔티티 조회
 		Member manager = memberRepository.findById(memberId).get(); // 이미 인증된 객체
-		Category category = categoryRepository.findByName(postForm.getCategoryName()).orElseThrow(NullPointerException::new);
+		Category category = categoryRepository.findByName(postForm.getCategoryName())
+			.orElseThrow(NullPointerException::new);
 
 		// 게시글 생성
 		Post newPost = Post.builder()
@@ -54,7 +55,6 @@ public class PostService {
 		postRepository.save(newPost);
 	}
 
-
 	public Post getPostById(Long id) {
 		return postRepository.getById(id);
 	}
@@ -69,26 +69,32 @@ public class PostService {
 		return postRepository.findByManager(member, pageable);
 	}
 
-	public List<PostQueryDto> getPostsByCategoryClassifiedIsMemberLike(Long memberId, String categoryName, Pageable pageable) {
-		// Post ByCategory 조회
-		List<PostQueryDto> allPosts = postRepositoryQuery.findWithCategory(categoryName, pageable);
+	// 카테고리별로 게시글 가져오기 (만약 멤버가 좋아하면 멤버가 좋아요 누른 게시글 정보도 가져오기)
+	// post 조회 쿼리 1번
+	// if(member) member가 좋아요 누른 쿼리 1번
+	// TODO: 쿼리 하나로 합치기
+	public List<PostQueryDto> getPostsByCategory_andIfMember_memberLikes(Member member, String categoryName,
+		Pageable pageable) {
+		// 게시글 카테고리 별로 조회
+		List<PostQueryDto> allPosts = postRepositoryQuery.findWithCategoryByCategoryName(categoryName, pageable);
 
-		// Member가 Like한 Post 조회
-		List<Long> likePosts = postRepositoryQuery.findIdWithLikesAndCategoryByMember(memberId, categoryName);
+		// member가 null이 아닐 경우
+		if (member != null) {
+			// member가 좋아요 누른 게시글 Id 조회
+			List<Long> likePosts = postRepositoryQuery.findIdWithLikesAndCategoryByMember(member.getId(), categoryName);
 
-		// 	Like한 Post 업데이트
-		for(int i=0; i<allPosts.size(); i++){
-			PostQueryDto post = allPosts.get(i);
-			if(likePosts.contains(post.getPostId())){
-				post.setIsMemberLike(true);
-			}
+			// 	좋아요 누른 게시글 정보 업데이트
+			allPosts.stream().filter(post -> likePosts.contains(post.getPostId()))
+				.forEach(post -> post.setIsMemberLike(true));
 		}
 		return allPosts;
 	}
 
-	public List<PostQueryDto> getMemberLikesPosts(Long memberId, Pageable pageable) {
+	// 멤버가 좋아요 누른 게시글 가져오기
+	public List<PostQueryDto> getPostsByMemberLikes(Long memberId, Pageable pageable) {
 		List<PostQueryDto> allLikePosts = postRepositoryQuery.findWithCategoryAndLikesByMember(memberId, pageable);
 		allLikePosts.stream().forEach(post -> post.setIsMemberLike(true));
 		return allLikePosts;
 	}
+
 }

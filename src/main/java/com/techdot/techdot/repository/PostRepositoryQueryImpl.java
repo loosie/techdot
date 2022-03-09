@@ -18,9 +18,9 @@ public class PostRepositoryQueryImpl implements PostRepositoryQuery {
 
 	private final EntityManager em;
 
-	// TODO: 메인 뷰 조회 (findWithCategory +  findIdWithLikesAndCategoryByMember) -> 중복 제거하기
+	// TODO: 메인 뷰 조회 (findWithCategoryByCategoryName +  findIdWithLikesAndCategoryByMember) -> 중복 제거하기
 	@Override
-	public List<PostQueryDto> findWithCategory(String categoryName, Pageable pageable) {
+	public List<PostQueryDto> findWithCategoryByCategoryName(String categoryName, Pageable pageable) {
 		String sql =
 			"select new com.techdot.techdot.dto.PostQueryDto(p.id, p.title, p.content, p.link, p.writer, p.type,  p.thumbnailImage, c.name)" +
 				" from Post p" +

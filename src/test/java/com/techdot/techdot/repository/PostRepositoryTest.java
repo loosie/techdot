@@ -2,6 +2,8 @@ package com.techdot.techdot.repository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -114,6 +116,5 @@ class PostRepositoryTest {
 		assertEquals(byManager.getContent().get(0).getId(), savePost.getId());
 
 	}
-
 
 }

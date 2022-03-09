@@ -9,19 +9,6 @@ import com.techdot.techdot.dto.ProfileFormDto;
 
 class MemberTest {
 
-	@DisplayName("멤버 생성하기 - 성공")
-	@Test
-	void member_create_success() {
-		Member member = Member.builder()
-			.nickname("loosie")
-			.password("12345678")
-			.termsCheck(true)
-			.email("jong9712@naver.com")
-			.emailVerified(false)
-			.build();
-
-		assertEquals(member.getNickname(), "loosie");
-	}
 
 	@DisplayName("멤버 생성 실패 - 입력값 오류 password null")
 	@Test
