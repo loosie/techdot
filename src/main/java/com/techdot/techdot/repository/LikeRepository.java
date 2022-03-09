@@ -1,6 +1,5 @@
 package com.techdot.techdot.repository;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,4 +14,5 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
 	Optional<Like> findByMemberAndPost(Member me, Post post);
 
 	boolean existsByMemberAndPost(Member member, Post post);
+
 }
