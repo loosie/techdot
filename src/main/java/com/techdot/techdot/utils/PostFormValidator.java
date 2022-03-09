@@ -5,8 +5,6 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import com.techdot.techdot.dto.PostFormDto;
-import com.techdot.techdot.dto.ProfileFormDto;
-import com.techdot.techdot.repository.MemberRepository;
 import com.techdot.techdot.repository.PostRepository;
 
 import lombok.RequiredArgsConstructor;

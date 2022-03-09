@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import com.techdot.techdot.domain.Like;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.domain.Post;
-import com.techdot.techdot.exception.UserNotExistedException;
 import com.techdot.techdot.repository.LikeRepository;
 import com.techdot.techdot.repository.MemberRepository;
 import com.techdot.techdot.repository.PostRepository;

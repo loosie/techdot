@@ -23,9 +23,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.techdot.techdot.config.auth.CurrentUser;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.domain.Post;
-import com.techdot.techdot.dto.PostQueryDto;
 import com.techdot.techdot.dto.PostFormDto;
-import com.techdot.techdot.repository.PostRepositoryQueryImpl;
+import com.techdot.techdot.dto.PostQueryDto;
 import com.techdot.techdot.service.PostService;
 import com.techdot.techdot.utils.PostFormValidator;
 
@@ -36,7 +35,6 @@ import lombok.RequiredArgsConstructor;
 public class PostController {
 
 	private final PostService postService;
-	private final PostRepositoryQueryImpl postRepositoryQuery;
 	private final PostFormValidator postFormValidator;
 
 	@InitBinder("postForm")

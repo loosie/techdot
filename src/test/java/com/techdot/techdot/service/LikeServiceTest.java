@@ -1,6 +1,5 @@
 package com.techdot.techdot.service;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 import java.util.Optional;

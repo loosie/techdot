@@ -12,11 +12,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 import com.techdot.techdot.domain.CategoryName;
 import com.techdot.techdot.domain.Member;
-import com.techdot.techdot.domain.Post;
 import com.techdot.techdot.domain.PostType;
 import com.techdot.techdot.dto.PostQueryDto;
 import com.techdot.techdot.repository.CategoryRepository;
