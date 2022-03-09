@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -68,6 +69,14 @@ class PostRepositoryQueryTest {
 		postRepository.save(post);
 	}
 
+	@AfterEach
+	void clean(){
+		likeRepository.deleteAll();
+		postRepository.deleteAll();
+		memberRepository.deleteAll();
+		categoryRepository.deleteAll();
+	}
+
 	@DisplayName("카테고리 별로 게시글 조회하기")
 	@Test
 	void find_post_withCategory() {
@@ -81,7 +90,7 @@ class PostRepositoryQueryTest {
 		assertEquals(post.getType(), PostType.BLOG);
 	}
 
-	@DisplayName("멤버가 좋아요한 게시글 번호(Id) 조회하기")
+	@DisplayName("멤버가 좋아요한 카테고리 게시글 Id 조회하기")
 	@Test
 	void find_postId_withLikesAndCategoryByMember() {
 		//given
@@ -95,6 +104,7 @@ class PostRepositoryQueryTest {
 		assertEquals(result.get(0), post.getId());
 	}
 
+	@DisplayName("멤버(memberId)가 좋아요 누른 게시글 모두 조회하기")
 	@Test
 	void find_post_withLikesByMember(){
 		//given

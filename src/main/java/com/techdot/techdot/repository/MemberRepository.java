@@ -9,6 +9,7 @@ import com.techdot.techdot.domain.Member;
 
 @Transactional(readOnly = true)
 public interface MemberRepository extends JpaRepository<Member, Long> {
+
 	boolean existsByEmail(String email);
 
 	boolean existsByNickname(String nickname);

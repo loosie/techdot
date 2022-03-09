@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JoinFormValidator implements Validator {
 
-	private final MemberRepository memberRepo;
+	private final MemberRepository memberRepository;
 
 	@Override
 	public boolean supports(Class<?> clazz) {
@@ -23,12 +23,12 @@ public class JoinFormValidator implements Validator {
 	@Override
 	public void validate(Object target, Errors errors) {
 		JoinFormDto joinForm = (JoinFormDto)target;
-		if(memberRepo.existsByNickname(joinForm.getNickname())){
+		if(memberRepository.existsByNickname(joinForm.getNickname())){
 			errors.rejectValue("nickname", "invalid.nickname", new Object[]{joinForm.getNickname()}, "이미 사용중인 닉네임입니다.");
 			return;
 		}
 
-		if(memberRepo.existsByEmail(joinForm.getEmail())){
+		if(memberRepository.existsByEmail(joinForm.getEmail())){
 			errors.rejectValue("email", "invalid.email", new Object[]{joinForm.getEmail()}, "이미 사용중인 이메일입니다.");
 			return;
 		}
