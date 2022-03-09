@@ -10,5 +10,6 @@ import com.techdot.techdot.domain.CategoryName;
 
 @Transactional(readOnly = true)
 public interface CategoryRepository extends JpaRepository<Category, Long> {
+
 	Optional<Category> findByName(CategoryName name);
 }
