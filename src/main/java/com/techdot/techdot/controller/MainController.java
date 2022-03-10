@@ -32,4 +32,10 @@ public class MainController {
 		}
 		return CategoryName.valueOf(categoryName).getViewName();
 	}
+
+	@GetMapping("/me/interests")
+	public String MyInterestsView(@CurrentUser Member member, Model model){
+		model.addAttribute(member);
+		return "main/my-interests";
+	}
 }

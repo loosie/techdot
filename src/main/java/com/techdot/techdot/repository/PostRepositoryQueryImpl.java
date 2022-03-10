@@ -20,7 +20,7 @@ public class PostRepositoryQueryImpl implements PostRepositoryQuery {
 
 	// TODO: 메인 뷰 조회 (findWithCategoryByCategoryName +  findIdWithLikesAndCategoryByMember) -> 중복 제거하기
 	@Override
-	public List<PostQueryDto> findWithCategoryByCategoryName(String categoryName, Pageable pageable) {
+	public List<PostQueryDto> findQueryDtoByCategoryName(String categoryName, Pageable pageable) {
 		String sql =
 			"select new com.techdot.techdot.dto.PostQueryDto(p.id, p.title, p.content, p.link, p.writer, p.type,  p.thumbnailImage, c.name)" +
 				" from Post p" +
@@ -41,7 +41,7 @@ public class PostRepositoryQueryImpl implements PostRepositoryQuery {
 	}
 
 	@Override
-	public List<Long> findIdWithLikesAndCategoryByMember(Long memberId, String categoryName) {
+	public List<Long> findIdByLikesMemberId(Long memberId, String categoryName) {
 		String sql = "select p.id" +
 			" from Post p" +
 			" join p.category c" +
@@ -61,7 +61,7 @@ public class PostRepositoryQueryImpl implements PostRepositoryQuery {
 	}
 
 	@Override
-	public List<PostQueryDto> findWithCategoryAndLikesByMember(Long memberId, Pageable pageable) {
+	public List<PostQueryDto> findQueryDtoByLikesMemberId(Long memberId, Pageable pageable) {
 		String sql =
 			"select new com.techdot.techdot.dto.PostQueryDto(p.id, p.title, p.content, p.link, p.writer, p.type, p.thumbnailImage, c.name)" +
 				" from Post p" +
@@ -74,4 +74,21 @@ public class PostRepositoryQueryImpl implements PostRepositoryQuery {
 			.setMaxResults(pageable.getPageSize())
 			.getResultList();
 	}
+
+	@Override
+	public List<PostQueryDto> findQueryDtoByInterestsMemberId(Long memberId, Pageable pageable) {
+		String sql =
+			"select new com.techdot.techdot.dto.PostQueryDto(p.id, p.title, p.content, p.link, p.writer, p.type, p.thumbnailImage, c.name)" +
+				" from Post p" +
+				" join p.category c" +
+				" join c.interests i" +
+				" where i.member.id = :memberId";
+		return em.createQuery(sql, PostQueryDto.class)
+			.setParameter("memberId", memberId)
+			.setFirstResult(pageable.getPageSize() * (pageable.getPageNumber() - 1))
+			.setMaxResults(pageable.getPageSize())
+			.getResultList();
+	}
+
+
 }

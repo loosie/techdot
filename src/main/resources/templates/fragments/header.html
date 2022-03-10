@@ -25,6 +25,22 @@
             text-decoration: none !important;
         }
 
+        .card-title {
+            word-wrap: break-word;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-text {
+            word-wrap: break-word;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
         .log-container {
             max-width: 1080px !important;
         }
@@ -114,6 +130,12 @@
         .badge-video{
             color: #1a1b1e;
             background-color: bisque;
+        }
+
+        .custom-control-input:checked~.custom-control-label::before {
+            color: #fff;
+            border-color: #1a1b1e;
+            background-color: #1a1b1e;
         }
 
     </style>

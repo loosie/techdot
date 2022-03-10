@@ -9,13 +9,28 @@
 </div>
 
 <div class="container main-view-container" th:id="${mainMenu}">
-    <div class="row justify-content-center py-1">
+
+
+    <div class="row justify-content-center py-4">
         <div class="col py-4">
             <nav th:replace="fragments/main-view-category-menu.html :: category-menu(categoryMenu = ${mainMenu})"></nav>
         </div>
 
         <div class="col-sm-10">
+            <div class="row justify-content-center py-1">
+                <div class="col" style="display: flex;">
+                    <div>
+                        <h1 th:text="${mainMenu}"></h1>
+                    </div>
+                    <div th:if="${mainMenu}!='All' and ${mainMenu}!='MyInterests'" id="interest-switch" class="custom-control custom-switch ml-auto mr-4" style="display:flex; align-items: center" >
+                        <input type="checkbox" class="custom-control-input" th:value="${mainMenu}" id="customSwitch1">
+                        <label class="custom-control-label" for="customSwitch1">관심 카테고리</label>
+                    </div>
+                </div>
+
+            </div>
             <div class="row post-list" id="post-list">
+
             </div>
             <!-- Pagination List -->
             <ul class="post-list__pagination post-list__pagination--inactive" id="post-list-pagination"
@@ -29,6 +44,64 @@
 
 <script type="text/javascript" th:inline="javascript" th:replace="fragments/ajax-csrf-header.html :: ajax-csrf-header" ></script>
 <script type="text/javascript" th:inline="javascript" th:replace="fragments/post-factory.html :: post-factory(requestUrl = '/posts/', viewName = ${mainMenu})" ></script>
+<script type="application/javascript" th:inline="javascript">
+    $(function () {
+        const interestButton = $(".custom-control-input");
 
+        function getMemberCategories(){
+            $.ajax({
+                url : "/interests/me/list",
+                type: "GET"
+            }).done(function (data, status) {
+                console.log(status);
+                console.log(interestButton.parent());
+                for(var i=0; i<data.length; i++){
+
+                    if(data[i].categoryName == '[(${mainMenu})]'){
+                        interestButton.attr('checked', true);
+                        document.getElementById("interest-switch").classList.add('interest-active');
+                    }
+                }
+            })
+        }
+        if('[(${#authentication.name})]' != 'anonymousUser') {
+            getMemberCategories()
+        }
+
+        interestButton.on("click", onClickFunc)
+        function onClickFunc(e) {
+            const interestSwitch = e.target.parentElement.classList;
+            console.log(interestSwitch);
+            if(interestSwitch.contains("interest-active")){
+                interestRequest("remove", e, interestSwitch);
+            }else{
+                interestRequest("add", e, interestSwitch);
+            }
+        }
+
+        function interestRequest(action, e, interestSwitch) {
+            console.log(e.target.value);
+            $.ajax({
+                url: "/interest/" + action,
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({
+                    categoryName: e.target.value
+                })
+            }).done(function (data, status) {
+                console.log(status);
+                if('[(${#authentication.name})]' == 'anonymousUser'){
+                    window.location.href = "/login";
+                    return;
+                }
+                if(action==='remove'){
+                    interestSwitch.remove('interest-active');
+                }else{
+                    interestSwitch.add('interest-active');
+                }
+            })
+        }
+    })
+</script>
 </body>
 </html>

@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 
 import com.techdot.techdot.domain.Category;
 import com.techdot.techdot.domain.CategoryName;
+import com.techdot.techdot.domain.Interest;
 import com.techdot.techdot.domain.Like;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.domain.Post;
@@ -24,8 +25,7 @@ import com.techdot.techdot.dto.PostQueryDto;
 class PostRepositoryQueryTest {
 
 	@Autowired
-	private PostRepositoryQueryImpl postRepositoryQuery;
-
+	private PostRepositoryQuery postRepositoryQuery;
 	@Autowired
 	private PostRepository postRepository;
 	@Autowired
@@ -34,6 +34,8 @@ class PostRepositoryQueryTest {
 	private CategoryRepository categoryRepository;
 	@Autowired
 	private LikeRepository likeRepository;
+	@Autowired
+	private InterestRepository interestRepository;
 
 	private Member member;
 	private Category category;
@@ -71,6 +73,7 @@ class PostRepositoryQueryTest {
 
 	@AfterEach
 	void clean(){
+		interestRepository.deleteAll();
 		likeRepository.deleteAll();
 		postRepository.deleteAll();
 		memberRepository.deleteAll();
@@ -79,9 +82,9 @@ class PostRepositoryQueryTest {
 
 	@DisplayName("카테고리 별로 게시글 조회하기")
 	@Test
-	void find_post_withCategory() {
+	void findPostQueryDto_byCategoryName() {
 		// when
-		List<PostQueryDto> result = postRepositoryQuery.findWithCategoryByCategoryName("All", PageRequest.of(1, 1));
+		List<PostQueryDto> result = postRepositoryQuery.findQueryDtoByCategoryName("All", PageRequest.of(1, 1));
 		PostQueryDto post = result.get(0);
 
 		// then
@@ -92,29 +95,44 @@ class PostRepositoryQueryTest {
 
 	@DisplayName("멤버가 좋아요한 카테고리 게시글 Id 조회하기")
 	@Test
-	void find_postId_withLikesAndCategoryByMember() {
+	void findPostId_withLikesMemberId() {
 		//given
 		likeRepository.save(Like.builder().member(member).post(post).build());
 
 		// when
-		List<Long> result = postRepositoryQuery.findIdWithLikesAndCategoryByMember(member.getId(), "All");
+		List<Long> result = postRepositoryQuery.findIdByLikesMemberId(member.getId(), "All");
 
 		// then
 		assertTrue(result.size() > 0);
 		assertEquals(result.get(0), post.getId());
 	}
 
-	@DisplayName("멤버(memberId)가 좋아요 누른 게시글 모두 조회하기")
+	@DisplayName("멤버가 좋아요 누른 게시글 모두 조회하기")
 	@Test
-	void find_post_withLikesByMember(){
+	void findPostQueryDto_withCategory_byLikesMemberId(){
 		//given
 		likeRepository.save(Like.builder().member(member).post(post).build());
 
 		// when
-		List<PostQueryDto> result = postRepositoryQuery.findWithCategoryAndLikesByMember(member.getId(),
+		List<PostQueryDto> result = postRepositoryQuery.findQueryDtoByLikesMemberId(member.getId(),
 			PageRequest.of(1, 1));
 
 		// then
 		assertTrue(result.size() > 0);
 	}
+
+	@DisplayName("멤버가 관심 카테고리로 지정한 게시글 모두 조회하기")
+	@Test
+	void findPostQueryDto_byInterestsMemberId(){
+		//given
+		interestRepository.save(Interest.builder().member(member).category(category).build());
+
+		// when
+		List<PostQueryDto> result = postRepositoryQuery.findQueryDtoByInterestsMemberId(member.getId(),
+			PageRequest.of(1, 1));
+
+		// then
+		assertTrue(result.size() > 0);
+	}
+
 }

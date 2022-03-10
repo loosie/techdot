@@ -11,9 +11,11 @@ import com.techdot.techdot.dto.PostQueryDto;
 @Transactional(readOnly = true)
 public interface PostRepositoryQuery {
 
-	List<PostQueryDto> findWithCategoryByCategoryName(String categoryName, Pageable pageable);
+	List<PostQueryDto> findQueryDtoByCategoryName(String categoryName, Pageable pageable);
 
-	List<Long> findIdWithLikesAndCategoryByMember(Long memberId, String categoryName);
+	List<Long> findIdByLikesMemberId(Long memberId, String categoryName);
 
-	List<PostQueryDto> findWithCategoryAndLikesByMember(Long memberId, Pageable pageable);
+	List<PostQueryDto> findQueryDtoByLikesMemberId(Long memberId, Pageable pageable);
+
+	List<PostQueryDto> findQueryDtoByInterestsMemberId(Long memberId, Pageable pageable);
 }

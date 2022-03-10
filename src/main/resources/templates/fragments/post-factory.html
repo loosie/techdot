@@ -217,15 +217,15 @@
 
     /* like button logic */
     function onClickFunc(e) {
-        const customLikeBox = e.target.parentElement.classList;
-        if (customLikeBox.contains("like-active")) {
-            likeRequest("remove", e);
+        const customLikeBox = e.target.parentElement;
+        if (customLikeBox.classList.contains("like-active")) {
+            likeRequest("remove", e, customLikeBox);
         } else {
-            likeRequest("add", e);
+            likeRequest("add", e, customLikeBox);
         }
     }
 
-    function likeRequest(action, e) {
+    function likeRequest(action, e, customLikeBox) {
         $.ajax({
             url: "/like/" + action,
             type: "POST",
@@ -234,21 +234,18 @@
                 postId: e.target.id
             })
         }).done(function (data, status) {
-            console.log('[(${#authentication.name})]');
             if('[(${#authentication.name})]' == 'anonymousUser'){
                 window.location.href = "/login";
                 return;
             }
-            // console.log(status);
-            const customLikeBox = e.target.parentElement;
             customLikeBox.querySelector('i').remove();
 
             const like = document.createElement('i');
             if(action==='remove'){
-                customLikeBox.className = 'custom-like-box';
+                customLikeBox.classList.remove('like-active');
                 like.className = 'fa fa-heart-o';
             }else{
-                customLikeBox.className = 'custom-like-box like-active';
+                customLikeBox.classList.add('like-active');
                 like.className = 'fa fa-heart';
             }
             customLikeBox.children[1].appendChild(like);

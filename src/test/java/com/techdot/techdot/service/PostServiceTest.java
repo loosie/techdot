@@ -48,7 +48,7 @@ class PostServiceTest {
 			new PostQueryDto(1L, "title", "content", "http://link.com", "writer", PostType.BLOG,
 				"", CategoryName.CS)
 		);
-		given(postRepositoryQuery.findWithCategoryByCategoryName("CS", PageRequest.of(1,1)))
+		given(postRepositoryQuery.findQueryDtoByCategoryName("CS", PageRequest.of(1,1)))
 			.willReturn(allPosts);
 
 		// when
@@ -56,7 +56,7 @@ class PostServiceTest {
 			PageRequest.of(1, 1));
 
 		// then
-		then(postRepositoryQuery).should(times(1)).findWithCategoryByCategoryName(any(), any());
+		then(postRepositoryQuery).should(times(1)).findQueryDtoByCategoryName(any(), any());
 		assertEquals(result.get(0).getPostId(), 1L);
 		assertEquals(result.get(0).getContent(), "content");
 	}
@@ -76,9 +76,9 @@ class PostServiceTest {
 			new PostQueryDto(1L, "title", "content", "http://link.com", "writer", PostType.BLOG,
 				"", CategoryName.CS)
 		);
-		given(postRepositoryQuery.findWithCategoryByCategoryName("CS", PageRequest.of(1,1)))
+		given(postRepositoryQuery.findQueryDtoByCategoryName("CS", PageRequest.of(1,1)))
 			.willReturn(allPosts);
-		given(postRepositoryQuery.findIdWithLikesAndCategoryByMember(member.getId(), "CS"))
+		given(postRepositoryQuery.findIdByLikesMemberId(member.getId(), "CS"))
 			.willReturn(List.of(1L));
 
 		// when
@@ -86,8 +86,8 @@ class PostServiceTest {
 			PageRequest.of(1, 1));
 
 		// then
-		then(postRepositoryQuery).should(times(1)).findWithCategoryByCategoryName(any(), any());
-		then(postRepositoryQuery).should(times(1)).findIdWithLikesAndCategoryByMember(any(), any());
+		then(postRepositoryQuery).should(times(1)).findQueryDtoByCategoryName(any(), any());
+		then(postRepositoryQuery).should(times(1)).findIdByLikesMemberId(any(), any());
 		assertEquals(result.get(0).getPostId(), 1L);
 		assertEquals(result.get(0).getContent(), "content");
 		assertTrue(result.get(0).getIsMemberLike());
@@ -101,14 +101,14 @@ class PostServiceTest {
 			new PostQueryDto(1L, "title", "content", "http://link.com", "writer", PostType.BLOG,
 				"", CategoryName.CS)
 		);
-		given(postRepositoryQuery.findWithCategoryAndLikesByMember(1L, PageRequest.of(1,1)))
+		given(postRepositoryQuery.findQueryDtoByLikesMemberId(1L, PageRequest.of(1,1)))
 			.willReturn(allPosts);
 
 		// when
 		List<PostQueryDto> result = postService.getPostsByMemberLikes(1L, PageRequest.of(1, 1));
 
 		// then
-		then(postRepositoryQuery).should(times(1)).findWithCategoryAndLikesByMember(any(), any());
+		then(postRepositoryQuery).should(times(1)).findQueryDtoByLikesMemberId(any(), any());
 		assertEquals(result.get(0).getPostId(), 1L);
 		assertEquals(result.get(0).getContent(), "content");
 		assertTrue(result.get(0).getIsMemberLike());
