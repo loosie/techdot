@@ -15,8 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
+import com.techdot.techdot.auth.WithCurrentUser;
+import com.techdot.techdot.config.auth.CurrentUser;
 import com.techdot.techdot.domain.CategoryName;
+import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.repository.MemberRepository;
 import com.techdot.techdot.dto.JoinFormDto;
 import com.techdot.techdot.service.MemberService;
@@ -96,7 +101,16 @@ class MainControllerTest {
 				throw new RuntimeException(e);
 			}
 		});
+	}
 
+	@WithCurrentUser("test1@naver.com")
+	@DisplayName("관심 카테고리 뷰 보여주기")
+	@Test
+	void mainMyInterestsView() throws Exception{
+		mockMvc.perform(get("/me/interests"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("main/my-interests"))
+			.andExpect(authenticated());
 	}
 
 }
