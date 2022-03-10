@@ -92,9 +92,12 @@ public class PostService {
 
 	// 멤버가 좋아요 누른 게시글 가져오기
 	public List<PostQueryDto> getPostsByMemberLikes(Long memberId, Pageable pageable) {
-		List<PostQueryDto> allLikePosts = postRepositoryQuery.findWithCategoryAndLikesByMember(memberId, pageable);
+		List<PostQueryDto> allLikePosts = postRepositoryQuery.findWithCategoryByLikesMemberId(memberId, pageable);
 		allLikePosts.stream().forEach(post -> post.setIsMemberLike(true));
 		return allLikePosts;
 	}
 
+	public List<PostQueryDto> getPostsByMemberInterests(Long memberId, Pageable pageable) {
+		return postRepositoryQuery.findWithCategoryByInterestsMemberId(memberId, pageable);
+	}
 }

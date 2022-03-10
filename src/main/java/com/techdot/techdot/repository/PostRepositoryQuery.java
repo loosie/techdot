@@ -15,5 +15,7 @@ public interface PostRepositoryQuery {
 
 	List<Long> findIdByLikesMemberId(Long memberId, String categoryName);
 
-	List<PostQueryDto> findWithCategoryAndLikesByMember(Long memberId, Pageable pageable);
+	List<PostQueryDto> findWithCategoryByLikesMemberId(Long memberId, Pageable pageable);
+
+	List<PostQueryDto> findWithCategoryByInterestsMemberId(Long memberId, Pageable pageable);
 }

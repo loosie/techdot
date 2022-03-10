@@ -111,7 +111,7 @@ class PostRepositoryQueryTest {
 		likeRepository.save(Like.builder().member(member).post(post).build());
 
 		// when
-		List<PostQueryDto> result = postRepositoryQuery.findWithCategoryAndLikesByMember(member.getId(),
+		List<PostQueryDto> result = postRepositoryQuery.findWithCategoryByLikesMemberId(member.getId(),
 			PageRequest.of(1, 1));
 
 		// then

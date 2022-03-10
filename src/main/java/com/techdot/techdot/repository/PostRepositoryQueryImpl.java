@@ -61,7 +61,7 @@ public class PostRepositoryQueryImpl implements PostRepositoryQuery {
 	}
 
 	@Override
-	public List<PostQueryDto> findWithCategoryAndLikesByMember(Long memberId, Pageable pageable) {
+	public List<PostQueryDto> findWithCategoryByLikesMemberId(Long memberId, Pageable pageable) {
 		String sql =
 			"select new com.techdot.techdot.dto.PostQueryDto(p.id, p.title, p.content, p.link, p.writer, p.type, p.thumbnailImage, c.name)" +
 				" from Post p" +
@@ -74,4 +74,21 @@ public class PostRepositoryQueryImpl implements PostRepositoryQuery {
 			.setMaxResults(pageable.getPageSize())
 			.getResultList();
 	}
+
+	@Override
+	public List<PostQueryDto> findWithCategoryByInterestsMemberId(Long memberId, Pageable pageable) {
+		String sql =
+			"select new com.techdot.techdot.dto.PostQueryDto(p.id, p.title, p.content, p.link, p.writer, p.type, p.thumbnailImage, c.name)" +
+				" from Post p" +
+				" join p.category c" +
+				" join c.interests i" +
+				" where i.member.id = :memberId";
+		return em.createQuery(sql, PostQueryDto.class)
+			.setParameter("memberId", memberId)
+			.setFirstResult(pageable.getPageSize() * (pageable.getPageNumber() - 1))
+			.setMaxResults(pageable.getPageSize())
+			.getResultList();
+	}
+
+
 }

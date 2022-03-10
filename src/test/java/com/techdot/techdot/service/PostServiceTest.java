@@ -101,14 +101,14 @@ class PostServiceTest {
 			new PostQueryDto(1L, "title", "content", "http://link.com", "writer", PostType.BLOG,
 				"", CategoryName.CS)
 		);
-		given(postRepositoryQuery.findWithCategoryAndLikesByMember(1L, PageRequest.of(1,1)))
+		given(postRepositoryQuery.findWithCategoryByLikesMemberId(1L, PageRequest.of(1,1)))
 			.willReturn(allPosts);
 
 		// when
 		List<PostQueryDto> result = postService.getPostsByMemberLikes(1L, PageRequest.of(1, 1));
 
 		// then
-		then(postRepositoryQuery).should(times(1)).findWithCategoryAndLikesByMember(any(), any());
+		then(postRepositoryQuery).should(times(1)).findWithCategoryByLikesMemberId(any(), any());
 		assertEquals(result.get(0).getPostId(), 1L);
 		assertEquals(result.get(0).getContent(), "content");
 		assertTrue(result.get(0).getIsMemberLike());
