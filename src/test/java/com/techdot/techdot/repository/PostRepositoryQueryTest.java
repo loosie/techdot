@@ -97,7 +97,7 @@ class PostRepositoryQueryTest {
 		likeRepository.save(Like.builder().member(member).post(post).build());
 
 		// when
-		List<Long> result = postRepositoryQuery.findIdWithLikesAndCategoryByMember(member.getId(), "All");
+		List<Long> result = postRepositoryQuery.findIdByLikesMemberId(member.getId(), "All");
 
 		// then
 		assertTrue(result.size() > 0);

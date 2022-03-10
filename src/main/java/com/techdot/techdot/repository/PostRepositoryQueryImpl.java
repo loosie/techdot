@@ -41,7 +41,7 @@ public class PostRepositoryQueryImpl implements PostRepositoryQuery {
 	}
 
 	@Override
-	public List<Long> findIdWithLikesAndCategoryByMember(Long memberId, String categoryName) {
+	public List<Long> findIdByLikesMemberId(Long memberId, String categoryName) {
 		String sql = "select p.id" +
 			" from Post p" +
 			" join p.category c" +

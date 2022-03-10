@@ -78,7 +78,7 @@ class PostServiceTest {
 		);
 		given(postRepositoryQuery.findWithCategoryByCategoryName("CS", PageRequest.of(1,1)))
 			.willReturn(allPosts);
-		given(postRepositoryQuery.findIdWithLikesAndCategoryByMember(member.getId(), "CS"))
+		given(postRepositoryQuery.findIdByLikesMemberId(member.getId(), "CS"))
 			.willReturn(List.of(1L));
 
 		// when
@@ -87,7 +87,7 @@ class PostServiceTest {
 
 		// then
 		then(postRepositoryQuery).should(times(1)).findWithCategoryByCategoryName(any(), any());
-		then(postRepositoryQuery).should(times(1)).findIdWithLikesAndCategoryByMember(any(), any());
+		then(postRepositoryQuery).should(times(1)).findIdByLikesMemberId(any(), any());
 		assertEquals(result.get(0).getPostId(), 1L);
 		assertEquals(result.get(0).getContent(), "content");
 		assertTrue(result.get(0).getIsMemberLike());

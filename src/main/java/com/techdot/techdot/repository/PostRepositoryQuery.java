@@ -13,7 +13,7 @@ public interface PostRepositoryQuery {
 
 	List<PostQueryDto> findWithCategoryByCategoryName(String categoryName, Pageable pageable);
 
-	List<Long> findIdWithLikesAndCategoryByMember(Long memberId, String categoryName);
+	List<Long> findIdByLikesMemberId(Long memberId, String categoryName);
 
 	List<PostQueryDto> findWithCategoryAndLikesByMember(Long memberId, Pageable pageable);
 }

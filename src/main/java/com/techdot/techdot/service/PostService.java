@@ -81,7 +81,7 @@ public class PostService {
 		// member가 null이 아닐 경우
 		if (member != null) {
 			// member가 좋아요 누른 게시글 Id 조회
-			List<Long> likePosts = postRepositoryQuery.findIdWithLikesAndCategoryByMember(member.getId(), categoryName);
+			List<Long> likePosts = postRepositoryQuery.findIdByLikesMemberId(member.getId(), categoryName);
 
 			// 	좋아요 누른 게시글 정보 업데이트
 			allPosts.stream().filter(post -> likePosts.contains(post.getPostId()))

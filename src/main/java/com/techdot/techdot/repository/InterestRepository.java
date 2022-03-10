@@ -20,5 +20,5 @@ public interface InterestRepository extends JpaRepository<Interest, Long> {
 	Optional<Interest> findByMemberAndCategory(Member member, Category category);
 
 	@Query("select new com.techdot.techdot.dto.InterestCategoryResponseDto(c.name) from Interest i join i.category c where i.member.id = :memberId")
-	List<InterestCategoryResponseDto> findAllWithCategoryByMember(@Param("memberId") Long memberId);
+	List<InterestCategoryResponseDto> findAllCategoriesByMemberId(@Param("memberId") Long memberId);
 }
