@@ -20,7 +20,6 @@ class LikeRepositoryTest {
 
 	@Autowired
 	private LikeRepository likeRepository;
-
 	@Autowired
 	private PostRepository postRepository;
 	@Autowired
@@ -74,8 +73,6 @@ class LikeRepositoryTest {
 		assertEquals(saveLike.getPost(), post);
 		assertEquals(saveLike.getMember(), member);
 	}
-
-
 
 	@DisplayName("멤버와 게시글로 좋아요 조회하기")
 	@Test
