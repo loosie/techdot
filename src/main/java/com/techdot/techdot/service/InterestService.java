@@ -59,11 +59,6 @@ public class InterestService {
 	public List<InterestCategoryResponseDto>  getInterestCategoriesByMember(Member member) {
 		List<InterestCategoryResponseDto> allCategories = interestRepository.findAllCategoriesByMemberId(
 			member.getId());
-		for(int i=0; i<allCategories.size(); i++){
-			log.debug("interest = " + allCategories.get(i));
-		}
-
 		return allCategories;
-
 	}
 }
