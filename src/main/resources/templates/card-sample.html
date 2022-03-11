@@ -84,7 +84,6 @@
 
         function onClickFunc(e) {
             const customLikeBox = e.target.parentElement.classList;
-            console.log(e.target.parentElement.classList.contains("like-active"));
             if (customLikeBox.contains("like-active")) {
                 likeRequest("remove", e);
             } else {
@@ -101,7 +100,7 @@
                     postId: e.target.id
                 })
             }).done(function (data, status) {
-                console.log(status);
+                // console.log(status);
                 const customLikeBox = e.target.parentElement;
                 customLikeBox.querySelector('i').remove();
                 const like = document.createElement('i');

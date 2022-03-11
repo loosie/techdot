@@ -49,11 +49,11 @@
 
                         <li class="page-item"  th:classappend="${i == postPage.getNumber()}? active"
                             th:each="i: ${#numbers.sequence(0, postPage.getTotalPages() - 1)}">
-                            <a th:href="@{'/my-upload?page=' + ${i} + '&sort=' + ${sortProperty} + ',desc'}"
+                            <a th:href="@{'/accounts/my-upload?page=' + ${i} + '&sort=' + ${sortProperty} + ',desc'}"
                                class="page-link" href="#" th:text="${i + 1}">1</a>
                         </li>
                         <li class="page-item" th:classappend="${!postPage.hasNext()}? disabled">
-                            <a th:href="@{'/my-upload?page=' + ${postPage.getNumber()+1} + '&sort=' + ${sortProperty} + ',desc'}"
+                            <a th:href="@{'/accounts/my-upload?page=' + ${postPage.getNumber()+1} + '&sort=' + ${sortProperty} + ',desc'}"
                                class="page-link">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>

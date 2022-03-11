@@ -57,7 +57,7 @@ public class initData {
 				.emailVerified(true)
 				.termsCheck(true)
 				.build();
-			member.addRole(Role.ROLE_MEMBER);
+			member2.addRole(Role.ROLE_MEMBER);
 			member2.generateEmailCheckToken();
 			em.persist(member2);
 
@@ -140,6 +140,34 @@ public class initData {
 				.category(security)
 				.build();
 			em.persist(longPost);
+
+			Post longPost1 = Post.builder()
+				.title("loosie 티스토리 블로그 미리보기 techDot 기술 큐레이션 서비스" + 102)
+				.type(PostType.VIDEO)
+				.link("http://loosie.tistory.com/" + 11)
+				.content("어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌"
+					+ "어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저"
+					+ "쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저"
+					+ "쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌")
+				.writer("loosie")
+				.manager(member)
+				.category(DevOps)
+				.build();
+			em.persist(longPost1);
+
+			Post longPost2 = Post.builder()
+				.title("loosie 티스토리 블로그 미리보기 techDot 기술 큐레이션 서비스" + 103)
+				.type(PostType.VIDEO)
+				.link("http://loosie.tistory.com/" + 111)
+				.content("어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌"
+					+ "어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저"
+					+ "쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저"
+					+ "쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌")
+				.writer("loosie")
+				.manager(member)
+				.category(Motivation)
+				.build();
+			em.persist(longPost2);
 		}
 
 	}

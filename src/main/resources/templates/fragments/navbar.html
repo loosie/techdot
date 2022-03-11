@@ -53,19 +53,29 @@
                     <a class="nav-link" href="/login" th:href="@{/login}">로그인</a>
                 </li>
 
-                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
-                    <a class="nav-link btn btn-outline-dark" th:href="@{/new-post}">
+                <li class="nav-item mr-2" sec:authorize="isAuthenticated()">
+                    <a sec:authorize="hasRole('ROLE_ADMIN')" class="nav-link btn btn-outline-dark" th:href="@{/new-post}">
                         <i class="fa fa-plus"  style="width: 20px; height: 20px" aria-hidden="true"></i>
                     </a>
+
                 </li>
+                <li class="nav-item mr-2" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" th:href="@{/me/likes}" style="color: white">
+                        <i class="fa fa-book" style="width: 20px; height: 20px" aria-hidden="true"></i>
+                    </a>
+                </li>
+
+
+
                 <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
                     <a class="nav-link dropdown-toggle" type="button" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
-                        <svg th:if="${#strings.isEmpty(member.profileImage)}" class="j-profile-img img-fluid float-left  nav-img"
-                             th:data-jdenticon-value="${#authentication.name}" width="24" height="24"></svg>
+<!--                        <svg th:if="${#strings.isEmpty(member.profileImage)}" class="j-profile-img img-fluid float-left  nav-img"-->
+<!--                             th:data-jdenticon-value="${#authentication.name}" width="24" height="24"></svg>-->
+                        <img th:if="${#strings.isEmpty(member.profileImage)}" class="profile-img img-fluid float-left  nav-img"
+                             src="/images/default_profile.png" width="24" height="24"/>
                         <img th:if="${!#strings.isEmpty(member.profileImage)}" class="profile-img img-fluid float-left  nav-img"
-                             th:src="${member.profileImage}"
-                             width="24" height="24"/>
+                             th:src="${member.profileImage}" width="24" height="24"/>
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-sm-right" aria-labelledby="userDropdown">
