@@ -1,7 +1,5 @@
 package com.techdot.techdot;
 
-import java.util.List;
-
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 
@@ -75,19 +73,19 @@ public class initData {
 				.name(CategoryName.CS).build();
 			em.persist(cs);
 			Category backend = Category.builder()
-				.name(CategoryName.Backend).build();
+				.name(CategoryName.BACKEND).build();
 			em.persist(backend);
 			Category frontend = Category.builder()
-				.name(CategoryName.Frontend).build();
+				.name(CategoryName.FRONTEND).build();
 			em.persist(frontend);
 			Category security = Category.builder()
-				.name(CategoryName.Security).build();
+				.name(CategoryName.SECURITY).build();
 			em.persist(security);
 			Category DevOps = Category.builder()
-				.name(CategoryName.DevOps).build();
+				.name(CategoryName.DEV_OPS).build();
 			em.persist(DevOps);
 			Category Motivation = Category.builder()
-				.name(CategoryName.Motivation).build();
+				.name(CategoryName.MOTIVATION).build();
 			em.persist(Motivation);
 
 			Post shortPost = Post.builder()

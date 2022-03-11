@@ -97,7 +97,7 @@ class InterestServiceTest {
 	@Test
 	void getInterestCategories_byMemberId(){
 		List<InterestCategoryResponseDto> input = List.of(
-			new InterestCategoryResponseDto(CategoryName.CS), new InterestCategoryResponseDto(CategoryName.Backend));
+			new InterestCategoryResponseDto(CategoryName.CS), new InterestCategoryResponseDto(CategoryName.BACKEND));
 		given(interestRepository.findAllCategoriesByMemberId(member.getId())).willReturn(input);
 		List<InterestCategoryResponseDto> result = interestService.getInterestCategoriesByMember(
 			member);

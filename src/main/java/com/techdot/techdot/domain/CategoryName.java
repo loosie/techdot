@@ -6,12 +6,12 @@ import lombok.Getter;
 
 @Getter
 public enum CategoryName {
-	CS("cs", "/main/cs"),
-	Backend("backend", "/main/backend"),
-	Frontend("frontend", "/main/frontend"),
-	Security("security", "/main/security"),
-	DevOps("dev-ops", "/main/dev-ops"),
-	Motivation("motivation", "/main/motivation");
+	CS("CS", "cs"),
+	BACKEND("Backend", "backend"),
+	FRONTEND("Frontend", "frontend"),
+	SECURITY("Security", "security"),
+	DEV_OPS("DevOps", "dev-ops"),
+	MOTIVATION("Motivation", "motivation");
 
 	private final String displayValue;
 	private final String viewName;
@@ -22,8 +22,8 @@ public enum CategoryName {
 	}
 
 	public static String getViewName(String categoryName) {
-		return Arrays.stream(CategoryName.values())
-			.filter(c -> categoryName.equals(c.getDisplayValue()))
+		return "/main/"+ Arrays.stream(CategoryName.values())
+			.filter(c -> categoryName.equals(c.getViewName()))
 			.findFirst()
 			.orElseThrow(NullPointerException::new)
 			.getViewName();
