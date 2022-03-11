@@ -63,7 +63,7 @@
                     <label for="category">게시글 카테고리</label>
                     <select id="category" class="form-select" th:field="*{categoryName}" aria-label="post-category-select">
                         <option th:each="categoryOpt : ${T(com.techdot.techdot.domain.CategoryName).values()}"
-                                th:value="${categoryOpt}" th:text="${categoryOpt}"></option>
+                                th:value="${categoryOpt.getDisplayValue()}" th:text="${categoryOpt.getDisplayValue()}"></option>
                     </select>
                 </div>
 

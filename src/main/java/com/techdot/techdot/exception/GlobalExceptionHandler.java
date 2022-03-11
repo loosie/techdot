@@ -2,6 +2,7 @@ package com.techdot.techdot.exception;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.Null;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -27,6 +28,12 @@ public class GlobalExceptionHandler {
 	// 	log.error("bad request", ex);
 	// 	return "error";
 	// }
+	@ExceptionHandler(NullPointerException.class)
+	public String handleNullPointerException(NullPointerException ex, Model model){
+		log.error("internal server error - {}", ex);
+		model.addAttribute("error", "알 수 없는 서버 에러가 발생하였습니다.");
+		return "error";
+	}
 
 	@ExceptionHandler(UserNotExistedException.class)
 	public String handleUserNotExistedException(UserNotExistedException ex, Model model){
