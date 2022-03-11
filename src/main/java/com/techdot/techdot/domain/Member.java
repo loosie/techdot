@@ -77,7 +77,7 @@ public class Member {
 		this.nickname = nickname;
 		this.password = password;
 		this.emailVerified = emailVerified;
-		this.roles.add(Role.USER);
+		this.roles.add(Role.ROLE_USER);
 		this.termsCheck = termsCheck;
 	}
 
@@ -97,7 +97,7 @@ public class Member {
 	}
 
 	private void updateRoleToMember(){
-		this.roles.add(Role.MEMBER);
+		this.roles.add(Role.ROLE_MEMBER);
 	}
 
 	public Set<Role> getRoles() {

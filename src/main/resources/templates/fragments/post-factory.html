@@ -234,6 +234,8 @@
                 postId: e.target.id
             })
         }).done(function (data, status) {
+            console.log(data);
+            console.log(status);
             if('[(${#authentication.name})]' == 'anonymousUser'){
                 window.location.href = "/login";
                 return;

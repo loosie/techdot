@@ -1,5 +1,5 @@
 package com.techdot.techdot.domain;
 
 public enum Role {
-	USER, MEMBER, ADMIN
+	ROLE_USER, ROLE_MEMBER, ROLE_ADMIN
 }

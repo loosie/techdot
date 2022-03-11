@@ -31,6 +31,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.mvcMatchers("/", "/check-email",  "/email-login", "/login-by-email", "/confirm-email", "/resend-confirm-email/*",
 				"/posts/*", "/category/*"
 			).permitAll()
+			.mvcMatchers("/interest/*", "/like/*").hasAnyRole("MEMBER", "ADMIN")
+			.mvcMatchers("/new-post", "/post/**", "/accounts/my-upload", "/accounts/settings/category").hasRole("ADMIN")
 			.anyRequest().authenticated();
 
 		http.formLogin()
@@ -43,6 +45,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.userDetailsService(principalsDetailsService)
 			.tokenRepository(tokenRepository())
 			.tokenValiditySeconds(60*60*24);
+
+
 	}
 
 	@Bean

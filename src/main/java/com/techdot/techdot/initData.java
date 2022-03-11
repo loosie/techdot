@@ -47,7 +47,7 @@ public class initData {
 				.termsCheck(true)
 				.build();
 			member.generateEmailCheckToken();
-			member.addRole(Role.MEMBER, Role.USER, Role.ADMIN);
+			member.addRole(Role.ROLE_MEMBER, Role.ROLE_ADMIN);
 			em.persist(member);
 
 			Member member2 = Member.builder()
@@ -57,8 +57,19 @@ public class initData {
 				.emailVerified(true)
 				.termsCheck(true)
 				.build();
+			member.addRole(Role.ROLE_MEMBER);
 			member2.generateEmailCheckToken();
 			em.persist(member2);
+
+			Member member3 = Member.builder()
+				.email("test2@naver.com")
+				.nickname("loosie3")
+				.password(passwordEncoder.encode("test2@naver.com"))
+				.emailVerified(false)
+				.termsCheck(true)
+				.build();
+			member3.generateEmailCheckToken();
+			em.persist(member3);
 
 			Category cs = Category.builder()
 				.name(CategoryName.CS).build();

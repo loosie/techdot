@@ -4,13 +4,8 @@
 <body th:fragment="main-view (mainMenu)" class="bg-light">
 <nav th:replace="fragments/navbar.html :: auth-nav"></nav>
 
-<div class="alert alert-warning" role="alert" th:if="${member != null && member.emailVerified == false}">
-    TechDot 가입을 완료하려면 <a href="#" th:href="@{/check-email}" class="alert-link"> 계정 인증 이메일을 확인 </a>하세요.
-</div>
 
-<div class="container main-view-container" th:id="${mainMenu}">
-
-
+<div class="container" th:id="${mainMenu}">
     <div class="row justify-content-center py-4">
         <div class="col py-4">
             <nav th:replace="fragments/main-view-category-menu.html :: category-menu(categoryMenu = ${mainMenu})"></nav>
@@ -53,10 +48,7 @@
                 url : "/interests/me/list",
                 type: "GET"
             }).done(function (data, status) {
-                console.log(status);
-                console.log(interestButton.parent());
                 for(var i=0; i<data.length; i++){
-
                     if(data[i].categoryName == '[(${mainMenu})]'){
                         interestButton.attr('checked', true);
                         document.getElementById("interest-switch").classList.add('interest-active');
@@ -70,8 +62,8 @@
 
         interestButton.on("click", onClickFunc)
         function onClickFunc(e) {
+
             const interestSwitch = e.target.parentElement.classList;
-            console.log(interestSwitch);
             if(interestSwitch.contains("interest-active")){
                 interestRequest("remove", e, interestSwitch);
             }else{
@@ -80,7 +72,6 @@
         }
 
         function interestRequest(action, e, interestSwitch) {
-            console.log(e.target.value);
             $.ajax({
                 url: "/interest/" + action,
                 type: "POST",
@@ -89,7 +80,7 @@
                     categoryName: e.target.value
                 })
             }).done(function (data, status) {
-                console.log(status);
+                // console.log(status);
                 if('[(${#authentication.name})]' == 'anonymousUser'){
                     window.location.href = "/login";
                     return;

@@ -7,9 +7,6 @@
 <body>
 <nav th:replace="fragments/navbar.html :: auth-nav"></nav>
 
-<div class="alert alert-warning" role="alert" th:if="${member != null && member.emailVerified == false}">
-    TechDot 가입을 완료하려면 <a href="#" th:href="@{/check-email}" class="alert-link"> 계정 인증 이메일을 확인 </a>하세요.
-</div>
 <div class="container main-view-container" th:id="${mainMenu}">
     <div class="row justify-content-center py-1">
         <div class="col-2 py-4">

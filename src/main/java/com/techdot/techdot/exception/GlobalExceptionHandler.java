@@ -16,22 +16,30 @@ import lombok.extern.slf4j.Slf4j;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-	@ExceptionHandler
-	public String handleRuntimeException(@CurrentUser Member member, HttpServletRequest req, HttpServletResponse res, RuntimeException ex){
-		if(member != null){
-			log.info("'{}' requested '{}'", member.getNickname(), req.getRequestURI());
-		}else{
-			log.info("requested '{}'", req.getRequestURI());;
-		}
-
-		log.error("bad request", ex);
-		return "error";
-	}
+	// @ExceptionHandler
+	// public String handleRuntimeException(@CurrentUser Member member, HttpServletRequest req, HttpServletResponse res, RuntimeException ex){
+	// 	if(member != null){
+	// 		log.info("'{}' requested '{}'", member.getNickname(), req.getRequestURI());
+	// 	}else{
+	// 		log.info("requested '{}'", req.getRequestURI());;
+	// 	}
+	//
+	// 	log.error("bad request", ex);
+	// 	return "error";
+	// }
 
 	@ExceptionHandler(UserNotExistedException.class)
 	public String handleUserNotExistedException(UserNotExistedException ex, Model model){
 		log.error("user not existed - {}", ex);
 		model.addAttribute("error", ex.getMessage());
+		return ex.getViewName();
+	}
+
+	@ExceptionHandler(UserNotVerifiedEmailException.class)
+	public String handleUserNotVerifiedEmailException(UserNotVerifiedEmailException ex, Model model){
+		log.error("user not verified email - {}", ex);
+		model.addAttribute("error", ex.getMessage());
+		model.addAttribute("email", ex.getEmail());
 		return ex.getViewName();
 	}
 

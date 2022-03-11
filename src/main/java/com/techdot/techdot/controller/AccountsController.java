@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.techdot.techdot.config.auth.CurrentUser;
@@ -33,23 +34,24 @@ import com.techdot.techdot.utils.ProfileFormValidator;
 import lombok.RequiredArgsConstructor;
 
 @Controller
+@RequestMapping("accounts")
 @RequiredArgsConstructor
 public class AccountsController {
 
 	static final String ACCOUNTS_PROFILE_VIEW_NAME = "accounts/profile";
-	static final String ACCOUNTS_MAIN_VIEW_URL = "/accounts"; // default: profile
+	static final String ACCOUNTS_MAIN_VIEW_URL = ""; // default: profile
 
 	static final String ACCOUNTS_PASSWORD_VIEW_NAME = "accounts/password";
 	static final String ACCOUNTS_PASSWORD_VIEW_URL = ACCOUNTS_MAIN_VIEW_URL + "/change-password";
 
 	static final String ACCOUNTS_SETTING_VIEW_NAME = "accounts/settings";
-	static final String ACCOUNTS_SETTING_VIEW_URL = "/accounts/settings";
+	static final String ACCOUNTS_SETTING_VIEW_URL = "/settings";
 
 	static final String ACCOUNTS_MY_UPLOAD_VIEW_NAME = "accounts/my-upload";
-	static final String ACCOUNTS_MY_UPLOAD_VIEW_URL = "/accounts/my-upload";
+	static final String ACCOUNTS_MY_UPLOAD_VIEW_URL = "/my-upload";
 
 	static final String ACCOUNTS_CATEGORY_VIEW_NAME = "accounts/category";
-	static final String ACCOUNTS_CATEGORY_VIEW_URL = "/accounts/settings/category";
+	static final String ACCOUNTS_CATEGORY_VIEW_URL = "/settings/category";
 
 	private final MemberService memberService;
 	private final PostService postService;

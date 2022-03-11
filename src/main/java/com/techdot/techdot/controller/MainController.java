@@ -15,6 +15,10 @@ public class MainController {
 	@GetMapping("/")
 	public String home(@CurrentUser Member member, Model model) {
 		if (member != null) {
+			if(!member.getEmailVerified()){
+				model.addAttribute("email", member.getEmail());
+				return "redirect:/check-email";
+			}
 			model.addAttribute(member);
 		}
 		return "index";
@@ -28,6 +32,10 @@ public class MainController {
 	@GetMapping("/category/{categoryName}")
 	public String homeByCategory(@PathVariable String categoryName, @CurrentUser Member member, Model model) {
 		if (member != null) {
+			if(!member.getEmailVerified()){
+				model.addAttribute("email", member.getEmail());
+				return "redirect:/check-email";
+			}
 			model.addAttribute(member);
 		}
 		return CategoryName.valueOf(categoryName).getViewName();
