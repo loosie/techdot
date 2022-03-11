@@ -54,7 +54,7 @@ public class Post {
 	@Enumerated(EnumType.STRING)
 	private PostType type;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id")
 	private Member manager;
 

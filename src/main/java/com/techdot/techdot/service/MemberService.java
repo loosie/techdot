@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.techdot.techdot.config.auth.PrincipalDetails;
 import com.techdot.techdot.domain.Member;
+import com.techdot.techdot.domain.Role;
 import com.techdot.techdot.exception.UserNotExistedException;
 import com.techdot.techdot.repository.MemberRepository;
 import com.techdot.techdot.dto.JoinFormDto;

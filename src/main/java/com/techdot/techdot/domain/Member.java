@@ -1,10 +1,16 @@
 package com.techdot.techdot.domain;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
@@ -48,6 +54,10 @@ public class Member {
 
 	private Integer emailSendTime;
 
+	@ElementCollection(fetch = FetchType.EAGER)
+	@Enumerated(EnumType.STRING)
+	private Set<Role> roles = new HashSet<>();
+
 	@Lob
 	private String profileImage;
 
@@ -67,6 +77,7 @@ public class Member {
 		this.nickname = nickname;
 		this.password = password;
 		this.emailVerified = emailVerified;
+		this.roles.add(Role.USER);
 		this.termsCheck = termsCheck;
 	}
 
@@ -81,7 +92,23 @@ public class Member {
 	}
 
 	public void completeEmailVerified() {
+		updateRoleToMember();
 		this.emailVerified = true;
+	}
+
+	private void updateRoleToMember(){
+		this.roles.add(Role.MEMBER);
+	}
+
+	public Set<Role> getRoles() {
+		return new HashSet<>(this.roles);
+	}
+
+	// TODO; 임시용 role 주입 함수
+	public void addRole(Role... role){
+		for (Role r : role) {
+			this.roles.add(r);
+		}
 	}
 
 	public boolean canSendConfirmEmail() {

@@ -1,5 +1,7 @@
 package com.techdot.techdot;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 
@@ -13,6 +15,7 @@ import com.techdot.techdot.domain.CategoryName;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.domain.Post;
 import com.techdot.techdot.domain.PostType;
+import com.techdot.techdot.domain.Role;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,7 +28,7 @@ public class initData {
 
 	@PostConstruct
 	void init() {
-		// initService.init();
+		initService.init();
 	}
 
 	@Component
@@ -44,6 +47,7 @@ public class initData {
 				.termsCheck(true)
 				.build();
 			member.generateEmailCheckToken();
+			member.addRole(Role.MEMBER, Role.USER, Role.ADMIN);
 			em.persist(member);
 
 			Member member2 = Member.builder()
