@@ -56,7 +56,7 @@ class PostControllerTest {
 
 	private final String TEST_EMAIL = "test@naver.com";
 
-	@WithCurrentUser(TEST_EMAIL)
+	@WithCurrentUser(value = TEST_EMAIL, role ="ADMIN")
 	@DisplayName("게시글 업로드 뷰 테스트")
 	@Test
 	void newPostView() throws Exception {
@@ -67,7 +67,7 @@ class PostControllerTest {
 			.andExpect(authenticated());
 	}
 
-	@WithCurrentUser(TEST_EMAIL)
+	@WithCurrentUser(value = TEST_EMAIL, role ="ADMIN")
 	@DisplayName("게시글 업로드 성공")
 	@Test
 	void uploadNewPost_success() throws Exception {
@@ -85,7 +85,7 @@ class PostControllerTest {
 			.andExpect(authenticated());
 	}
 
-	@WithCurrentUser(TEST_EMAIL)
+	@WithCurrentUser(value = TEST_EMAIL, role ="ADMIN")
 	@DisplayName("게시글 업로드 실패 - 입력값 오류 link")
 	@Test
 	void uploadNewPost_error_wrongLinkValue() throws Exception {
@@ -104,7 +104,7 @@ class PostControllerTest {
 			.andExpect(authenticated());
 	}
 
-	@WithCurrentUser(TEST_EMAIL)
+	@WithCurrentUser(value = TEST_EMAIL, role ="ADMIN")
 	@Transactional
 	@DisplayName("게시글 수정하기 성공")
 	@Test
@@ -142,7 +142,7 @@ class PostControllerTest {
 		assertEquals("updateTitle", changePost.getTitle());
 	}
 
-	@WithCurrentUser(TEST_EMAIL)
+	@WithCurrentUser(value = TEST_EMAIL, role ="ADMIN")
 	@Transactional
 	@DisplayName("게시글 수정하기 실패 - 입력값 오류 link")
 	@Test

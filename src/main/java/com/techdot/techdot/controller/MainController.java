@@ -40,7 +40,7 @@ public class MainController {
 			model.addAttribute(member);
 		}
 
-		return getViewName(categoryName);
+		return getMainViewName(categoryName);
 	}
 
 	@GetMapping("/me/interests")

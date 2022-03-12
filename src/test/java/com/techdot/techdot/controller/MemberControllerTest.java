@@ -184,7 +184,7 @@ class MemberControllerTest {
 			.andExpect(unauthenticated());
 	}
 
-	@WithCurrentUser(TEST_EMAIL)
+	@WithCurrentUser(value = TEST_EMAIL, role="MEMBER")
 	@DisplayName("내 프로필 (내가 좋아요한 게시글) 뷰")
 	@Test
 	void profileForm() throws Exception {

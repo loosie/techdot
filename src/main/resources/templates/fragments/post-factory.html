@@ -63,9 +63,9 @@
         return body;
     }
 
-    function getCardEnd(data) {
+    function getCardFooter(data) {
         const footer = document.createElement('div');
-        footer.className = 'card-body';
+        footer.className = 'card-footer';
 
         const writerBody = document.createElement('div');
         writerBody.className = 'd-flex justify-content-between align-items-center';
@@ -136,7 +136,7 @@
         post.appendChild(postImage);
 
         const cardContent = getCardContent(data);
-        const cardEnd = getCardEnd(data);
+        const cardEnd = getCardFooter(data);
 
         const link = document.createElement('a');
         link.href = data.link;

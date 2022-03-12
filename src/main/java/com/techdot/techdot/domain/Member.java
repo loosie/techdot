@@ -66,13 +66,14 @@ public class Member {
 
 
 	@Builder
-	public Member(String email, String nickname, String password, Boolean emailVerified, Boolean termsCheck) {
+	public Member(Long id, String email, String nickname, String password, Boolean emailVerified, Boolean termsCheck) {
 		Assert.notNull(email, "member.email 값이 존재하지 않습니다.");
 		Assert.notNull(nickname, "member.nickname 값이 존재하지 않습니다.");
 		Assert.notNull(password, "member.password 값이 존재하지 않습니다.");
 		Assert.notNull(emailVerified, "member.emailVerified 값이 존재하지 않습니다.");
 		Assert.isTrue(termsCheck, "member.termsCheck 값이 올바르지 않습니다.");
 
+		this.id = id;
 		this.email = email;
 		this.nickname = nickname;
 		this.password = password;

@@ -42,7 +42,7 @@ public class AccountsController {
 	static final String ACCOUNTS_MAIN_VIEW_URL = ""; // default: profile
 
 	static final String ACCOUNTS_PASSWORD_VIEW_NAME = "accounts/password";
-	static final String ACCOUNTS_PASSWORD_VIEW_URL = ACCOUNTS_MAIN_VIEW_URL + "/change-password";
+	static final String ACCOUNTS_PASSWORD_VIEW_URL = "/change-password";
 
 	static final String ACCOUNTS_SETTING_VIEW_NAME = "accounts/settings";
 	static final String ACCOUNTS_SETTING_VIEW_URL = "/settings";

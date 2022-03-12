@@ -82,7 +82,7 @@ class PostRepositoryQueryTest {
 
 	@DisplayName("카테고리 별로 게시글 조회하기")
 	@Test
-	void findPostQueryDto_byCategoryName() {
+	void findQueryDtoByCategoryName() {
 		// when
 		List<PostQueryDto> result = postRepositoryQuery.findQueryDtoByCategoryName("All", PageRequest.of(1, 1));
 		PostQueryDto post = result.get(0);
@@ -93,18 +93,17 @@ class PostRepositoryQueryTest {
 		assertEquals(post.getType(), PostType.BLOG);
 	}
 
-	@DisplayName("멤버가 좋아요한 카테고리 게시글 Id 조회하기")
+	@DisplayName("카테고리 별로 게시글과 좋아요 정보 가져오기")
 	@Test
-	void findPostId_withLikesMemberId() {
-		//given
-		likeRepository.save(Like.builder().member(member).post(post).build());
-
+	void findQueryDto_byCategoryName_ifMember_withIsMemberLike() {
 		// when
-		List<Long> result = postRepositoryQuery.findIdByLikesMemberId(member.getId(), "All");
+		List<PostQueryDto> result = postRepositoryQuery.findQueryDtoWithIsMemberLikeByCategoryName(member.getId(), "All", PageRequest.of(1, 1));
+		PostQueryDto post = result.get(0);
 
 		// then
 		assertTrue(result.size() > 0);
-		assertEquals(result.get(0), post.getId());
+		assertEquals(post.getTitle(), "title1");
+		assertEquals(post.getType(), PostType.BLOG);
 	}
 
 	@DisplayName("멤버가 좋아요 누른 게시글 모두 조회하기")

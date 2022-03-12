@@ -21,11 +21,7 @@ public enum CategoryName {
 		this.viewName = viewName;
 	}
 
-	public static String getViewName(String categoryName) {
-		return "/main/"+ Arrays.stream(CategoryName.values())
-			.filter(c -> categoryName.equals(c.getViewName()))
-			.findFirst()
-			.orElseThrow(NullPointerException::new)
-			.getViewName();
+	public static String getMainViewName(String viewName) {
+		return "/main/"+ viewName;
 	}
 }

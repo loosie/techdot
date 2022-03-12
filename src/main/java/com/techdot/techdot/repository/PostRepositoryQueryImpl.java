@@ -19,7 +19,8 @@ public class PostRepositoryQueryImpl implements PostRepositoryQuery {
 
 	private final EntityManager em;
 	private static final String POST_QUERY_DTO_SQL =
-		"select new com.techdot.techdot.dto.PostQueryDto(p.id, p.title, p.content, p.link, p.writer, p.type,  p.thumbnailImage, c.name, false)" +
+		"select new com.techdot.techdot.dto.PostQueryDto(p.id, p.title, p.content, p.link, p.writer, p.type,  p.thumbnailImage, c.name, false)"
+			+
 			" from Post p" +
 			" join p.category c";
 	private static final String POST_QUERY_DTO_SQL_WITH_IS_MEMBER_LIKE =
@@ -29,28 +30,33 @@ public class PostRepositoryQueryImpl implements PostRepositoryQuery {
 			" join p.category c";
 	private static final String JOIN_LIKES_WHERE_MEMBER_ID = " join p.likes l where l.member.id = :memberId";
 
+	@Override
+	public List<PostQueryDto> findQueryDtoByCategoryName(String categoryName, Pageable pageable) {
+		return getPagingResult(
+			getPostQueryDtoTypedQuery(POST_QUERY_DTO_SQL, categoryName),
+			pageable);
+	}
 
 	@Override
-	public List<PostQueryDto> findQueryDtoByCategoryName_ifMember_withIsMemberLike(Long memberId, String categoryName, Pageable pageable) {
-		String sql = POST_QUERY_DTO_SQL;
-		if(memberId != null) {
-			sql = POST_QUERY_DTO_SQL_WITH_IS_MEMBER_LIKE;
-		}
+	public List<PostQueryDto> findQueryDtoWithIsMemberLikeByCategoryName(Long memberId, String categoryName,
+		Pageable pageable) {
+		return getPagingResult(
+			getPostQueryDtoTypedQuery(POST_QUERY_DTO_SQL_WITH_IS_MEMBER_LIKE,
+				categoryName).setParameter("memberId", memberId),
+			pageable);
+	}
 
+	private TypedQuery<PostQueryDto> getPostQueryDtoTypedQuery(String query, String categoryName) {
 		TypedQuery<PostQueryDto> result;
 		if (categoryName.equals("All")) {
-			result = getPostQueryDto(sql);
+			result = getPostQueryDto(query);
 		} else {
-			result = getPostQueryDto(sql +
+			result = getPostQueryDto(query +
 				" where p.category.name = :categoryName")
 				.setParameter("categoryName", CategoryName.valueOf(categoryName));
 		}
-
-		if(memberId != null) result = result.setParameter("memberId", memberId);
-
-		return getPagingResult(result, pageable);
+		return result;
 	}
-
 
 	@Override
 	public List<PostQueryDto> findQueryDtoByLikesMemberId(Long memberId, Pageable pageable) {

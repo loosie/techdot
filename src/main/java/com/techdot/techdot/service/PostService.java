@@ -75,9 +75,9 @@ public class PostService {
 	public List<PostQueryDto> getPostsByCategory_andIfMember_memberLikes(Member member, String categoryName,
 		Pageable pageable) {
 		if (member != null) {
-			return postRepositoryQuery.findQueryDtoByCategoryName_ifMember_withIsMemberLike(member.getId(), categoryName, pageable);
+			return postRepositoryQuery.findQueryDtoWithIsMemberLikeByCategoryName(member.getId(), categoryName, pageable);
 		}
-		return postRepositoryQuery.findQueryDtoByCategoryName_ifMember_withIsMemberLike(null, categoryName, pageable);
+		return postRepositoryQuery.findQueryDtoByCategoryName(categoryName, pageable);
 	}
 
 	// 멤버가 좋아요 누른 게시글 가져오기
