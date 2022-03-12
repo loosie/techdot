@@ -128,7 +128,7 @@ class PostRepositoryQueryTest {
 		interestRepository.save(Interest.builder().member(member).category(category).build());
 
 		// when
-		List<PostQueryDto> result = postRepositoryQuery.findQueryDtoByInterestsMemberId(member.getId(),
+		List<PostQueryDto> result = postRepositoryQuery.findQueryDtoWithIsMemberLikeByInterestsMemberId(member.getId(),
 			PageRequest.of(1, 1));
 
 		// then

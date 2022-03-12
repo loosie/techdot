@@ -40,7 +40,7 @@ public class InterestController {
 
 	@GetMapping("/interests/me/list")
 	public ResponseEntity<List<InterestCategoryResponseDto>> getInterestCategoriesByMember(@CurrentUser Member member) {
-		return new ResponseEntity<>(interestService.getInterestCategoriesByMember(member), HttpStatus.OK);
+		return new ResponseEntity<>(interestService.getInterestCategoriesByMember(member.getId()), HttpStatus.OK);
 	}
 
 

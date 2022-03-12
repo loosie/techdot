@@ -119,7 +119,7 @@ public class AccountsController {
 
 	@GetMapping(ACCOUNTS_MY_UPLOAD_VIEW_URL)
 	public String myUploadPostsView(@CurrentUser Member member, Model model,
-		@PageableDefault(size = 10, page = 0, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+		@PageableDefault(size = 10, page = 0, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 		Page<Post> postPage = postService.findByManager(member, pageable);
 
 		String sortProperty = "id";

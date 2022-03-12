@@ -3,6 +3,7 @@ package com.techdot.techdot.repository;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
@@ -17,78 +18,65 @@ import lombok.RequiredArgsConstructor;
 public class PostRepositoryQueryImpl implements PostRepositoryQuery {
 
 	private final EntityManager em;
-
-	// TODO: 메인 뷰 조회 (findWithCategoryByCategoryName +  findIdWithLikesAndCategoryByMember) -> 중복 제거하기
-	@Override
-	public List<PostQueryDto> findQueryDtoByCategoryName(String categoryName, Pageable pageable) {
-		String sql =
-			"select new com.techdot.techdot.dto.PostQueryDto(p.id, p.title, p.content, p.link, p.writer, p.type,  p.thumbnailImage, c.name)" +
-				" from Post p" +
-				" join p.category c";
-		if (categoryName.equals("All")) {
-			return em.createQuery(sql, PostQueryDto.class)
-				.setFirstResult(pageable.getPageSize() * (pageable.getPageNumber() - 1))
-				.setMaxResults(pageable.getPageSize())
-				.getResultList();
-		}
-
-		sql += " where p.category.name = :categoryName";
-		return em.createQuery(sql, PostQueryDto.class)
-			.setParameter("categoryName", CategoryName.valueOf(categoryName))
-			.setFirstResult(pageable.getPageSize() * (pageable.getPageNumber() - 1))
-			.setMaxResults(pageable.getPageSize())
-			.getResultList();
-	}
-
-	@Override
-	public List<Long> findIdByLikesMemberId(Long memberId, String categoryName) {
-		String sql = "select p.id" +
+	private static final String POST_QUERY_DTO_SQL =
+		"select new com.techdot.techdot.dto.PostQueryDto(p.id, p.title, p.content, p.link, p.writer, p.type,  p.thumbnailImage, c.name, false)" +
 			" from Post p" +
-			" join p.category c" +
-			" join p.likes l" +
-			" where l.member.id = :memberId";
-		if (categoryName.equals("All")) {
-			return em.createQuery(sql, Long.class)
-				.setParameter("memberId", memberId)
-				.getResultList();
+			" join p.category c";
+	private static final String POST_QUERY_DTO_SQL_WITH_IS_MEMBER_LIKE =
+		"select new com.techdot.techdot.dto.PostQueryDto(p.id, p.title, p.content, p.link, p.writer, p.type,  p.thumbnailImage, c.name,"
+			+ "((select count(l.id) from Like l where l.member.id = :memberId and l.post.id = p.id)>0))" +
+			" from Post p" +
+			" join p.category c";
+	private static final String JOIN_LIKES_WHERE_MEMBER_ID = " join p.likes l where l.member.id = :memberId";
+
+
+	@Override
+	public List<PostQueryDto> findQueryDtoByCategoryName_ifMember_withIsMemberLike(Long memberId, String categoryName, Pageable pageable) {
+		String sql = POST_QUERY_DTO_SQL;
+		if(memberId != null) {
+			sql = POST_QUERY_DTO_SQL_WITH_IS_MEMBER_LIKE;
 		}
 
-		sql += " and p.category.name = :categoryName";
-		return em.createQuery(sql, Long.class)
-			.setParameter("memberId", memberId)
-			.setParameter("categoryName", CategoryName.valueOf(categoryName))
-			.getResultList();
+		TypedQuery<PostQueryDto> result;
+		if (categoryName.equals("All")) {
+			result = getPostQueryDto(sql);
+		} else {
+			result = getPostQueryDto(sql +
+				" where p.category.name = :categoryName")
+				.setParameter("categoryName", CategoryName.valueOf(categoryName));
+		}
+
+		if(memberId != null) result = result.setParameter("memberId", memberId);
+
+		return getPagingResult(result, pageable);
 	}
+
 
 	@Override
 	public List<PostQueryDto> findQueryDtoByLikesMemberId(Long memberId, Pageable pageable) {
-		String sql =
-			"select new com.techdot.techdot.dto.PostQueryDto(p.id, p.title, p.content, p.link, p.writer, p.type, p.thumbnailImage, c.name)" +
-				" from Post p" +
-				" join p.category c" +
-				" join p.likes l" +
-				" where l.member.id = :memberId";
-		return em.createQuery(sql, PostQueryDto.class)
-			.setParameter("memberId", memberId)
-			.setFirstResult(pageable.getPageSize() * (pageable.getPageNumber() - 1))
-			.setMaxResults(pageable.getPageSize())
-			.getResultList();
+		return getPagingResult(
+			getPostQueryDto(POST_QUERY_DTO_SQL + JOIN_LIKES_WHERE_MEMBER_ID)
+				.setParameter("memberId", memberId),
+			pageable);
 	}
 
 	@Override
-	public List<PostQueryDto> findQueryDtoByInterestsMemberId(Long memberId, Pageable pageable) {
-		String sql =
-			"select new com.techdot.techdot.dto.PostQueryDto(p.id, p.title, p.content, p.link, p.writer, p.type, p.thumbnailImage, c.name)" +
-				" from Post p" +
-				" join p.category c" +
-				" join c.interests i" +
-				" where i.member.id = :memberId";
-		return em.createQuery(sql, PostQueryDto.class)
-			.setParameter("memberId", memberId)
+	public List<PostQueryDto> findQueryDtoWithIsMemberLikeByInterestsMemberId(Long memberId, Pageable pageable) {
+		return getPagingResult(
+			getPostQueryDto(
+				POST_QUERY_DTO_SQL_WITH_IS_MEMBER_LIKE + " join c.interests i where i.member.id = :memberId")
+				.setParameter("memberId", memberId), pageable);
+	}
+
+	private TypedQuery<PostQueryDto> getPostQueryDto(String query) {
+		return em.createQuery(query, PostQueryDto.class);
+	}
+
+	private List<PostQueryDto> getPagingResult(TypedQuery<PostQueryDto> typedQuery, Pageable pageable) {
+		return typedQuery
 			.setFirstResult(pageable.getPageSize() * (pageable.getPageNumber() - 1))
 			.setMaxResults(pageable.getPageSize())
 			.getResultList();
 	}
-
 
 }

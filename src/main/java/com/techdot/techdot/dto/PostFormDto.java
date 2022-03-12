@@ -21,7 +21,7 @@ public class PostFormDto {
 	private String title;
 
 	@NotBlank
-	@Length(max = 100)
+	@Length(max = 200)
 	private String content;
 
 	private String beforeLink;

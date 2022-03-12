@@ -27,6 +27,8 @@ class PostServiceTest {
 
 	private PostService postService;
 	@Mock
+	private InterestService interestService;
+	@Mock
 	private PostRepository postRepository;
 	@Mock
 	private MemberRepository memberRepository;
@@ -37,7 +39,7 @@ class PostServiceTest {
 
 	@BeforeEach
 	void setUp() {
-		postService = new PostService(postRepository, memberRepository, categoryRepository, postRepositoryQuery);
+		postService = new PostService(interestService, postRepository, memberRepository, categoryRepository, postRepositoryQuery);
 	}
 
 	@DisplayName("카테고리별로 게시글 가져오기 - 멤버가 null인 경우")

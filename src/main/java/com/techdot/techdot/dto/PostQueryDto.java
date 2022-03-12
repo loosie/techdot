@@ -15,9 +15,10 @@ public class PostQueryDto {
 	private PostType type;
 	private String thumbnailImage;
 	private String categoryName;
-	private Boolean isMemberLike = false;
+	private Boolean isMemberLike;
 
-	public PostQueryDto(Long postId, String title, String content, String link, String writer, PostType type, String thumbnailImage, CategoryName categoryName) {
+	public PostQueryDto(Long postId, String title, String content, String link, String writer, PostType type, String thumbnailImage, CategoryName categoryName
+	, Boolean isMemberLike) {
 		this.postId = postId;
 		this.title = title;
 		this.content = content;
@@ -26,5 +27,7 @@ public class PostQueryDto {
 		this.type = type;
 		this.thumbnailImage = thumbnailImage;
 		this.categoryName = categoryName.getDisplayValue();
+		this.isMemberLike = isMemberLike;
 	}
+
 }

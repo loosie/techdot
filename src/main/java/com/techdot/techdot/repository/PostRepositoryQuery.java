@@ -7,15 +7,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.techdot.techdot.dto.PostQueryDto;
 
-
 @Transactional(readOnly = true)
 public interface PostRepositoryQuery {
 
-	List<PostQueryDto> findQueryDtoByCategoryName(String categoryName, Pageable pageable);
-
-	List<Long> findIdByLikesMemberId(Long memberId, String categoryName);
+	List<PostQueryDto> findQueryDtoByCategoryName_ifMember_withIsMemberLike(Long memberId, String categoryName, Pageable pageable);
 
 	List<PostQueryDto> findQueryDtoByLikesMemberId(Long memberId, Pageable pageable);
 
-	List<PostQueryDto> findQueryDtoByInterestsMemberId(Long memberId, Pageable pageable);
+	List<PostQueryDto> findQueryDtoWithIsMemberLikeByInterestsMemberId(Long memberId, Pageable pageable);
 }

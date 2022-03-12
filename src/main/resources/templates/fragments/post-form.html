@@ -55,7 +55,7 @@
                     <label for="type">게시글 타입</label>
                     <select id="type" class="form-select" th:field="*{type}" aria-label="post-type-select">
                         <option th:each="postTypeOpt : ${T(com.techdot.techdot.domain.PostType).values()}"
-                                th:value="${postTypeOpt.getDisplayValue()}" th:text="${postTypeOpt.getDisplayValue()}"></option>
+                                th:value="${postTypeOpt}" th:text="${postTypeOpt.getDisplayValue()}"></option>
                     </select>
                 </div>
 
@@ -63,7 +63,7 @@
                     <label for="category">게시글 카테고리</label>
                     <select id="category" class="form-select" th:field="*{categoryName}" aria-label="post-category-select">
                         <option th:each="categoryOpt : ${T(com.techdot.techdot.domain.CategoryName).values()}"
-                                th:value="${categoryOpt.getDisplayValue()}" th:text="${categoryOpt.getDisplayValue()}"></option>
+                                th:value="${categoryOpt}" th:text="${categoryOpt.getDisplayValue()}"></option>
                     </select>
                 </div>
 
@@ -79,8 +79,8 @@
                 <div class="form-group mb-4">
                     <label for="content">게시글 내용</label>
                     <textarea id="content" type="text" th:field="*{content}" class="form-control"
-                              placeholder="내용을 입력하세요." aria-describedby="contentHelp" required max="100" rows="3"> </textarea>
-                    <small class="invalid-feedback">100자 이내로 게시글 제목을 입력하세요.</small>
+                              placeholder="내용을 입력하세요." aria-describedby="contentHelp" required max="200" rows="3"> </textarea>
+                    <small class="invalid-feedback">200자 이내로 게시글 제목을 입력하세요.</small>
                     <small class="form-text text-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Content Error</small>
                 </div>
 

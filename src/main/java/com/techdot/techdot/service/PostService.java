@@ -15,7 +15,7 @@ import com.techdot.techdot.dto.PostFormDto;
 import com.techdot.techdot.repository.CategoryRepository;
 import com.techdot.techdot.repository.MemberRepository;
 import com.techdot.techdot.repository.PostRepository;
-import com.techdot.techdot.repository.PostRepositoryQueryImpl;
+import com.techdot.techdot.repository.PostRepositoryQuery;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,10 +23,11 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 @RequiredArgsConstructor
 public class PostService {
+	private final InterestService interestService;
 	private final PostRepository postRepository;
 	private final MemberRepository memberRepository;
 	private final CategoryRepository categoryRepository;
-	private final PostRepositoryQueryImpl postRepositoryQuery;
+	private final PostRepositoryQuery postRepositoryQuery;
 
 	// 쿼리 발생 횟수
 	// validator url 중복 조회
@@ -70,24 +71,13 @@ public class PostService {
 	}
 
 	// 카테고리별로 게시글 가져오기 (만약 멤버가 좋아하면 멤버가 좋아요 누른 게시글 정보도 가져오기)
-	// post 조회 쿼리 1번
-	// if(member) member가 좋아요 누른 쿼리 1번
-	// TODO: 쿼리 하나로 합치기
+	// post 조회(if(Member) 좋아요 여부) 쿼리 1번
 	public List<PostQueryDto> getPostsByCategory_andIfMember_memberLikes(Member member, String categoryName,
 		Pageable pageable) {
-		// 게시글 카테고리 별로 조회
-		List<PostQueryDto> allPosts = postRepositoryQuery.findQueryDtoByCategoryName(categoryName, pageable);
-
-		// member가 null이 아닐 경우
 		if (member != null) {
-			// member가 좋아요 누른 게시글 Id 조회
-			List<Long> likePosts = postRepositoryQuery.findIdByLikesMemberId(member.getId(), categoryName);
-
-			// 	좋아요 누른 게시글 정보 업데이트
-			allPosts.stream().filter(post -> likePosts.contains(post.getPostId()))
-				.forEach(post -> post.setIsMemberLike(true));
+			return postRepositoryQuery.findQueryDtoByCategoryName_ifMember_withIsMemberLike(member.getId(), categoryName, pageable);
 		}
-		return allPosts;
+		return postRepositoryQuery.findQueryDtoByCategoryName_ifMember_withIsMemberLike(null, categoryName, pageable);
 	}
 
 	// 멤버가 좋아요 누른 게시글 가져오기
@@ -98,6 +88,8 @@ public class PostService {
 	}
 
 	public List<PostQueryDto> getPostsByMemberInterests(Long memberId, Pageable pageable) {
-		return postRepositoryQuery.findQueryDtoByInterestsMemberId(memberId, pageable);
+		List<PostQueryDto> allInterestPosts = postRepositoryQuery.findQueryDtoWithIsMemberLikeByInterestsMemberId(memberId, pageable);
+		return allInterestPosts;
 	}
+
 }

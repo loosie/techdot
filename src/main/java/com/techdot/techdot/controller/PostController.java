@@ -97,14 +97,14 @@ public class PostController {
 
 	@GetMapping("/posts/me/likes")
 	public ResponseEntity<List<PostQueryDto>> getPostsByMemberLikes_scrolling(
-		@PageableDefault(page = 0, size = 12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+		@PageableDefault(page = 0, size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
 		@CurrentUser Member member) {
 		return new ResponseEntity<>(postService.getPostsByMemberLikes(member.getId(), pageable), HttpStatus.OK);
 	}
 
 	@GetMapping("/posts/me/interests")
 	public ResponseEntity<List<PostQueryDto>> getPostsByMemberInterests_scrolling(
-		@PageableDefault(page = 0, size = 12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+		@PageableDefault(page = 0, size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
 		@CurrentUser Member member) {
 		return new ResponseEntity<>(postService.getPostsByMemberInterests(member.getId(), pageable), HttpStatus.OK);
 	}
