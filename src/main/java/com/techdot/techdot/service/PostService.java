@@ -50,6 +50,7 @@ public class PostService {
 			.writer(postForm.getWriter())
 			.manager(manager)
 			.category(category)
+			.uploadDateTime(postForm.getUploadDateTime())
 			.build();
 
 		// 게시글 저장

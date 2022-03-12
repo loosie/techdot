@@ -1,5 +1,7 @@
 package com.techdot.techdot;
 
+import java.time.LocalDateTime;
+
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 
@@ -96,6 +98,7 @@ public class initData {
 				.writer("loosie")
 				.manager(member)
 				.category(cs)
+				.uploadDateTime(LocalDateTime.now().minusDays(10))
 				.build();
 			em.persist(shortPost);
 
@@ -108,6 +111,7 @@ public class initData {
 					.writer("loosie")
 					.manager(member)
 					.category(backend)
+					.uploadDateTime(LocalDateTime.now().minusDays(i))
 					.build();
 				em.persist(post);
 			}
@@ -121,6 +125,7 @@ public class initData {
 					.writer("loosie")
 					.manager(member)
 					.category(frontend)
+					.uploadDateTime(LocalDateTime.now().minusDays(i))
 					.build();
 				em.persist(post);
 			}
@@ -136,6 +141,7 @@ public class initData {
 				.writer("loosie")
 				.manager(member)
 				.category(security)
+				.uploadDateTime(LocalDateTime.now())
 				.build();
 			em.persist(longPost);
 
@@ -150,6 +156,7 @@ public class initData {
 				.writer("loosie")
 				.manager(member)
 				.category(DevOps)
+				.uploadDateTime(LocalDateTime.now().minusDays(9))
 				.build();
 			em.persist(longPost1);
 
@@ -164,6 +171,7 @@ public class initData {
 				.writer("loosie")
 				.manager(member)
 				.category(Motivation)
+				.uploadDateTime(LocalDateTime.now().minusDays(10))
 				.build();
 			em.persist(longPost2);
 		}

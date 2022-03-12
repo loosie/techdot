@@ -8,11 +8,11 @@
 <div th:replace="fragments/post-form.html :: post-form(type='수정', requestUrl='/post/' + ${postId} + '/edit')" />
 
 <footer th:replace="fragments/footer.html :: footer"></footer>
-
+<script th:replace="fragments/form-validation.html :: form-validation"></script>
 <link  href="/node_modules/cropper/dist/cropper.css" rel="stylesheet">
 <script src="/node_modules/cropper/dist/cropper.js"></script>
 <script src="/node_modules/jquery-cropper/dist/jquery-cropper.js"></script>
-<script type="application/javascript">
+<script type="application/javascript" >
     $(function() {
         cropper = '';
         let $resetBtn = $("#reset-button");  // 취소 버튼
@@ -49,7 +49,7 @@
 
                         let $newImage = $(img);
                         // $newImage.cropper({aspectRatio: 1});
-                        $newImage.cropper({aspectRatio: 5/3});
+                        $newImage.cropper({aspectRatio: 5/3.15});
                         cropper = $newImage.data('cropper');
 
                         $confirmBtn.show();
@@ -83,7 +83,8 @@
             let newImage = document.createElement("img");
             newImage.id = "cropped-new-thumbnail-image";
             newImage.src = dataUrl;
-            newImage.width = 330;
+            newImage.width = 320;
+            newImage.height = 170;
             $resultImage.html(newImage);
 
             $newThumbnailImage.html(newImage);

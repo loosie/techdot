@@ -3,6 +3,7 @@ package com.techdot.techdot.service;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -50,7 +51,7 @@ class PostServiceTest {
 		// given
 		List<PostQueryDto> allPosts = List.of(
 			new PostQueryDto(1L, "title", "content", "http://link.com", "writer", PostType.BLOG,
-				"", CategoryName.CS, false)
+				"", LocalDateTime.now(), CategoryName.CS, false)
 		);
 		given(postRepositoryQuery.findQueryDtoByCategoryName("CS", PageRequest.of(1,1)))
 			.willReturn(allPosts);
@@ -79,7 +80,7 @@ class PostServiceTest {
 			.build();
 		List<PostQueryDto> allPosts = List.of(
 			new PostQueryDto(1L, "title", "content", "http://link.com", "writer", PostType.BLOG,
-				"", CategoryName.CS, true)
+				"",  LocalDateTime.now(), CategoryName.CS, true)
 		);
 		given(postRepositoryQuery.findQueryDtoWithIsMemberLikeByCategoryName(member.getId(), "CS", PageRequest.of(1,1)))
 			.willReturn(allPosts);
@@ -101,7 +102,7 @@ class PostServiceTest {
 		// given
 		List<PostQueryDto> allPosts = List.of(
 			new PostQueryDto(1L, "title", "content", "http://link.com", "writer", PostType.BLOG,
-				"", CategoryName.CS, false)
+				"",  LocalDateTime.now(), CategoryName.CS, false)
 		);
 		given(postRepositoryQuery.findQueryDtoByLikesMemberId(1L, PageRequest.of(1,1)))
 			.willReturn(allPosts);

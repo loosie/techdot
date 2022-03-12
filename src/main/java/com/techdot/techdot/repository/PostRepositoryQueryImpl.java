@@ -19,12 +19,12 @@ public class PostRepositoryQueryImpl implements PostRepositoryQuery {
 
 	private final EntityManager em;
 	private static final String POST_QUERY_DTO_SQL =
-		"select new com.techdot.techdot.dto.PostQueryDto(p.id, p.title, p.content, p.link, p.writer, p.type,  p.thumbnailImage, c.name, false)"
+		"select new com.techdot.techdot.dto.PostQueryDto(p.id, p.title, p.content, p.link, p.writer, p.type,  p.thumbnailImage, p.uploadDateTime, c.name, false)"
 			+
 			" from Post p" +
 			" join p.category c";
 	private static final String POST_QUERY_DTO_SQL_WITH_IS_MEMBER_LIKE =
-		"select new com.techdot.techdot.dto.PostQueryDto(p.id, p.title, p.content, p.link, p.writer, p.type,  p.thumbnailImage, c.name,"
+		"select new com.techdot.techdot.dto.PostQueryDto(p.id, p.title, p.content, p.link, p.writer, p.type,  p.thumbnailImage, p.uploadDateTime, c.name,"
 			+ "((select count(l.id) from Like l where l.member.id = :memberId and l.post.id = p.id)>0))" +
 			" from Post p" +
 			" join p.category c";

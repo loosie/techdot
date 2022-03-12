@@ -60,6 +60,16 @@
         content.textContent = data.content;
         link2.appendChild(content);
 
+        const subInfo = document.createElement('div');
+        subInfo.className = 'card-sub-info';
+        subInfo.style = 'font-size: .75rem; position:absolute; bottom:3.6rem';
+
+        const uploadDateTime = document.createElement('span');
+        uploadDateTime.className = 'upload-time'
+        uploadDateTime.textContent = data.uploadDateTime;
+        subInfo.appendChild(uploadDateTime);
+        body.appendChild(subInfo);
+
         return body;
     }
 

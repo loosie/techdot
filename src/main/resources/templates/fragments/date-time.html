@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.com">
+<div th:fragment="date-time">
+    <script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
+    <script type="application/javascript" th:inline="javascript">
+        $(function () {
+            moment.locale('ko');
+
+            $('.upload-time').text(function (index, dateTime) {
+                const weeksAgo = moment().subtract(7, 'days');
+                // console.log(moment().subtract(7, 'days').format('LLL') +" < " + moment(dateTime, "YYYY-MM-DD`T`hh:mm").format('LLL') +
+                // "= " + (moment(dateTime).diff(weeksAgo, 'days')));
+                if(moment(dateTime).diff(weeksAgo, 'days') >= 0){
+                    console.log(moment(dateTime).format('LLL'));
+                    return moment(dateTime).startOf('day').fromNow();
+                }
+                return moment(dateTime, "YYYY-MM-DD`T`hh:mm").format('LL');
+            })
+
+        })
+
+    </script>
+</div>
+</html>

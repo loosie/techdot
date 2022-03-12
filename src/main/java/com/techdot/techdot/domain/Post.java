@@ -1,5 +1,6 @@
 package com.techdot.techdot.domain;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import org.springframework.util.Assert;
 
@@ -48,6 +48,9 @@ public class Post {
 	@Column(nullable = false)
 	private String writer;
 
+	@Column(nullable = false)
+	private LocalDateTime uploadDateTime;
+
 	@Lob
 	private String thumbnailImage;
 
@@ -67,12 +70,16 @@ public class Post {
 
 
 	@Builder
-	public Post(String title, String content, String writer, String link, String thumbnailImage, PostType type, Member manager, Category category) {
+	public Post(String title, String content, String writer, String link, String thumbnailImage, PostType type, Member manager, Category category,
+		LocalDateTime uploadDateTime) {
 		Assert.notNull(title, "post.title 값이 존재하지 않습니다.");
-		Assert.notNull(link, "post.link 값이 존재하지 않습니다.");
-		Assert.notNull(writer, "post.owner 값이 존재하지 않습니다.");
 		Assert.notNull(content, "post.content 값이 존재하지 않습니다.");
+		Assert.notNull(link, "post.link 값이 존재하지 않습니다.");
+		Assert.notNull(writer, "post.writer 값이 존재하지 않습니다.");
+		Assert.notNull(type, "post.type 값이 존재하지 않습니다.");
 		Assert.notNull(manager, "post.member 값이 존재하지 않습니다.");
+		Assert.notNull(category, "post.category 값이 존재하지 않습니다.");
+		Assert.notNull(uploadDateTime, "post.uploadDateTime 값이 존재하지 않습니다.");
 
 		this.title = title;
 		this.content = content;
@@ -80,19 +87,17 @@ public class Post {
 		this.writer = writer;
 		this.type = type;
 		this.thumbnailImage = thumbnailImage;
+		this.uploadDateTime = uploadDateTime;
 		setManager(manager);
-		addCategory(category);
+		setCategory(category);
 	}
 
-	private void addCategory(Category category) {
+	private void setCategory(Category category) {
 		this.category = category;
 	}
 
 	private void setManager(Member manager) {
 		this.manager = manager;
-		// if (!manager.getPosts().contains(this)) {
-		// 	manager.getPosts().add(this);
-		// }
 	}
 
 	public void update(PostFormDto postForm) {
@@ -102,6 +107,7 @@ public class Post {
 		this.link = postForm.getLink();
 		this.writer = postForm.getWriter();
 		this.thumbnailImage = postForm.getThumbnailImage();
+		this.uploadDateTime = postForm.getUploadDateTime();
 	}
 
 	public boolean isManager(Member member) {
