@@ -89,8 +89,11 @@ public class PostController {
 
 	@GetMapping("/posts/{categoryName}")
 	public ResponseEntity<List<PostQueryDto>> getPostsByCategory_scrolling(@PathVariable String categoryName,
-		@PageableDefault(page = 0, size = 12, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+		@PageableDefault(page = 0, size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
 		@CurrentUser Member member) {
+		List<PostQueryDto> postsByCategory_andIfMember_memberLikes = postService.getPostsByCategory_andIfMember_memberLikes(
+			member, categoryName, pageable);
+		System.out.println("postsByCategory_andIfMember_memberLikes = " + postsByCategory_andIfMember_memberLikes);
 		return new ResponseEntity<>(
 			postService.getPostsByCategory_andIfMember_memberLikes(member, categoryName, pageable), HttpStatus.OK);
 	}
@@ -99,6 +102,7 @@ public class PostController {
 	public ResponseEntity<List<PostQueryDto>> getPostsByMemberLikes_scrolling(
 		@PageableDefault(page = 0, size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
 		@CurrentUser Member member) {
+		pageable.getSort();
 		return new ResponseEntity<>(postService.getPostsByMemberLikes(member.getId(), pageable), HttpStatus.OK);
 	}
 

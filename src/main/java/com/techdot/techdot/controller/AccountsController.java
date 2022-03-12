@@ -119,10 +119,10 @@ public class AccountsController {
 
 	@GetMapping(ACCOUNTS_MY_UPLOAD_VIEW_URL)
 	public String myUploadPostsView(@CurrentUser Member member, Model model,
-		@PageableDefault(size = 10, page = 0, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+		@PageableDefault(size = 10, page = 0, sort = "uploadDateTime", direction = Sort.Direction.DESC) Pageable pageable) {
 		Page<Post> postPage = postService.findByManager(member, pageable);
 
-		String sortProperty = "id";
+		String sortProperty = "uploadDateTime";
 		model.addAttribute(member);
 		model.addAttribute("postPage", postPage);
 		model.addAttribute("sortProperty", sortProperty);
@@ -131,7 +131,6 @@ public class AccountsController {
 
 	@GetMapping(ACCOUNTS_CATEGORY_VIEW_URL)
 	public String myUploadPostsView(@CurrentUser Member member, Model model) {
-		// TODO : admin만 접근 가능
 		List<Category> categoryList = categoryRepository.findAll();
 		model.addAttribute("categoryList", categoryList);
 		model.addAttribute(member);

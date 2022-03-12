@@ -98,7 +98,7 @@ public class initData {
 				.writer("loosie")
 				.manager(member)
 				.category(cs)
-				.uploadDateTime(LocalDateTime.now().minusDays(10))
+				.uploadDateTime(LocalDateTime.now())
 				.build();
 			em.persist(shortPost);
 
