@@ -20,7 +20,7 @@ public class PostRepositoryQueryImpl implements PostRepositoryQuery {
 
 	private final EntityManager em;
 	private static final String POST_QUERY_DTO_SQL =
-		"select new com.techdot.techdot.dto.PostQueryDto(p.id, p.title, p.content, p.link, p.writer, p.type,  p.thumbnailImage, p.uploadDateTime, c.name, false)"
+		"select new com.techdot.techdot.dto.PostQueryDto(p.id, p.title, p.content, p.link, p.writer, p.type, p.thumbnailImage, p.uploadDateTime, c.name, false)"
 			+
 			" from Post p" +
 			" join p.category c";
@@ -32,44 +32,45 @@ public class PostRepositoryQueryImpl implements PostRepositoryQuery {
 	private static final String JOIN_LIKES_WHERE_MEMBER_ID = " join p.likes l where l.member.id = :memberId";
 
 	@Override
-	public List<PostQueryDto> findQueryDtoByCategoryName(String categoryName, Pageable pageable) {
+	public List<PostQueryDto> findByCategoryName(String categoryName, Pageable pageable) {
 		return getPagingResult(
-			getPostQueryDtoTypedQuery(POST_QUERY_DTO_SQL, categoryName, pageable.getSort()),
+			getQueryDtoByCategoryName(POST_QUERY_DTO_SQL, categoryName, pageable.getSort()),
 			pageable);
 	}
 
 	@Override
-	public List<PostQueryDto> findQueryDtoWithIsMemberLikeByCategoryName(Long memberId, String categoryName,
+	public List<PostQueryDto> findWithIsMemberLikeByCategoryName(Long memberId, String categoryName,
 		Pageable pageable) {
 		return getPagingResult(
-			getPostQueryDtoTypedQuery(POST_QUERY_DTO_SQL_WITH_IS_MEMBER_LIKE, categoryName, pageable.getSort()).setParameter("memberId", memberId),
+			getQueryDtoByCategoryName(POST_QUERY_DTO_SQL_WITH_IS_MEMBER_LIKE, categoryName,
+				pageable.getSort()).setParameter("memberId", memberId),
 			pageable);
 	}
 
 	private String getSort(String query, Sort sort) {
-		if(sort.toString().contains("uploadDateTime")){
+		if (sort.toString().contains("uploadDateTime")) {
 			query += " order by p.uploadDateTime desc";
-		}else {
+		} else {
 			query += " order by p.id desc";
 		}
 		return query;
 	}
 
-	private TypedQuery<PostQueryDto> getPostQueryDtoTypedQuery(String query, String categoryName,
+	private TypedQuery<PostQueryDto> getQueryDtoByCategoryName(String query, String categoryName,
 		Sort sort) {
 		TypedQuery<PostQueryDto> result;
 		if (categoryName.equals("All")) {
 			result = getPostQueryDto(query, sort);
 		} else {
 			result = getPostQueryDto(query +
-				" where p.category.name = :categoryName" , sort)
+				" where p.category.name = :categoryName", sort)
 				.setParameter("categoryName", CategoryName.valueOf(categoryName));
 		}
 		return result;
 	}
 
 	@Override
-	public List<PostQueryDto> findQueryDtoByLikesMemberId(Long memberId, Pageable pageable) {
+	public List<PostQueryDto> findByLikesMemberId(Long memberId, Pageable pageable) {
 		return getPagingResult(
 			getPostQueryDto(POST_QUERY_DTO_SQL + JOIN_LIKES_WHERE_MEMBER_ID, pageable.getSort())
 				.setParameter("memberId", memberId),
@@ -77,9 +78,11 @@ public class PostRepositoryQueryImpl implements PostRepositoryQuery {
 	}
 
 	@Override
-	public List<PostQueryDto> findQueryDtoWithIsMemberLikeByInterestsMemberId(Long memberId, Pageable pageable) {
+	public List<PostQueryDto> findWithIsMemberLikeByInterestsMemberId(Long memberId, Pageable pageable) {
 		return getPagingResult(
-			getPostQueryDto(POST_QUERY_DTO_SQL_WITH_IS_MEMBER_LIKE + " join c.interests i where i.member.id = :memberId", pageable.getSort())
+			getPostQueryDto(
+				POST_QUERY_DTO_SQL_WITH_IS_MEMBER_LIKE + " join c.interests i where i.member.id = :memberId",
+				pageable.getSort())
 				.setParameter("memberId", memberId), pageable);
 	}
 

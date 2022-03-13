@@ -84,7 +84,7 @@ class PostRepositoryQueryTest {
 	@Test
 	void findQueryDtoByCategoryName() {
 		// when
-		List<PostQueryDto> result = postRepositoryQuery.findQueryDtoByCategoryName("All", PageRequest.of(1, 1));
+		List<PostQueryDto> result = postRepositoryQuery.findByCategoryName("All", PageRequest.of(1, 1));
 		PostQueryDto post = result.get(0);
 
 		// then
@@ -97,7 +97,7 @@ class PostRepositoryQueryTest {
 	@Test
 	void findQueryDto_byCategoryName_ifMember_withIsMemberLike() {
 		// when
-		List<PostQueryDto> result = postRepositoryQuery.findQueryDtoWithIsMemberLikeByCategoryName(member.getId(), "All", PageRequest.of(1, 1));
+		List<PostQueryDto> result = postRepositoryQuery.findWithIsMemberLikeByCategoryName(member.getId(), "All", PageRequest.of(1, 1));
 		PostQueryDto post = result.get(0);
 
 		// then
@@ -113,7 +113,7 @@ class PostRepositoryQueryTest {
 		likeRepository.save(Like.builder().member(member).post(post).build());
 
 		// when
-		List<PostQueryDto> result = postRepositoryQuery.findQueryDtoByLikesMemberId(member.getId(),
+		List<PostQueryDto> result = postRepositoryQuery.findByLikesMemberId(member.getId(),
 			PageRequest.of(1, 1));
 
 		// then
@@ -127,7 +127,7 @@ class PostRepositoryQueryTest {
 		interestRepository.save(Interest.builder().member(member).category(category).build());
 
 		// when
-		List<PostQueryDto> result = postRepositoryQuery.findQueryDtoWithIsMemberLikeByInterestsMemberId(member.getId(),
+		List<PostQueryDto> result = postRepositoryQuery.findWithIsMemberLikeByInterestsMemberId(member.getId(),
 			PageRequest.of(1, 1));
 
 		// then

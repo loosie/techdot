@@ -76,20 +76,20 @@ public class PostService {
 	public List<PostQueryDto> getPostsByCategory_andIfMember_memberLikes(Member member, String categoryName,
 		Pageable pageable) {
 		if (member != null) {
-			return postRepositoryQuery.findQueryDtoWithIsMemberLikeByCategoryName(member.getId(), categoryName, pageable);
+			return postRepositoryQuery.findWithIsMemberLikeByCategoryName(member.getId(), categoryName, pageable);
 		}
-		return postRepositoryQuery.findQueryDtoByCategoryName(categoryName, pageable);
+		return postRepositoryQuery.findByCategoryName(categoryName, pageable);
 	}
 
 	// 멤버가 좋아요 누른 게시글 가져오기
 	public List<PostQueryDto> getPostsByMemberLikes(Long memberId, Pageable pageable) {
-		List<PostQueryDto> allLikePosts = postRepositoryQuery.findQueryDtoByLikesMemberId(memberId, pageable);
+		List<PostQueryDto> allLikePosts = postRepositoryQuery.findByLikesMemberId(memberId, pageable);
 		allLikePosts.stream().forEach(post -> post.setIsMemberLike(true));
 		return allLikePosts;
 	}
 
 	public List<PostQueryDto> getPostsByMemberInterests(Long memberId, Pageable pageable) {
-		List<PostQueryDto> allInterestPosts = postRepositoryQuery.findQueryDtoWithIsMemberLikeByInterestsMemberId(memberId, pageable);
+		List<PostQueryDto> allInterestPosts = postRepositoryQuery.findWithIsMemberLikeByInterestsMemberId(memberId, pageable);
 		return allInterestPosts;
 	}
 

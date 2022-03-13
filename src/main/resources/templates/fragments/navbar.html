@@ -41,12 +41,11 @@
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
     <!--                TODO: search -->
-                    <form th:action="@{/search/}" class="form-inline" method="get">
+                    <form th:action="@{/search}" class="form-inline" method="get">
                         <input class="form-control mr-sm-2" name="keyword" type="search" placeholder="검색" aria-label="Search" />
                     </form>
                 </li>
             </ul>
-
 
             <ul class="navbar-nav justify-contenst-end">
                 <li class="nav-item" sec:authorize="!isAuthenticated()">
@@ -65,8 +64,6 @@
                     </a>
                 </li>
 
-
-
                 <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
                     <a class="nav-link dropdown-toggle" type="button" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
@@ -82,10 +79,7 @@
                         </h6>
 
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" th:href="@{'/me/likes'}">내 프로필</a>
                         <a class="dropdown-item" href="#" th:href="@{'/accounts'}">개인정보 설정</a>
-
-                        <!--spring security logout 핸들러가 처리-->
                         <form class="form-inline my-2 my-lg-0" action="#" th:action="@{/logout}" method="post">
                             <button class="dropdown-item" type="submit">로그아웃</button>
                         </form>

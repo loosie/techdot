@@ -2,6 +2,7 @@ package com.techdot.techdot.dto;
 
 import java.time.LocalDateTime;
 
+import com.querydsl.core.annotations.QueryProjection;
 import com.techdot.techdot.domain.CategoryName;
 import com.techdot.techdot.domain.PostType;
 
@@ -20,6 +21,7 @@ public class PostQueryDto {
 	private String categoryName;
 	private Boolean isMemberLike;
 
+	@QueryProjection
 	public PostQueryDto(Long postId, String title, String content, String link, String writer, PostType type, String thumbnailImage,
 		LocalDateTime uploadDateTime, CategoryName categoryName, Boolean isMemberLike) {
 		this.postId = postId;

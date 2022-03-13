@@ -15,9 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
 
 import com.techdot.techdot.domain.CategoryName;
-import com.techdot.techdot.domain.Like;
 import com.techdot.techdot.domain.Member;
-import com.techdot.techdot.domain.Post;
 import com.techdot.techdot.domain.PostType;
 import com.techdot.techdot.dto.PostQueryDto;
 import com.techdot.techdot.repository.CategoryRepository;
@@ -53,7 +51,7 @@ class PostServiceTest {
 			new PostQueryDto(1L, "title", "content", "http://link.com", "writer", PostType.BLOG,
 				"", LocalDateTime.now(), CategoryName.CS, false)
 		);
-		given(postRepositoryQuery.findQueryDtoByCategoryName("CS", PageRequest.of(1,1)))
+		given(postRepositoryQuery.findByCategoryName("CS", PageRequest.of(1,1)))
 			.willReturn(allPosts);
 
 		// when
@@ -61,7 +59,7 @@ class PostServiceTest {
 			PageRequest.of(1, 1));
 
 		// then
-		then(postRepositoryQuery).should(times(1)).findQueryDtoByCategoryName(any(), any());
+		then(postRepositoryQuery).should(times(1)).findByCategoryName(any(), any());
 		assertEquals(result.get(0).getPostId(), 1L);
 		assertEquals(result.get(0).getContent(), "content");
 	}
@@ -82,7 +80,7 @@ class PostServiceTest {
 			new PostQueryDto(1L, "title", "content", "http://link.com", "writer", PostType.BLOG,
 				"",  LocalDateTime.now(), CategoryName.CS, true)
 		);
-		given(postRepositoryQuery.findQueryDtoWithIsMemberLikeByCategoryName(member.getId(), "CS", PageRequest.of(1,1)))
+		given(postRepositoryQuery.findWithIsMemberLikeByCategoryName(member.getId(), "CS", PageRequest.of(1,1)))
 			.willReturn(allPosts);
 
 		// when
@@ -90,7 +88,7 @@ class PostServiceTest {
 			PageRequest.of(1, 1));
 
 		// then
-		then(postRepositoryQuery).should(times(1)).findQueryDtoWithIsMemberLikeByCategoryName(any(), any(), any());
+		then(postRepositoryQuery).should(times(1)).findWithIsMemberLikeByCategoryName(any(), any(), any());
 		assertEquals(result.get(0).getPostId(), 1L);
 		assertEquals(result.get(0).getContent(), "content");
 		assertTrue(result.get(0).getIsMemberLike());
@@ -104,14 +102,14 @@ class PostServiceTest {
 			new PostQueryDto(1L, "title", "content", "http://link.com", "writer", PostType.BLOG,
 				"",  LocalDateTime.now(), CategoryName.CS, false)
 		);
-		given(postRepositoryQuery.findQueryDtoByLikesMemberId(1L, PageRequest.of(1,1)))
+		given(postRepositoryQuery.findByLikesMemberId(1L, PageRequest.of(1,1)))
 			.willReturn(allPosts);
 
 		// when
 		List<PostQueryDto> result = postService.getPostsByMemberLikes(1L, PageRequest.of(1, 1));
 
 		// then
-		then(postRepositoryQuery).should(times(1)).findQueryDtoByLikesMemberId(any(), any());
+		then(postRepositoryQuery).should(times(1)).findByLikesMemberId(any(), any());
 		assertEquals(result.get(0).getPostId(), 1L);
 		assertEquals(result.get(0).getContent(), "content");
 		assertTrue(result.get(0).getIsMemberLike());
