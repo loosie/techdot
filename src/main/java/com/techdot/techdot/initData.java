@@ -111,7 +111,7 @@ public class initData {
 					.writer("loosie")
 					.manager(member)
 					.category(backend)
-					.uploadDateTime(LocalDateTime.now().minusDays(i))
+					.uploadDateTime(LocalDateTime.now().minusDays(30+i))
 					.build();
 				em.persist(post);
 			}
@@ -125,7 +125,7 @@ public class initData {
 					.writer("loosie")
 					.manager(member)
 					.category(frontend)
-					.uploadDateTime(LocalDateTime.now().minusDays(i))
+					.uploadDateTime(LocalDateTime.now().minusDays(i-30))
 					.build();
 				em.persist(post);
 			}

@@ -3,7 +3,6 @@
 <div th:fragment="post-factory (requestUrl, viewName)">
 <script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
 <script type="text/javascript" th:inline="javascript" >
-
     /*<![CDATA[*/
     function getPageId(n) {
         return 'page-' + n;
@@ -70,14 +69,6 @@
         const uploadDateTime = document.createElement('span');
         uploadDateTime.className = 'upload-time'
         uploadDateTime.textContent = data.uploadDateTime;
-        // const weeksAgo = moment().subtract(7, 'days')
-        // const uploadDate = moment(data.uploadDateTime, "YYYY-MM-DD`T`hh:mm");
-        // console.log(uploadDate);
-        // if(uploadDate.diff(weeksAgo, 'days')){
-        //     uploadDateTime.textContent = uploadDate.startOf('day').fromNow();
-        // }else {
-        //     uploadDateTime.textContent = uploadDate.format('LL');
-        // }
         subInfo.appendChild(uploadDateTime);
         body.appendChild(subInfo);
 
@@ -235,8 +226,6 @@
         if (!flag || (getScrollTop() < getDocumentHeight() - window.innerHeight - 100)) return; // 스크롤이 페이지 하단에 도달할 경우 새 페이지 로드
         addPage(++page);
         uploadTimeFormat();
-
-
     }; /*]]>*/
 
     function uploadTimeFormat() {
@@ -246,13 +235,12 @@
                 const weeksAgo = moment().subtract(7, 'days');
                 const uploadDate = moment(dateTime, "YYYY-MM-DD`T`hh:mm");
                 if (uploadDate.diff(weeksAgo, 'days') >= 0) {
-                    return uploadDate.startOf('day').fromNow();
+                    return uploadDate.startOf('minute').fromNow();
                 }
                 return uploadDate.format('LL');
             }
         })
     }
-
 
     /* like button logic */
     function onClickFunc(e) {

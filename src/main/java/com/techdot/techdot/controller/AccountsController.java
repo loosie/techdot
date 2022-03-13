@@ -122,10 +122,9 @@ public class AccountsController {
 		@PageableDefault(size = 10, page = 0, sort = "uploadDateTime", direction = Sort.Direction.DESC) Pageable pageable) {
 		Page<Post> postPage = postService.findByManager(member, pageable);
 
-		String sortProperty = "uploadDateTime";
 		model.addAttribute(member);
 		model.addAttribute("postPage", postPage);
-		model.addAttribute("sortProperty", sortProperty);
+		model.addAttribute("sortProperty", pageable.getSort().toString().contains("uploadDateTime") ? "uploadDateTime" : "id");
 		return ACCOUNTS_MY_UPLOAD_VIEW_NAME;
 	}
 

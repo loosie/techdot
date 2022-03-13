@@ -65,7 +65,7 @@ public class PostController {
 	@GetMapping("/post/{id}/edit")
 	public String updatePostView(@PathVariable Long id, @CurrentUser Member member, Model model) {
 		Post post = postService.getPostById(id);
-		if (!post.isManager(member)) { // TODO: AuthException
+		if (!post.isManager(member)) { // TODO: AuthException Toast
 			return "redirect:/";
 		}
 		model.addAttribute(member);
@@ -89,26 +89,22 @@ public class PostController {
 
 	@GetMapping("/posts/{categoryName}")
 	public ResponseEntity<List<PostQueryDto>> getPostsByCategory_scrolling(@PathVariable String categoryName,
-		@PageableDefault(page = 0, size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+		@PageableDefault(page = 0, size = 12, sort = "uploadDateTime", direction = Sort.Direction.DESC) Pageable pageable,
 		@CurrentUser Member member) {
-		List<PostQueryDto> postsByCategory_andIfMember_memberLikes = postService.getPostsByCategory_andIfMember_memberLikes(
-			member, categoryName, pageable);
-		System.out.println("postsByCategory_andIfMember_memberLikes = " + postsByCategory_andIfMember_memberLikes);
 		return new ResponseEntity<>(
 			postService.getPostsByCategory_andIfMember_memberLikes(member, categoryName, pageable), HttpStatus.OK);
 	}
 
 	@GetMapping("/posts/me/likes")
 	public ResponseEntity<List<PostQueryDto>> getPostsByMemberLikes_scrolling(
-		@PageableDefault(page = 0, size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+		@PageableDefault(page = 0, size = 12, sort = "uploadDateTime", direction = Sort.Direction.DESC) Pageable pageable,
 		@CurrentUser Member member) {
-		pageable.getSort();
 		return new ResponseEntity<>(postService.getPostsByMemberLikes(member.getId(), pageable), HttpStatus.OK);
 	}
 
 	@GetMapping("/posts/me/interests")
 	public ResponseEntity<List<PostQueryDto>> getPostsByMemberInterests_scrolling(
-		@PageableDefault(page = 0, size = 12, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+		@PageableDefault(page = 0, size = 12, sort = "uploadDateTime", direction = Sort.Direction.DESC) Pageable pageable,
 		@CurrentUser Member member) {
 		return new ResponseEntity<>(postService.getPostsByMemberInterests(member.getId(), pageable), HttpStatus.OK);
 	}

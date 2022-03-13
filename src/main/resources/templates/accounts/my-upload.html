@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace ="fragments/header.html :: head"></head>
+<head th:replace="fragments/header.html :: head"></head>
 
 <body class="bg-light">
 <nav th:replace="fragments/navbar.html :: auth-nav"></nav>
@@ -11,66 +11,109 @@
             <div th:replace="fragments/accounts-menu.html :: settings-menu(currentMenu='my-upload')"></div>
         </div>
 
-    <div class="col-8">
-        <h1 class="my-4">게시글 관리</h1>
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col-1">#</th>
-                <th scope="col-4">제목</th>
-                <th scope="col-1">수정</th>
-                <th scope="col-1">삭제</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="post, index : ${postPage}">
-                <th th:text="${postPage.getNumber()*postPage.getPageable().getPageSize() + index.index}" scope="row">#</th>
-                <td th:text="${post.title}">title</td>
-                <td>
-                    <a th:href="@{'/post/' + ${post.id} + '/edit'}" class="btn btn-secondary">수정</a>
-                </td>
-                <td>
-                    <a th:href="@{'/post' + ${post.id} + '/remove'}" class="btn btn-secondary">삭제</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
 
-        <div class="row mt-5 justify-content-center">
-            <div class="col-8 py-4">
-                <nav th:if="${postPage.getTotalPages()}!=0">
-                    <ul class="pagination justify-content-center mt-3">
-                        <li class="page-item" th:classappend="${!postPage.hasPrevious()}? disabled"}>
-                            <a class="page-link" href="#" th:href="@{'/my-upload?page=' + ${postPage.getNumber()-1} + '&sort=' + ${sortProperty} + ',desc'}" aria-label="Previous"
-                               tabindex="-1" aria-disabled="true">
-                                <span aria-hidden="true">&laquo;</span>
+        <div class="col-8">
+            <div class="row justify-content-center pt-1 pb-3">
+                <div class="col" style="display: flex;">
+                    <div>
+                        <h1 class="my-4">게시글 관리</h1>
+                    </div>
+                    <div class="dropdown ml-auto mr-4" style="display:flex; align-items: end">
+                        <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            검색 결과 정렬 방식
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item"
+                               th:classappend="${#strings.equals(sortProperty, 'uploadDateTime')}? active"
+                               th:href="@{'/accounts/my-upload?sort=uploadDateTime,desc'}">
+                                업로드 날짜순
                             </a>
-                        </li>
-
-                        <li class="page-item"  th:classappend="${i == postPage.getNumber()}? active"
-                            th:each="i: ${#numbers.sequence(0, postPage.getTotalPages() - 1)}">
-                            <a th:href="@{'/accounts/my-upload?page=' + ${i} + '&sort=' + ${sortProperty} + ',desc'}"
-                               class="page-link" href="#" th:text="${i + 1}">1</a>
-                        </li>
-                        <li class="page-item" th:classappend="${!postPage.hasNext()}? disabled">
-                            <a th:href="@{'/accounts/my-upload?page=' + ${postPage.getNumber()+1} + '&sort=' + ${sortProperty} + ',desc'}"
-                               class="page-link">
-                                <span aria-hidden="true">&raquo;</span>
+                            <a class="dropdown-item" th:classappend="${#strings.equals(sortProperty, 'id')}? active"
+                               th:href="@{'/accounts/my-upload?sort=id,desc'}">
+                                등록순
                             </a>
-                        </li>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col-1">#</th>
+                    <th scope="col-1">id</th>
+                    <th scope="col-4">제목</th>
+                    <th scope="col-1">업로드 날짜</th>
+                    <th scope="col-1">수정</th>
+                    <th scope="col-1">삭제</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="post, index : ${postPage}">
+                    <th th:text="${postPage.getNumber()*postPage.getPageable().getPageSize() + index.index}"
+                        scope="row">#
+                    </th>
+                    <td th:text="${post.id}">id</td>
+                    <td th:text="${post.title}">title</td>
+                    <td class="upload-time" th:text="${post.uploadDateTime}">uploadDateTime</td>
+                    <td>
+                        <a th:href="@{'/post/' + ${post.id} + '/edit'}" class="btn btn-info">수정</a>
+                    </td>
+                    <td>
+                        <a th:href="@{'/post' + ${post.id} + '/remove'}" class="btn btn-danger">삭제</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
 
-                    </ul>
-                </nav>
+            <div class="row mt-5 justify-content-center">
+                <div class="col-8 py-4">
+                    <nav th:if="${postPage.getTotalPages()}!=0">
+                        <ul class="pagination justify-content-center mt-3">
+                            <li class="page-item" th:classappend="${!postPage.hasPrevious()}? disabled" }>
+                                <a class="page-link" href="#"
+                                   th:href="@{'/my-upload?page=' + ${postPage.getNumber()-1} + '&sort=' + ${sortProperty} + ',desc'}"
+                                   aria-label="Previous"
+                                   tabindex="-1" aria-disabled="true">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+
+                            <li class="page-item" th:classappend="${i == postPage.getNumber()}? active"
+                                th:each="i: ${#numbers.sequence(0, postPage.getTotalPages() - 1)}">
+                                <a th:href="@{'/accounts/my-upload?page=' + ${i} + '&sort=' + ${sortProperty} + ',desc'}"
+                                   class="page-link" href="#" th:text="${i + 1}">1</a>
+                            </li>
+                            <li class="page-item" th:classappend="${!postPage.hasNext()}? disabled">
+                                <a th:href="@{'/accounts/my-upload?page=' + ${postPage.getNumber()+1} + '&sort=' + ${sortProperty} + ',desc'}"
+                                   class="page-link">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
             </div>
         </div>
     </div>
-
-
 </div>
-
 
 <footer th:replace="fragments/footer.html :: footer"></footer>
 
 </body>
+<script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    $('.upload-time').text(function (index, dateTime) {
+        if (moment(dateTime, moment.ISO_8601, true).isValid()) {
+            moment.locale('ko');
+            const weeksAgo = moment().subtract(7, 'days');
+            const uploadDate = moment(dateTime, "YYYY-MM-DD`T`hh:mm");
+            if (uploadDate.diff(weeksAgo, 'days') >= 0) {
+                return uploadDate.startOf('minute').fromNow();
+            }
+            return uploadDate.format('LL');
+        }
+    })
+</script>
 </html>

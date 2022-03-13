@@ -16,57 +16,53 @@
                     <div>
                         <h1 th:text="${mainMenuName}"></h1>
                     </div>
-                    <div th:if="${mainMenu}!='All' and ${mainMenu}!='MyInterests'" id="interest-switch" class="custom-control custom-switch ml-auto mr-4" style="display:flex; align-items: center" >
+                    <div th:if="${mainMenu}!='All' and ${mainMenu}!='MyInterests'" id="interest-switch"
+                         class="custom-control custom-switch ml-auto mr-4" style="display:flex; align-items: center">
                         <input type="checkbox" class="custom-control-input" th:value="${mainMenu}" id="customSwitch1">
                         <label class="custom-control-label" for="customSwitch1">관심 카테고리</label>
                     </div>
                 </div>
-
             </div>
-            <div class="row post-list" id="post-list">
-
-            </div>
+            <div class="row post-list" id="post-list"></div>
             <!-- Pagination List -->
             <ul class="post-list__pagination post-list__pagination--inactive" id="post-list-pagination"
                 style="display: none"></ul>
         </div>
-
     </div>
 </div>
 
 <footer th:replace="fragments/footer.html :: footer"></footer>
-
-<script type="text/javascript" th:inline="javascript" th:replace="fragments/ajax-csrf-header.html :: ajax-csrf-header" ></script>
-<div type="text/javascript" th:inline="javascript" th:replace="fragments/post-factory.html :: post-factory(requestUrl = '/posts/', viewName = ${mainMenu})" ></div>
-
+<script type="text/javascript" th:inline="javascript"
+        th:replace="fragments/ajax-csrf-header.html :: ajax-csrf-header"></script>
+<div type="text/javascript" th:inline="javascript"
+     th:replace="fragments/post-factory.html :: post-factory(requestUrl = '/posts/', viewName = ${mainMenu})"></div>
 <script type="application/javascript" th:inline="javascript">
     $(function () {
         const interestButton = $(".custom-control-input");
-
-        function getMemberCategories(){
+        function getMemberCategories() {
             $.ajax({
-                url : "/interests/me/list",
+                url: "/interests/me/list",
                 type: "GET"
             }).done(function (data, status) {
-                for(var i=0; i<data.length; i++){
-                    if(data[i].categoryName == '[(${mainMenu})]'){
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].categoryName == '[(${mainMenu})]') {
                         interestButton.attr('checked', true);
                         document.getElementById("interest-switch").classList.add('interest-active');
                     }
                 }
             })
         }
-        if('[(${#authentication.name})]' != 'anonymousUser') {
+
+        if ('[(${#authentication.name})]' != 'anonymousUser') {
             getMemberCategories()
         }
 
         interestButton.on("click", onClickFunc)
         function onClickFunc(e) {
-
             const interestSwitch = e.target.parentElement.classList;
-            if(interestSwitch.contains("interest-active")){
+            if (interestSwitch.contains("interest-active")) {
                 interestRequest("remove", e, interestSwitch);
-            }else{
+            } else {
                 interestRequest("add", e, interestSwitch);
             }
         }
@@ -81,13 +77,13 @@
                 })
             }).done(function (data, status) {
                 // console.log(status);
-                if('[(${#authentication.name})]' == 'anonymousUser'){
+                if ('[(${#authentication.name})]' == 'anonymousUser') {
                     window.location.href = "/login";
                     return;
                 }
-                if(action==='remove'){
+                if (action === 'remove') {
                     interestSwitch.remove('interest-active');
-                }else{
+                } else {
                     interestSwitch.add('interest-active');
                 }
             })
