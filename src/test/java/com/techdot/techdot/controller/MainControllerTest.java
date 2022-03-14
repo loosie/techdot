@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.techdot.techdot.auth.WithCurrentUser;
 import com.techdot.techdot.domain.CategoryName;
@@ -100,7 +102,7 @@ class MainControllerTest {
 	}
 
 	@WithCurrentUser(value = "test1@naver.com", role="MEMBER")
-	@DisplayName("관심 카테고리 뷰 보여주기")
+	@DisplayName("관심 카테고리 뷰 보여주기 - 이메일 인증 받지 않은 경")
 	@Test
 	void mainMyInterestsView() throws Exception{
 		mockMvc.perform(get("/me/interests"))
@@ -109,4 +111,24 @@ class MainControllerTest {
 			.andExpect(authenticated());
 	}
 
+	@DisplayName("검색 뷰 보여주기")
+	@Test
+	void searchView() throws Exception{
+		mockMvc.perform(get("/search")
+			.param("keyword", "검색")
+			.with(csrf()))
+			.andExpect(status().isOk())
+			.andExpect(model().attributeExists("keyword"))
+			.andExpect(view().name("search"))
+			.andExpect(unauthenticated());
+	}
+
+	@DisplayName("에러 뷰 보여주기")
+	@Test
+	void errorView() throws Exception{
+		mockMvc.perform(get("/error/403"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("error/403"))
+			.andExpect(unauthenticated());
+	}
 }

@@ -32,6 +32,7 @@ public class WithMemberSecurityContextFactory implements WithSecurityContextFact
 
 		UserDetails principal = principalDetailsService.loadUserByUsername(email);
 		Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>)principal.getAuthorities();
+		authorities.add((GrantedAuthority)() -> Role.ROLE_MEMBER.toString());
 		if(withCurrentUser.role().equals("ADMIN")) {
 			authorities.add((GrantedAuthority)() -> Role.ROLE_ADMIN.toString());
 		}

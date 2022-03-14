@@ -44,12 +44,12 @@ class AccountsControllerTest {
 
 
 	@WithCurrentUser(value = TEST_EMAIL, role ="MEMBER")
-	@DisplayName("프로필 설정 뷰")
+	@DisplayName("개인정보 설정 메인 뷰")
 	@Test
 	void profileSettingsView() throws Exception {
-		mockMvc.perform(get(REQUEST_URL + ACCOUNTS_MAIN_VIEW_URL))
+		mockMvc.perform(get(REQUEST_URL))
 			.andExpect(status().isOk())
-			.andExpect(view().name( ACCOUNTS_PROFILE_VIEW_NAME))
+			.andExpect(view().name(ACCOUNTS_PROFILE_VIEW_NAME))
 			.andExpect(model().attributeExists("member"));
 	}
 
@@ -64,7 +64,7 @@ class AccountsControllerTest {
 			.param("bio", bio)
 			.with(csrf()))
 			.andExpect(status().is3xxRedirection())
-			.andExpect(redirectedUrl(ACCOUNTS_MAIN_VIEW_URL))
+			.andExpect(redirectedUrl(REQUEST_URL))
 			.andExpect(flash().attributeExists("message"));
 
 		// then

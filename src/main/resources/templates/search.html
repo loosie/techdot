@@ -5,16 +5,6 @@
 <body class="bg-light">
 <nav th:replace="fragments/navbar.html :: auth-nav"></nav>
 <div class="container main-view-container">
-<!--    <div class="py-5 text-center">-->
-<!--        <p class="lead" th:if="${postList.size() == 0}">-->
-<!--            <strong th:text="${keyword}" id="keyword" class="context"></strong>에 해당하는 게시글이 없습니다.-->
-<!--        </p>-->
-<!--        <p class="lead" th:if="${postList.size() > 0}">-->
-<!--            <strong th:text="${keyword}" id="keyword" class="context"></strong>에 해당하는 게시글을-->
-<!--            <span th:text="${postList.size()}"></span>개-->
-<!--            찾았습니다.-->
-<!--        </p>-->
-<!--    </div>-->
     <div class="row justify-content-center py-4">
         <div class="col py-4">
             <nav th:replace="fragments/main-view-category-menu.html :: category-menu(categoryMenu = '')"></nav>
@@ -23,7 +13,7 @@
             <div class="row justify-content-center pt-1 pb-3s">
                 <div class="col" style="display: flex;">
                     <div>
-                        <h1>검색 결과</h1>
+                        <h1 th:text="'\'' + ${keyword} +'\'' + ' 검색 결과'"></h1>
                     </div>
                 </div>
             </div>

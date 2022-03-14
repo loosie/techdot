@@ -4,9 +4,6 @@ import static com.techdot.techdot.domain.CategoryName.*;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.techdot.techdot.config.auth.CurrentUser;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.dto.PostQueryDto;
-import com.techdot.techdot.repository.PostRepository;
 import com.techdot.techdot.service.PostService;
 
 import lombok.RequiredArgsConstructor;
@@ -29,7 +25,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MainController {
 
-	private final PostRepository postRepository;
 	private final PostService postService;
 
 	@GetMapping("/")
@@ -62,10 +57,6 @@ public class MainController {
 
 	@GetMapping("/me/interests")
 	public String MyInterestsView(@CurrentUser Member member, Model model) {
-		if (!member.getEmailVerified()) {
-			model.addAttribute("email", member.getEmail());
-			return "redirect:/check-email";
-		}
 		model.addAttribute(member);
 		return "main/my-interests";
 	}

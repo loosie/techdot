@@ -19,13 +19,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.techdot.techdot.auth.WithCurrentUser;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.repository.MemberRepository;
+import com.techdot.techdot.service.mail.ConsoleEmailService;
+import com.techdot.techdot.service.mail.EmailMessageDto;
+import com.techdot.techdot.service.mail.EmailService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -38,7 +40,7 @@ class MemberControllerTest {
 	private MemberRepository memberRepo;
 
 	@MockBean
-	private JavaMailSender javaMailSender;
+	private EmailService emailService;
 
 	@AfterEach
 	void end(){
@@ -46,9 +48,8 @@ class MemberControllerTest {
 	}
 
 	private final String TEST_EMAIL = "test@naver.com";
-	private final String TEST_NICKNAME = "testNickname";
 
-	@DisplayName("회원 가입 화면 뷰 테스트")
+	@DisplayName("회원 가입 화면 뷰")
 	@Test
 	void memberJoinView() throws Exception {
 		mockMvc.perform(get("/join"))
@@ -77,7 +78,7 @@ class MemberControllerTest {
 		assertNotNull(member);
 		assertThat(!member.get().getPassword().equals("12345678"));
 		assertFalse(member.get().getEmailVerified());
-		then(javaMailSender).should().send(any(SimpleMailMessage.class));
+		then(emailService).should().sendEmail(any(EmailMessageDto.class));
 	}
 
 	@DisplayName("회원 가입 테스트 - 입력값 오류")

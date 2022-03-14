@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-			.mvcMatchers("/join", "/login").not().fullyAuthenticated()
+			.mvcMatchers("/join", "/login", "/error/**").not().fullyAuthenticated()
 			.mvcMatchers("/", "/check-email",  "/email-login", "/login-by-email", "/confirm-email", "/resend-confirm-email/*",
 				"/posts/**", "/category/**",  "/search/**").permitAll()
 			.mvcMatchers("/interest/**", "/like/**", "/me/likes", "/accounts/**").access("hasRole('ROLE_MEMBER') or hasRole('ROLE_ADMIN')")
