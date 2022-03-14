@@ -185,7 +185,6 @@ class AccountsControllerTest {
 			.andExpect(model().attributeExists("member"));
 	}
 
-	// TODO : ADMIN
 	@WithCurrentUser(value = TEST_EMAIL, role="ADMIN")
 	@DisplayName("게시글 관리 뷰")
 	@Test

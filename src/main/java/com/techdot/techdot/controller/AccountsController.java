@@ -120,7 +120,7 @@ public class AccountsController {
 	@GetMapping(ACCOUNTS_MY_UPLOAD_VIEW_URL)
 	public String myUploadPostsView(@CurrentUser Member member, Model model,
 		@PageableDefault(size = 10, page = 0, sort = "uploadDateTime", direction = Sort.Direction.DESC) Pageable pageable) {
-		List<Post> postPage = postService.getByManager(member, pageable);
+		Page<Post> postPage = postService.getByManager(member, pageable);
 
 		model.addAttribute(member);
 		model.addAttribute("postPage", postPage);

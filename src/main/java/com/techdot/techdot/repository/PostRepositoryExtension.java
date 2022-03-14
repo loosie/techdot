@@ -9,9 +9,9 @@ import com.techdot.techdot.dto.PostQueryDto;
 
 public interface PostRepositoryExtension {
 
-	List<PostQueryDto> findAllDtoByKeyword(Long memberId, String keyword, Pageable pageable);
-
 	List<PostQueryDto> findAllDto(Long memberId, Pageable pageable);
+
+	List<PostQueryDto> findAllDtoByKeyword(Long memberId, String keyword, Pageable pageable);
 
 	List<PostQueryDto> findAllDtoByCategoryName(Long memberId, CategoryName categoryName, Pageable pageable);
 

@@ -80,7 +80,7 @@ public class MainController {
 	public ResponseEntity<List<PostQueryDto>> searchPostsByKeyword_scrolling(
 		@PathVariable String keyword, @CurrentUser Member member,
 		@PageableDefault(page = 0, size = 12, sort = "uploadDateTime", direction = Sort.Direction.DESC) Pageable pageable) {
-		List<PostQueryDto> result = postService.findAllDtoByKeyword(member, keyword, pageable);
+		List<PostQueryDto> result = postService.getPostsByKeyword(member, keyword, pageable);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 }
