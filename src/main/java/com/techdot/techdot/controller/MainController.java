@@ -4,6 +4,9 @@ import static com.techdot.techdot.domain.CategoryName.*;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -50,10 +53,6 @@ public class MainController {
 	public String homeByCategory(@PathVariable String categoryName, @CurrentUser Member member, Model model,
 		@PageableDefault(size = 10, page = 0, sort = "uploadDateTime", direction = Sort.Direction.DESC) Pageable pageable) {
 		if (member != null) {
-			if (!member.getEmailVerified()) {
-				model.addAttribute("email", member.getEmail());
-				return "redirect:/check-email";
-			}
 			model.addAttribute(member);
 		}
 		model.addAttribute("sortProperty",
@@ -63,6 +62,10 @@ public class MainController {
 
 	@GetMapping("/me/interests")
 	public String MyInterestsView(@CurrentUser Member member, Model model) {
+		if (!member.getEmailVerified()) {
+			model.addAttribute("email", member.getEmail());
+			return "redirect:/check-email";
+		}
 		model.addAttribute(member);
 		return "main/my-interests";
 	}
@@ -82,5 +85,10 @@ public class MainController {
 		@PageableDefault(page = 0, size = 12, sort = "uploadDateTime", direction = Sort.Direction.DESC) Pageable pageable) {
 		List<PostQueryDto> result = postService.getPostsByKeyword(member, keyword, pageable);
 		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
+	@GetMapping("/error/{status}")
+	public String errorView(@PathVariable String status) {
+		return "error/" + status;
 	}
 }

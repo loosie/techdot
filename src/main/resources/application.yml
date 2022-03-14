@@ -1,7 +1,8 @@
 spring:
   profiles:
-    active: local
-
+    group:
+      "default": "local"
+      "dev": "dev, mail"
   jpa:
     hibernate:
       ddl-auto: create-drop

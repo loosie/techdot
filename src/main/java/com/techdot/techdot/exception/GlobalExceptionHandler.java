@@ -17,22 +17,23 @@ import lombok.extern.slf4j.Slf4j;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-	// @ExceptionHandler
-	// public String handleRuntimeException(@CurrentUser Member member, HttpServletRequest req, HttpServletResponse res, RuntimeException ex){
-	// 	if(member != null){
-	// 		log.info("'{}' requested '{}'", member.getNickname(), req.getRequestURI());
-	// 	}else{
-	// 		log.info("requested '{}'", req.getRequestURI());;
-	// 	}
-	//
-	// 	log.error("bad request", ex);
-	// 	return "error";
-	// }
+	@ExceptionHandler
+	public String handleRuntimeException(@CurrentUser Member member, HttpServletRequest req, HttpServletResponse res, RuntimeException ex){
+		if(member != null){
+			log.info("'{}' requested '{}'", member.getNickname(), req.getRequestURI());
+		}else{
+			log.info("requested '{}'", req.getRequestURI());;
+		}
+
+		log.error("bad request", ex);
+		req.setAttribute("message", "알 수 없는 오류가 발생하였습니다");
+		return "error/error";
+	}
 	@ExceptionHandler(NullPointerException.class)
 	public String handleNullPointerException(NullPointerException ex, Model model){
-		log.error("internal server error - {}", ex);
-		model.addAttribute("error", "알 수 없는 서버 에러가 발생하였습니다.");
-		return "error";
+		log.error("null error - {}", ex);
+		model.addAttribute("message", "정확한 값이 입력되지 않았습니다");
+		return "error/500";
 	}
 
 	@ExceptionHandler(UserNotExistedException.class)

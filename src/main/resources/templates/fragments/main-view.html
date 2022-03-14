@@ -53,7 +53,7 @@
             })
         }
 
-        if ('[(${#authentication.name})]' != 'anonymousUser') {
+        if ('[(${#authentication.name})]' != 'anonymousUser' && '[(${mainMenu})]' != 'All') {
             getMemberCategories()
         }
 
@@ -75,8 +75,7 @@
                 data: JSON.stringify({
                     categoryName: e.target.value
                 })
-            }).done(function (data, status) {
-                // console.log(status);
+            }).done(function () {
                 if ('[(${#authentication.name})]' == 'anonymousUser') {
                     window.location.href = "/login";
                     return;
@@ -85,6 +84,14 @@
                     interestSwitch.remove('interest-active');
                 } else {
                     interestSwitch.add('interest-active');
+                }
+            }).fail(function (data) {
+                if(data.status == 403){
+                    window.location.href = "/check-email";
+                    return;
+                }else{
+                    window.location.href = "/error";
+                    return;
                 }
             })
         }

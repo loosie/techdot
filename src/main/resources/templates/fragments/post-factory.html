@@ -261,8 +261,6 @@
                 postId: e.target.id
             })
         }).done(function (data, status) {
-            console.log(data);
-            console.log(status);
             if('[(${#authentication.name})]' == 'anonymousUser'){
                 window.location.href = "/login";
                 return;
@@ -278,6 +276,14 @@
                 like.className = 'fa fa-heart';
             }
             customLikeBox.children[1].appendChild(like);
+        }).fail(function (data) {
+            if(data.status == 403){
+                window.location.href = "/check-email";
+                return;
+            }else{
+                window.location.href = "/error";
+                return;
+            }
         })
     }
 

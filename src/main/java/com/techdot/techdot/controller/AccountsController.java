@@ -86,7 +86,7 @@ public class AccountsController {
 		memberService.updateProfile(member, profileForm);
 		model.addAttribute("member", new ProfileFormDto(member));
 		redirectAttributes.addFlashAttribute("message", "프로필이 정상적으로 저장되었습니다.");
-		return "redirect:" + ACCOUNTS_MAIN_VIEW_URL;
+		return "redirect:/accounts";
 	}
 
 	@GetMapping(ACCOUNTS_PASSWORD_VIEW_URL)
