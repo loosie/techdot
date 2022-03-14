@@ -25,8 +25,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @NoArgsConstructor
-@Getter @EqualsAndHashCode(of ="id")
+@EqualsAndHashCode(of ="id", callSuper = false)
 public class Member extends BaseEntity{
 
 	@Id

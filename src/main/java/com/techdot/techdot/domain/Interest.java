@@ -21,9 +21,9 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "interests")
-@NoArgsConstructor
 @Getter
-@EqualsAndHashCode(of ="id")
+@NoArgsConstructor
+@EqualsAndHashCode(of ="id", callSuper = false)
 public class Interest extends BaseEntity{
 
 	@Id

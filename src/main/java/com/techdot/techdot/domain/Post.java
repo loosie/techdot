@@ -26,9 +26,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@NoArgsConstructor
 @Getter
-@EqualsAndHashCode(of = "id")
+@NoArgsConstructor
+@EqualsAndHashCode(of ="id", callSuper = false)
 public class Post extends BaseEntity {
 
 	@Id

@@ -1,7 +1,5 @@
 package com.techdot.techdot.domain;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -19,8 +17,9 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "likes")
+@Getter
 @NoArgsConstructor
-@Getter @EqualsAndHashCode(of ="id")
+@EqualsAndHashCode(of ="id", callSuper = false)
 public class Like extends BaseEntity {
 
 	@Id
