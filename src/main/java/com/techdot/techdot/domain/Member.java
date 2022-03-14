@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @Getter @EqualsAndHashCode(of ="id")
-public class Member {
+public class Member extends BaseEntity{
 
 	@Id
 	@GeneratedValue
@@ -80,6 +80,7 @@ public class Member {
 		this.emailVerified = emailVerified;
 		this.roles.add(Role.ROLE_USER);
 		this.termsCheck = termsCheck;
+		createDateTime();
 	}
 
 	public void generateEmailCheckToken() {
@@ -135,10 +136,12 @@ public class Member {
 		this.nickname = profileForm.getNewNickname();
 		this.bio = profileForm.getBio();
 		this.profileImage = profileForm.getProfileImage();
+		updateDateTime();
 	}
 
 	public void updatePassword(String newPassword) {
 		this.password = newPassword;
+		updateDateTime();
 	}
 
 

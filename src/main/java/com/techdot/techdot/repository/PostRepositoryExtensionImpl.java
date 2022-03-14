@@ -41,7 +41,8 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 				post.thumbnailImage, post.uploadDateTime, category.name, getBooleanExpressionIsMemberLike(memberId)))
 			.join(post.category, category)
 			.where(post.title.containsIgnoreCase(keyword)
-				.or(post.content.containsIgnoreCase(keyword)));
+				.or(post.content.containsIgnoreCase(keyword))
+				.or(post.writer.containsIgnoreCase(keyword)));
 		addSorting(pageable.getSort(), query);
 		return getPagingResults(pageable, query);
 	}
@@ -106,7 +107,7 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 		if (sort.toString().contains("uploadDateTime")) {
 			query.orderBy(post.uploadDateTime.desc());
 		} else {
-			query.orderBy(post.id.desc());
+			query.orderBy(post.createdDateTime.desc());
 		}
 	}
 

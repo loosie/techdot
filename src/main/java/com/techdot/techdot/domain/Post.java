@@ -29,7 +29,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 @EqualsAndHashCode(of = "id")
-public class Post {
+public class Post extends BaseEntity {
 
 	@Id
 	@GeneratedValue
@@ -90,6 +90,7 @@ public class Post {
 		this.uploadDateTime = uploadDateTime;
 		setManager(manager);
 		setCategory(category);
+		createDateTime();
 	}
 
 	private void setCategory(Category category) {
@@ -108,6 +109,7 @@ public class Post {
 		this.writer = postForm.getWriter();
 		this.thumbnailImage = postForm.getThumbnailImage();
 		this.uploadDateTime = postForm.getUploadDateTime();
+		updateDateTime();
 	}
 
 	public boolean isManager(Member member) {

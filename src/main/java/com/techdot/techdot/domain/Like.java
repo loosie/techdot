@@ -1,5 +1,7 @@
 package com.techdot.techdot.domain;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -19,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "likes")
 @NoArgsConstructor
 @Getter @EqualsAndHashCode(of ="id")
-public class Like {
+public class Like extends BaseEntity {
 
 	@Id
 	@GeneratedValue
@@ -40,5 +42,6 @@ public class Like {
 
 		this.post = post;
 		this.member = member;
+		createDateTime();
 	}
 }
