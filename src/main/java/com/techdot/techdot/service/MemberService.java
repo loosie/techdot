@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +24,8 @@ import com.techdot.techdot.dto.PasswordFormDto;
 import com.techdot.techdot.dto.ProfileFormDto;
 import com.techdot.techdot.exception.UserNotExistedException;
 import com.techdot.techdot.repository.MemberRepository;
+import com.techdot.techdot.service.mail.EmailMessageDto;
+import com.techdot.techdot.service.mail.EmailService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberService {
 
 	private final MemberRepository memberRepository;
-	private final JavaMailSender javaMailSender;
+	private final EmailService emailService;
 	private final PasswordEncoder passwordEncoder;
 
 	public Member save(JoinFormDto joinForm) {
@@ -41,13 +47,13 @@ public class MemberService {
 	}
 
 	public void sendConfirmEmail(Member newMember) {
-		log.info("send confirm email : {} ", + newMember.getEmailSendTime());
-		SimpleMailMessage mailMessage = new SimpleMailMessage();
-		mailMessage.setTo(newMember.getEmail());
-		mailMessage.setSubject("TechDot 이메일 인증" );
-		mailMessage.setText(
-			"/confirm-email?token=" + newMember.getEmailCheckToken() + "&email=" + newMember.getEmail());
-		javaMailSender.send(mailMessage);
+		EmailMessageDto emailMessageDto = EmailMessageDto.builder()
+			.to(newMember.getEmail())
+			.subject("Techdot 이메일 인증을 확인해주세요")
+			.message("/confirm-email?token=" + newMember.getEmailCheckToken() + "&email=" + newMember.getEmail())
+			.sendTime(newMember.getEmailSendTime())
+			.build();
+		emailService.sendEmail(emailMessageDto);
 	}
 
 	private Member saveMember(JoinFormDto joinForm) {
@@ -89,13 +95,13 @@ public class MemberService {
 	}
 
 	public void sendLoginLink(Member member) {
-		log.info("send login email : {} ", + member.getEmailSendTime());
-		SimpleMailMessage mailMessage = new SimpleMailMessage();
-		mailMessage.setTo(member.getEmail());
-		mailMessage.setSubject("TechDot 이메일 인증" );
-		mailMessage.setText(
-			"/login-by-email?token=" + member.getEmailCheckToken() + "&email=" + member.getEmail());
-		javaMailSender.send(mailMessage);
+		EmailMessageDto emailMessageDto = EmailMessageDto.builder()
+			.to(member.getEmail())
+			.subject("Techdot 이메일 인증을 확인해주세요")
+			.message("/confirm-email?token=" + member.getEmailCheckToken() + "&email=" + member.getEmail())
+			.sendTime(member.getEmailSendTime())
+			.build();
+		emailService.sendEmail(emailMessageDto);
 	}
 
 	public Member findByEmail(String email, String redirectView) {
