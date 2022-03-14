@@ -10,4 +10,6 @@ import org.springframework.security.test.context.support.WithSecurityContext;
 public @interface WithCurrentUser {
 
 	String value();
+
+	String role();
 }

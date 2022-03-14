@@ -6,6 +6,8 @@ import static org.springframework.security.test.web.servlet.response.SecurityMoc
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -56,7 +58,7 @@ class PostControllerTest {
 
 	private final String TEST_EMAIL = "test@naver.com";
 
-	@WithCurrentUser(TEST_EMAIL)
+	@WithCurrentUser(value = TEST_EMAIL, role ="ADMIN")
 	@DisplayName("게시글 업로드 뷰 테스트")
 	@Test
 	void newPostView() throws Exception {
@@ -67,7 +69,7 @@ class PostControllerTest {
 			.andExpect(authenticated());
 	}
 
-	@WithCurrentUser(TEST_EMAIL)
+	@WithCurrentUser(value = TEST_EMAIL, role ="ADMIN")
 	@DisplayName("게시글 업로드 성공")
 	@Test
 	void uploadNewPost_success() throws Exception {
@@ -79,13 +81,14 @@ class PostControllerTest {
 			.param("writer", "google")
 			.param("categoryName", "CS")
 			.param("type", "BLOG")
+			.param("uploadDateTime", LocalDateTime.now().toString())
 			.with(csrf()))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/"))
 			.andExpect(authenticated());
 	}
 
-	@WithCurrentUser(TEST_EMAIL)
+	@WithCurrentUser(value = TEST_EMAIL, role ="ADMIN")
 	@DisplayName("게시글 업로드 실패 - 입력값 오류 link")
 	@Test
 	void uploadNewPost_error_wrongLinkValue() throws Exception {
@@ -97,6 +100,7 @@ class PostControllerTest {
 			.param("writer", "google")
 			.param("categoryName", "CS")
 			.param("type", "BLOG")
+			.param("uploadDateTime", LocalDateTime.now().toString())
 			.with(csrf()))
 			.andExpect(status().isOk())
 			.andExpect(model().hasErrors())
@@ -104,7 +108,7 @@ class PostControllerTest {
 			.andExpect(authenticated());
 	}
 
-	@WithCurrentUser(TEST_EMAIL)
+	@WithCurrentUser(value = TEST_EMAIL, role ="ADMIN")
 	@Transactional
 	@DisplayName("게시글 수정하기 성공")
 	@Test
@@ -118,6 +122,7 @@ class PostControllerTest {
 			.writer("google")
 			.link("http://google.com/")
 			.type(PostType.BLOG)
+			.uploadDateTime(LocalDateTime.now())
 			.category(category)
 			.manager(member)
 			.build();
@@ -132,6 +137,7 @@ class PostControllerTest {
 			.param("writer", "google")
 			.param("categoryName", "CS")
 			.param("type", "BLOG")
+			.param("uploadDateTime", LocalDateTime.now().toString())
 			.with(csrf()))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(flash().attributeExists("message"))
@@ -142,7 +148,7 @@ class PostControllerTest {
 		assertEquals("updateTitle", changePost.getTitle());
 	}
 
-	@WithCurrentUser(TEST_EMAIL)
+	@WithCurrentUser(value = TEST_EMAIL, role ="ADMIN")
 	@Transactional
 	@DisplayName("게시글 수정하기 실패 - 입력값 오류 link")
 	@Test
@@ -157,6 +163,7 @@ class PostControllerTest {
 			.link("http://google.com/")
 			.type(PostType.BLOG)
 			.category(category)
+			.uploadDateTime(LocalDateTime.now())
 			.manager(member)
 			.build();
 		Post save = postRepository.save(post);
@@ -170,6 +177,7 @@ class PostControllerTest {
 			.param("writer", "google")
 			.param("categoryName", "CS")
 			.param("type", "BLOG")
+			.param("uploadDateTime", LocalDateTime.now().toString())
 			.with(csrf()))
 			.andExpect(status().isOk())
 			.andExpect(model().hasErrors())
@@ -178,6 +186,4 @@ class PostControllerTest {
 			.andExpect(authenticated());
 	}
 
-	// TODO: @GetMapping("/posts/{categoryName}")
-	// TODO: @GetMapping("/posts/me/likes")
 }

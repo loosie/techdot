@@ -2,6 +2,8 @@ package com.techdot.techdot.repository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -51,6 +53,7 @@ class LikeRepositoryTest {
 			.link("http://~~~.com")
 			.type(PostType.BLOG)
 			.category(category)
+			.uploadDateTime(LocalDateTime.now())
 			.writer("naver")
 			.manager(member)
 			.build();

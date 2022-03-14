@@ -17,9 +17,10 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "likes")
+@Getter
 @NoArgsConstructor
-@Getter @EqualsAndHashCode(of ="id")
-public class Like {
+@EqualsAndHashCode(of ="id", callSuper = false)
+public class Like extends BaseEntity {
 
 	@Id
 	@GeneratedValue
@@ -40,5 +41,6 @@ public class Like {
 
 		this.post = post;
 		this.member = member;
+		createDateTime();
 	}
 }

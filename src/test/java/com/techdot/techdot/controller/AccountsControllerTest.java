@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.techdot.techdot.auth.WithCurrentUser;
@@ -34,6 +35,7 @@ class AccountsControllerTest {
 
 	private final String TEST_EMAIL = "test@naver.com";
 	private final String TEST_NICKNAME = "testNickname";
+	private final String REQUEST_URL = "/accounts";
 
 	@AfterEach
 	void end() {
@@ -41,22 +43,22 @@ class AccountsControllerTest {
 	}
 
 
-	@WithCurrentUser(TEST_EMAIL)
+	@WithCurrentUser(value = TEST_EMAIL, role ="MEMBER")
 	@DisplayName("프로필 설정 뷰")
 	@Test
 	void profileSettingsView() throws Exception {
-		mockMvc.perform(get(ACCOUNTS_MAIN_VIEW_URL))
+		mockMvc.perform(get(REQUEST_URL + ACCOUNTS_MAIN_VIEW_URL))
 			.andExpect(status().isOk())
-			.andExpect(view().name(ACCOUNTS_PROFILE_VIEW_NAME))
+			.andExpect(view().name( ACCOUNTS_PROFILE_VIEW_NAME))
 			.andExpect(model().attributeExists("member"));
 	}
 
-	@WithCurrentUser(TEST_EMAIL)
+	@WithCurrentUser(value = TEST_EMAIL, role ="MEMBER")
 	@DisplayName("프로필 수정하기 - 정상")
 	@Test
 	void updateProfile_success() throws Exception {
 		String bio = "소개를 수정하는 경우";
-		mockMvc.perform(post(ACCOUNTS_MAIN_VIEW_URL)
+		mockMvc.perform(post(REQUEST_URL + ACCOUNTS_MAIN_VIEW_URL)
 			.param("curNickname", TEST_NICKNAME)
 			.param("newNickname", TEST_NICKNAME)
 			.param("bio", bio)
@@ -70,12 +72,12 @@ class AccountsControllerTest {
 		assertEquals(findMember.getBio(), bio);
 	}
 
-	@WithCurrentUser(TEST_EMAIL)
+	@WithCurrentUser(value = TEST_EMAIL, role ="MEMBER")
 	@DisplayName("프로필 수정하기 - 입력값 에러 - 소개글 범위 초과")
 	@Test
 	void updateProfile_error_wrongInput() throws Exception {
 		String bio = "소개를 수정하는 길이가 너무 긴 경우.소개를 수정하는 길이가 너무 긴 경우.소개를 수정하는 길이가 너무 긴 경우.소개를 수정하는 길이가 너무 긴 경우.";
-		mockMvc.perform(post(ACCOUNTS_MAIN_VIEW_URL)
+		mockMvc.perform(post(REQUEST_URL + ACCOUNTS_MAIN_VIEW_URL)
 			.param("curNickname", TEST_NICKNAME)
 			.param("newNickname", TEST_NICKNAME)
 			.param("bio", bio)
@@ -90,7 +92,7 @@ class AccountsControllerTest {
 		assertNull(findMember.getBio());
 	}
 
-	@WithCurrentUser(TEST_EMAIL)
+	@WithCurrentUser(value = TEST_EMAIL, role ="MEMBER")
 	@DisplayName("프로필 수정하기 - 입력값 에러 - 닉네임 중복")
 	@Test
 	void updateProfile_error_duplicatedNickname() throws Exception {
@@ -103,7 +105,7 @@ class AccountsControllerTest {
 			.termsCheck(true)
 			.build());
 
-		mockMvc.perform(post(ACCOUNTS_MAIN_VIEW_URL)
+		mockMvc.perform(post(REQUEST_URL + ACCOUNTS_MAIN_VIEW_URL)
 			.param("curNickname", "test")
 			.param("newNickname", TEST_NICKNAME)
 			.param("bio", "bio")
@@ -118,22 +120,22 @@ class AccountsControllerTest {
 		assertFalse(findMember.equals(newMember));
 	}
 
-	@WithCurrentUser(TEST_EMAIL)
+	@WithCurrentUser(value = TEST_EMAIL, role ="MEMBER")
 	@DisplayName("비밀번호 변경 뷰")
 	@Test
 	void updatePasswordView() throws Exception {
-		mockMvc.perform(get(ACCOUNTS_PASSWORD_VIEW_URL))
+		mockMvc.perform(get(REQUEST_URL +ACCOUNTS_PASSWORD_VIEW_URL))
 			.andExpect(status().isOk())
 			.andExpect(model().attributeExists("member"))
 			.andExpect(model().attributeExists("passwordForm"));
 	}
 
-	@WithCurrentUser(TEST_EMAIL)
+	@WithCurrentUser(value = TEST_EMAIL, role ="MEMBER")
 	@DisplayName("비밀번호 변경하기 - 정상")
 	@Test
 	void updatePassword_success() throws Exception {
 		String newPw = "1234567890";
-		mockMvc.perform(post(ACCOUNTS_PASSWORD_VIEW_URL)
+		mockMvc.perform(post(REQUEST_URL + ACCOUNTS_PASSWORD_VIEW_URL)
 			.param("newPassword", newPw)
 			.param("newPasswordConfirm", newPw)
 			.with(csrf()))
@@ -146,12 +148,12 @@ class AccountsControllerTest {
 		assertTrue(passwordEncoder.matches(newPw, findMember.getPassword()));
 	}
 
-	@WithCurrentUser(TEST_EMAIL)
+	@WithCurrentUser(value = TEST_EMAIL, role ="MEMBER")
 	@DisplayName("비밀번호 변경하기 - 입력값 에러")
 	@Test
 	void updatePassword_error_unMatchedPassword() throws Exception {
 		String newPw = "1234567890";
-		mockMvc.perform(post(ACCOUNTS_PASSWORD_VIEW_URL)
+		mockMvc.perform(post(REQUEST_URL + ACCOUNTS_PASSWORD_VIEW_URL)
 			.param("newPassword", newPw)
 			.param("newPasswordConfirm", newPw + "abc")
 			.with(csrf()))
@@ -162,33 +164,32 @@ class AccountsControllerTest {
 	}
 
 
-	@WithCurrentUser(TEST_EMAIL)
+	@WithCurrentUser(value = TEST_EMAIL, role ="MEMBER")
 	@DisplayName("설정 뷰")
 	@Test
 	void accountsSettingView() throws Exception {
-		mockMvc.perform(get(ACCOUNTS_SETTING_VIEW_URL))
+		mockMvc.perform(get(REQUEST_URL + ACCOUNTS_SETTING_VIEW_URL))
 			.andExpect(status().isOk())
 			.andExpect(view().name(ACCOUNTS_SETTING_VIEW_NAME))
 			.andExpect(model().attributeExists("member"));
 	}
 
 	// TODO : ADMIN
-	@WithCurrentUser(TEST_EMAIL)
+	@WithCurrentUser(value = TEST_EMAIL, role="ADMIN")
 	@DisplayName("카테고리 관리 뷰")
 	@Test
 	void accountsSettingCategoryView() throws Exception {
-		mockMvc.perform(get(ACCOUNTS_CATEGORY_VIEW_URL))
+		mockMvc.perform(get(REQUEST_URL + ACCOUNTS_CATEGORY_VIEW_URL))
 			.andExpect(status().isOk())
 			.andExpect(view().name(ACCOUNTS_CATEGORY_VIEW_NAME))
 			.andExpect(model().attributeExists("member"));
 	}
 
-	// TODO : ADMIN
-	@WithCurrentUser(TEST_EMAIL)
+	@WithCurrentUser(value = TEST_EMAIL, role="ADMIN")
 	@DisplayName("게시글 관리 뷰")
 	@Test
 	void accountsMyUploadView() throws Exception {
-		mockMvc.perform(get(ACCOUNTS_MY_UPLOAD_VIEW_URL))
+		mockMvc.perform(get(REQUEST_URL + ACCOUNTS_MY_UPLOAD_VIEW_URL))
 			.andExpect(status().isOk())
 			.andExpect(view().name(ACCOUNTS_MY_UPLOAD_VIEW_NAME))
 			.andExpect(model().attributeExists("postPage"))

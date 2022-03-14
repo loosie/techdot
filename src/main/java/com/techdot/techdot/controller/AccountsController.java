@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.techdot.techdot.config.auth.CurrentUser;
@@ -33,23 +34,24 @@ import com.techdot.techdot.utils.ProfileFormValidator;
 import lombok.RequiredArgsConstructor;
 
 @Controller
+@RequestMapping("accounts")
 @RequiredArgsConstructor
 public class AccountsController {
 
 	static final String ACCOUNTS_PROFILE_VIEW_NAME = "accounts/profile";
-	static final String ACCOUNTS_MAIN_VIEW_URL = "/accounts"; // default: profile
+	static final String ACCOUNTS_MAIN_VIEW_URL = ""; // default: profile
 
 	static final String ACCOUNTS_PASSWORD_VIEW_NAME = "accounts/password";
-	static final String ACCOUNTS_PASSWORD_VIEW_URL = ACCOUNTS_MAIN_VIEW_URL + "/change-password";
+	static final String ACCOUNTS_PASSWORD_VIEW_URL = "/change-password";
 
 	static final String ACCOUNTS_SETTING_VIEW_NAME = "accounts/settings";
-	static final String ACCOUNTS_SETTING_VIEW_URL = "/accounts/settings";
+	static final String ACCOUNTS_SETTING_VIEW_URL = "/settings";
 
 	static final String ACCOUNTS_MY_UPLOAD_VIEW_NAME = "accounts/my-upload";
-	static final String ACCOUNTS_MY_UPLOAD_VIEW_URL = "/accounts/my-upload";
+	static final String ACCOUNTS_MY_UPLOAD_VIEW_URL = "/my-upload";
 
 	static final String ACCOUNTS_CATEGORY_VIEW_NAME = "accounts/category";
-	static final String ACCOUNTS_CATEGORY_VIEW_URL = "/accounts/settings/category";
+	static final String ACCOUNTS_CATEGORY_VIEW_URL = "/settings/category";
 
 	private final MemberService memberService;
 	private final PostService postService;
@@ -117,19 +119,17 @@ public class AccountsController {
 
 	@GetMapping(ACCOUNTS_MY_UPLOAD_VIEW_URL)
 	public String myUploadPostsView(@CurrentUser Member member, Model model,
-		@PageableDefault(size = 10, page = 0, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
-		Page<Post> postPage = postService.findByManager(member, pageable);
+		@PageableDefault(size = 10, page = 0, sort = "uploadDateTime", direction = Sort.Direction.DESC) Pageable pageable) {
+		Page<Post> postPage = postService.getByManager(member, pageable);
 
-		String sortProperty = "id";
 		model.addAttribute(member);
 		model.addAttribute("postPage", postPage);
-		model.addAttribute("sortProperty", sortProperty);
+		model.addAttribute("sortProperty", pageable.getSort().toString().contains("uploadDateTime") ? "uploadDateTime" : "id");
 		return ACCOUNTS_MY_UPLOAD_VIEW_NAME;
 	}
 
 	@GetMapping(ACCOUNTS_CATEGORY_VIEW_URL)
 	public String myUploadPostsView(@CurrentUser Member member, Model model) {
-		// TODO : admin만 접근 가능
 		List<Category> categoryList = categoryRepository.findAll();
 		model.addAttribute("categoryList", categoryList);
 		model.addAttribute(member);

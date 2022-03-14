@@ -1,9 +1,12 @@
 package com.techdot.techdot.dto;
 
+import java.time.LocalDateTime;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.techdot.techdot.domain.CategoryName;
 import com.techdot.techdot.domain.Post;
@@ -21,7 +24,7 @@ public class PostFormDto {
 	private String title;
 
 	@NotBlank
-	@Length(max = 100)
+	@Length(max = 200)
 	private String content;
 
 	private String beforeLink;
@@ -31,11 +34,17 @@ public class PostFormDto {
 	private String link;
 
 	@NotBlank
+	@Length(max = 30)
 	private String writer;
+
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+	private LocalDateTime uploadDateTime;
 
 	private PostType type;
 
 	private CategoryName categoryName;
+
+	private String categoryName_readOnly;
 
 	private String thumbnailImage;
 
@@ -46,7 +55,8 @@ public class PostFormDto {
 		this.link = post.getLink();
 		this.writer = post.getWriter();
 		this.type = post.getType();
-		this.categoryName = post.getCategory().getName();
+		this.categoryName_readOnly = post.getCategory().getName().getDisplayValue();
 		this.thumbnailImage = post.getThumbnailImage();
+		this.uploadDateTime = post.getUploadDateTime();
 	}
 }

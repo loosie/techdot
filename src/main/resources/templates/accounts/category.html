@@ -11,22 +11,22 @@
             <div th:replace="fragments/accounts-menu.html :: settings-menu(currentMenu='category')"></div>
         </div>
 
-    <div class="col-8">
-        <h1 class="my-4">카테고리 관리</h1>
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col-2">#</th>
-                <th scope="col-8">이름</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="category, index : ${categoryList}">
-                <th th:text="${index.index+1}" scope="row">#</th>
-                <td th:text="${category.name}">title</td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="col-8">
+            <h1 class="my-4">카테고리 관리</h1>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col-2">#</th>
+                    <th scope="col-8">이름</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="category, index : ${categoryList}">
+                    <th th:text="${index.index+1}" scope="row">#</th>
+                    <td th:text="${category.name}">title</td>
+                </tr>
+                </tbody>
+            </table>
 
         </div>
     </div>

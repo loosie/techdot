@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.com">
+<html lang="en" xmlns:th="http://www.thymeleaf.com"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <div th:fragment="settings-menu (currentMenu)" class="list-group">
     <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'profile'}? active" href="#" th:href="@{/accounts} ">내 정보</a>
-<!--    TODO: ONLY MANAGER-->
-    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'my-upload'}? active" href="#" th:href="@{/accounts/my-upload} ">게시글 관리</a>
-    <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'category'}? active" href="#" th:href="@{/accounts/settings/category} ">카테고리 관리</a>
-<!-------------------------->
+
+    <a sec:authorize="hasRole('ROLE_ADMIN')" class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'my-upload'}? active" href="#" th:href="@{/accounts/my-upload} ">게시글 관리</a>
+    <a sec:authorize="hasRole('ROLE_ADMIN')" class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'category'}? active" href="#" th:href="@{/accounts/settings/category} ">카테고리 관리</a>
+
     <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'password'}? active" href="#" th:href="@{/accounts/change-password} ">비밀번호 변경</a>
     <a class="list-group-item list-group-item-action" th:classappend="${currentMenu == 'settings'}? active" href="#" th:href="@{/accounts/settings}">설정</a>
 </div>

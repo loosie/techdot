@@ -1,15 +1,17 @@
 package com.techdot.techdot.domain;
 
+import java.util.Arrays;
+
 import lombok.Getter;
 
 @Getter
 public enum CategoryName {
-	CS("CS", "/main/cs"),
-	Backend("Backend", "/main/backend"),
-	Frontend("Frontend", "/main/frontend"),
-	Security("Security", "/main/security"),
-	DevOps("DevOps", "/main/devops"),
-	Motivation("Motivation", "/main/motivation");
+	CS("CS", "cs"),
+	BACKEND("Backend", "backend"),
+	FRONTEND("Frontend", "frontend"),
+	SECURITY("Security", "security"),
+	DEV_OPS("DevOps", "dev-ops"),
+	MOTIVATION("Motivation", "motivation");
 
 	private final String displayValue;
 	private final String viewName;
@@ -17,5 +19,9 @@ public enum CategoryName {
 	private CategoryName(String displayValue, String viewName) {
 		this.displayValue = displayValue;
 		this.viewName = viewName;
+	}
+
+	public static String getMainViewName(String viewName) {
+		return "/main/"+ viewName;
 	}
 }

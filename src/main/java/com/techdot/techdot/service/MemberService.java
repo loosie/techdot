@@ -1,11 +1,14 @@
 package com.techdot.techdot.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.techdot.techdot.config.auth.PrincipalDetails;
 import com.techdot.techdot.domain.Member;
+import com.techdot.techdot.domain.Role;
 import com.techdot.techdot.exception.UserNotExistedException;
 import com.techdot.techdot.repository.MemberRepository;
 import com.techdot.techdot.dto.JoinFormDto;
@@ -67,10 +71,13 @@ public class MemberService {
 	}
 
 	public void login(Member member) {
+		Collection<GrantedAuthority> authorities = new ArrayList<>();
+		member.getRoles().stream().forEach(role -> authorities.add((GrantedAuthority)() -> role.toString()));
+
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
 			new PrincipalDetails(member),
 			member.getPassword(),
-			List.of(new SimpleGrantedAuthority("ROLE_USER")));
+			authorities);
 		SecurityContextHolder.getContext().setAuthentication(token);
 	}
 

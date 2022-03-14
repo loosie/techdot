@@ -1,25 +1,33 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header.html :: head"/>
 
 <body class="bg-light">
 <nav th:replace="fragments/navbar.html :: auth-nav"></nav>
-<div class="container" th:id="${mainMenu}">
+<div class="container main-view-container">
+<!--    <div class="py-5 text-center">-->
+<!--        <p class="lead" th:if="${postList.size() == 0}">-->
+<!--            <strong th:text="${keyword}" id="keyword" class="context"></strong>에 해당하는 게시글이 없습니다.-->
+<!--        </p>-->
+<!--        <p class="lead" th:if="${postList.size() > 0}">-->
+<!--            <strong th:text="${keyword}" id="keyword" class="context"></strong>에 해당하는 게시글을-->
+<!--            <span th:text="${postList.size()}"></span>개-->
+<!--            찾았습니다.-->
+<!--        </p>-->
+<!--    </div>-->
     <div class="row justify-content-center py-4">
         <div class="col py-4">
-            <nav th:replace="fragments/main-view-category-menu.html :: category-menu(categoryMenu = ${mainMenu})"></nav>
+            <nav th:replace="fragments/main-view-category-menu.html :: category-menu(categoryMenu = '')"></nav>
         </div>
-
         <div class="col-sm-10">
             <div class="row justify-content-center pt-1 pb-3s">
                 <div class="col" style="display: flex;">
                     <div>
-                        <h1>관심 카테고리</h1>
+                        <h1>검색 결과</h1>
                     </div>
                 </div>
             </div>
             <div class="row post-list" id="post-list">
-
             </div>
             <!-- Pagination List -->
             <ul class="post-list__pagination post-list__pagination--inactive" id="post-list-pagination"
@@ -32,7 +40,7 @@
 <footer th:replace="fragments/footer.html :: footer"></footer>
 
 <script type="text/javascript" th:inline="javascript" th:replace="fragments/ajax-csrf-header.html :: ajax-csrf-header" ></script>
-<div type="text/javascript" th:inline="javascript" th:replace="fragments/post-factory.html :: post-factory(requestUrl = '/posts/me/interests', viewName = '')" ></div>
+<div type="text/javascript" th:inline="javascript" th:replace="fragments/post-factory.html :: post-factory(requestUrl = '/search/', viewName = ${keyword})" ></div>
 </body>
 
 </html>

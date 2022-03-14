@@ -5,39 +5,35 @@
 <div th:fragment="category-menu (categoryMenu)" class="list-group justify-content-center nav main-right-nav-tabs">
     <a class="list-group-item list-group-item-action main-right-nav-link" href="#"
        th:classappend="${categoryMenu == 'All'}? 'active active-box'" th:href="@{'/'}">
-        최신 게시글
+        New!
     </a>
     <a sec:authorize="isAuthenticated()" class="list-group-item list-group-item-action main-right-nav-link" href="#"
        th:classappend="${categoryMenu == 'MyInterests'}? 'active active-box'" th:href="@{'/me/interests'}">
         관심 카테고리
     </a>
     <a class="list-group-item list-group-item-action main-right-nav-link" href="#"
-       th:classappend="${categoryMenu == 'CS'}? 'active active-box'" th:href="@{'/category/CS'}">
+       th:classappend="${categoryMenu == 'CS'}? 'active active-box'" th:href="@{'/category/cs'}">
         CS
     </a>
     <a class="list-group-item list-group-item-action main-right-nav-link" href="#"
-       th:classappend="${categoryMenu == 'Backend'}? 'active active-box'" th:href="@{'/category/Backend'}">
-        백엔드
+       th:classappend="${categoryMenu == 'Backend'}? 'active active-box'" th:href="@{'/category/backend'}">
+        Backend
     </a>
     <a class="list-group-item list-group-item-action main-right-nav-link" href="#"
-       th:classappend="${categoryMenu == 'Frontend'}? 'active active-box'" th:href="@{'/category/Frontend'}">
-        프론트엔드
+       th:classappend="${categoryMenu == 'Frontend'}? 'active active-box'" th:href="@{'/category/frontend'}">
+        Frontend
     </a>
     <a class="list-group-item list-group-item-action main-right-nav-link" href="#"
-       th:classappend="${categoryMenu == 'DevOps'}? 'active active-box'" th:href="@{'/category/DevOps'}">
+       th:classappend="${categoryMenu == 'DevOps'}? 'active active-box'" th:href="@{'/category/dev-ops'}">
         DevOps
     </a>
     <a class="list-group-item list-group-item-action main-right-nav-link" href="#"
-       th:classappend="${categoryMenu == 'Security'}? 'active active-box'" th:href="@{'/category/Security'}">
-        보안
+       th:classappend="${categoryMenu == 'Security'}? 'active active-box'" th:href="@{'/category/security'}">
+        Security
     </a>
     <a class="list-group-item list-group-item-action main-right-nav-link" href="#"
-       th:classappend="${categoryMenu == 'Motivation'}? 'active active-box'" th:href="@{'/category/Motivation'}">
-        동기부여
+       th:classappend="${categoryMenu == 'Motivation'}? 'active active-box'" th:href="@{'/category/motivation'}">
+        Motivation
     </a>
-    <!--    TODO: enum displayValue 값 가져오기 -->
-    <!--    <a class="nav-item nav-link text-dark" th:each="categoryOpt : ${T(com.techdot.techdot.domain.CategoryName).values()}"-->
-    <!--       th:value="${categoryOpt}" th:text="${categoryOpt} + '- '+ ${@Category}" href="#" th:classappend="${mainMenu == categoryOpt.name}? active active-box" th:href="@{'/category/' + cs}">-->
-    <!--    </a>-->
 </div>
 </html>

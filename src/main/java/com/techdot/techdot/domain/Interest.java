@@ -1,5 +1,7 @@
 package com.techdot.techdot.domain;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -19,10 +21,10 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "interests")
-@NoArgsConstructor
 @Getter
-@EqualsAndHashCode(of ="id")
-public class Interest {
+@NoArgsConstructor
+@EqualsAndHashCode(of ="id", callSuper = false)
+public class Interest extends BaseEntity{
 
 	@Id
 	@GeneratedValue
@@ -43,5 +45,6 @@ public class Interest {
 
 		this.member = member;
 		this.category = category;
+		createDateTime();
 	}
 }

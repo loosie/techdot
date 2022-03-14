@@ -1,86 +1,73 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.com">
 
-<body th:fragment="main-view (mainMenu)" class="bg-light">
+<body th:fragment="main-view (mainMenu, mainMenuName)" class="bg-light">
 <nav th:replace="fragments/navbar.html :: auth-nav"></nav>
 
-<div class="alert alert-warning" role="alert" th:if="${member != null && member.emailVerified == false}">
-    TechDot 가입을 완료하려면 <a href="#" th:href="@{/check-email}" class="alert-link"> 계정 인증 이메일을 확인 </a>하세요.
-</div>
-
-<div class="container main-view-container" th:id="${mainMenu}">
-
-
+<div class="container" th:id="${mainMenu}">
     <div class="row justify-content-center py-4">
         <div class="col py-4">
             <nav th:replace="fragments/main-view-category-menu.html :: category-menu(categoryMenu = ${mainMenu})"></nav>
         </div>
 
-        <div class="col-sm-10">
-            <div class="row justify-content-center py-1">
+        <div class="col-sm-10 py-2">
+            <div class="row justify-content-center pt-1 pb-3">
                 <div class="col" style="display: flex;">
                     <div>
-                        <h1 th:text="${mainMenu}"></h1>
+                        <h1 th:text="${mainMenuName}"></h1>
                     </div>
-                    <div th:if="${mainMenu}!='All' and ${mainMenu}!='MyInterests'" id="interest-switch" class="custom-control custom-switch ml-auto mr-4" style="display:flex; align-items: center" >
+                    <div th:if="${mainMenu}!='All' and ${mainMenu}!='MyInterests'" id="interest-switch"
+                         class="custom-control custom-switch ml-auto mr-4" style="display:flex; align-items: center">
                         <input type="checkbox" class="custom-control-input" th:value="${mainMenu}" id="customSwitch1">
                         <label class="custom-control-label" for="customSwitch1">관심 카테고리</label>
                     </div>
                 </div>
-
             </div>
-            <div class="row post-list" id="post-list">
-
-            </div>
+            <div class="row post-list" id="post-list"></div>
             <!-- Pagination List -->
             <ul class="post-list__pagination post-list__pagination--inactive" id="post-list-pagination"
                 style="display: none"></ul>
         </div>
-
     </div>
 </div>
 
 <footer th:replace="fragments/footer.html :: footer"></footer>
-
-<script type="text/javascript" th:inline="javascript" th:replace="fragments/ajax-csrf-header.html :: ajax-csrf-header" ></script>
-<script type="text/javascript" th:inline="javascript" th:replace="fragments/post-factory.html :: post-factory(requestUrl = '/posts/', viewName = ${mainMenu})" ></script>
+<script type="text/javascript" th:inline="javascript"
+        th:replace="fragments/ajax-csrf-header.html :: ajax-csrf-header"></script>
+<div type="text/javascript" th:inline="javascript"
+     th:replace="fragments/post-factory.html :: post-factory(requestUrl = '/posts/', viewName = ${mainMenu})"></div>
 <script type="application/javascript" th:inline="javascript">
     $(function () {
         const interestButton = $(".custom-control-input");
-
-        function getMemberCategories(){
+        function getMemberCategories() {
             $.ajax({
-                url : "/interests/me/list",
+                url: "/interests/me/list",
                 type: "GET"
             }).done(function (data, status) {
-                console.log(status);
-                console.log(interestButton.parent());
-                for(var i=0; i<data.length; i++){
-
-                    if(data[i].categoryName == '[(${mainMenu})]'){
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].categoryName == '[(${mainMenu})]') {
                         interestButton.attr('checked', true);
                         document.getElementById("interest-switch").classList.add('interest-active');
                     }
                 }
             })
         }
-        if('[(${#authentication.name})]' != 'anonymousUser') {
+
+        if ('[(${#authentication.name})]' != 'anonymousUser') {
             getMemberCategories()
         }
 
         interestButton.on("click", onClickFunc)
         function onClickFunc(e) {
             const interestSwitch = e.target.parentElement.classList;
-            console.log(interestSwitch);
-            if(interestSwitch.contains("interest-active")){
+            if (interestSwitch.contains("interest-active")) {
                 interestRequest("remove", e, interestSwitch);
-            }else{
+            } else {
                 interestRequest("add", e, interestSwitch);
             }
         }
 
         function interestRequest(action, e, interestSwitch) {
-            console.log(e.target.value);
             $.ajax({
                 url: "/interest/" + action,
                 type: "POST",
@@ -89,14 +76,14 @@
                     categoryName: e.target.value
                 })
             }).done(function (data, status) {
-                console.log(status);
-                if('[(${#authentication.name})]' == 'anonymousUser'){
+                // console.log(status);
+                if ('[(${#authentication.name})]' == 'anonymousUser') {
                     window.location.href = "/login";
                     return;
                 }
-                if(action==='remove'){
+                if (action === 'remove') {
                     interestSwitch.remove('interest-active');
-                }else{
+                } else {
                     interestSwitch.add('interest-active');
                 }
             })

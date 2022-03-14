@@ -56,8 +56,8 @@
                             프로필 이미지
                         </div>
                         <div id="current-profile-image" class="mt-3">
-                            <svg th:if="${#strings.isEmpty(profileForm.profileImage)}" class="j-profile-img rounded"
-                                 th:data-jdenticon-value="${#authentication.name}" width="125" height="125"></svg>
+                            <img th:if="${#strings.isEmpty(member.profileImage)}" class="j-profile-img rounded"
+                                 src="/images/default_profile.png" width="125" height="125"/>
                             <img th:if="${!#strings.isEmpty(profileForm.profileImage)}" class="profile-img rounded"
                                  th:src="${member.profileImage}"
                                  width="125" height="125" alt="name" th:alt="${member.nickname}"/>

@@ -7,12 +7,12 @@
 
 <div class = "container">
     <div class = "py-5 text-center">
-        <h2 class="mb-4">TechDot 가입</h2>
-        <p class="lead mb-4">TechDot 서비스를 사용하려면 인증 이메일을 확인하세요.</p>
+        <h2 class="mb-4">Techdot 가입</h2>
+        <p class="lead mb-4">Techdot 서비스를 사용하려면 인증 이메일을 확인하세요.</p>
 
         <div>
             <p class="lead" th:text="${email}">example@email.com</p>
-            <a class="btn btn-outline-info" th:href="@{'/resend-confirm-email/'+${email}}">
+            <a class="btn btn-outline-dark mt-3" th:href="@{'/resend-confirm-email/'+${email}}">
                 인증 이메일 다시 보내기
             </a>
 

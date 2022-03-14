@@ -2,6 +2,7 @@ package com.techdot.techdot.service;
 
 import static org.mockito.BDDMockito.*;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -56,6 +57,7 @@ class LikeServiceTest {
 			.link("http://~~~.com")
 			.type(PostType.BLOG)
 			.category(category)
+			.uploadDateTime(LocalDateTime.now())
 			.writer("naver")
 			.manager(member)
 			.build();

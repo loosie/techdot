@@ -56,9 +56,9 @@ public class InterestService {
 		interestRepository.delete(interest.get());
 	}
 
-	public List<InterestCategoryResponseDto>  getInterestCategoriesByMember(Member member) {
+	public List<InterestCategoryResponseDto>  getInterestCategoriesByMember(Long memberId) {
 		List<InterestCategoryResponseDto> allCategories = interestRepository.findAllCategoriesByMemberId(
-			member.getId());
+			memberId);
 		return allCategories;
 	}
 }

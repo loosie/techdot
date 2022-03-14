@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.techdot.techdot.domain.Member;
+import com.techdot.techdot.exception.UserNotVerifiedEmailException;
 import com.techdot.techdot.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -23,12 +24,13 @@ public class PrincipalDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		Optional<Member> opMember = memberRepo.findByEmail(email);
-		if(!opMember.isEmpty()){
-			Member member = opMember.get();
-			member.updateEmailCheckToken(); // 로그인할 때마다 token 값 갱신
-			return new PrincipalDetails(member);
+		if (opMember.isEmpty()) {
+			throw new UsernameNotFoundException(email);
 		}
 
-		throw new UsernameNotFoundException(email);
+		Member member = opMember.get();
+		member.updateEmailCheckToken(); // 로그인할 때마다 token 값 갱신
+		return new PrincipalDetails(member);
+
 	}
 }

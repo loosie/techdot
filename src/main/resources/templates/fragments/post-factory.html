@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<script type="text/javascript" th:inline="javascript" th:fragment="post-factory (requestUrl, viewName)">
+<div th:fragment="post-factory (requestUrl, viewName)">
+<script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
+<script type="text/javascript" th:inline="javascript" >
     /*<![CDATA[*/
     function getPageId(n) {
         return 'page-' + n;
@@ -36,7 +38,7 @@
         body.style = 'overflow: hidden; height: 210px';
 
         const category = document.createElement('span');
-        category.className = 'badge badge-light';
+        category.className = 'badge badge-light '+ data.categoryName;
         category.textContent = data.categoryName;
         body.appendChild(category)
 
@@ -60,12 +62,22 @@
         content.textContent = data.content;
         link2.appendChild(content);
 
+        const subInfo = document.createElement('div');
+        subInfo.className = 'card-sub-info';
+        subInfo.style = 'font-size: .75rem; position:absolute; bottom:3.6rem';
+
+        const uploadDateTime = document.createElement('span');
+        uploadDateTime.className = 'upload-time'
+        uploadDateTime.textContent = data.uploadDateTime;
+        subInfo.appendChild(uploadDateTime);
+        body.appendChild(subInfo);
+
         return body;
     }
 
-    function getCardEnd(data) {
+    function getCardFooter(data) {
         const footer = document.createElement('div');
-        footer.className = 'card-body';
+        footer.className = 'card-footer';
 
         const writerBody = document.createElement('div');
         writerBody.className = 'd-flex justify-content-between align-items-center';
@@ -136,7 +148,7 @@
         post.appendChild(postImage);
 
         const cardContent = getCardContent(data);
-        const cardEnd = getCardEnd(data);
+        const cardEnd = getCardFooter(data);
 
         const link = document.createElement('a');
         link.href = data.link;
@@ -207,13 +219,28 @@
     let page = 0; // 초기 페이지 로드
 
     addPage(++page);
+    uploadTimeFormat();
     likeButton = $(".like-button");
 
     window.onscroll = function () {
         if (!flag || (getScrollTop() < getDocumentHeight() - window.innerHeight - 100)) return; // 스크롤이 페이지 하단에 도달할 경우 새 페이지 로드
         addPage(++page);
+        uploadTimeFormat();
     }; /*]]>*/
 
+    function uploadTimeFormat() {
+        $('.upload-time').text(function (index, dateTime) {
+            if(moment(dateTime, moment.ISO_8601, true).isValid()) {
+                moment.locale('ko');
+                const weeksAgo = moment().subtract(7, 'days');
+                const uploadDate = moment(dateTime, "YYYY-MM-DD`T`hh:mm");
+                if (uploadDate.diff(weeksAgo, 'days') >= 0) {
+                    return uploadDate.startOf('minute').fromNow();
+                }
+                return uploadDate.format('LL');
+            }
+        })
+    }
 
     /* like button logic */
     function onClickFunc(e) {
@@ -234,6 +261,8 @@
                 postId: e.target.id
             })
         }).done(function (data, status) {
+            console.log(data);
+            console.log(status);
             if('[(${#authentication.name})]' == 'anonymousUser'){
                 window.location.href = "/login";
                 return;
@@ -253,4 +282,5 @@
     }
 
 </script>
+</div>
 </html>

@@ -20,18 +20,11 @@ public class PrincipalDetails implements UserDetails {
 		this.member = member;
 	}
 
-	// TODO : Oauth
-
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		Collection<GrantedAuthority> collect = new ArrayList<>();
-		collect.add(new GrantedAuthority() {
-			@Override
-			public String getAuthority() {
-				return "ROLE_USER";
-			}
-		});
-		return collect;
+		Collection<GrantedAuthority> authorities = new ArrayList<>();
+		member.getRoles().stream().forEach(role -> authorities.add((GrantedAuthority)() -> role.toString()));
+		return authorities;
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package com.techdot.techdot.dto;
 
+import java.time.LocalDateTime;
+
 import com.techdot.techdot.domain.CategoryName;
 import com.techdot.techdot.domain.PostType;
 
@@ -14,10 +16,12 @@ public class PostQueryDto {
 	private String writer;
 	private PostType type;
 	private String thumbnailImage;
-	private CategoryName categoryName;
-	private Boolean isMemberLike = false;
+	private LocalDateTime uploadDateTime;
+	private String categoryName;
+	private Boolean isMemberLike;
 
-	public PostQueryDto(Long postId, String title, String content, String link, String writer, PostType type, String thumbnailImage, CategoryName categoryName) {
+	public PostQueryDto(Long postId, String title, String content, String link, String writer, PostType type, String thumbnailImage,
+		LocalDateTime uploadDateTime, CategoryName categoryName, Boolean isMemberLike) {
 		this.postId = postId;
 		this.title = title;
 		this.content = content;
@@ -25,6 +29,9 @@ public class PostQueryDto {
 		this.writer = writer;
 		this.type = type;
 		this.thumbnailImage = thumbnailImage;
-		this.categoryName = categoryName;
+		this.uploadDateTime = uploadDateTime;
+		this.categoryName = categoryName.getDisplayValue();
+		this.isMemberLike = isMemberLike;
 	}
+
 }

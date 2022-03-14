@@ -1,10 +1,16 @@
 package com.techdot.techdot.domain;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
@@ -19,9 +25,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @NoArgsConstructor
-@Getter @EqualsAndHashCode(of ="id")
-public class Member {
+@EqualsAndHashCode(of ="id", callSuper = false)
+public class Member extends BaseEntity{
 
 	@Id
 	@GeneratedValue
@@ -48,6 +55,10 @@ public class Member {
 
 	private Integer emailSendTime;
 
+	@ElementCollection(fetch = FetchType.EAGER)
+	@Enumerated(EnumType.STRING)
+	private Set<Role> roles = new HashSet<>();
+
 	@Lob
 	private String profileImage;
 
@@ -56,18 +67,21 @@ public class Member {
 
 
 	@Builder
-	public Member(String email, String nickname, String password, Boolean emailVerified, Boolean termsCheck) {
+	public Member(Long id, String email, String nickname, String password, Boolean emailVerified, Boolean termsCheck) {
 		Assert.notNull(email, "member.email 값이 존재하지 않습니다.");
 		Assert.notNull(nickname, "member.nickname 값이 존재하지 않습니다.");
 		Assert.notNull(password, "member.password 값이 존재하지 않습니다.");
 		Assert.notNull(emailVerified, "member.emailVerified 값이 존재하지 않습니다.");
 		Assert.isTrue(termsCheck, "member.termsCheck 값이 올바르지 않습니다.");
 
+		this.id = id;
 		this.email = email;
 		this.nickname = nickname;
 		this.password = password;
 		this.emailVerified = emailVerified;
+		this.roles.add(Role.ROLE_USER);
 		this.termsCheck = termsCheck;
+		createDateTime();
 	}
 
 	public void generateEmailCheckToken() {
@@ -81,7 +95,23 @@ public class Member {
 	}
 
 	public void completeEmailVerified() {
+		updateRoleToMember();
 		this.emailVerified = true;
+	}
+
+	private void updateRoleToMember(){
+		this.roles.add(Role.ROLE_MEMBER);
+	}
+
+	public Set<Role> getRoles() {
+		return new HashSet<>(this.roles);
+	}
+
+	// TODO; 임시용 role 주입 함수
+	public void addRole(Role... role){
+		for (Role r : role) {
+			this.roles.add(r);
+		}
 	}
 
 	public boolean canSendConfirmEmail() {
@@ -107,10 +137,12 @@ public class Member {
 		this.nickname = profileForm.getNewNickname();
 		this.bio = profileForm.getBio();
 		this.profileImage = profileForm.getProfileImage();
+		updateDateTime();
 	}
 
 	public void updatePassword(String newPassword) {
 		this.password = newPassword;
+		updateDateTime();
 	}
 
 
