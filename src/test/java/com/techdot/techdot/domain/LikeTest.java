@@ -2,6 +2,8 @@ package com.techdot.techdot.domain;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -30,6 +32,7 @@ class LikeTest {
 			.type(PostType.BLOG)
 			.category(category)
 			.writer("naver")
+			.uploadDateTime(LocalDateTime.now())
 			.manager(member)
 			.build();
 

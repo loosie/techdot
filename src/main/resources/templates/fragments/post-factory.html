@@ -186,7 +186,6 @@
     var likeButton = $(".like-button");
     // ajax로 서버에 post 데이터 요청
     function addPage(page) {
-        console.log('## ' + '[(${requestUrl})]' + '[(${viewName})]');
         $.ajax({
             type: 'GET',
             url: '[(${requestUrl})]' + '[(${viewName})]',

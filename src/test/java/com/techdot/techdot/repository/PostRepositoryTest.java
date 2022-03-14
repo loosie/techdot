@@ -2,6 +2,8 @@ package com.techdot.techdot.repository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -61,6 +63,7 @@ class PostRepositoryTest {
 			.type(PostType.BLOG)
 			.category(category)
 			.writer("naver")
+			.uploadDateTime(LocalDateTime.now())
 			.manager(member)
 			.build();
 
@@ -82,6 +85,7 @@ class PostRepositoryTest {
 			.link("http://testlink.com")
 			.type(PostType.BLOG)
 			.category(category)
+			.uploadDateTime(LocalDateTime.now())
 			.writer("naver")
 			.manager(member)
 			.build();
@@ -103,6 +107,7 @@ class PostRepositoryTest {
 			.type(PostType.BLOG)
 			.category(category)
 			.writer("naver")
+			.uploadDateTime(LocalDateTime.now())
 			.manager(member)
 			.build();
 

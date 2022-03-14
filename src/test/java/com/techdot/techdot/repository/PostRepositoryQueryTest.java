@@ -2,6 +2,7 @@ package com.techdot.techdot.repository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
@@ -60,6 +61,7 @@ class PostRepositoryQueryTest {
 			.content("content.content...")
 			.link("http://~~~.com")
 			.type(PostType.BLOG)
+			.uploadDateTime(LocalDateTime.now())
 			.category(category)
 			.writer("naver")
 			.manager(member)

@@ -22,7 +22,7 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 	}
 
 	@Override
-	public Page<PostQueryDto> findByKeyword(String keyword, Pageable pageable) {
+	public List<PostQueryDto> findByKeyword(String keyword, Pageable pageable) {
 		QPost post = QPost.post;
 		QCategory category = QCategory.category;
 
@@ -37,11 +37,11 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 			.limit(pageable.getPageSize())
 			.fetch();
 
-		return new PageImpl<>(result, pageable, (long)result.size());
+		return result;
 	}
 
 	@Override
-	public Page<PostQueryDto> findWithIsMemberLikeByKeyword(Long memberId, String keyword, Pageable pageable) {
+	public List<PostQueryDto> findWithIsMemberLikeByKeyword(Long memberId, String keyword, Pageable pageable) {
 		QPost post = QPost.post;
 		QCategory category = QCategory.category;
 		QLike like = QLike.like;
@@ -50,7 +50,7 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 			.select(Projections.constructor(PostQueryDto.class,
 				post.id, post.title, post.content, post.link, post.writer, post.type,
 				post.thumbnailImage, post.uploadDateTime, category.name,
-				(from(like).where(like.member.id.eq(memberId).and(like.post.id.eq(post.id)))
+				( from(like).where(like.member.id.eq(memberId).and(like.post.id.eq(post.id)))
 					.isNotNull())
 			))
 			.join(post.category, category)
@@ -60,6 +60,6 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 			.limit(pageable.getPageSize())
 			.fetch();
 
-		return new PageImpl<>(result, pageable, (long)result.size());
+		return result;
 	}
 }

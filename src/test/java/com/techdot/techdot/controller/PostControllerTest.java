@@ -6,6 +6,8 @@ import static org.springframework.security.test.web.servlet.response.SecurityMoc
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -79,6 +81,7 @@ class PostControllerTest {
 			.param("writer", "google")
 			.param("categoryName", "CS")
 			.param("type", "BLOG")
+			.param("uploadDateTime", LocalDateTime.now().toString())
 			.with(csrf()))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/"))
@@ -97,6 +100,7 @@ class PostControllerTest {
 			.param("writer", "google")
 			.param("categoryName", "CS")
 			.param("type", "BLOG")
+			.param("uploadDateTime", LocalDateTime.now().toString())
 			.with(csrf()))
 			.andExpect(status().isOk())
 			.andExpect(model().hasErrors())
@@ -118,6 +122,7 @@ class PostControllerTest {
 			.writer("google")
 			.link("http://google.com/")
 			.type(PostType.BLOG)
+			.uploadDateTime(LocalDateTime.now())
 			.category(category)
 			.manager(member)
 			.build();
@@ -132,6 +137,7 @@ class PostControllerTest {
 			.param("writer", "google")
 			.param("categoryName", "CS")
 			.param("type", "BLOG")
+			.param("uploadDateTime", LocalDateTime.now().toString())
 			.with(csrf()))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(flash().attributeExists("message"))
@@ -157,6 +163,7 @@ class PostControllerTest {
 			.link("http://google.com/")
 			.type(PostType.BLOG)
 			.category(category)
+			.uploadDateTime(LocalDateTime.now())
 			.manager(member)
 			.build();
 		Post save = postRepository.save(post);
@@ -170,6 +177,7 @@ class PostControllerTest {
 			.param("writer", "google")
 			.param("categoryName", "CS")
 			.param("type", "BLOG")
+			.param("uploadDateTime", LocalDateTime.now().toString())
 			.with(csrf()))
 			.andExpect(status().isOk())
 			.andExpect(model().hasErrors())
@@ -178,6 +186,4 @@ class PostControllerTest {
 			.andExpect(authenticated());
 	}
 
-	// TODO: @GetMapping("/posts/{categoryName}")
-	// TODO: @GetMapping("/posts/me/likes")
 }

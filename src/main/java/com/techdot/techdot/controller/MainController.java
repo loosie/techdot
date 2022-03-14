@@ -4,8 +4,6 @@ import static com.techdot.techdot.domain.CategoryName.*;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.techdot.techdot.config.auth.CurrentUser;
 import com.techdot.techdot.domain.Member;
-import com.techdot.techdot.domain.Post;
 import com.techdot.techdot.dto.PostQueryDto;
 import com.techdot.techdot.repository.PostRepository;
 import com.techdot.techdot.repository.PostRepositoryQuery;
@@ -30,7 +27,6 @@ import lombok.RequiredArgsConstructor;
 public class MainController {
 
 	private final PostRepository postRepository;
-	private final PostRepositoryQuery postRepositoryQuery;
 
 	@GetMapping("/")
 	public String home(@CurrentUser Member member, Model model) {
@@ -83,12 +79,12 @@ public class MainController {
 	public ResponseEntity<List<PostQueryDto>> searchPostsByKeyword_scrolling(
 		@PathVariable String keyword, @CurrentUser Member member,
 		@PageableDefault(page = 0, size = 12, sort = "uploadDateTime", direction = Sort.Direction.DESC) Pageable pageable) {
-		Page<PostQueryDto> result;
+		List<PostQueryDto> result;
 		if (member == null) {
 			result = postRepository.findByKeyword(keyword, pageable);
 		} else {
 			result = postRepository.findWithIsMemberLikeByKeyword(member.getId(), keyword, pageable);
 		}
-		return new ResponseEntity<>(result.getContent(), HttpStatus.OK);
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 }
