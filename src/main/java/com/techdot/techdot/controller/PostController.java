@@ -92,20 +92,20 @@ public class PostController {
 		@PageableDefault(page = 0, size = 12, sort = "uploadDateTime", direction = Sort.Direction.DESC) Pageable pageable,
 		@CurrentUser Member member) {
 		return new ResponseEntity<>(
-			postService.getPostsByCategory_andIfMember_memberLikes(member, categoryName, pageable), HttpStatus.OK);
+			postService.getPostsByCategoryNameIfMemberWithMemberLikes(member, categoryName, pageable), HttpStatus.OK);
 	}
 
 	@GetMapping("/posts/me/likes")
 	public ResponseEntity<List<PostQueryDto>> getPostsByMemberLikes_scrolling(
 		@PageableDefault(page = 0, size = 12, sort = "uploadDateTime", direction = Sort.Direction.DESC) Pageable pageable,
 		@CurrentUser Member member) {
-		return new ResponseEntity<>(postService.getPostsByMemberLikes(member.getId(), pageable), HttpStatus.OK);
+		return new ResponseEntity<>(postService.getPostsByLikesMemberId(member.getId(), pageable), HttpStatus.OK);
 	}
 
 	@GetMapping("/posts/me/interests")
 	public ResponseEntity<List<PostQueryDto>> getPostsByMemberInterests_scrolling(
 		@PageableDefault(page = 0, size = 12, sort = "uploadDateTime", direction = Sort.Direction.DESC) Pageable pageable,
 		@CurrentUser Member member) {
-		return new ResponseEntity<>(postService.getPostsByMemberInterests(member.getId(), pageable), HttpStatus.OK);
+		return new ResponseEntity<>(postService.getPostsByInterestsMemberId(member.getId(), pageable), HttpStatus.OK);
 	}
 }

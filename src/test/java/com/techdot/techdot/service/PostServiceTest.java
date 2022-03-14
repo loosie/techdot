@@ -21,7 +21,6 @@ import com.techdot.techdot.dto.PostQueryDto;
 import com.techdot.techdot.repository.CategoryRepository;
 import com.techdot.techdot.repository.MemberRepository;
 import com.techdot.techdot.repository.PostRepository;
-import com.techdot.techdot.repository.PostRepositoryQueryImpl;
 
 @ExtendWith(MockitoExtension.class)
 class PostServiceTest {
@@ -55,7 +54,7 @@ class PostServiceTest {
 			.willReturn(allPosts);
 
 		// when
-		List<PostQueryDto> result = postService.getPostsByCategory_andIfMember_memberLikes(null, "CS",
+		List<PostQueryDto> result = postService.getPostsByCategoryNameIfMemberWithMemberLikes(null, "CS",
 			PageRequest.of(1, 1));
 
 		// then
@@ -84,7 +83,7 @@ class PostServiceTest {
 			.willReturn(allPosts);
 
 		// when
-		List<PostQueryDto> result = postService.getPostsByCategory_andIfMember_memberLikes(member, "CS",
+		List<PostQueryDto> result = postService.getPostsByCategoryNameIfMemberWithMemberLikes(member, "CS",
 			PageRequest.of(1, 1));
 
 		// then
@@ -106,7 +105,7 @@ class PostServiceTest {
 			.willReturn(allPosts);
 
 		// when
-		List<PostQueryDto> result = postService.getPostsByMemberLikes(1L, PageRequest.of(1, 1));
+		List<PostQueryDto> result = postService.getPostsByLikesMemberId(1L, PageRequest.of(1, 1));
 
 		// then
 		then(postRepositoryQuery).should(times(1)).findByLikesMemberId(any(), any());

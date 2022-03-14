@@ -32,6 +32,8 @@ class PostRepositoryExtensionTest {
 	private CategoryRepository categoryRepository;
 	@Autowired
 	private LikeRepository likeRepository;
+	@Autowired
+	private InterestRepository interestRepository;
 
 	private Member member;
 	private Category category;
@@ -77,27 +79,28 @@ class PostRepositoryExtensionTest {
 		categoryRepository.deleteAll();
 	}
 
-	@DisplayName("keyword로 검색하기")
+	@DisplayName("keyword로 검색하기 - member가 존재하지 않을 때")
 	@Test
-	void findQueryDtoByKeyword() {
+	void findAllDto_byKeyword_NullMember() {
 		// when
-		List<PostQueryDto> result = postRepository.findByKeyword("title", PageRequest.of(1, 12));
+		List<PostQueryDto> result = postRepository.findAllDtoByKeyword(-1L, "title", PageRequest.of(1, 12));
 		PostQueryDto post = result.get(0);
 
 		// then
 		assertTrue(result.size() > 0);
+		assertFalse(post.getIsMemberLike());
 		assertEquals(post.getTitle(), "title1");
 		assertEquals(post.getType(), PostType.BLOG);
 	}
 
-	@DisplayName("keyword로 게시글과 좋아요 정보 검색하기")
+	@DisplayName("keyword로 검색하기 - member가 존재할 때")
 	@Test
-	void findQueryDtoWithIsMemberLikesByKeyword() {
+	void findAllDto_byKeyword_withMember() {
 		//given
 		likeRepository.save(Like.builder().member(member).post(post).build());
 
 		// when
-		List<PostQueryDto> result = postRepository.findWithIsMemberLikeByKeyword(member.getId(),"content", PageRequest.of(1, 12));
+		List<PostQueryDto> result = postRepository.findAllDtoByKeyword(member.getId(), "title", PageRequest.of(1, 12));
 		PostQueryDto post = result.get(0);
 
 		// then
@@ -106,5 +109,6 @@ class PostRepositoryExtensionTest {
 		assertEquals(post.getTitle(), "title1");
 		assertEquals(post.getType(), PostType.BLOG);
 	}
+
 
 }

@@ -18,7 +18,7 @@ import com.techdot.techdot.config.auth.CurrentUser;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.dto.PostQueryDto;
 import com.techdot.techdot.repository.PostRepository;
-import com.techdot.techdot.repository.PostRepositoryQuery;
+import com.techdot.techdot.service.PostService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class MainController {
 
 	private final PostRepository postRepository;
+	private final PostService postService;
 
 	@GetMapping("/")
 	public String home(@CurrentUser Member member, Model model) {
@@ -79,12 +80,7 @@ public class MainController {
 	public ResponseEntity<List<PostQueryDto>> searchPostsByKeyword_scrolling(
 		@PathVariable String keyword, @CurrentUser Member member,
 		@PageableDefault(page = 0, size = 12, sort = "uploadDateTime", direction = Sort.Direction.DESC) Pageable pageable) {
-		List<PostQueryDto> result;
-		if (member == null) {
-			result = postRepository.findByKeyword(keyword, pageable);
-		} else {
-			result = postRepository.findWithIsMemberLikeByKeyword(member.getId(), keyword, pageable);
-		}
+		List<PostQueryDto> result = postService.findAllDtoByKeyword(member, keyword, pageable);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 }

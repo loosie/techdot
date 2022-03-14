@@ -2,12 +2,12 @@ package com.techdot.techdot.service;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.techdot.techdot.domain.Category;
+import com.techdot.techdot.domain.CategoryName;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.domain.Post;
 import com.techdot.techdot.dto.PostQueryDto;
@@ -15,7 +15,6 @@ import com.techdot.techdot.dto.PostFormDto;
 import com.techdot.techdot.repository.CategoryRepository;
 import com.techdot.techdot.repository.MemberRepository;
 import com.techdot.techdot.repository.PostRepository;
-import com.techdot.techdot.repository.PostRepositoryQuery;
 
 import lombok.RequiredArgsConstructor;
 
@@ -67,30 +66,51 @@ public class PostService {
 		postRepository.save(post);
 	}
 
-	public Page<Post> findByManager(Member member, Pageable pageable) {
+	public List<Post> getByManager(Member member, Pageable pageable) {
 		return postRepository.findByManager(member, pageable);
 	}
 
 	// 카테고리별로 게시글 가져오기 (만약 멤버가 좋아하면 멤버가 좋아요 누른 게시글 정보도 가져오기)
 	// post 조회(if(Member) 좋아요 여부) 쿼리 1번
-	public List<PostQueryDto> getPostsByCategory_andIfMember_memberLikes(Member member, String categoryName,
+	public List<PostQueryDto> getPostsByCategoryNameIfMemberWithMemberLikes(Member member, String categoryName,
 		Pageable pageable) {
-		if (member != null) {
-			return postRepositoryQuery.findWithIsMemberLikeByCategoryName(member.getId(), categoryName, pageable);
+		// if (member != null) {
+		// 	return postRepositoryQuery.findWithIsMemberLikeByCategoryName(member.getId(), categoryName, pageable);
+		// }
+		Long memberId = -1L;
+		if(member != null){
+			memberId = member.getId();
 		}
-		return postRepositoryQuery.findByCategoryName(categoryName, pageable);
+
+		if (categoryName.equals("All")) {
+			return postRepository.findAllDto(memberId, pageable);
+		}
+		return postRepository.findAllDtoByCategoryName(memberId, CategoryName.valueOf(categoryName), pageable);
+		// return postRepositoryQuery.findByCategoryName(categoryName, pageable);
 	}
 
 	// 멤버가 좋아요 누른 게시글 가져오기
-	public List<PostQueryDto> getPostsByMemberLikes(Long memberId, Pageable pageable) {
-		List<PostQueryDto> allLikePosts = postRepositoryQuery.findByLikesMemberId(memberId, pageable);
-		allLikePosts.stream().forEach(post -> post.setIsMemberLike(true));
+	public List<PostQueryDto> getPostsByLikesMemberId(Long memberId, Pageable pageable) {
+		// List<PostQueryDto> allLikePosts = postRepositoryQuery.findByLikesMemberId(memberId, pageable);
+		List<PostQueryDto> allLikePosts = postRepository.findAllDtoByLikesMemberId(memberId, pageable);
+		// allLikePosts.stream().forEach(post -> post.setIsMemberLike(true));
 		return allLikePosts;
 	}
 
-	public List<PostQueryDto> getPostsByMemberInterests(Long memberId, Pageable pageable) {
-		List<PostQueryDto> allInterestPosts = postRepositoryQuery.findWithIsMemberLikeByInterestsMemberId(memberId, pageable);
+	public List<PostQueryDto> getPostsByInterestsMemberId(Long memberId, Pageable pageable) {
+		// List<PostQueryDto> allInterestPosts = postRepositoryQuery.findWithIsMemberLikeByInterestsMemberId(memberId,
+		// 	pageable);
+		List<PostQueryDto> allInterestPosts = postRepository.findAllDtoByInterestsMemberId(memberId, pageable);
 		return allInterestPosts;
 	}
 
+	// keyword 검색
+	public List<PostQueryDto> findAllDtoByKeyword(Member member, String keyword, Pageable pageable) {
+		Long memberId = -1L;
+		if(member != null){
+			memberId = member.getId();
+		}
+
+		return postRepository.findAllDtoByKeyword(memberId, keyword, pageable);
+	}
 }
