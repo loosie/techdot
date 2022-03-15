@@ -1,7 +1,5 @@
 package com.techdot.techdot.domain;
 
-import java.util.Arrays;
-
 import lombok.Getter;
 
 @Getter
