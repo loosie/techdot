@@ -63,7 +63,7 @@ public class PostController {
 	@GetMapping("/post/{id}/edit")
 	public String updatePostView(@PathVariable Long id, @CurrentUser Member member, Model model) {
 		Post post = postService.getPostById(id);
-		if (!post.isManager(member)) { // TODO: AuthException Toast
+		if (!post.isManager(member)) {
 			return "redirect:/";
 		}
 		model.addAttribute(member);

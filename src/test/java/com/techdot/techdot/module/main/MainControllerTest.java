@@ -70,20 +70,6 @@ class MainControllerTest {
 			.andExpect(unauthenticated());
 	}
 
-	@DisplayName("카테고리 별로 뷰 보여주기")
-	@Test
-	void mainByCategoryView() {
-		Arrays.stream(CategoryName.values()).forEach(categoryName -> {
-			try {
-				mockMvc.perform(get("/category/" + categoryName.getViewName()))
-					.andExpect(status().isOk())
-					.andExpect(view().name(CategoryName.getMainViewName(categoryName.getViewName())))
-					.andExpect(unauthenticated());
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
-		});
-	}
 
 	@WithCurrentUser(value = "test1@naver.com", role="MEMBER")
 	@DisplayName("관심 카테고리 뷰 보여주기 - 이메일 인증 받지 않은 경우")

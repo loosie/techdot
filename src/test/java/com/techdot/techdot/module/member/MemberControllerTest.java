@@ -54,7 +54,7 @@ class MemberControllerTest {
 			.param("termsCheck", "true")
 			.with(csrf()))
 			.andExpect(status().isOk())
-			.andExpect(view().name("member/check-email"))
+			.andExpect(view().name(MEMBER_CHECK_EMAIL_VIEW_NAME))
 			.andExpect(unauthenticated());
 
 		// then
@@ -104,8 +104,6 @@ class MemberControllerTest {
 			.andExpect(model().attributeExists("nickname"))
 			.andExpect(view().name("member/confirm-email"))
 			.andExpect(authenticated());
-
-		// then
 		assertTrue(newMember.getEmailVerified());
 	}
 

@@ -24,7 +24,8 @@ import lombok.RequiredArgsConstructor;
 public class MemberController {
 
 	static final String MEMBER_ME_LIKES_VIEW_NAME = "member/likes";
-	public static final String EMAIL_LOGIN_VIEW_NAME = "member/email-login";
+	static final String EMAIL_LOGIN_VIEW_NAME = "member/email-login";
+	static final String MEMBER_CHECK_EMAIL_VIEW_NAME = "member/check-email";
 
 	private final JoinFormValidator joinFormValidator;
 	private final MemberService memberService;
@@ -48,7 +49,7 @@ public class MemberController {
 		}
 		Member saveMember = memberService.save(joinForm);
 		model.addAttribute("email", saveMember.getEmail());
-		return "member/check-email";
+		return MEMBER_CHECK_EMAIL_VIEW_NAME;
 	}
 
 	@GetMapping("/confirm-email")
@@ -74,11 +75,11 @@ public class MemberController {
 
 		if (member != null) {
 			model.addAttribute("email", member.getEmail());
-			return "member/check-email";
+			return MEMBER_CHECK_EMAIL_VIEW_NAME;
 		}
 
 		model.addAttribute("email", email);
-		return "member/check-email";
+		return MEMBER_CHECK_EMAIL_VIEW_NAME;
 	}
 
 	@GetMapping("/resend-confirm-email/{email}")
@@ -87,11 +88,11 @@ public class MemberController {
 
 		if (!member.canSendConfirmEmail()) {
 			model.addAttribute("error", "잠시 후에 다시 시도해주세요.");
-			return "member/check-email";
+			return MEMBER_CHECK_EMAIL_VIEW_NAME;
 		}
 
 		memberService.sendConfirmEmail(member);
-		return "member/check-email";
+		return MEMBER_CHECK_EMAIL_VIEW_NAME;
 	}
 
 	// 패스워드없이 로그인하기
