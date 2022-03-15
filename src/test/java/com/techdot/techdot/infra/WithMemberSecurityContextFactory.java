@@ -1,6 +1,5 @@
-package com.techdot.techdot.auth;
+package com.techdot.techdot.infra;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +9,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithSecurityContextFactory;
 
-import com.techdot.techdot.config.auth.PrincipalDetailsService;
 import com.techdot.techdot.domain.Role;
 import com.techdot.techdot.dto.JoinFormDto;
 import com.techdot.techdot.service.MemberService;
@@ -20,7 +19,7 @@ import com.techdot.techdot.service.MemberService;
 public class WithMemberSecurityContextFactory implements WithSecurityContextFactory<WithCurrentUser> {
 
 	@Autowired
-	private PrincipalDetailsService principalDetailsService;
+	private UserDetailsService userDetailsService;
 
 	@Autowired
 	private MemberService memberService;
@@ -30,7 +29,7 @@ public class WithMemberSecurityContextFactory implements WithSecurityContextFact
 		String email = withCurrentUser.value();
 		createMember(email);
 
-		UserDetails principal = principalDetailsService.loadUserByUsername(email);
+		UserDetails principal = userDetailsService.loadUserByUsername(email);
 		Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>)principal.getAuthorities();
 		authorities.add((GrantedAuthority)() -> Role.ROLE_MEMBER.toString());
 		if(withCurrentUser.role().equals("ADMIN")) {

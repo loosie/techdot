@@ -10,28 +10,20 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.techdot.techdot.auth.WithCurrentUser;
 import com.techdot.techdot.domain.Member;
+import com.techdot.techdot.infra.MockMvcTest;
+import com.techdot.techdot.infra.WithCurrentUser;
 import com.techdot.techdot.repository.MemberRepository;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-class AccountsControllerTest {
+@MockMvcTest
+class AccountsControllerTest{
 
-	@Autowired
-	private MockMvc mockMvc;
-
-	@Autowired
-	private MemberRepository memberRepo;
-
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+	@Autowired private MockMvc mockMvc;
+	@Autowired private MemberRepository memberRepository;
+	@Autowired private PasswordEncoder passwordEncoder;
 
 	private final String TEST_EMAIL = "test@naver.com";
 	private final String TEST_NICKNAME = "testNickname";
@@ -39,7 +31,7 @@ class AccountsControllerTest {
 
 	@AfterEach
 	void end() {
-		memberRepo.deleteAll();
+		memberRepository.deleteAll();
 	}
 
 
@@ -68,7 +60,7 @@ class AccountsControllerTest {
 			.andExpect(flash().attributeExists("message"));
 
 		// then
-		Member findMember = memberRepo.findByNickname(TEST_NICKNAME).orElseThrow(NullPointerException::new);
+		Member findMember = memberRepository.findByNickname(TEST_NICKNAME).orElseThrow(NullPointerException::new);
 		assertEquals(findMember.getBio(), bio);
 	}
 
@@ -88,7 +80,7 @@ class AccountsControllerTest {
 			.andExpect(model().hasErrors());
 
 		// then
-		Member findMember = memberRepo.findByNickname(TEST_NICKNAME).orElseThrow(NullPointerException::new);
+		Member findMember = memberRepository.findByNickname(TEST_NICKNAME).orElseThrow(NullPointerException::new);
 		assertNull(findMember.getBio());
 	}
 
@@ -97,7 +89,7 @@ class AccountsControllerTest {
 	@Test
 	void updateProfile_error_duplicatedNickname() throws Exception {
 		// given
-		Member newMember = memberRepo.save(Member.builder()
+		Member newMember = memberRepository.save(Member.builder()
 			.email("test2@naver.com")
 			.password("12345678")
 			.nickname("test")
@@ -116,7 +108,7 @@ class AccountsControllerTest {
 			.andExpect(model().hasErrors());
 
 		// then
-		Member findMember = memberRepo.findByNickname(TEST_NICKNAME).orElseThrow(NullPointerException::new);
+		Member findMember = memberRepository.findByNickname(TEST_NICKNAME).orElseThrow(NullPointerException::new);
 		assertFalse(findMember.equals(newMember));
 	}
 
@@ -144,7 +136,7 @@ class AccountsControllerTest {
 			.andExpect(flash().attributeExists("message"));
 
 		// then
-		Member findMember = memberRepo.findByEmail(TEST_EMAIL).orElseThrow(NullPointerException::new);
+		Member findMember = memberRepository.findByEmail(TEST_EMAIL).orElseThrow(NullPointerException::new);
 		assertTrue(passwordEncoder.matches(newPw, findMember.getPassword()));
 	}
 
@@ -174,7 +166,6 @@ class AccountsControllerTest {
 			.andExpect(model().attributeExists("member"));
 	}
 
-	// TODO : ADMIN
 	@WithCurrentUser(value = TEST_EMAIL, role="ADMIN")
 	@DisplayName("카테고리 관리 뷰")
 	@Test

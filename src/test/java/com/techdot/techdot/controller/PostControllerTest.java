@@ -13,23 +13,21 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.techdot.techdot.auth.WithCurrentUser;
 import com.techdot.techdot.domain.Category;
 import com.techdot.techdot.domain.CategoryName;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.domain.Post;
 import com.techdot.techdot.domain.PostType;
+import com.techdot.techdot.infra.MockMvcTest;
+import com.techdot.techdot.infra.WithCurrentUser;
 import com.techdot.techdot.repository.CategoryRepository;
 import com.techdot.techdot.repository.MemberRepository;
 import com.techdot.techdot.repository.PostRepository;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@MockMvcTest
 class PostControllerTest {
 
 	@Autowired

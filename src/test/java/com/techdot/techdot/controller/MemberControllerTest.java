@@ -15,20 +15,18 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.techdot.techdot.auth.WithCurrentUser;
 import com.techdot.techdot.domain.Member;
+import com.techdot.techdot.infra.MockMvcTest;
+import com.techdot.techdot.infra.WithCurrentUser;
 import com.techdot.techdot.repository.MemberRepository;
 import com.techdot.techdot.service.mail.EmailMessageDto;
 import com.techdot.techdot.service.mail.EmailService;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@MockMvcTest
 class MemberControllerTest {
 
 	@Autowired
@@ -185,7 +183,7 @@ class MemberControllerTest {
 	}
 
 	@WithCurrentUser(value = TEST_EMAIL, role="MEMBER")
-	@DisplayName("내 프로필 (내가 좋아요한 게시글) 뷰")
+	@DisplayName("내가 좋아요한 게시글 뷰")
 	@Test
 	void profileForm() throws Exception {
 		mockMvc.perform(get("/me/likes"))

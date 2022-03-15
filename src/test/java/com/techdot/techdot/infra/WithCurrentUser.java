@@ -1,4 +1,4 @@
-package com.techdot.techdot.auth;
+package com.techdot.techdot.infra;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
