@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="post-factory (requestUrl, viewName)">
+
 <script src="/node_modules/moment/min/moment-with-locales.min.js"></script>
 <script type="text/javascript" th:inline="javascript" >
     /*<![CDATA[*/
@@ -288,5 +289,6 @@
     }
 
 </script>
+<script type="text/javascript" th:inline="javascript" th:replace="fragments/ajax-csrf-header.html :: ajax-csrf-header" ></script>
 </div>
 </html>

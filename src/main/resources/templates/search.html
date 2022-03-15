@@ -29,7 +29,6 @@
 
 <footer th:replace="fragments/footer.html :: footer"></footer>
 
-<script type="text/javascript" th:inline="javascript" th:replace="fragments/ajax-csrf-header.html :: ajax-csrf-header" ></script>
 <div type="text/javascript" th:inline="javascript" th:replace="fragments/post-factory.html :: post-factory(requestUrl = '/search/', viewName = ${keyword})" ></div>
 </body>
 

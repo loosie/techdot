@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.com">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head th:fragement="head">
     <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>TechDot</title>
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.css"/>
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/node_modules/jdenticon/dist/jdenticon.js"></script>
-
 
     <style>
         @media (min-width: 1200px) {
@@ -155,9 +157,6 @@
 
         .list-group-item{
             border-radius: 5%;
-            background-color: #f8f9fa !important;
-            border: none;
-            width: 80%;
         }
 
         .main-right-nav-tabs {
@@ -165,6 +164,12 @@
             position: sticky;
             z-index: 9997;
             border-radius: 5%;
+        }
+
+        .main-right-nav-link{
+            width: 80%;
+            border: none;
+            background-color: #f8f9fa !important;
         }
 
         .main-right-nav-link.active {

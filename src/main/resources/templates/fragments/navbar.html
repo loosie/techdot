@@ -2,9 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.com"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head>
-    <script src="/node_modules/jdenticon/dist/jdenticon.js"></script>
-</head>
+
 <nav th:fragment="main-nav" class="navbar navbar-expand-sm navbar-dark bg-dark py-2 px-3">
     <div class="container">
         <a class="navbar-brand" href="/" th:href="@{/}">
@@ -26,7 +24,6 @@
         </div>
     </div>
 </nav>
-
 
 <nav th:fragment="auth-nav" class="navbar navbar-expand-sm navbar-dark bg-dark py-2 px-3">
     <div class="container">

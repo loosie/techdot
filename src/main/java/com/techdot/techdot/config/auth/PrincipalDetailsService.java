@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.techdot.techdot.domain.Member;
-import com.techdot.techdot.exception.UserNotVerifiedEmailException;
 import com.techdot.techdot.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -18,12 +17,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PrincipalDetailsService implements UserDetailsService {
 
-	private final MemberRepository memberRepo;
+	private final MemberRepository memberRepository;
 
 	@Transactional
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		Optional<Member> opMember = memberRepo.findByEmail(email);
+		Optional<Member> opMember = memberRepository.findByEmail(email);
 		if (opMember.isEmpty()) {
 			throw new UsernameNotFoundException(email);
 		}
