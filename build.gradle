@@ -49,8 +49,6 @@ dependencies {
 	// testContainers
 	testImplementation "org.testcontainers:junit-jupiter:1.16.3"
 	testImplementation "org.testcontainers:mysql:1.16.3"
-//	implementation platform('org.testcontainers:testcontainers-bom:1.16.3') //import bom
-//	testImplementation('org.testcontainers:mysql') //no version specified
 }
 
 // clean task 실행시 QClass 삭제

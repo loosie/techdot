@@ -12,9 +12,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithSecurityContextFactory;
 
-import com.techdot.techdot.domain.Role;
-import com.techdot.techdot.dto.JoinFormDto;
-import com.techdot.techdot.service.MemberService;
+import com.techdot.techdot.module.member.Role;
+import com.techdot.techdot.module.member.dto.JoinFormDto;
+import com.techdot.techdot.module.member.MemberService;
 
 public class WithMemberSecurityContextFactory implements WithSecurityContextFactory<WithCurrentUser> {
 

@@ -55,7 +55,7 @@
                     <div class="form-group col-md-4">
                         <label for="type" style="width: 100%">게시글 타입</label>
                         <select th:if="${type}" id="type" class="form-select mr-sm-2" style="width: 50%" th:field="*{type}" aria-label="post-type-select">
-                            <option th:each="postTypeOpt : ${T(com.techdot.techdot.domain.PostType).values()}"
+                            <option th:each="postTypeOpt : ${T(com.techdot.techdot.module.post.PostType).values()}"
                                     th:value="${postTypeOpt}" th:text="${postTypeOpt.getDisplayValue()}"></option>
                         </select>
                     </div>
@@ -63,7 +63,7 @@
                     <div class="form-group col-md-4">
                         <label for="category" style="width: 100%">게시글 카테고리</label>
                         <select th:if="${requestUrl}=='/new-post'" id="category" class="form-select" style="width: 50%" th:field="*{categoryName}" aria-label="post-category-select">
-                            <option th:each="categoryOpt : ${T(com.techdot.techdot.domain.CategoryName).values()}"
+                            <option th:each="categoryOpt : ${T(com.techdot.techdot.module.category.CategoryName).values()}"
                                     th:value="${categoryOpt}" th:text="${categoryOpt.getDisplayValue()}"></option>
                         </select>
                         <input th:if="${requestUrl}!='/new-post'" id="category-readonly" class="form-select" style="width: 50%" th:field="*{categoryName_readOnly}" readonly>

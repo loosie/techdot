@@ -10,12 +10,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.techdot.techdot.domain.Category;
-import com.techdot.techdot.domain.CategoryName;
-import com.techdot.techdot.domain.Member;
-import com.techdot.techdot.domain.Post;
-import com.techdot.techdot.domain.PostType;
-import com.techdot.techdot.domain.Role;
+import com.techdot.techdot.module.category.Category;
+import com.techdot.techdot.module.category.CategoryName;
+import com.techdot.techdot.module.member.Member;
+import com.techdot.techdot.module.post.Post;
+import com.techdot.techdot.module.post.PostType;
+import com.techdot.techdot.module.member.Role;
 
 import lombok.RequiredArgsConstructor;
 
