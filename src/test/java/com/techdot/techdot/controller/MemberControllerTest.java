@@ -18,14 +18,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.techdot.techdot.auth.WithCurrentUser;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.repository.MemberRepository;
-import com.techdot.techdot.service.mail.ConsoleEmailService;
 import com.techdot.techdot.service.mail.EmailMessageDto;
 import com.techdot.techdot.service.mail.EmailService;
 
@@ -157,7 +155,7 @@ class MemberControllerTest {
 			.param("token", newMember.getEmailCheckToken())
 			.param("email", newMember.getEmail()))
 			.andExpect(status().is3xxRedirection())
-			.andExpect(redirectedUrl("/accounts/password"))
+			.andExpect(redirectedUrl("/accounts/change-password"))
 			.andExpect(authenticated());
 	}
 
@@ -183,6 +181,7 @@ class MemberControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(view().name("member/email-login"))
 			.andExpect(unauthenticated());
+
 	}
 
 	@WithCurrentUser(value = TEST_EMAIL, role="MEMBER")

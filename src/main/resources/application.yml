@@ -23,3 +23,6 @@ logging:
         type:
           descriptor: debug # trace: sql 내용 분석용
 
+
+app:
+  host: http://localhost:8080

@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProfileFormValidator implements Validator {
 
-	private final MemberRepository memberRepo;
+	private final MemberRepository memberRepository;
 
 	@Override
 	public boolean supports(Class<?> clazz) {
@@ -27,7 +27,7 @@ public class ProfileFormValidator implements Validator {
 			return;
 		}
 
-		boolean existed = memberRepo.existsByNickname(profileForm.getNewNickname());
+		boolean existed = memberRepository.existsByNickname(profileForm.getNewNickname());
 		if(existed){
 			errors.rejectValue("newNickname", "duplicate.value", "이미 사용중인 닉네임입니다.");
 		}

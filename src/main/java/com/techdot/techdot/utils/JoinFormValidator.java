@@ -25,24 +25,18 @@ public class JoinFormValidator implements Validator {
 		JoinFormDto joinForm = (JoinFormDto)target;
 		if(memberRepository.existsByNickname(joinForm.getNickname())){
 			errors.rejectValue("nickname", "invalid.nickname", new Object[]{joinForm.getNickname()}, "이미 사용중인 닉네임입니다.");
-			return;
 		}
 
 		if(memberRepository.existsByEmail(joinForm.getEmail())){
 			errors.rejectValue("email", "invalid.email", new Object[]{joinForm.getEmail()}, "이미 사용중인 이메일입니다.");
-			return;
 		}
 
 		if(!joinForm.getPassword().equals(joinForm.getPasswordConfirm())){
 			errors.rejectValue("passwordConfirm", "unmatched.password", new Object[]{joinForm.getPasswordConfirm()}, "비밀번호가 일치하지 않습니다.");
-			return;
 		}
 
 		if(!joinForm.getTermsCheck()){
 			errors.rejectValue("termsCheck", "invalid.terms", new Object[]{joinForm.getTermsCheck()}, "약관 동의에 체크해주세요.");
-			return;
 		}
-
-
 	}
 }

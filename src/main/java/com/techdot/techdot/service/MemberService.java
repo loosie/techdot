@@ -4,19 +4,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
+import com.techdot.techdot.config.AppProperties;
 import com.techdot.techdot.config.auth.PrincipalDetails;
 import com.techdot.techdot.domain.Member;
 import com.techdot.techdot.dto.JoinFormDto;
@@ -39,6 +36,8 @@ public class MemberService {
 	private final MemberRepository memberRepository;
 	private final EmailService emailService;
 	private final PasswordEncoder passwordEncoder;
+	private final TemplateEngine templateEngine;
+	private final AppProperties appProperties;
 
 	public Member save(JoinFormDto joinForm) {
 		Member newMember = saveMember(joinForm);
@@ -47,10 +46,19 @@ public class MemberService {
 	}
 
 	public void sendConfirmEmail(Member newMember) {
+		Context context = new Context();
+		context.setVariable("link", "/confirm-email?token=" + newMember.getEmailCheckToken() + "&email=" + newMember.getEmail());
+		context.setVariable("nickname", newMember.getNickname());
+		context.setVariable("linkName", "이메일 인증하기");
+		context.setVariable("message", "테크닷 서비스를 사용하려면 인증 링크를 클릭해주세요.");
+		context.setVariable("host", appProperties.getHost());
+
+		String message = templateEngine.process("mail/confirm-email", context);
+
 		EmailMessageDto emailMessageDto = EmailMessageDto.builder()
 			.to(newMember.getEmail())
-			.subject("Techdot 이메일 인증을 확인해주세요")
-			.message("/confirm-email?token=" + newMember.getEmailCheckToken() + "&email=" + newMember.getEmail())
+			.subject("Techdot 회원가입 이메일 인증을 확인해주세요")
+			.message(message)
 			.sendTime(newMember.getEmailSendTime())
 			.build();
 		emailService.sendEmail(emailMessageDto);
@@ -95,10 +103,18 @@ public class MemberService {
 	}
 
 	public void sendLoginLink(Member member) {
+		Context context = new Context();
+		context.setVariable("link", "/login-by-email?token=" + member.getEmailCheckToken() + "&email=" + member.getEmail());
+		context.setVariable("nickname", member.getNickname());
+		context.setVariable("linkName", "이메일로 로그인하기");
+		context.setVariable("message", "로그인하려면 인증 링크를 클릭해주세요.");
+		context.setVariable("host", appProperties.getHost());
+		String message = templateEngine.process("mail/confirm-email", context);
+
 		EmailMessageDto emailMessageDto = EmailMessageDto.builder()
 			.to(member.getEmail())
-			.subject("Techdot 이메일 인증을 확인해주세요")
-			.message("/confirm-email?token=" + member.getEmailCheckToken() + "&email=" + member.getEmail())
+			.subject("Techdot 로그인 이메일 인증을 확인해주세요")
+			.message(message)
 			.sendTime(member.getEmailSendTime())
 			.build();
 		emailService.sendEmail(emailMessageDto);

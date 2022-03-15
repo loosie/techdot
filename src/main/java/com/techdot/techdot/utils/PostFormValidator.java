@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PostFormValidator implements Validator {
 
-	private final PostRepository postRepo;
+	private final PostRepository postRepository;
 
 	@Override
 	public boolean supports(Class<?> clazz) {
@@ -29,7 +29,7 @@ public class PostFormValidator implements Validator {
 			return;
 		}
 
-		if(postRepo.existsByLink(postForm.getLink())){
+		if(postRepository.existsByLink(postForm.getLink())){
 			errors.rejectValue("link", "duplicate.link", "이미 등록된 url입니다.");
 		}
 	}

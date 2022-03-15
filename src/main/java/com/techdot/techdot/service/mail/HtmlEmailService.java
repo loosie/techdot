@@ -25,7 +25,7 @@ public class HtmlEmailService implements EmailService{
 		try {
 			MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
 			mimeMessageHelper.setTo(emailMessageDto.getTo());
-			mimeMessageHelper.setSubject("Techdot 이메일 인증을 확인해주세요");
+			mimeMessageHelper.setSubject(emailMessageDto.getSubject());
 			mimeMessageHelper.setText(emailMessageDto.getMessage(), true);
 			javaMailSender.send(mimeMessage);
 			log.info("send confirm email : {} - time : {} ", emailMessageDto.getTo(), emailMessageDto.getSendTime());

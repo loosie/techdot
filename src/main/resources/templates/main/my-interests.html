@@ -6,7 +6,7 @@
 <nav th:replace="fragments/navbar.html :: auth-nav"></nav>
 <div class="container" th:id="${mainMenu}">
     <div class="row justify-content-center py-4">
-        <div class="col py-4">
+        <div class="col py-4 main-right-nav">
             <nav th:replace="fragments/main-view-category-menu.html :: category-menu(categoryMenu = ${mainMenu})"></nav>
         </div>
 

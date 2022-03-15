@@ -125,8 +125,14 @@ public class MemberController {
 			return EMAIL_LOGIN_VIEW_NAME;
 		}
 
-		memberService.login(member);
-		return "redirect:/accounts/password";
+		// 이메일 인증 처리 완료
+		if (!member.getEmailVerified()) {
+			memberService.completeLogin(member);
+		} else{
+			memberService.login(member);
+		}
+
+		return "redirect:/accounts/change-password";
 	}
 
 	@GetMapping("/me/likes")
