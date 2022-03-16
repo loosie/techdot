@@ -58,7 +58,7 @@ class InterestServiceTest {
 	void interestAdd() {
 		// given
 		given(memberRepository.findById(1L)).willReturn(Optional.of(member));
-		given(categoryRepository.findByName(CategoryName.CS)).willReturn(Optional.of(category));
+		given(categoryRepository.findByName(CategoryName.CS)).willReturn(category);
 		given(interestRepository.findByMemberAndCategory(member, category)).willReturn(Optional.empty());
 
 		// when
@@ -77,7 +77,7 @@ class InterestServiceTest {
 		// given
 		Interest interest = Interest.builder().member(member).category(category).build();
 		given(memberRepository.findById(1L)).willReturn(Optional.of(member));
-		given(categoryRepository.findByName(CategoryName.CS)).willReturn(Optional.of(category));
+		given(categoryRepository.findByName(CategoryName.CS)).willReturn(category);
 		given(interestRepository.findByMemberAndCategory(member, category)).willReturn(Optional.of(interest));
 
 		// when

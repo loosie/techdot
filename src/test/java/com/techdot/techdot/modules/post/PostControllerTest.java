@@ -95,7 +95,7 @@ class PostControllerTest {
 	void updatePost_success() throws Exception {
 		// given
 		Member member = memberRepository.findByEmail(TEST_EMAIL).get();
-		Category category = categoryRepository.findByName(CategoryName.CS).get();
+		Category category = categoryRepository.findByName(CategoryName.CS);
 		Post post = Post.builder()
 			.title("title")
 			.content("content")
@@ -135,7 +135,7 @@ class PostControllerTest {
 	void updatePost_fail_notAuth() throws Exception {
 		// given
 		Member member = memberRepository.findByEmail(TEST_EMAIL).get();
-		Category category = categoryRepository.findByName(CategoryName.CS).get();
+		Category category = categoryRepository.findByName(CategoryName.CS);
 		Post post = Post.builder()
 			.title("title")
 			.content("content")

@@ -33,8 +33,7 @@ public class PostService {
 	public void save(PostFormDto postForm, Long memberId) {
 		// 엔티티 조회
 		Member manager = memberRepository.findById(memberId).get(); // 이미 인증된 객체
-		Category category = categoryRepository.findByName(postForm.getCategoryName())
-			.orElseThrow(NullPointerException::new);
+		Category category = categoryRepository.findByName(postForm.getCategoryName());
 
 		// 게시글 생성
 		Post newPost = Post.builder()

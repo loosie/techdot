@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,10 +18,9 @@ import com.techdot.techdot.modules.member.auth.PrincipalDetails;
 import com.techdot.techdot.modules.member.dto.JoinFormDto;
 import com.techdot.techdot.modules.member.dto.PasswordFormDto;
 import com.techdot.techdot.modules.member.dto.ProfileFormDto;
-import com.techdot.techdot.infra.exception.UserNotExistedException;
+import com.techdot.techdot.modules.main.UserNotExistedException;
 import com.techdot.techdot.infra.mail.EmailMessageDto;
 import com.techdot.techdot.infra.mail.EmailService;
-import com.techdot.techdot.modules.post.Post;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

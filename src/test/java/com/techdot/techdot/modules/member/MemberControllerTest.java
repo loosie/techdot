@@ -97,7 +97,7 @@ class MemberControllerTest {
 			.param("token", newMember.getEmailCheckToken())
 			.param("email", newMember.getEmail()))
 			.andExpect(status().isOk())
-			.andExpect(model().attributeDoesNotExist("error"))
+			.andExpect(model().attributeDoesNotExist("message"))
 			.andExpect(model().attributeExists("nickname"))
 			.andExpect(view().name("member/confirm-email"))
 			.andExpect(authenticated());
@@ -107,11 +107,21 @@ class MemberControllerTest {
 	@DisplayName("인증 메일 확인 - 입력값 오류")
 	@Test
 	void emailConfirm_error_wrongInput() throws Exception {
+		// given
+		Member member = Member.builder()
+			.email("test@naver.com")
+			.password("12345678")
+			.emailVerified(false)
+			.nickname("testNickname")
+			.build();
+		Member newMember = memberRepository.save(member);
+		newMember.generateEmailCheckToken();
+
 		mockMvc.perform(get("/confirm-email")
 			.param("token", "testToken")
 			.param("email", "test@naver.com"))
 			.andExpect(status().isOk())
-			.andExpect(model().attributeExists("error"))
+			.andExpect(model().attributeExists("message"))
 			.andExpect(view().name("member/confirm-email"))
 			.andExpect(unauthenticated());
 	}

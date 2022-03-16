@@ -1,4 +1,4 @@
-package com.techdot.techdot.infra.exception;
+package com.techdot.techdot.modules.main;
 
 import java.io.IOException;
 

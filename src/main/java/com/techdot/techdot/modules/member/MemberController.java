@@ -58,7 +58,7 @@ public class MemberController {
 		Member member = memberService.findByEmail(email, view);
 
 		if (!member.isValidToken(token)) {
-			model.addAttribute("error", "토큰 정보가 정확하지 않습니다.");
+			model.addAttribute("message", "토큰 정보가 정확하지 않습니다.");
 			return view;
 		}
 
