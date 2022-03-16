@@ -26,7 +26,7 @@ public class CategoryController {
 			model.addAttribute(member);
 		}
 		model.addAttribute("sortProperty",
-			pageable.getSort().toString().contains("uploadDateTime") ? "uploadDateTime" : "id");
+			pageable.getSort().toString().contains("uploadDateTime") ? "uploadDateTime" : "createdDateTime");
 		return getMainViewName(categoryName);
 	}
 }

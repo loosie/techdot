@@ -124,7 +124,7 @@ public class AccountsController {
 
 		model.addAttribute(member);
 		model.addAttribute("postPage", postPage);
-		model.addAttribute("sortProperty", pageable.getSort().toString().contains("uploadDateTime") ? "uploadDateTime" : "id");
+		model.addAttribute("sortProperty", pageable.getSort().toString().contains("uploadDateTime") ? "uploadDateTime" : "createdDateTime");
 		return ACCOUNTS_MY_UPLOAD_VIEW_NAME;
 	}
 

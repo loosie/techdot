@@ -11,7 +11,6 @@ import com.techdot.techdot.modules.member.auth.CurrentUser;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequiredArgsConstructor
 public class MainController {
 
 	@GetMapping("/")
