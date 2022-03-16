@@ -20,6 +20,7 @@ import javax.persistence.OneToMany;
 import org.springframework.util.Assert;
 
 import com.techdot.techdot.infra.BaseEntity;
+import com.techdot.techdot.modules.category.Category;
 import com.techdot.techdot.modules.like.Like;
 import com.techdot.techdot.modules.post.dto.PostFormDto;
 import com.techdot.techdot.modules.member.Member;

@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.PageRequest;
 
+import com.techdot.techdot.modules.category.Category;
+import com.techdot.techdot.modules.category.CategoryName;
+import com.techdot.techdot.modules.category.CategoryRepository;
 import com.techdot.techdot.modules.interest.Interest;
 import com.techdot.techdot.modules.like.Like;
 import com.techdot.techdot.modules.member.Member;

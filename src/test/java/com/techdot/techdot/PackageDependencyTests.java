@@ -13,6 +13,7 @@ public class PackageDependencyTests {
 	private static final String POST = "..modules.post..";
 	private static final String INTEREST = "..modules.interest..";
 	private static final String LIKE = "..modules.like..";
+	private static final String CATEGORY = "..modules.category..";
 	private static final String MAIN = "..modules.main..";
 
 	@ArchTest
@@ -27,7 +28,7 @@ public class PackageDependencyTests {
 
 	@ArchTest
 	ArchRule postPackageRule = classes().that().resideInAPackage(POST)
-		.should().accessClassesThat().resideInAnyPackage(POST, MEMBER, LIKE, INTEREST)
+		.should().accessClassesThat().resideInAnyPackage(POST, CATEGORY, MEMBER, LIKE, INTEREST)
 		.andShould().onlyBeAccessed().byClassesThat()
 		.resideInAnyPackage(POST, MAIN, LIKE, INTEREST, MEMBER); // MEMBER (only ADMIN)
 
@@ -38,7 +39,7 @@ public class PackageDependencyTests {
 
 	@ArchTest
 	ArchRule interestPackageRule = classes().that().resideInAPackage(INTEREST)
-		.should().accessClassesThat().resideInAnyPackage(INTEREST, MEMBER, POST)
-		.andShould().onlyBeAccessed().byClassesThat().resideInAnyPackage(INTEREST, POST);
+		.should().accessClassesThat().resideInAnyPackage(INTEREST, CATEGORY, MEMBER, POST)
+		.andShould().onlyBeAccessed().byClassesThat().resideInAnyPackage(INTEREST, POST, CATEGORY);
 
 }

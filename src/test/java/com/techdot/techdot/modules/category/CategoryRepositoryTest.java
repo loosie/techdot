@@ -1,4 +1,4 @@
-package com.techdot.techdot.modules.post;
+package com.techdot.techdot.modules.category;
 
 import static org.junit.jupiter.api.Assertions.*;
 

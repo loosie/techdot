@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,10 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.infra.MockMvcTest;
-import com.techdot.techdot.modules.member.auth.WithCurrentUser;
+import com.techdot.techdot.modules.category.Category;
+import com.techdot.techdot.modules.category.CategoryName;
+import com.techdot.techdot.modules.category.CategoryRepository;
+import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.member.MemberRepository;
+import com.techdot.techdot.modules.member.auth.WithCurrentUser;
 
 @MockMvcTest
 class PostControllerTest {
@@ -163,21 +165,5 @@ class PostControllerTest {
 			.andExpect(view().name("post/updateForm"))
 			.andExpect(authenticated());
 	}
-
-	@DisplayName("카테고리 별로 뷰")
-	@Test
-	void categoryView() {
-		Arrays.stream(CategoryName.values()).forEach(categoryName -> {
-			try {
-				mockMvc.perform(get("/category/" + categoryName.getViewName()))
-					.andExpect(status().isOk())
-					.andExpect(view().name(CategoryName.getMainViewName(categoryName.getViewName())))
-					.andExpect(unauthenticated());
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
-		});
-	}
-
 
 }

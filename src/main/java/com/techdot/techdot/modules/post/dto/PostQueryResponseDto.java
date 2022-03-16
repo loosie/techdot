@@ -2,7 +2,7 @@ package com.techdot.techdot.modules.post.dto;
 
 import java.time.LocalDateTime;
 
-import com.techdot.techdot.modules.post.CategoryName;
+import com.techdot.techdot.modules.category.CategoryName;
 import com.techdot.techdot.modules.post.PostType;
 
 import lombok.Data;

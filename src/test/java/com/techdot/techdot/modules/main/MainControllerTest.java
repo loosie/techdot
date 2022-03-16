@@ -5,15 +5,12 @@ import static org.springframework.security.test.web.servlet.response.SecurityMoc
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import java.util.Arrays;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.techdot.techdot.modules.post.CategoryName;
 import com.techdot.techdot.modules.member.dto.JoinFormDto;
 import com.techdot.techdot.infra.MockMvcTest;
 import com.techdot.techdot.modules.member.auth.WithCurrentUser;

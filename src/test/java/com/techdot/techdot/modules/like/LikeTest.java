@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.techdot.techdot.modules.post.Category;
-import com.techdot.techdot.modules.post.CategoryName;
+import com.techdot.techdot.modules.category.Category;
+import com.techdot.techdot.modules.category.CategoryName;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.post.Post;
 import com.techdot.techdot.modules.post.PostType;

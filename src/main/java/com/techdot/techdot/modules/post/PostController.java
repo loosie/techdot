@@ -1,6 +1,6 @@
 package com.techdot.techdot.modules.post;
 
-import static com.techdot.techdot.modules.post.CategoryName.*;
+import static com.techdot.techdot.modules.category.CategoryName.*;
 
 import java.util.List;
 
@@ -122,14 +122,4 @@ public class PostController {
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
-	@GetMapping("/category/{categoryName}")
-	public String homeByCategory(@PathVariable String categoryName, @CurrentUser Member member, Model model,
-		@PageableDefault(size = 10, page = 0, sort = "uploadDateTime", direction = Sort.Direction.DESC) Pageable pageable) {
-		if (member != null) {
-			model.addAttribute(member);
-		}
-		model.addAttribute("sortProperty",
-			pageable.getSort().toString().contains("uploadDateTime") ? "uploadDateTime" : "id");
-		return getMainViewName(categoryName);
-	}
 }

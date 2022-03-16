@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.techdot.techdot.modules.post.Category;
+import com.techdot.techdot.modules.category.Category;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.interest.dto.InterestCategoryResponseDto;
 

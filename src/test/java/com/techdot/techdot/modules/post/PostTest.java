@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 class PostTest {
 
-
 	@DisplayName("게시글 생성하기 - 입력값 오류 manager, category null")
 	@Test
 	void post_create_fail_nullValue() {

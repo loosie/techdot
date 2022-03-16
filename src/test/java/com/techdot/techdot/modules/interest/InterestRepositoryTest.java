@@ -10,9 +10,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import com.techdot.techdot.modules.post.Category;
-import com.techdot.techdot.modules.post.CategoryName;
-import com.techdot.techdot.modules.post.CategoryRepository;
+import com.techdot.techdot.modules.category.Category;
+import com.techdot.techdot.modules.category.CategoryName;
+import com.techdot.techdot.modules.category.CategoryRepository;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.interest.dto.InterestCategoryResponseDto;
 import com.techdot.techdot.modules.member.MemberRepository;

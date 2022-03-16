@@ -21,11 +21,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.techdot.techdot.modules.member.auth.CurrentUser;
-import com.techdot.techdot.modules.post.Category;
+import com.techdot.techdot.modules.category.Category;
 import com.techdot.techdot.modules.post.Post;
 import com.techdot.techdot.modules.member.dto.PasswordFormDto;
 import com.techdot.techdot.modules.member.dto.ProfileFormDto;
-import com.techdot.techdot.modules.post.CategoryRepository;
+import com.techdot.techdot.modules.category.CategoryRepository;
 import com.techdot.techdot.modules.post.PostService;
 import com.techdot.techdot.modules.member.validator.PasswordFormValidator;
 import com.techdot.techdot.modules.member.validator.ProfileFormValidator;

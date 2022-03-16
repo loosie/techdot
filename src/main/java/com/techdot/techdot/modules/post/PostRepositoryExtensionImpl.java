@@ -10,6 +10,8 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPQLQuery;
+import com.techdot.techdot.modules.category.CategoryName;
+import com.techdot.techdot.modules.category.QCategory;
 import com.techdot.techdot.modules.interest.QInterest;
 import com.techdot.techdot.modules.like.QLike;
 import com.techdot.techdot.modules.post.dto.PostQueryResponseDto;

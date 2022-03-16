@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 
+import com.techdot.techdot.modules.category.CategoryName;
 import com.techdot.techdot.modules.post.dto.PostQueryResponseDto;
 
 public interface PostRepositoryExtension {

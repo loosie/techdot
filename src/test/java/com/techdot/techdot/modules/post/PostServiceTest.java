@@ -14,6 +14,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
 
+import com.techdot.techdot.modules.category.CategoryName;
+import com.techdot.techdot.modules.category.CategoryRepository;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.post.dto.PostQueryResponseDto;
 import com.techdot.techdot.modules.member.MemberRepository;

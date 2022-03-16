@@ -16,11 +16,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.techdot.techdot.modules.post.Category;
-import com.techdot.techdot.modules.post.CategoryName;
+import com.techdot.techdot.modules.category.Category;
+import com.techdot.techdot.modules.category.CategoryName;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.interest.dto.InterestCategoryResponseDto;
-import com.techdot.techdot.modules.post.CategoryRepository;
+import com.techdot.techdot.modules.category.CategoryRepository;
 import com.techdot.techdot.modules.member.MemberRepository;
 
 @ExtendWith(MockitoExtension.class)

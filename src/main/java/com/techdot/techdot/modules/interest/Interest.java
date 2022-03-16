@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 import org.springframework.util.Assert;
 
-import com.techdot.techdot.modules.post.Category;
+import com.techdot.techdot.modules.category.Category;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.infra.BaseEntity;
 
