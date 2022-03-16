@@ -15,23 +15,11 @@ class MemberTest {
 	void member_create_fail_nullValue() {
 		assertThrows(IllegalArgumentException.class, () -> Member.builder()
 			.nickname("loosie") // password null
-			.termsCheck(true)
 			.email("jong9712@naver.com")
 			.emailVerified(false)
 			.build());
 	}
 
-	@DisplayName("멤버 생성 실패 - 입력값 오류 termsCheck 값은 항상 true이어야 합니다.")
-	@Test
-	void member_create_fail_invalidInput() {
-		assertThrows(IllegalArgumentException.class, () -> Member.builder()
-			.nickname("loosie")
-			.password("12345678")
-			.termsCheck(false) // must be true
-			.email("jong9712@naver.com")
-			.emailVerified(false)
-			.build());
-	}
 
 	@DisplayName("멤버 이메일 체크 토큰 생성 - 성공")
 	@Test
@@ -40,7 +28,6 @@ class MemberTest {
 		Member member = Member.builder()
 			.nickname("loosie")
 			.password("12345678")
-			.termsCheck(true)
 			.email("jong9712@naver.com")
 			.emailVerified(false)
 			.build();
@@ -59,7 +46,6 @@ class MemberTest {
 		Member member = Member.builder()
 			.nickname("loosie")
 			.password("12345678")
-			.termsCheck(true)
 			.email("jong9712@naver.com")
 			.emailVerified(false)
 			.build();
@@ -80,7 +66,6 @@ class MemberTest {
 		Member member = Member.builder()
 			.nickname("loosie")
 			.password("12345678")
-			.termsCheck(true)
 			.email("jong9712@naver.com")
 			.emailVerified(false)
 			.build();
@@ -99,7 +84,6 @@ class MemberTest {
 		Member member = Member.builder()
 			.nickname("loosie")
 			.password("12345678")
-			.termsCheck(true)
 			.email("jong9712@naver.com")
 			.emailVerified(false)
 			.build();
@@ -119,7 +103,6 @@ class MemberTest {
 		Member member = Member.builder()
 			.nickname("loosie")
 			.password("12345678")
-			.termsCheck(true)
 			.email("jong9712@naver.com")
 			.emailVerified(false)
 			.build();
@@ -145,7 +128,6 @@ class MemberTest {
 		Member member = Member.builder()
 			.nickname("loosie")
 			.password("12345678")
-			.termsCheck(true)
 			.email("jong9712@naver.com")
 			.emailVerified(false)
 			.build();
@@ -164,7 +146,6 @@ class MemberTest {
 		Member member = Member.builder()
 			.nickname("loosie")
 			.password("12345678")
-			.termsCheck(true)
 			.email("jong9712@naver.com")
 			.emailVerified(false)
 			.build();

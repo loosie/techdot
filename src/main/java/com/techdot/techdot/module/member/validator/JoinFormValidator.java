@@ -35,8 +35,5 @@ public class JoinFormValidator implements Validator {
 			errors.rejectValue("passwordConfirm", "unmatched.password", new Object[]{joinForm.getPasswordConfirm()}, "비밀번호가 일치하지 않습니다.");
 		}
 
-		if(!joinForm.getTermsCheck()){
-			errors.rejectValue("termsCheck", "invalid.terms", new Object[]{joinForm.getTermsCheck()}, "약관 동의에 체크해주세요.");
-		}
 	}
 }

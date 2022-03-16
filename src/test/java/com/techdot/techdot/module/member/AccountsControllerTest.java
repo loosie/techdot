@@ -86,7 +86,6 @@ class AccountsControllerTest{
 			.password("12345678")
 			.nickname("test")
 			.emailVerified(true)
-			.termsCheck(true)
 			.build());
 
 		mockMvc.perform(post(REQUEST_URL + ACCOUNTS_MAIN_VIEW_URL)

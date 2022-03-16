@@ -46,7 +46,6 @@ public class WithMemberSecurityContextFactory implements WithSecurityContextFact
 		joinFormDto.setNickname("testNickname");
 		joinFormDto.setEmail(email);
 		joinFormDto.setPassword("12345678");
-		joinFormDto.setTermsCheck(true);
 		memberService.save(joinFormDto);
 	}
 }

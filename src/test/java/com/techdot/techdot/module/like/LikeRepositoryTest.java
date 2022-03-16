@@ -40,7 +40,6 @@ class LikeRepositoryTest {
 		member = Member.builder()
 			.nickname("loosie")
 			.password("12345678")
-			.termsCheck(true)
 			.email("jong9712@naver.com")
 			.emailVerified(false)
 			.build();

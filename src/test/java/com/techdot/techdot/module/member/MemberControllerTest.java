@@ -51,7 +51,6 @@ class MemberControllerTest {
 			.param("email", "test@naver.com")
 			.param("password", "12345678")
 			.param("passwordConfirm", "12345678")
-			.param("termsCheck", "true")
 			.with(csrf()))
 			.andExpect(status().isOk())
 			.andExpect(view().name(MEMBER_CHECK_EMAIL_VIEW_NAME))
@@ -73,7 +72,6 @@ class MemberControllerTest {
 			.param("email", "email...")
 			.param("password", "1234")
 			.param("passwordConfirm", "1234")
-			.param("termsCheck", "true")
 			.with(csrf()))
 			.andExpect(status().isOk())
 			.andExpect(view().name("member/join"))
@@ -89,7 +87,6 @@ class MemberControllerTest {
 			.email("test@naver.com")
 			.password("12345678")
 			.emailVerified(false)
-			.termsCheck(true)
 			.nickname("testNickname")
 			.build();
 		Member newMember = memberRepository.save(member);
@@ -130,7 +127,6 @@ class MemberControllerTest {
 			.password("12345678")
 			.nickname("testNickname")
 			.emailVerified(false)
-			.termsCheck(true)
 			.build();
 		Member newMember = memberRepository.save(member);
 		newMember.generateEmailCheckToken();
@@ -154,7 +150,6 @@ class MemberControllerTest {
 			.password("12345678")
 			.nickname("testNickname")
 			.emailVerified(false)
-			.termsCheck(true)
 			.build();
 		Member newMember = memberRepository.save(member);
 		newMember.generateEmailCheckToken();

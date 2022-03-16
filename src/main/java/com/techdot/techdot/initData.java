@@ -44,7 +44,6 @@ public class initData {
 				.nickname("loosie")
 				.password(passwordEncoder.encode("jong9712@naver.com"))
 				.emailVerified(true)
-				.termsCheck(true)
 				.build();
 			member.generateEmailCheckToken();
 			member.addRole(Role.ROLE_MEMBER, Role.ROLE_ADMIN);
@@ -55,7 +54,6 @@ public class initData {
 				.nickname("loosie2")
 				.password(passwordEncoder.encode("test1@naver.com"))
 				.emailVerified(true)
-				.termsCheck(true)
 				.build();
 			member2.addRole(Role.ROLE_MEMBER);
 			member2.generateEmailCheckToken();
@@ -66,7 +64,6 @@ public class initData {
 				.nickname("loosie3")
 				.password(passwordEncoder.encode("test2@naver.com"))
 				.emailVerified(false)
-				.termsCheck(true)
 				.build();
 			member3.generateEmailCheckToken();
 			em.persist(member3);

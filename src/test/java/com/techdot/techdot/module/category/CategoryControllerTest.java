@@ -18,7 +18,7 @@ class CategoryControllerTest {
 
 	@Autowired private MockMvc mockMvc;
 
-	@DisplayName("카테고리 별로 뷰 보여주기")
+	@DisplayName("카테고리 별로 뷰")
 	@Test
 	void categoryView() {
 		Arrays.stream(CategoryName.values()).forEach(categoryName -> {

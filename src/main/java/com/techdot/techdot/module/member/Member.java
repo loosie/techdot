@@ -12,6 +12,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 
@@ -32,7 +33,7 @@ import lombok.NoArgsConstructor;
 public class Member extends BaseEntity {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "member_id")
 	private Long id;
 
@@ -63,17 +64,13 @@ public class Member extends BaseEntity {
 	@Lob
 	private String profileImage;
 
-	@Column(nullable = false)
-	private Boolean termsCheck;
-
 
 	@Builder
-	public Member(Long id, String email, String nickname, String password, Boolean emailVerified, Boolean termsCheck) {
+	public Member(Long id, String email, String nickname, String password, Boolean emailVerified) {
 		Assert.notNull(email, "member.email 값이 존재하지 않습니다.");
 		Assert.notNull(nickname, "member.nickname 값이 존재하지 않습니다.");
 		Assert.notNull(password, "member.password 값이 존재하지 않습니다.");
 		Assert.notNull(emailVerified, "member.emailVerified 값이 존재하지 않습니다.");
-		Assert.isTrue(termsCheck, "member.termsCheck 값이 올바르지 않습니다.");
 
 		this.id = id;
 		this.email = email;
@@ -81,7 +78,6 @@ public class Member extends BaseEntity {
 		this.password = password;
 		this.emailVerified = emailVerified;
 		this.roles.add(Role.ROLE_USER);
-		this.termsCheck = termsCheck;
 		createDateTime();
 	}
 

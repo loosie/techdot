@@ -27,6 +27,4 @@ public class JoinFormDto {
 	@NotBlank
 	@Length(min=8, max =50)
 	private String passwordConfirm;
-
-	private Boolean termsCheck;
 }

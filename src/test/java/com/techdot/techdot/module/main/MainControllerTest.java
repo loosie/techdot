@@ -17,7 +17,6 @@ import com.techdot.techdot.module.category.CategoryName;
 import com.techdot.techdot.module.member.dto.JoinFormDto;
 import com.techdot.techdot.infra.MockMvcTest;
 import com.techdot.techdot.infra.WithCurrentUser;
-import com.techdot.techdot.module.member.MemberRepository;
 import com.techdot.techdot.module.member.MemberService;
 
 @MockMvcTest
@@ -32,11 +31,10 @@ class MainControllerTest {
 		joinFormDto.setNickname("loosie");
 		joinFormDto.setEmail("test@naver.com");
 		joinFormDto.setPassword("12345678");
-		joinFormDto.setTermsCheck(true);
 		memberService.save(joinFormDto);
 	}
 
-	@DisplayName("로그인 하기")
+	@DisplayName("로그인 성공")
 	@Test
 	void login_success() throws Exception {
 		mockMvc.perform(post("/login")
@@ -70,9 +68,23 @@ class MainControllerTest {
 			.andExpect(unauthenticated());
 	}
 
+	@DisplayName("카테고리 별로 뷰")
+	@Test
+	void mainByCategoryView() {
+		Arrays.stream(CategoryName.values()).forEach(categoryName -> {
+			try {
+				mockMvc.perform(get("/category/" + categoryName.getViewName()))
+					.andExpect(status().isOk())
+					.andExpect(view().name(CategoryName.getMainViewName(categoryName.getViewName())))
+					.andExpect(unauthenticated());
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		});
+	}
 
 	@WithCurrentUser(value = "test1@naver.com", role="MEMBER")
-	@DisplayName("관심 카테고리 뷰 보여주기 - 이메일 인증 받지 않은 경우")
+	@DisplayName("관심 카테고리 뷰 - 이메일 인증 받지 않은 경우")
 	@Test
 	void mainMyInterestsView() throws Exception{
 		mockMvc.perform(get("/me/interests"))
@@ -81,7 +93,7 @@ class MainControllerTest {
 			.andExpect(authenticated());
 	}
 
-	@DisplayName("검색 뷰 보여주기")
+	@DisplayName("검색 뷰")
 	@Test
 	void searchView() throws Exception{
 		mockMvc.perform(get("/search")
@@ -93,7 +105,7 @@ class MainControllerTest {
 			.andExpect(unauthenticated());
 	}
 
-	@DisplayName("에러 뷰 보여주기")
+	@DisplayName("에러 뷰")
 	@Test
 	void errorView() throws Exception{
 		mockMvc.perform(get("/error/403"))
