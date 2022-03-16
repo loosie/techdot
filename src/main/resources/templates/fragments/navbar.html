@@ -2,9 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.com"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head>
-    <script src="/node_modules/jdenticon/dist/jdenticon.js"></script>
-</head>
+
 <nav th:fragment="main-nav" class="navbar navbar-expand-sm navbar-dark bg-dark py-2 px-3">
     <div class="container">
         <a class="navbar-brand" href="/" th:href="@{/}">
@@ -17,7 +15,6 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <!--                TODO: search -->
                     <form th:action="@{/search/}" class="form-inline" method="get">
                         <input class="form-control mr-sm-2" name="keyword" type="search" placeholder="검색" aria-label="Search" />
                     </form>
@@ -26,7 +23,6 @@
         </div>
     </div>
 </nav>
-
 
 <nav th:fragment="auth-nav" class="navbar navbar-expand-sm navbar-dark bg-dark py-2 px-3">
     <div class="container">
@@ -40,7 +36,6 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent2">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-    <!--                TODO: search -->
                     <form th:action="@{/search}" class="form-inline" method="get">
                         <input class="form-control mr-sm-2" name="keyword" type="search" placeholder="검색" aria-label="Search" />
                     </form>
@@ -88,5 +83,7 @@
             </ul>
         </div>
     </div>
+    <script type="text/javascript" th:inline="javascript" th:replace="fragments/ajax-csrf-header.html :: ajax-csrf-header" ></script>
 </nav>
+
 </html>

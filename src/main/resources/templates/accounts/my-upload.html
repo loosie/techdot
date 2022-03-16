@@ -29,8 +29,8 @@
                                th:href="@{'/accounts/my-upload?sort=uploadDateTime,desc'}">
                                 업로드 날짜순
                             </a>
-                            <a class="dropdown-item" th:classappend="${#strings.equals(sortProperty, 'id')}? active"
-                               th:href="@{'/accounts/my-upload?sort=id,desc'}">
+                            <a class="dropdown-item" th:classappend="${#strings.equals(sortProperty, 'createdDateTime')}? active"
+                               th:href="@{'/accounts/my-upload?sort=createdDateTime,desc'}">
                                 등록순
                             </a>
                         </div>

@@ -41,3 +41,6 @@ src/main/resources/static/node_modules
 
 ## inner DB ##
 memory:
+
+## config ##
+application-mail.yml

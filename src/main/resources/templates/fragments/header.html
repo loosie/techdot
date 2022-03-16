@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.com">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head th:fragement="head">
     <meta charset="UTF-8">
     <title>TechDot</title>
@@ -8,7 +9,6 @@
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/node_modules/jdenticon/dist/jdenticon.js"></script>
-
 
     <style>
         @media (min-width: 1200px) {
@@ -70,11 +70,61 @@
         .card {
             border-radius: 5%;
             font-size: 0.9rem;
+            width: 100%;
+
         }
 
-        @media (min-width: 770px) {
+        @media (min-width: 768px) {
+            .card {
+                max-width: none;
+            }
+            .post-list__item__image{
+                max-width: 400px;
+                max-height: 190px;
+            }
+            .col-md-3 {
+                -ms-flex: 0 0 50%;
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .main-right-nav{
+                display: flex;
+                justify-content: center;
+            }
+            .main-right-nav-tabs{
+                width: 50%;
+            }
+        }
+
+        @media (min-width: 1200px) {
             .card {
                 max-width: 320px;
+            }
+            .post-list__item__image{
+                max-width: 320px;
+            }
+            .col-md-3 {
+                -ms-flex: 0 0 33%;
+                flex: 0 0 33%;
+                max-width: 33%;
+            }
+        }
+
+        @media (min-width: 1400px) {
+            .card {
+                max-width: 320px;
+            }
+            .post-list__item__image {
+                max-width: 320px;
+                max-height: 170px;
+            }
+            .col-md-3 {
+                -ms-flex: 0 0 25%;
+                flex: 0 0 25%;
+                max-width: 25%;
             }
         }
 
@@ -101,8 +151,6 @@
             border-radius: 5% 5% 0 0;
             width: 100%;
             height: 100%;
-            max-width: 320px;
-            max-height: 170px;
         }
 
         .list-group-item{
@@ -116,6 +164,12 @@
             border-radius: 5%;
         }
 
+        .main-right-nav-link{
+            width: 80%;
+            border: none;
+            background-color: #f8f9fa !important;
+        }
+
         .main-right-nav-link.active {
             color: #fff !important;
             background-color: #1a1b1e !important;
@@ -123,9 +177,14 @@
             border-radius: 5%;
         }
 
+        .main-right-nav-link.active:hover {
+            color: #fff !important;
+            background-color: #000 !important;
+        }
+
         .main-right-nav-link:hover {
-            background-color: #1a1b1e !important;
-            color: #ffffff !important;
+            color: #000 !important;
+            background-color: #fff !important;
         }
 
         .badge {

@@ -6,7 +6,7 @@
 
 <div class="container" th:id="${mainMenu}">
     <div class="row justify-content-center py-4">
-        <div class="col py-4">
+        <div class="col py-4 main-right-nav">
             <nav th:replace="fragments/main-view-category-menu.html :: category-menu(categoryMenu = ${mainMenu})"></nav>
         </div>
 
@@ -32,8 +32,6 @@
 </div>
 
 <footer th:replace="fragments/footer.html :: footer"></footer>
-<script type="text/javascript" th:inline="javascript"
-        th:replace="fragments/ajax-csrf-header.html :: ajax-csrf-header"></script>
 <div type="text/javascript" th:inline="javascript"
      th:replace="fragments/post-factory.html :: post-factory(requestUrl = '/posts/', viewName = ${mainMenu})"></div>
 <script type="application/javascript" th:inline="javascript">
@@ -53,7 +51,7 @@
             })
         }
 
-        if ('[(${#authentication.name})]' != 'anonymousUser') {
+        if ('[(${#authentication.name})]' != 'anonymousUser' && '[(${mainMenu})]' != 'All') {
             getMemberCategories()
         }
 
@@ -75,8 +73,7 @@
                 data: JSON.stringify({
                     categoryName: e.target.value
                 })
-            }).done(function (data, status) {
-                // console.log(status);
+            }).done(function () {
                 if ('[(${#authentication.name})]' == 'anonymousUser') {
                     window.location.href = "/login";
                     return;
@@ -85,6 +82,14 @@
                     interestSwitch.remove('interest-active');
                 } else {
                     interestSwitch.add('interest-active');
+                }
+            }).fail(function (data) {
+                if(data.status == 403){
+                    window.location.href = "/check-email";
+                    return;
+                }else{
+                    window.location.href = "/error";
+                    return;
                 }
             })
         }

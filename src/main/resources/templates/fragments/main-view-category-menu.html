@@ -11,29 +11,11 @@
        th:classappend="${categoryMenu == 'MyInterests'}? 'active active-box'" th:href="@{'/me/interests'}">
         관심 카테고리
     </a>
-    <a class="list-group-item list-group-item-action main-right-nav-link" href="#"
-       th:classappend="${categoryMenu == 'CS'}? 'active active-box'" th:href="@{'/category/cs'}">
-        CS
+
+    <a th:each="category : ${T(com.techdot.techdot.modules.category.CategoryName).values()}" class="list-group-item list-group-item-action main-right-nav-link" href="#"
+       th:text="${category.getDisplayValue()}"
+       th:classappend="${categoryMenu == category.name}? 'active active-box'" th:href="@{'/category/' + ${category.getViewName()}}">
     </a>
-    <a class="list-group-item list-group-item-action main-right-nav-link" href="#"
-       th:classappend="${categoryMenu == 'Backend'}? 'active active-box'" th:href="@{'/category/backend'}">
-        Backend
-    </a>
-    <a class="list-group-item list-group-item-action main-right-nav-link" href="#"
-       th:classappend="${categoryMenu == 'Frontend'}? 'active active-box'" th:href="@{'/category/frontend'}">
-        Frontend
-    </a>
-    <a class="list-group-item list-group-item-action main-right-nav-link" href="#"
-       th:classappend="${categoryMenu == 'DevOps'}? 'active active-box'" th:href="@{'/category/dev-ops'}">
-        DevOps
-    </a>
-    <a class="list-group-item list-group-item-action main-right-nav-link" href="#"
-       th:classappend="${categoryMenu == 'Security'}? 'active active-box'" th:href="@{'/category/security'}">
-        Security
-    </a>
-    <a class="list-group-item list-group-item-action main-right-nav-link" href="#"
-       th:classappend="${categoryMenu == 'Motivation'}? 'active active-box'" th:href="@{'/category/motivation'}">
-        Motivation
-    </a>
+
 </div>
 </html>
