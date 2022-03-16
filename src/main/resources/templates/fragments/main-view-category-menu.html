@@ -12,7 +12,7 @@
         관심 카테고리
     </a>
 
-    <a th:each="category : ${T(com.techdot.techdot.module.category.CategoryName).values()}" class="list-group-item list-group-item-action main-right-nav-link" href="#"
+    <a th:each="category : ${T(com.techdot.techdot.modules.post.CategoryName).values()}" class="list-group-item list-group-item-action main-right-nav-link" href="#"
        th:text="${category.getDisplayValue()}"
        th:classappend="${categoryMenu == category.name}? 'active active-box'" th:href="@{'/category/' + ${category.getViewName()}}">
     </a>

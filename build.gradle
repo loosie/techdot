@@ -49,6 +49,10 @@ dependencies {
 	// testContainers
 	testImplementation "org.testcontainers:junit-jupiter:1.16.3"
 	testImplementation "org.testcontainers:mysql:1.16.3"
+
+	// archunit
+	testImplementation 'com.tngtech.archunit:archunit-junit5:0.23.1'
+
 }
 
 // clean task 실행시 QClass 삭제
