@@ -67,7 +67,7 @@ public class Post extends BaseEntity {
 	@JoinColumn(name = "member_id")
 	private Member manager;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="category_id")
 	private Category category;
 

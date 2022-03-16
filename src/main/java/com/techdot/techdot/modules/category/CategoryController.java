@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class CategoryController {
 
 	@GetMapping("/category/{categoryName}")
-	public String homeByCategory(@PathVariable String categoryName, @CurrentUser Member member, Model model,
+	public String categoriesView(@PathVariable String categoryName, @CurrentUser Member member, Model model,
 		@PageableDefault(size = 10, page = 0, sort = "uploadDateTime", direction = Sort.Direction.DESC) Pageable pageable) {
 		if (member != null) {
 			model.addAttribute(member);

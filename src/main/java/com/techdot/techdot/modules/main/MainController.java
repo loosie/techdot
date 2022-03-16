@@ -32,7 +32,7 @@ public class MainController {
 	}
 
 	@GetMapping("/me/interests")
-	public String MyInterestsView(@CurrentUser Member member, Model model) {
+	public String myInterestsView(@CurrentUser Member member, Model model) {
 		model.addAttribute(member);
 		return "main/my-interests";
 	}
