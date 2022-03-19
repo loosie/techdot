@@ -103,13 +103,6 @@ public class Member extends BaseEntity {
 		return new HashSet<>(this.roles);
 	}
 
-	// TODO; 임시용 role 주입 함수
-	public void addRole(Role... role){
-		for (Role r : role) {
-			this.roles.add(r);
-		}
-	}
-
 	public boolean canSendConfirmEmail() {
 		// 5초에 1번씩 총 5회 전송 가능
 		if(emailSendTime == 1 ||
