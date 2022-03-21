@@ -32,7 +32,7 @@ $ java -jar build/libs/techdot-0.0.1-SNAPSHOT.jar
 <br>
 
 ## 패키지 관리
-
+<img width="512" alt="스크린샷 2022-03-21 오후 1 10 32" src="https://user-images.githubusercontent.com/54282927/159204339-fae9a799-77f6-4f83-a45f-c329630a00ee.png">
 
 <br>
 
