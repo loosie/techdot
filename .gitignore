@@ -43,4 +43,5 @@ src/main/resources/static/node_modules
 memory:
 
 ## config ##
+application-dev.yml
 application-mail.yml
