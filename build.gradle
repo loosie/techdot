@@ -81,6 +81,10 @@ tasks.named('test') {
 
 apply plugin: "com.moowork.node"
 
+node {
+	download = true
+}
+
 tasks.register("npm-Install") {
 	group = "application"
 	description = "Installs dependencies from package.json"
