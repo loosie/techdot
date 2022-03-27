@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 			.mvcMatchers("/join", "/login").not().fullyAuthenticated()
 			.mvcMatchers("/", "/check-email",  "/email-login", "/login-by-email", "/confirm-email", "/resend-confirm-email/**", "/error/**",
-				"/posts/**", "/category/**",  "/search/**").permitAll()
+				"/posts/**", "/category/**",  "/search/**", "/app/profile").permitAll()
 			.mvcMatchers("/interest/**", "/like/**", "/me/likes", "/accounts/**").access("hasRole('ROLE_MEMBER') or hasRole('ROLE_ADMIN')")
 			.mvcMatchers("/new-post", "/post/**", "/accounts/my-upload", "/accounts/settings/category").access("hasRole('ROLE_ADMIN')")
 			.anyRequest().authenticated();

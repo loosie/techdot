@@ -45,3 +45,9 @@ memory:
 ## config ##
 application-dev.yml
 application-mail.yml
+application-real1.yml
+application-real2.yml
+application-real-db.yml
+
+## init ##
+init.sql

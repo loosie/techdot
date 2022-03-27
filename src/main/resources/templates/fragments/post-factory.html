@@ -45,11 +45,13 @@
 
         const link1 = document.createElement('a');
         link1.href = data.link;
+        link1.target = '_blank';
         link1.className = 'text-dark';
         body.appendChild(link1);
 
         const link2 = document.createElement('a');
         link2.href = data.link;
+        link2.target = '_blank';
         link2.className = 'text-dark';
         body.appendChild(link2);
 
@@ -153,6 +155,7 @@
 
         const link = document.createElement('a');
         link.href = data.link;
+        link.target = '_blank';
         link.className = 'text-dark';
         post.appendChild(link);
 
