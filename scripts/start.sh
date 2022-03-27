@@ -13,6 +13,13 @@ echo "> cp $REPOSITORY/build/libs/*.jar $REPOSITORY/"
 cp $REPOSITORY/build/libs/*.jar $REPOSITORY/
 
 echo "> 새 애플리케이션 배포"
+
+echo "> static 폴더로 이동 "
+cd $REPOSITORY/src/main/resources/static
+
+echo "> npm install"
+npm install
+
 JAR_NAME=$(ls -tr $REPOSITORY/*.jar | tail -n 1)
 
 echo "> JAR Name: $JAR_NAME"
@@ -22,8 +29,8 @@ echo "> $JAR_NAME 에 실행권한 추가"
 chmod +x $JAR_NAME
 
 echo "> $JAR_NAME 실행"
-echo "> $REPOSITORY로 이동"
 
+echo "> $REPOSITORY로 이동"
 cd $REPOSITORY
 
 IDLE_PROFILE=$(find_idle_profile)
