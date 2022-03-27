@@ -32,6 +32,6 @@ IDLE_PORT=$(find_idle_port)
 echo "> $JAR_NAME 를 profile=$IDLE_PROFILE ($IDLE_PORT)로 실행합니다."
 
 nohup java -jar \
-  -Dspring.config.location=classpath:/application.yml,/home/ec2-user/app/resources/application-$IDLE_PROFILE.yml,/home/ec2-user/app/resources/application-real-db.yml \
+  -Dspring.config.location=classpath:/application.yml,/home/ec2-user/app/resources/application-$IDLE_PROFILE.yml,/home/ec2-user/app/resources/application-real-db.yml,/home/ec2-user/app/resources/application-mail.yml \
   -Dspring.profiles.active=$IDLE_PROFILE \
   $JAR_NAME > $REPOSITORY/nohup.out 2>&1 &
