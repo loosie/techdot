@@ -3,6 +3,10 @@
       xmlns:th="http://www.thymeleaf.org">
 <head th:fragement="head">
     <meta charset="UTF-8">
+
+    <meta th:if="${@environment.acceptsProfiles('real1') or @environment.acceptsProfiles('real2')}"
+          http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
     <title>TechDot</title>
     <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.css"/>
