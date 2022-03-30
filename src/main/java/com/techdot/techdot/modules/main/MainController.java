@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.member.auth.CurrentUser;
 
-import lombok.RequiredArgsConstructor;
-
 @Controller
 public class MainController {
 
@@ -49,4 +47,5 @@ public class MainController {
 	public String errorView(@PathVariable String status) {
 		return "error/" + status;
 	}
+
 }

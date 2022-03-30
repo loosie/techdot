@@ -19,7 +19,7 @@ public class LikeController {
 	private final LikeService likeService;
 
 	@PostMapping("/like/add")
-	public ResponseEntity likeAdd(@CurrentUser Member member, @RequestBody LikeFormDto likeForm, Errors errors) {
+	public ResponseEntity likeAdd(@CurrentUser Member member, @RequestBody LikeFormDto likeForm) {
 		likeService.add(member.getId(), likeForm.getPostId());
 		return ResponseEntity.ok().build();
 	}

@@ -20,6 +20,6 @@ public enum CategoryName {
 	}
 
 	public static String getMainViewName(String viewName) {
-		return "/main/"+ viewName;
+		return "main/"+ viewName;
 	}
 }

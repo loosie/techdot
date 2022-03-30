@@ -1,7 +1,5 @@
 package com.techdot.techdot.modules.post;
 
-import static com.techdot.techdot.modules.category.CategoryName.*;
-
 import java.util.List;
 
 import javax.validation.Valid;

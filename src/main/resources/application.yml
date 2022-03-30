@@ -3,6 +3,9 @@ spring:
     group:
       "default": "local"
       "dev": "dev, mail"
+      "real1": "real-db, mail"
+      "real2": "real-db, mail"
+
   jpa:
     hibernate:
       ddl-auto: update
