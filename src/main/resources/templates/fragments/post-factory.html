@@ -9,16 +9,6 @@
         return 'page-' + n;
     }
 
-    function getDocumentHeight() {
-        const body = document.body;
-        const html = document.documentElement;
-        return Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
-    }
-
-    function getScrollTop() {
-        return window.pageYOffset !== undefined ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
-    }
-
     function getPostImage(data) {
         const image = new Image();
         image.className = 'post-list__item__image post-list__item__image--loading';
@@ -91,12 +81,13 @@
         writerBody.appendChild(small1);
 
         const icon = document.createElement('i');
-        icon.className = 'fa fa-user-circle';
-        icon.style = 'margin-right:0.2rem';
+        icon.className = 'fa fa-circle';
+        icon.style = 'margin-right:0.3rem; color:#131418;';
         small1.appendChild(icon);
 
         const writerText = document.createElement('span');
         writerText.textContent = data.writer;
+        writerText.style = 'color:#131418';
         small1.appendChild(writerText);
 
         const small2 = document.createElement('small');
@@ -227,8 +218,17 @@
     uploadTimeFormat();
     likeButton = $(".like-button");
 
+    function getDocumentHeight() {
+        const body = document.body;
+        const html = document.documentElement;
+        return Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+    }
+
+    function getScrollTop() {
+        return window.pageYOffset !== undefined ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+    }
     window.onscroll = function () {
-        if (!flag || (getScrollTop() < getDocumentHeight() - window.innerHeight - 100)) return; // 스크롤이 페이지 하단에 도달할 경우 새 페이지 로드
+        if (!flag || (getScrollTop() < getDocumentHeight() - window.innerHeight - 300)) return; // 스크롤이 페이지 하단에 도달할 경우 새 페이지 로드
         addPage(++page);
         uploadTimeFormat();
     }; /*]]>*/
