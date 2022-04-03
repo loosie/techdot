@@ -11,13 +11,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.techdot.techdot.infra.AbstractContainerBaseTest;
 import com.techdot.techdot.modules.member.dto.JoinFormDto;
 import com.techdot.techdot.infra.MockMvcTest;
 import com.techdot.techdot.modules.member.auth.WithCurrentUser;
 import com.techdot.techdot.modules.member.MemberService;
 
 @MockMvcTest
-class MainControllerTest {
+class MainControllerTest extends AbstractContainerBaseTest {
 
 	@Autowired private MockMvc mockMvc;
 	@Autowired private MemberService memberService;

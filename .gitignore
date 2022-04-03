@@ -44,7 +44,7 @@ src/main/resources/static/package-lock.json
 memory:
 
 ## config ##
-application-dev.yml
+src/main/resources/application-dev.yml
 application-mail.yml
 application-real1.yml
 application-real2.yml

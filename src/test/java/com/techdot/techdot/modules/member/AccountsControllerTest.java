@@ -12,11 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.techdot.techdot.infra.AbstractContainerBaseTest;
 import com.techdot.techdot.infra.MockMvcTest;
 import com.techdot.techdot.modules.member.auth.WithCurrentUser;
 
 @MockMvcTest
-class AccountsControllerTest{
+class AccountsControllerTest extends AbstractContainerBaseTest{
 
 	@Autowired private MockMvc mockMvc;
 	@Autowired private MemberRepository memberRepository;

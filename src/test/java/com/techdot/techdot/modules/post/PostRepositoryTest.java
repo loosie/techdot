@@ -8,18 +8,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.techdot.techdot.infra.AbstractContainerBaseTest;
+import com.techdot.techdot.infra.TCDataJpaTest;
 import com.techdot.techdot.modules.category.Category;
 import com.techdot.techdot.modules.category.CategoryName;
 import com.techdot.techdot.modules.category.CategoryRepository;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.member.MemberRepository;
 
-@DataJpaTest
-class PostRepositoryTest {
+@TCDataJpaTest
+class PostRepositoryTest extends AbstractContainerBaseTest {
 
 	@Autowired
 	private PostRepository postRepository;

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.techdot.techdot.infra.AbstractContainerBaseTest;
 import com.techdot.techdot.infra.MockMvcTest;
 import com.techdot.techdot.modules.category.Category;
 import com.techdot.techdot.modules.category.CategoryName;
@@ -24,7 +25,7 @@ import com.techdot.techdot.modules.member.MemberRepository;
 import com.techdot.techdot.modules.member.auth.WithCurrentUser;
 
 @MockMvcTest
-class PostControllerTest {
+class PostControllerTest extends AbstractContainerBaseTest {
 
 	@Autowired private MockMvc mockMvc;
 	@Autowired private PostRepository postRepository;

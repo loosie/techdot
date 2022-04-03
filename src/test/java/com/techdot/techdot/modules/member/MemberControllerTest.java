@@ -18,13 +18,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.techdot.techdot.infra.AbstractContainerBaseTest;
 import com.techdot.techdot.infra.MockMvcTest;
 import com.techdot.techdot.infra.mail.EmailMessageDto;
 import com.techdot.techdot.infra.mail.EmailService;
 import com.techdot.techdot.modules.member.auth.WithCurrentUser;
 
 @MockMvcTest
-class MemberControllerTest {
+class MemberControllerTest extends AbstractContainerBaseTest {
 
 	@Autowired private MockMvc mockMvc;
 	@Autowired private MemberRepository memberRepository;
