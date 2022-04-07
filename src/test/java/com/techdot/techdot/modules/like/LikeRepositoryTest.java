@@ -49,7 +49,7 @@ class LikeRepositoryTest extends AbstractContainerBaseTest {
 			.build();
 
 		category = Category.builder()
-			.name(CategoryName.CS)
+			.name("TODO")
 			.build();
 
 		post = Post.builder()

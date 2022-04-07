@@ -23,7 +23,7 @@ class CategoryRepositoryTest extends AbstractContainerBaseTest {
 		Arrays.stream(CategoryName.values()).forEach(categoryName -> {
 			try {
 				Category category = Category.builder()
-					.name(categoryName)
+					.name("TODO")
 					.build();
 				Category saveCategory = categoryRepository.save(category);
 				assertEquals(saveCategory.getName(), category.getName());

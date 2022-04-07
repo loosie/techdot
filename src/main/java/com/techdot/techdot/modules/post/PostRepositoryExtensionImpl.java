@@ -65,7 +65,7 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 				post.id, post.title, post.content, post.link, post.writer, post.type,
 				post.thumbnailImage, post.uploadDateTime, category.name, getBooleanExpressionIsMemberLike(memberId)))
 			.join(post.category, category)
-			.where(category.name.eq(categoryName));
+			.where(category.name.eq("TODO"));
 		addSorting(pageable.getSort(), query);
 		return getPagingResults(pageable, query);
 	}

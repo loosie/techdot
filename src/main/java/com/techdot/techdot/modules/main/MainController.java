@@ -5,12 +5,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.techdot.techdot.modules.category.CategoryService;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.member.auth.CurrentUser;
+import com.techdot.techdot.modules.post.PostService;
+
+import lombok.RequiredArgsConstructor;
 
 @Controller
+@RequiredArgsConstructor
 public class MainController {
 
+	private final CategoryService categoryService;
 	/**
 	 * 메인 뷰
 	 * @param member
@@ -25,6 +31,7 @@ public class MainController {
 				return "redirect:/check-email";
 			}
 			model.addAttribute(member);
+			model.addAttribute("categoryList", categoryService.getAll());
 		}
 		return "index";
 	}

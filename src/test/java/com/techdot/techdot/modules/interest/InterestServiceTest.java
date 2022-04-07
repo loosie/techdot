@@ -44,7 +44,7 @@ class InterestServiceTest {
 			.build();
 
 		category = Category.builder()
-			.name(CategoryName.CS)
+			.name("TODO")
 			.build();
 	}
 
@@ -58,7 +58,7 @@ class InterestServiceTest {
 	void interestAdd() {
 		// given
 		given(memberRepository.findById(1L)).willReturn(Optional.of(member));
-		given(categoryRepository.findByName(CategoryName.CS)).willReturn(category);
+		given(categoryRepository.findByName("TODO")).willReturn(category);
 		given(interestRepository.findByMemberAndCategory(member, category)).willReturn(Optional.empty());
 
 		// when
@@ -77,7 +77,7 @@ class InterestServiceTest {
 		// given
 		Interest interest = Interest.builder().member(member).category(category).build();
 		given(memberRepository.findById(1L)).willReturn(Optional.of(member));
-		given(categoryRepository.findByName(CategoryName.CS)).willReturn(category);
+		given(categoryRepository.findByName("TODO")).willReturn(category);
 		given(interestRepository.findByMemberAndCategory(member, category)).willReturn(Optional.of(interest));
 
 		// when
@@ -94,7 +94,7 @@ class InterestServiceTest {
 	@Test
 	void getInterestCategories_byMemberId(){
 		List<InterestCategoryResponseDto> input = List.of(
-			new InterestCategoryResponseDto(CategoryName.CS), new InterestCategoryResponseDto(CategoryName.BACKEND));
+			new InterestCategoryResponseDto("TODO"), new InterestCategoryResponseDto("TODO"));
 		given(interestRepository.findAllCategoriesByMemberId(member.getId())).willReturn(input);
 		List<InterestCategoryResponseDto> result = interestService.getInterestCategoriesByMember(member.getId());
 

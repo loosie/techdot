@@ -34,7 +34,7 @@ class PostControllerTest extends AbstractContainerBaseTest {
 
 	@BeforeEach
 	void setUp(){
-		categoryRepository.save(Category.builder().name(CategoryName.CS).build());
+		categoryRepository.save(Category.builder().name("TODO").build());
 	}
 
 	private final String TEST_EMAIL = "test@naver.com";
@@ -96,7 +96,7 @@ class PostControllerTest extends AbstractContainerBaseTest {
 	void updatePost_success() throws Exception {
 		// given
 		Member member = memberRepository.findByEmail(TEST_EMAIL).get();
-		Category category = categoryRepository.findByName(CategoryName.CS);
+		Category category = categoryRepository.findByName("TODO");
 		Post post = Post.builder()
 			.title("title")
 			.content("content")
@@ -136,7 +136,7 @@ class PostControllerTest extends AbstractContainerBaseTest {
 	void updatePost_fail_notAuth() throws Exception {
 		// given
 		Member member = memberRepository.findByEmail(TEST_EMAIL).get();
-		Category category = categoryRepository.findByName(CategoryName.CS);
+		Category category = categoryRepository.findByName("TODO");
 		Post post = Post.builder()
 			.title("title")
 			.content("content")

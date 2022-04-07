@@ -23,7 +23,7 @@ class InterestTest {
 			.build();
 
 		Category category = Category.builder()
-			.name(CategoryName.CS)
+			.name("TODO")
 			.build();
 
 		// when, then

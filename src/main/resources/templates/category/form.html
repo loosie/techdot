@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.com">
+<head th:replace ="fragments/header.html :: head"></head>
+
+<body class="bg-light">
+    <nav th:replace="fragments/navbar.html :: auth-nav"></nav>
+
+    <div th:fragment="post-form (type, requestUrl)" class="container py-5">
+        <h2 class="text-center py-5 px-3">카테고리 등록하기</h2>
+
+        <div class="row justify-content-center py-12">
+            <div class="col-sm-7">
+                <div th:replace="fragments/message.html :: message"></div>
+                <form class="needs-validation" th:action="@{/new-category}" th:object="${categoryForm}" method="post" novalidate>
+                    <div class="form-group mb-4">
+                        <label for="name">카테고리 이름</label>
+                        <input id="name" type="text" th:field="*{name}" class="form-control"
+                               placeholder="이름을 입력하세요" aria-describedby="titleHelp" required max="20">
+                        <small class="invalid-feedback">20자 이내로 카테고리 이름을 입력하세요.</small>
+                        <small class="form-text text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name Error</small>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-dark pull-right" type="submit" aria-describedby="submitHelp">
+                            저장</button>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

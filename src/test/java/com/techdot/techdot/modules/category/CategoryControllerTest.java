@@ -23,7 +23,7 @@ class CategoryControllerTest {
 
 	@BeforeEach
 	void setUp(){
-		categoryRepository.save(Category.builder().name(CategoryName.CS).build());
+		categoryRepository.save(Category.builder().name("TODO").build());
 	}
 
 	@DisplayName("카테고리 별로 뷰")

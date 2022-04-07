@@ -6,9 +6,9 @@ import lombok.Data;
 
 @Data
 public class InterestCategoryResponseDto {
-	private CategoryName categoryName;
+	private String categoryName;
 
-	public InterestCategoryResponseDto(CategoryName categoryName) {
+	public InterestCategoryResponseDto(String categoryName) {
 		this.categoryName = categoryName;
 	}
 }

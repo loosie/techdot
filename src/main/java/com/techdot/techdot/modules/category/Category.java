@@ -3,6 +3,7 @@ package com.techdot.techdot.modules.category;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -27,14 +28,16 @@ public class Category {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Enumerated(EnumType.STRING)
-	private CategoryName name; // CS, 알고리즘, 백엔드, 프론트엔드, 보안, DevOps, 자기개발
+	@Column(nullable = false, unique = true)
+	private String name;
+
 
 	@OneToMany(mappedBy = "category")
 	private List<Interest> interests = new ArrayList<>();
 
 	@Builder
-	public Category(CategoryName name) {
+	public Category(String name) {
 		this.name = name;
 	}
+
 }

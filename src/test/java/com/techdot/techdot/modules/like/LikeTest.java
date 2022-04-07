@@ -27,7 +27,7 @@ class LikeTest {
 			.build();
 
 		Category category = Category.builder()
-			.name(CategoryName.CS)
+			.name("TODO")
 			.build();
 
 		Post post = Post.builder()

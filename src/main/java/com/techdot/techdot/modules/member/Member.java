@@ -96,6 +96,12 @@ public class Member extends BaseEntity {
 		this.emailVerified = true;
 	}
 
+
+	// TODO: delete
+	public void addRoleADMIN(){
+		this.roles.add(Role.ROLE_ADMIN);
+	}
+
 	private void updateRoleToMember() {
 		this.roles.add(Role.ROLE_MEMBER);
 	}

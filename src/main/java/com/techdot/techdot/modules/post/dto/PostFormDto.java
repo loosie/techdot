@@ -42,7 +42,7 @@ public class PostFormDto {
 
 	private PostType type;
 
-	private CategoryName categoryName;
+	private String categoryName;
 
 	private String categoryName_readOnly;
 
@@ -55,7 +55,7 @@ public class PostFormDto {
 		this.link = post.getLink();
 		this.writer = post.getWriter();
 		this.type = post.getType();
-		this.categoryName_readOnly = post.getCategory().getName().getDisplayValue();
+		this.categoryName = post.getCategory().getName();
 		this.thumbnailImage = post.getThumbnailImage();
 		this.uploadDateTime = post.getUploadDateTime();
 	}
