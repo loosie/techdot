@@ -8,11 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
-	boolean existsByEmail(String email);
+	boolean existsByEmail(final String email);
 
-	boolean existsByNickname(String nickname);
+	boolean existsByNickname(final String nickname);
 
-	Optional<Member> findByEmail(String email);
+	Optional<Member> findByEmail(final String email);
 
-	Optional<Member> findByNickname(String nickname);
+	Optional<Member> findByNickname(final String nickname);
 }

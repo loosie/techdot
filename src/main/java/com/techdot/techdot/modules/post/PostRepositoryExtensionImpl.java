@@ -32,7 +32,8 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 	}
 
 	@Override
-	public List<PostQueryResponseDto> findAllDtoByKeyword(Long memberId, String keyword, Pageable pageable) {
+	public List<PostQueryResponseDto> findAllDtoByKeyword(final Long memberId, final String keyword,
+		final Pageable pageable) {
 		JPQLQuery<PostQueryResponseDto> query = from(post)
 			.select(Projections.constructor(PostQueryResponseDto.class,
 				post.id, post.title, post.content, post.link, post.writer, post.type,
@@ -46,7 +47,7 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 	}
 
 	@Override
-	public List<PostQueryResponseDto> findAllDto(Long memberId, Pageable pageable) {
+	public List<PostQueryResponseDto> findAllDto(final Long memberId, final Pageable pageable) {
 		JPQLQuery<PostQueryResponseDto> query = from(post)
 			.select(Projections.constructor(PostQueryResponseDto.class,
 				post.id, post.title, post.content, post.link, post.writer, post.type,
@@ -57,7 +58,8 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 	}
 
 	@Override
-	public List<PostQueryResponseDto> findAllDtoByCategoryName(Long memberId, CategoryName categoryName, Pageable pageable) {
+	public List<PostQueryResponseDto> findAllDtoByCategoryName(final Long memberId, final CategoryName categoryName,
+		final Pageable pageable) {
 		JPQLQuery<PostQueryResponseDto> query = from(post)
 			.select(Projections.constructor(PostQueryResponseDto.class,
 				post.id, post.title, post.content, post.link, post.writer, post.type,
@@ -69,7 +71,7 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 	}
 
 	@Override
-	public List<PostQueryResponseDto> findAllDtoByLikesMemberId(Long memberId, Pageable pageable) {
+	public List<PostQueryResponseDto> findAllDtoByLikesMemberId(final Long memberId, final Pageable pageable) {
 		JPQLQuery<PostQueryResponseDto> query = from(post)
 			.select(Projections.constructor(PostQueryResponseDto.class,
 				post.id, post.title, post.content, post.link, post.writer, post.type,
@@ -82,7 +84,7 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 	}
 
 	@Override
-	public List<PostQueryResponseDto> findAllDtoByInterestsMemberId(Long memberId, Pageable pageable){
+	public List<PostQueryResponseDto> findAllDtoByInterestsMemberId(final Long memberId, final Pageable pageable) {
 		JPQLQuery<PostQueryResponseDto> query = from(post)
 			.select(Projections.constructor(PostQueryResponseDto.class,
 				post.id, post.title, post.content, post.link, post.writer, post.type,
@@ -94,14 +96,15 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 		return getPagingResults(pageable, query);
 	}
 
-	private List<PostQueryResponseDto> getPagingResults(Pageable pageable, JPQLQuery<PostQueryResponseDto> query) {
+	private List<PostQueryResponseDto> getPagingResults(final Pageable pageable,
+		final JPQLQuery<PostQueryResponseDto> query) {
 		return query.offset((pageable.getPageSize() * (pageable.getPageNumber() - 1)))
 			.limit(pageable.getPageSize())
 			.fetch();
 
 	}
 
-	private void addSorting(Sort sort, JPQLQuery<PostQueryResponseDto> query){
+	private void addSorting(final Sort sort, final JPQLQuery<PostQueryResponseDto> query) {
 		if (sort.toString().contains("uploadDateTime")) {
 			query.orderBy(post.uploadDateTime.desc());
 		} else {
@@ -109,7 +112,7 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 		}
 	}
 
-	private BooleanExpression getBooleanExpressionIsMemberLike(Long memberId) {
+	private BooleanExpression getBooleanExpressionIsMemberLike(final Long memberId) {
 		BooleanExpression isMemberLike = Expressions.FALSE;
 		if (memberId != -1L) {
 			isMemberLike = from(like).where(like.member.id.eq(memberId).and(like.post.id.eq(post.id)))

@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.techdot.techdot.modules.member.auth.CurrentUser;
 import com.techdot.techdot.modules.member.Member;
+import com.techdot.techdot.modules.member.auth.CurrentUser;
 import com.techdot.techdot.modules.post.dto.PostFormDto;
 import com.techdot.techdot.modules.post.dto.PostQueryResponseDto;
 import com.techdot.techdot.modules.post.validator.PostFormValidator;
@@ -41,19 +41,35 @@ public class PostController {
 		webDataBinder.addValidators(postFormValidator);
 	}
 
+	/**
+	 * (ADMIN) 게시글 업로드 뷰
+	 * @param member
+	 * @param model
+	 * @return
+	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/new-post")
-	public String newPostView(@CurrentUser Member member, Model model) {
+	public String newPostView(@CurrentUser final Member member, Model model) {
 		model.addAttribute("member", member);
 		model.addAttribute("postForm", new PostFormDto());
 
 		return "post/form";
 	}
 
+	/**
+	 * (ADMIN) 게시글 업로드 요청
+	 * 쿼리 발생 횟수 : 4
+	 * validator url 중복 조회 쿼리 + manger 조회 쿼리 + category 조회 쿼리 + 게시글 insert 쿼리
+	 * @param postForm
+	 * @param errors
+	 * @param member
+	 * @param model
+	 * @return
+	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/new-post")
-	public String newPostForm(@Valid @ModelAttribute("postForm") PostFormDto postForm, Errors errors,
-		@CurrentUser Member member, Model model) {
+	public String newPostForm(@Valid @ModelAttribute("postForm") final PostFormDto postForm, Errors errors,
+		@CurrentUser final Member member, Model model) {
 		if (errors.hasErrors()) {
 			model.addAttribute(member);
 			return "post/form";
@@ -63,9 +79,16 @@ public class PostController {
 		return "redirect:/";
 	}
 
+	/**
+	 * (ADMIN) 게시글 업데이트 뷰
+	 * @param id
+	 * @param member
+	 * @param model
+	 * @return
+	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/post/{id}/edit")
-	public String updatePostView(@PathVariable Long id, @CurrentUser Member member, Model model) {
+	public String updatePostView(@PathVariable final Long id, @CurrentUser final Member member, Model model) {
 		Post post = postService.getPostById(id);
 		if (!post.isManager(member)) {
 			return "redirect:/";
@@ -76,10 +99,23 @@ public class PostController {
 		return "post/updateForm";
 	}
 
+	/**
+	 * (ADMIN) 게시글 업데이트 요청
+	 * 쿼리 발생 횟수 : 5
+	 * 게시글 조회 + 게시글 업데이트
+	 * 리다이렉션) 업데이트된 게시글 +  카테고리 조회(2) + 멤버 인가 조회
+	 * @param id
+	 * @param postForm
+	 * @param errors
+	 * @param member
+	 * @param model
+	 * @param redirectAttributes
+	 * @return
+	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/post/{id}/edit")
-	public String updatePostForm(@PathVariable Long id, @Valid @ModelAttribute("postForm") PostFormDto postForm,
-		Errors errors, @CurrentUser Member member, Model model, RedirectAttributes redirectAttributes) {
+	public String updatePostForm(@PathVariable Long id, @Valid @ModelAttribute("postForm") final PostFormDto postForm,
+		Errors errors, @CurrentUser final Member member, Model model, RedirectAttributes redirectAttributes) {
 		if (errors.hasErrors()) {
 			model.addAttribute(member);
 			return "post/updateForm";
@@ -90,14 +126,31 @@ public class PostController {
 		return "redirect:/post/" + id + "/edit";
 	}
 
+	/**
+	 * 카테고리별 게시글 조회 API
+	 * // 로그인된 멤버일 경우, 멤버가 좋아요 누른 게시글인지 내부 쿼리로 조회
+	 * 쿼리 발생 횟수 : 1 - PostQueryResponseDto 조회 쿼리
+	 * @param categoryName
+	 * @param pageable
+	 * @param member
+	 * @return
+	 */
 	@GetMapping("/posts/{categoryName}")
-	public ResponseEntity<List<PostQueryResponseDto>> getPostsByCategory_scrolling(@PathVariable String categoryName,
-		@PageableDefault(page = 0, size = 12, sort = "uploadDateTime", direction = Sort.Direction.DESC) Pageable pageable,
-		@CurrentUser Member member) {
+	public ResponseEntity<List<PostQueryResponseDto>> getPostsByCategory_scrolling(@PathVariable final String categoryName,
+		@PageableDefault(page = 0, size = 12, sort = "uploadDateTime", direction = Sort.Direction.DESC) final Pageable pageable,
+		@CurrentUser final Member member) {
 		return new ResponseEntity<>(
 			postService.getPostsByCategoryNameIfMemberWithMemberLikes(member, categoryName, pageable), HttpStatus.OK);
 	}
 
+
+	/**
+	 * 멤버가 좋아요 누른 게시글 조회 API
+	 * 쿼리 발생 횟수 : 1 - PostQueryResponseDto 조회 쿼리
+	 * @param pageable
+	 * @param member
+	 * @return
+	 */
 	@GetMapping("/posts/me/likes")
 	public ResponseEntity<List<PostQueryResponseDto>> getPostsByMemberLikes_scrolling(
 		@PageableDefault(page = 0, size = 12, sort = "uploadDateTime", direction = Sort.Direction.DESC) Pageable pageable,
@@ -105,6 +158,13 @@ public class PostController {
 		return new ResponseEntity<>(postService.getPostsByLikesMemberId(member.getId(), pageable), HttpStatus.OK);
 	}
 
+	/**
+	 * 멤버 관심 카테고리에 속한 게시글 조회 API
+	 * 쿼리 발생 횟수 : 1 - PostQueryResponseDto 조회 쿼리
+	 * @param pageable
+	 * @param member
+	 * @return
+	 */
 	@GetMapping("/posts/me/interests")
 	public ResponseEntity<List<PostQueryResponseDto>> getPostsByMemberInterests_scrolling(
 		@PageableDefault(page = 0, size = 12, sort = "uploadDateTime", direction = Sort.Direction.DESC) Pageable pageable,
@@ -112,6 +172,14 @@ public class PostController {
 		return new ResponseEntity<>(postService.getPostsByInterestsMemberId(member.getId(), pageable), HttpStatus.OK);
 	}
 
+	/**
+	 * keyword 검색 API
+	 * 쿼리 발생 횟수 : 1 - PostQueryResponseDto 조회 쿼리
+	 * @param keyword
+	 * @param member
+	 * @param pageable
+	 * @return
+	 */
 	@GetMapping("/search/{keyword}")
 	public ResponseEntity<List<PostQueryResponseDto>> searchPostsByKeyword_scrolling(
 		@PathVariable String keyword, @CurrentUser Member member,

@@ -35,14 +35,26 @@ public class MemberController {
 		webDataBinder.addValidators(joinFormValidator);
 	}
 
+	/**
+	 * 회원가입 뷰
+	 * @param model
+	 * @return
+	 */
 	@GetMapping("/join")
 	public String joinView(Model model) {
 		model.addAttribute("joinForm", new JoinFormDto());
 		return "member/join";
 	}
 
+	/**
+	 * 회원가입 요청
+	 * @param joinForm
+	 * @param errors
+	 * @param model
+	 * @return
+	 */
 	@PostMapping("/join")
-	public String joinForm(@Valid @ModelAttribute("joinForm") JoinFormDto joinForm,
+	public String joinForm(@Valid @ModelAttribute("joinForm") final JoinFormDto joinForm,
 		Errors errors, Model model) {
 		if (errors.hasErrors()) {
 			return "member/join";
@@ -52,8 +64,15 @@ public class MemberController {
 		return MEMBER_CHECK_EMAIL_VIEW_NAME;
 	}
 
+	/**
+	 * 이메일 인증 확인 링크
+	 * @param token
+	 * @param email
+	 * @param model
+	 * @return
+	 */
 	@GetMapping("/confirm-email")
-	public String emailConfirm(String token, String email, Model model) {
+	public String emailConfirm(final String token, final String email, Model model) {
 		String view = "member/confirm-email";
 		Member member = memberService.findByEmail(email, view);
 
@@ -67,8 +86,15 @@ public class MemberController {
 		return view;
 	}
 
+	/**
+	 * 이메일 인증 완료 뷰
+	 * @param member
+	 * @param email
+	 * @param model
+	 * @return
+	 */
 	@GetMapping("/check-email")
-	public String checkEmail(@CurrentUser Member member, String email, Model model) {
+	public String checkEmail(@CurrentUser final Member member, final String email, Model model) {
 		if (member.getEmailVerified()) {
 			return "redirect:/";
 		}
@@ -82,8 +108,14 @@ public class MemberController {
 		return MEMBER_CHECK_EMAIL_VIEW_NAME;
 	}
 
+	/**
+	 * 인증 메일 재전송 뷰
+	 * @param email
+	 * @param model
+	 * @return
+	 */
 	@GetMapping("/resend-confirm-email/{email}")
-	public String resendEmailConfirm(@PathVariable String email, Model model) {
+	public String resendEmailConfirm(@PathVariable final String email, Model model) {
 		Member member = memberService.findByEmail(email, EMAIL_LOGIN_VIEW_NAME);
 
 		if (!member.canSendConfirmEmail()) {
@@ -95,14 +127,16 @@ public class MemberController {
 		return MEMBER_CHECK_EMAIL_VIEW_NAME;
 	}
 
-	// 패스워드없이 로그인하기
+	/**
+	 * 패스워드없이 로그인하기
+	 */
 	@GetMapping("/email-login")
 	public String emailLoginForm() {
 		return EMAIL_LOGIN_VIEW_NAME;
 	}
 
 	@PostMapping("/email-login")
-	public String sendEmailLoginLink(String email, Model model, RedirectAttributes attributes) {
+	public String sendEmailLoginLink(final String email, Model model, RedirectAttributes attributes) {
 		Member member = memberService.findByEmail(email, EMAIL_LOGIN_VIEW_NAME);
 
 		if (!member.canSendConfirmEmail()) {
@@ -115,8 +149,15 @@ public class MemberController {
 		return "redirect:/email-login";
 	}
 
+	/**
+	 * 비밀번호없이 이메일로 로그인 하기
+	 * @param token
+	 * @param email
+	 * @param model
+	 * @return
+	 */
 	@GetMapping("/login-by-email")
-	public String loginByEmail(String token, String email, Model model) {
+	public String loginByEmail(final String token, final String email, Model model) {
 		Member member = memberService.findByEmail(email, EMAIL_LOGIN_VIEW_NAME);
 
 		if (!member.isValidToken(token)) {
@@ -124,8 +165,8 @@ public class MemberController {
 			return EMAIL_LOGIN_VIEW_NAME;
 		}
 
-		// 이메일 인증 처리 완료
 		if (!member.getEmailVerified()) {
+			// 이메일 인증 처리 완료
 			memberService.completeLogin(member);
 		} else{
 			memberService.login(member);
@@ -134,8 +175,14 @@ public class MemberController {
 		return "redirect:/accounts/change-password";
 	}
 
+	/**
+	 * 멤버가 좋아하는 게시글 뷰
+	 * @param member
+	 * @param model
+	 * @return
+	 */
 	@GetMapping("/me/likes")
-	public String MyLikesView(@CurrentUser Member member, Model model) {
+	public String MyLikesView(@CurrentUser final Member member, Model model) {
 		model.addAttribute(member);
 		return MEMBER_ME_LIKES_VIEW_NAME;
 	}

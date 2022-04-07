@@ -10,9 +10,9 @@ import com.techdot.techdot.modules.member.Member;
 
 @Transactional(readOnly = true)
 public interface PostRepository extends JpaRepository<Post, Long>, PostRepositoryExtension{
-	boolean existsByLink(String link);
+	boolean existsByLink(final String link);
 
-	Page<Post> findByManager(Member manager, Pageable pageable);
+	Page<Post> findByManager(final Member manager, final Pageable pageable);
 
 
 }

@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
 		} else {
 			log.info("visitor requested -  {}", req.getRequestURI());
 		}
-		log.error("bad request ", ex.getMessage());
+		log.error("bad request - {}", ex.getMessage());
 		req.setAttribute("message", "해당 요청이 올바르지 않습니다.");
 		return "error/404";
 	}

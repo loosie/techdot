@@ -14,6 +14,10 @@ import lombok.RequiredArgsConstructor;
 public class ProfileController {
 	private final Environment env;
 
+	/**
+	 * app profile 체크
+	 * @return
+	 */
 	@GetMapping("/app/profile")
 	public String profile() {
 		List<String> profiles = Arrays.asList(env.getActiveProfiles());

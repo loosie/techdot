@@ -34,7 +34,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-@EqualsAndHashCode(of ="id", callSuper = false)
+@EqualsAndHashCode(of = "id", callSuper = false)
 public class Post extends BaseEntity {
 
 	@Id
@@ -45,7 +45,8 @@ public class Post extends BaseEntity {
 	@Column(nullable = false)
 	private String title;
 
-	@Lob @Column(nullable = false)
+	@Lob
+	@Column(nullable = false)
 	private String content;
 
 	@Column(nullable = false, unique = true)
@@ -68,16 +69,16 @@ public class Post extends BaseEntity {
 	private Member manager;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="category_id")
+	@JoinColumn(name = "category_id")
 	private Category category;
 
 	@OneToMany(mappedBy = "post")
 	private List<Like> likes = new ArrayList<>();
 
-
 	@Builder
-	public Post(String title, String content, String writer, String link, String thumbnailImage, PostType type, Member manager, Category category,
-		LocalDateTime uploadDateTime) {
+	public Post(final String title, final String content, final String writer, final String link,
+		final String thumbnailImage, final PostType type, final Member manager, final Category category,
+		final LocalDateTime uploadDateTime) {
 		Assert.notNull(title, "post.title 값이 존재하지 않습니다.");
 		Assert.notNull(content, "post.content 값이 존재하지 않습니다.");
 		Assert.notNull(link, "post.link 값이 존재하지 않습니다.");
@@ -99,15 +100,15 @@ public class Post extends BaseEntity {
 		createDateTime();
 	}
 
-	private void setCategory(Category category) {
+	private void setCategory(final Category category) {
 		this.category = category;
 	}
 
-	private void setManager(Member manager) {
+	private void setManager(final Member manager) {
 		this.manager = manager;
 	}
 
-	public void update(PostFormDto postForm) {
+	public void update(final PostFormDto postForm) {
 		this.title = postForm.getTitle();
 		this.content = postForm.getContent();
 		this.type = postForm.getType();
@@ -118,7 +119,7 @@ public class Post extends BaseEntity {
 		updateDateTime();
 	}
 
-	public boolean isManager(Member member) {
+	public boolean isManager(final Member member) {
 		return manager.equals(member);
 	}
 }

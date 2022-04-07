@@ -18,14 +18,30 @@ public class LikeController {
 
 	private final LikeService likeService;
 
+	/**
+	 * 좋아요 추가 API
+	 * 쿼리 발생 횟수 : 3
+	 * 멤버 조회 + 게시글 조회 + 좋아요 등록
+	 * @param member
+	 * @param likeForm
+	 * @return
+	 */
 	@PostMapping("/like/add")
-	public ResponseEntity likeAdd(@CurrentUser Member member, @RequestBody LikeFormDto likeForm) {
+	public ResponseEntity likeAdd(@CurrentUser final Member member, @RequestBody final LikeFormDto likeForm) {
 		likeService.add(member.getId(), likeForm.getPostId());
 		return ResponseEntity.ok().build();
 	}
 
+	/**
+	 * 좋아요 삭제 API
+	 * 쿼리 발생 횟수 : 3
+	 * 멤버 조회 + 게시글 조회 + 좋아요 삭제 
+	 * @param member
+	 * @param likeForm
+	 * @return
+	 */
 	@PostMapping("/like/remove")
-	public ResponseEntity likeRemove(@CurrentUser Member member, @RequestBody LikeFormDto likeForm) {
+	public ResponseEntity likeRemove(@CurrentUser final Member member, @RequestBody final LikeFormDto likeForm) {
 		likeService.remove(member.getId(), likeForm.getPostId());
 		return ResponseEntity.ok().build();
 	}

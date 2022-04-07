@@ -23,7 +23,12 @@ public class InterestService {
 	private final CategoryRepository categoryRepository;
 	private final InterestRepository interestRepository;
 
-	public void add(Long memberId, String categoryName) {
+	/**
+	 * 멤버 관심 카테고리 등록하기
+	 * @param memberId
+	 * @param categoryName
+	 */
+	public void add(final Long memberId, final String categoryName) {
 		// 엔티티 조회
 		Member findMember = memberRepository.findById(memberId).get(); // 이미 인증된 객체
 		Category findCategory = categoryRepository.findByName(CategoryName.valueOf(categoryName));
@@ -41,7 +46,12 @@ public class InterestService {
 		interestRepository.save(interest);
 	}
 
-	public void remove(Long memberId, String categoryName) {
+	/**
+	 * 멤버 관심 카테고리 제거하기
+	 * @param memberId
+	 * @param categoryName
+	 */
+	public void remove(final Long memberId, final String categoryName) {
 		// 엔티티 조회
 		Member findMember = memberRepository.findById(memberId).get(); // 이미 인증된 객체
 		Category findCategory = categoryRepository.findByName(CategoryName.valueOf(categoryName));
@@ -54,7 +64,7 @@ public class InterestService {
 		interestRepository.delete(interest.get());
 	}
 
-	public List<InterestCategoryResponseDto>  getInterestCategoriesByMember(Long memberId) {
+	public List<InterestCategoryResponseDto>  getInterestCategoriesByMember(final Long memberId) {
 		List<InterestCategoryResponseDto> allCategories = interestRepository.findAllCategoriesByMemberId(
 			memberId);
 		return allCategories;

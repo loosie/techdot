@@ -19,7 +19,12 @@ public class LikeService {
 	private final PostRepository postRepository;
 	private final LikeRepository likeRepository;
 
-	public void add(Long memberId, Long postId) {
+	/**
+	 * 좋아요 추가하기
+	 * @param memberId
+	 * @param postId
+	 */
+	public void add(final Long memberId, final Long postId) {
 		// 엔티티 조회
 		Member findMember = memberRepository.findById(memberId).get(); // 이미 인증된 객체
 		Post findPost = postRepository.findById(postId).orElseThrow(NullPointerException::new);
@@ -37,6 +42,12 @@ public class LikeService {
 		likeRepository.save(like);
 	}
 
+	/**
+	 * 좋아요 삭제하기
+	 * 쿼리 발생 횟수: 1
+	 * @param memberId
+	 * @param postId
+	 */
 	public void remove(Long memberId, Long postId) {
 		// 엔티티 조회
 		Member findMember = memberRepository.findById(memberId).get(); // 이미 인증된 객체
