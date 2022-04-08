@@ -42,14 +42,9 @@ class LikeTest {
 
 		// when, then
 		assertThrows(IllegalArgumentException.class, () -> Like.builder()
-			.member(member)
-			.post(null)
-			.build());
-
+			.member(member).post(null).build());
 		assertThrows(IllegalArgumentException.class, () -> Like.builder()
-			.member(null)
-			.post(post)
-			.build());
+			.member(null).post(post).build());
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.techdot.techdot.modules.main;
 
+import static com.techdot.techdot.infra.Constant.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.techdot.techdot.infra.AbstractContainerBaseTest;
+import com.techdot.techdot.infra.Constant;
 import com.techdot.techdot.modules.member.dto.JoinFormDto;
 import com.techdot.techdot.infra.MockMvcTest;
 import com.techdot.techdot.modules.member.auth.WithCurrentUser;
@@ -67,7 +69,7 @@ class MainControllerTest extends AbstractContainerBaseTest {
 	}
 
 
-	@WithCurrentUser(value = "test1@naver.com", role="MEMBER")
+	@WithCurrentUser(value = TEST_EMAIL, role= MEMBER)
 	@DisplayName("관심 카테고리 뷰 - 이메일 인증 받지 않은 경우")
 	@Test
 	void mainMyInterestsView() throws Exception{

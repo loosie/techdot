@@ -30,11 +30,11 @@ public class CategoryFormValidator implements Validator {
 		}
 
 		if(categoryRepository.existsByTitle(categoryForm.getTitle())){
-			errors.rejectValue("title", "invalid.name", "이미 등록된 title 입니다.");
+			errors.rejectValue("title", "invalid.title", "이미 등록된 title 입니다.");
 		}
 
 		if(categoryRepository.existsByViewName(categoryForm.getViewName())){
-			errors.rejectValue("viewName", "invalid.name", "이미 등록된 viewName 입니다.");
+			errors.rejectValue("viewName", "invalid.viewName", "이미 등록된 viewName 입니다.");
 		}
 
 	}

@@ -1,5 +1,6 @@
 package com.techdot.techdot.modules.member;
 
+import static com.techdot.techdot.infra.Constant.*;
 import static com.techdot.techdot.modules.member.MemberController.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -174,7 +175,7 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 
 	}
 
-	@WithCurrentUser(value = TEST_EMAIL, role="MEMBER")
+	@WithCurrentUser(value = TEST_EMAIL, role= MEMBER)
 	@DisplayName("내가 좋아요한 게시글 뷰")
 	@Test
 	void profileForm() throws Exception {

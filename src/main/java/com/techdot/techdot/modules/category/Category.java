@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.springframework.util.Assert;
+
 import com.techdot.techdot.modules.interest.Interest;
 
 import lombok.Builder;
@@ -21,7 +23,8 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
-@Getter @EqualsAndHashCode(of ="id")
+@Getter
+@EqualsAndHashCode(of = "id")
 public class Category {
 
 	@Id
@@ -29,22 +32,25 @@ public class Category {
 	private Long id;
 
 	@Column(nullable = false, unique = true)
-	private String name;
+	private String viewName;
+
+	@Column(nullable = false, unique = true)
+	private String name; // nav display name
 
 	@Column(nullable = false, unique = true)
 	private String title;
-
-	@Column(nullable = false, unique = true)
-	private String viewName;
-
 
 	@OneToMany(mappedBy = "category")
 	private List<Interest> interests = new ArrayList<>();
 
 	@Builder
-	public Category(final String name, final String title, final String viewName) {
+	public Category(final String viewName, final String name, final String title) {
+		Assert.notNull(viewName, "category.viewName 값이 존재하지 않습니다.");
+		Assert.notNull(name, "category.name 값이 존재하지 않습니다.");
+		Assert.notNull(title, "category.title 값이 존재하지 않습니다.");
+
+		this.viewName = viewName;
 		this.name = name;
 		this.title = title;
-		this.viewName = viewName;
 	}
 }

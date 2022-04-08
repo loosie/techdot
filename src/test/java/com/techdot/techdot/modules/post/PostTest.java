@@ -2,24 +2,51 @@ package com.techdot.techdot.modules.post;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import com.techdot.techdot.modules.category.Category;
+import com.techdot.techdot.modules.member.Member;
+
 class PostTest {
 
-	@DisplayName("게시글 생성하기 - 입력값 오류 manager, category null")
+	@DisplayName("게시글 생성하기 - 입력값 null인 경우")
 	@Test
 	void post_create_fail_nullValue() {
+		Member member  = Member.builder()
+			.nickname("loosie")
+			.password("12345678")
+			.email("jong9712@naver.com")
+			.emailVerified(false)
+			.build();
+		Category category = Category.builder().viewName("java").title("JAVA").name("자바").build();
+		String content = "content.content...";
+		String title1 = "title1";
+		String link = "http://~~~.com";
+		String writer = "writer";
+		PostType blog = PostType.BLOG;
+		LocalDateTime now = LocalDateTime.now();
+
 		assertThrows(IllegalArgumentException.class, () -> Post.builder()
-			.title("title1") // member null
-			.content("content.content...")
-			.link("http://~~~.com")
-			.writer("naver")
-			.type(PostType.BLOG)
-			.build());
+			.manager(null).category(category).title(title1).content(content).link(link).writer(writer).type(blog).uploadDateTime(now).build());
+		assertThrows(IllegalArgumentException.class, () -> Post.builder()
+			.manager(member).category(null).title(title1).content(content).link(link).writer(writer).type(blog).uploadDateTime(now).build());
+		assertThrows(IllegalArgumentException.class, () -> Post.builder()
+			.manager(member).category(category).title(null).content(content).link(link).writer(writer).type(blog).uploadDateTime(now).build());
+		assertThrows(IllegalArgumentException.class, () -> Post.builder()
+			.manager(member).category(category).title(title1).content(null).link(link).writer(writer).type(blog).uploadDateTime(now).build());
+		assertThrows(IllegalArgumentException.class, () -> Post.builder()
+			.manager(member).category(category).title(title1).content(content).link(null).writer(writer).type(blog).uploadDateTime(now).build());
+		assertThrows(IllegalArgumentException.class, () -> Post.builder()
+			.manager(member).category(category).title(title1).content(content).link(link).writer(null).type(blog).uploadDateTime(now).build());
+		assertThrows(IllegalArgumentException.class, () -> Post.builder()
+			.manager(member).category(category).title(title1).content(content).link(link).writer(writer).type(null).uploadDateTime(now).build());
+		assertThrows(IllegalArgumentException.class, () -> Post.builder()
+			.manager(member).category(category).title(title1).content(content).link(link).writer(writer).type(null).uploadDateTime(null).build());
 	}
 
 	@DisplayName("게시글 링크 정규식 테스트")
