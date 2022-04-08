@@ -1,6 +1,7 @@
 package com.techdot.techdot.modules.category.dto;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -20,6 +21,7 @@ public class CategoryFormDto {
 
 	@NotBlank
 	@Length(max = 20)
+	@Pattern(regexp = "^[a-z,-]{1,20}$", message = "공백없이 영어 소문자와 - 만 20자 내외로 입력이 가능합니다.")
 	private String viewName;
 
 	public CategoryFormDto(String name, String title, String viewName) {

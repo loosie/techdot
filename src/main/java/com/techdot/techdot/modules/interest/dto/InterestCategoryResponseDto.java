@@ -1,7 +1,5 @@
 package com.techdot.techdot.modules.interest.dto;
 
-import com.techdot.techdot.modules.category.CategoryName;
-
 import lombok.Data;
 
 @Data

@@ -8,7 +8,6 @@ import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.techdot.techdot.modules.category.CategoryName;
 import com.techdot.techdot.modules.post.Post;
 import com.techdot.techdot.modules.post.PostType;
 

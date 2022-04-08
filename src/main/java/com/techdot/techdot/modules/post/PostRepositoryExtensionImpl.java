@@ -10,7 +10,6 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPQLQuery;
-import com.techdot.techdot.modules.category.CategoryName;
 import com.techdot.techdot.modules.category.QCategory;
 import com.techdot.techdot.modules.interest.QInterest;
 import com.techdot.techdot.modules.like.QLike;
@@ -41,7 +40,8 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 			.join(post.category, category)
 			.where(post.title.containsIgnoreCase(keyword)
 				.or(post.content.containsIgnoreCase(keyword))
-				.or(post.writer.containsIgnoreCase(keyword)));
+				.or(post.writer.containsIgnoreCase(keyword))
+				.or(category.name.containsIgnoreCase(keyword)));
 		addSorting(pageable.getSort(), query);
 		return getPagingResults(pageable, query);
 	}
@@ -58,14 +58,14 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 	}
 
 	@Override
-	public List<PostQueryResponseDto> findAllDtoByCategoryName(final Long memberId, final CategoryName categoryName,
+	public List<PostQueryResponseDto> findAllDtoByCategoryName(final Long memberId, final String categoryViewName,
 		final Pageable pageable) {
 		JPQLQuery<PostQueryResponseDto> query = from(post)
 			.select(Projections.constructor(PostQueryResponseDto.class,
 				post.id, post.title, post.content, post.link, post.writer, post.type,
 				post.thumbnailImage, post.uploadDateTime, category.name, getBooleanExpressionIsMemberLike(memberId)))
 			.join(post.category, category)
-			.where(category.name.eq("TODO"));
+			.where(category.viewName.eq(categoryViewName));
 		addSorting(pageable.getSort(), query);
 		return getPagingResults(pageable, query);
 	}

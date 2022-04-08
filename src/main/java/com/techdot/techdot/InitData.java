@@ -1,5 +1,7 @@
 package com.techdot.techdot;
 
+import java.time.LocalDateTime;
+
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Component;
 
 import com.techdot.techdot.modules.category.Category;
 import com.techdot.techdot.modules.member.Member;
+import com.techdot.techdot.modules.post.Post;
+import com.techdot.techdot.modules.post.PostType;
 
 import lombok.RequiredArgsConstructor;
 
@@ -65,62 +69,45 @@ public class InitData {
 				.build();
 			em.persist(category2);
 
+			Post shortPost = Post.builder()
+				.title("loosie 티스토리 블로그 미리보기 techDot 기술 큐레이션 서비스" + 0)
+				.type(PostType.VIDEO)
+				.link("http://loosie.tistory.com/" + 122)
+				.content("어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌")
+				.writer("loosie")
+				.manager(member)
+				.category(category1)
+				.uploadDateTime(LocalDateTime.now())
+				.build();
+			em.persist(shortPost);
 
-			// Category cs = Category.builder()
-			// 	.name(CategoryName.CS).build();
-			// em.persist(cs);
-			// Category backend = Category.builder()
-			// 	.name(CategoryName.Backend).build();
-			// em.persist(backend);
-			// Category frontend = Category.builder()
-			// 	.name(CategoryName.Frontend).build();
-			// em.persist(frontend);
-			// Category security = Category.builder()
-			// 	.name(CategoryName.Security).build();
-			// em.persist(security);
-			// Category DevOps = Category.builder()
-			// 	.name(CategoryName.DevOps).build();
-			// em.persist(DevOps);
-			// Category Motivation = Category.builder()
-			// 	.name(CategoryName.Motivation).build();
-			// em.persist(Motivation);
-			//
-			// Post shortPost = Post.builder()
-			// 	.title("loosie 티스토리 블로그 미리보기 techDot 기술 큐레이션 서비스" + 0)
-			// 	.type(PostType.VIDEO)
-			// 	.link("http://loosie.tistory.com/" + 122)
-			// 	.content("어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌")
-			// 	.writer("loosie")
-			// 	.manager(member)
-			// 	.category(cs)
-			// 	.build();
-			// em.persist(shortPost);
-			//
-			// for(int i=1; i<=30; i++) {
-			// 	Post post = Post.builder()
-			// 		.title("loosie 티스토리 블로그 미리보기 techDot 기술 큐레이션 서비스" + i)
-			// 		.type(PostType.BLOG)
-			// 		.link("http://loosie.tistory.com/" + 123+i)
-			// 		.content("어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌")
-			// 		.writer("loosie")
-			// 		.manager(member)
-			// 		.category(backend)
-			// 		.build();
-			// 	em.persist(post);
-			// }
-			//
-			// for(int i=31; i<=60; i++) {
-			// 	Post post = Post.builder()
-			// 		.title("loosie 티스토리 블로그 미리보기 techDot 기술 큐레이션 서비스" + i)
-			// 		.type(PostType.BLOG)
-			// 		.link("http://loosie.tistory.com/" + 123+i)
-			// 		.content("어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌")
-			// 		.writer("loosie")
-			// 		.manager(member)
-			// 		.category(frontend)
-			// 		.build();
-			// 	em.persist(post);
-			// }
+			for(int i=1; i<=30; i++) {
+				Post post = Post.builder()
+					.title("loosie 티스토리 블로그 미리보기 techDot 기술 큐레이션 서비스" + i)
+					.type(PostType.BLOG)
+					.link("http://loosie.tistory.com/" + 123+i)
+					.content("어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌")
+					.writer("loosie")
+					.manager(member)
+					.category(category1)
+					.uploadDateTime(LocalDateTime.now().minusDays(i))
+					.build();
+				em.persist(post);
+			}
+
+			for(int i=31; i<=60; i++) {
+				Post post = Post.builder()
+					.title("loosie 티스토리 블로그 미리보기 techDot 기술 큐레이션 서비스" + i)
+					.type(PostType.BLOG)
+					.link("http://loosie.tistory.com/" + 123+i)
+					.content("어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌어쩌저쩌")
+					.writer("loosie")
+					.manager(member)
+					.category(category2)
+					.uploadDateTime(LocalDateTime.now().minusDays(10-i))
+					.build();
+				em.persist(post);
+			}
 			//
 			// Post longPost = Post.builder()
 			// 	.title("loosie 티스토리 블로그 미리보기 techDot 기술 큐레이션 서비스" + 101)

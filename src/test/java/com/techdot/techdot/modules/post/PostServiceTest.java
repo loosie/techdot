@@ -14,7 +14,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
 
-import com.techdot.techdot.modules.category.CategoryName;
 import com.techdot.techdot.modules.category.CategoryRepository;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.post.dto.PostQueryResponseDto;
@@ -42,9 +41,9 @@ class PostServiceTest {
 		// given
 		List<PostQueryResponseDto> allPosts = List.of(
 			new PostQueryResponseDto(1L, "title", "content", "http://link.com", "writer", PostType.BLOG,
-				"", LocalDateTime.now(), CategoryName.CS, false)
+				"", LocalDateTime.now(), "TODO", false)
 		);
-		given(postRepository.findAllDtoByCategoryName(-1L, CategoryName.CS, PageRequest.of(1, 1)))
+		given(postRepository.findAllDtoByCategoryName(-1L, "TODO", PageRequest.of(1, 1)))
 			.willReturn(allPosts);
 
 		// when
@@ -71,9 +70,9 @@ class PostServiceTest {
 			.build();
 		List<PostQueryResponseDto> allPosts = List.of(
 			new PostQueryResponseDto(1L, "title", "content", "http://link.com", "writer", PostType.BLOG,
-				"", LocalDateTime.now(), CategoryName.CS, true)
+				"", LocalDateTime.now(), "TODO", true)
 		);
-		given(postRepository.findAllDtoByCategoryName(member.getId(), CategoryName.CS, PageRequest.of(1, 1)))
+		given(postRepository.findAllDtoByCategoryName(member.getId(), "TODO", PageRequest.of(1, 1)))
 			.willReturn(allPosts);
 
 		// when
@@ -93,7 +92,7 @@ class PostServiceTest {
 		// given
 		List<PostQueryResponseDto> allPosts = List.of(
 			new PostQueryResponseDto(1L, "title", "content", "http://link.com", "writer", PostType.BLOG,
-				"", LocalDateTime.now(), CategoryName.CS, true)
+				"", LocalDateTime.now(), "TODO", true)
 		);
 		given(postRepository.findAllDtoByLikesMemberId(1L, PageRequest.of(1, 1)))
 			.willReturn(allPosts);
@@ -114,7 +113,7 @@ class PostServiceTest {
 		// given
 		List<PostQueryResponseDto> allPosts = List.of(
 			new PostQueryResponseDto(1L, "title", "content", "http://link.com", "writer", PostType.BLOG,
-				"", LocalDateTime.now(), CategoryName.CS, true)
+				"", LocalDateTime.now(), "TODO", true)
 		);
 		given(postRepository.findAllDtoByInterestsMemberId(1L, PageRequest.of(1, 1)))
 			.willReturn(allPosts);
@@ -135,7 +134,7 @@ class PostServiceTest {
 		// given
 		List<PostQueryResponseDto> allPosts = List.of(
 			new PostQueryResponseDto(1L, "title", "content", "http://link.com", "writer", PostType.BLOG,
-				"", LocalDateTime.now(), CategoryName.CS, true)
+				"", LocalDateTime.now(), "TODO", true)
 		);
 		given(postRepository.findAllDtoByKeyword(-1L, "title", PageRequest.of(1, 1)))
 			.willReturn(allPosts);

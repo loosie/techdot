@@ -1,7 +1,5 @@
 package com.techdot.techdot.modules.category;
 
-import static com.techdot.techdot.modules.category.CategoryName.*;
-
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Pageable;
@@ -37,6 +35,10 @@ public class CategoryController {
 		webDataBinder.addValidators(categoryFormValidator);
 	}
 
+	// 쿼리 3
+	// viewName으로 카테고리 조회
+	// 전체 카테고리 조회 (nav)
+	// 카테고리별 게시글 조회
 	@GetMapping("/category/{viewName}")
 	public String categoriesView(@PathVariable final String viewName, @CurrentUser final Member member, Model model,
 		@PageableDefault(size = 10, page = 0, sort = "uploadDateTime", direction = Sort.Direction.DESC) Pageable pageable) {
