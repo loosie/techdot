@@ -70,6 +70,7 @@ public class MainController {
 			model.addAttribute(member);
 		}
 		model.addAttribute("keyword", keyword);
+		model.addAttribute("categoryList", categoryService.getAll());
 		return "search";
 	}
 

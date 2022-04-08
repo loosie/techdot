@@ -41,7 +41,9 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 			.where(post.title.containsIgnoreCase(keyword)
 				.or(post.content.containsIgnoreCase(keyword))
 				.or(post.writer.containsIgnoreCase(keyword))
-				.or(category.name.containsIgnoreCase(keyword)));
+				.or(category.name.containsIgnoreCase(keyword))
+				.or(category.title.containsIgnoreCase(keyword))
+				.or(category.viewName.containsIgnoreCase(keyword)));
 		addSorting(pageable.getSort(), query);
 		return getPagingResults(pageable, query);
 	}
