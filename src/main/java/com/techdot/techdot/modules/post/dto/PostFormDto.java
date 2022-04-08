@@ -43,8 +43,6 @@ public class PostFormDto {
 
 	private String categoryName;
 
-	private String categoryName_readOnly;
-
 	private String thumbnailImage;
 
 	public PostFormDto(Post post) {

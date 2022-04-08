@@ -34,7 +34,7 @@ public class PostService {
 	public void save(final PostFormDto postForm, final Long memberId) {
 		// 엔티티 조회
 		Member manager = memberRepository.findById(memberId).get(); // 이미 인증된 객체
-		Category category = categoryRepository.findByName(postForm.getCategoryName());
+		Category category = categoryRepository.getByViewName(postForm.getCategoryName());
 
 		// 게시글 생성
 		Post newPost = Post.builder()
@@ -59,9 +59,12 @@ public class PostService {
 	 * @param postId
 	 * @param postForm
 	 */
-	public void updatePost(final Long postId, final PostFormDto postForm) {
-		Post post = postRepository.findById(postId).orElseThrow(NullPointerException::new);
-		post.update(postForm);
+	public void update(final Long postId, final PostFormDto postForm) {
+		Post post = postRepository.getById(postId);
+		Category category = categoryRepository.getByViewName(postForm.getCategoryName());
+
+		post.update(postForm, category);
+
 		postRepository.save(post);
 	}
 
@@ -82,7 +85,7 @@ public class PostService {
 	 * @return
 	 */
 	public Page<Post> getByManager(final Member member, final Pageable pageable) {
-		return postRepository.findByManager(member, pageable);
+		return postRepository.getByManager(member, pageable);
 	}
 
 	/**

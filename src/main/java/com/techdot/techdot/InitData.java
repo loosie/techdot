@@ -104,7 +104,7 @@ public class InitData {
 					.writer("loosie")
 					.manager(member)
 					.category(category2)
-					.uploadDateTime(LocalDateTime.now().minusDays(10-i))
+					.uploadDateTime(LocalDateTime.now().minusDays(i-30))
 					.build();
 				em.persist(post);
 			}

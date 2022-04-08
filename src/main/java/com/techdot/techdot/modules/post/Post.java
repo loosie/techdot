@@ -108,7 +108,7 @@ public class Post extends BaseEntity {
 		this.manager = manager;
 	}
 
-	public void update(final PostFormDto postForm) {
+	public void update(final PostFormDto postForm, final Category category) {
 		this.title = postForm.getTitle();
 		this.content = postForm.getContent();
 		this.type = postForm.getType();
@@ -116,8 +116,14 @@ public class Post extends BaseEntity {
 		this.writer = postForm.getWriter();
 		this.thumbnailImage = postForm.getThumbnailImage();
 		this.uploadDateTime = postForm.getUploadDateTime();
+		updateCategory(category);
 		updateDateTime();
 	}
+
+	private void updateCategory(final Category category){
+		this.category = category;
+	}
+
 
 	public boolean isManager(final Member member) {
 		return manager.equals(member);

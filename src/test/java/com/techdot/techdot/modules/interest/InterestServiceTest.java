@@ -57,7 +57,7 @@ class InterestServiceTest {
 	void interestAdd() {
 		// given
 		given(memberRepository.findById(1L)).willReturn(Optional.of(member));
-		given(categoryRepository.findByName("TODO")).willReturn(category);
+		given(categoryRepository.getByName("TODO")).willReturn(category);
 		given(interestRepository.findByMemberAndCategory(member, category)).willReturn(Optional.empty());
 
 		// when
@@ -65,7 +65,7 @@ class InterestServiceTest {
 
 		// then
 		then(memberRepository).should(times(1)).findById(any());
-		then(categoryRepository).should(times(1)).findByName(any());
+		then(categoryRepository).should(times(1)).getByName(any());
 		then(interestRepository).should(times(1)).findByMemberAndCategory(any(), any());
 		then(interestRepository).should(times(1)).save(Interest.builder().member(member).category(category).build());
 	}
@@ -76,7 +76,7 @@ class InterestServiceTest {
 		// given
 		Interest interest = Interest.builder().member(member).category(category).build();
 		given(memberRepository.findById(1L)).willReturn(Optional.of(member));
-		given(categoryRepository.findByName("TODO")).willReturn(category);
+		given(categoryRepository.getByName("TODO")).willReturn(category);
 		given(interestRepository.findByMemberAndCategory(member, category)).willReturn(Optional.of(interest));
 
 		// when
@@ -84,7 +84,7 @@ class InterestServiceTest {
 
 		// then
 		then(memberRepository).should(times(1)).findById(any());
-		then(categoryRepository).should(times(1)).findByName(any());
+		then(categoryRepository).should(times(1)).getByName(any());
 		then(interestRepository).should(times(1)).findByMemberAndCategory(any(), any());
 		then(interestRepository).should(times(1)).delete(interest);
 	}

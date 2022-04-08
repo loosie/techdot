@@ -114,7 +114,7 @@ class PostRepositoryTest extends AbstractContainerBaseTest {
 		Post savePost = postRepository.save(post);
 
 		// then
-		Page<Post> byManager = postRepository.findByManager(member, Pageable.ofSize(1));
+		Page<Post> byManager = postRepository.getByManager(member, Pageable.ofSize(1));
 		assertEquals(byManager.getContent().get(0).getId(), savePost.getId());
 
 	}

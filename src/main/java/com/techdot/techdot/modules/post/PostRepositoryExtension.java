@@ -17,4 +17,5 @@ public interface PostRepositoryExtension {
 	List<PostQueryResponseDto> findAllDtoByLikesMemberId(final Long memberId, final Pageable pageable);
 
 	List<PostQueryResponseDto> findAllDtoByInterestsMemberId(final Long memberId, final Pageable pageable);
+
 }

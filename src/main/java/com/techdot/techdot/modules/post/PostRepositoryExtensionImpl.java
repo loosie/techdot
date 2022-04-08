@@ -13,6 +13,7 @@ import com.querydsl.jpa.JPQLQuery;
 import com.techdot.techdot.modules.category.QCategory;
 import com.techdot.techdot.modules.interest.QInterest;
 import com.techdot.techdot.modules.like.QLike;
+import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.post.dto.PostQueryResponseDto;
 
 public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport implements PostRepositoryExtension {

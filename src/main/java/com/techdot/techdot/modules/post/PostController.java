@@ -105,9 +105,9 @@ public class PostController {
 
 	/**
 	 * (ADMIN) 게시글 업데이트 요청
-	 * 쿼리 발생 횟수 : 5
-	 * 게시글 조회 + 게시글 업데이트
-	 * 리다이렉션) 업데이트된 게시글 +  카테고리 조회(2) + 멤버 인가 조회
+	 * 쿼리 발생 횟수 : 7
+	 * 카테고리 조회 + 게시글 조회 + 게시글 업데이트
+	 * 리다이렉션) 업데이트된 게시글 +  게시글 카테고리 조회 + 전체 카테고리 조회 + 멤버 인가 조회
 	 * @param id
 	 * @param postForm
 	 * @param errors
@@ -125,7 +125,7 @@ public class PostController {
 			return "post/updateForm";
 		}
 
-		postService.updatePost(id, postForm);
+		postService.update(id, postForm);
 		redirectAttributes.addFlashAttribute("message", "게시글이 정상적으로 수정되었습니다.");
 		return "redirect:/post/" + id + "/edit";
 	}

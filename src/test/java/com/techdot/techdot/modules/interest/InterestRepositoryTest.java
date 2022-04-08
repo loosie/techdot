@@ -48,7 +48,7 @@ class InterestRepositoryTest extends AbstractContainerBaseTest {
 	@DisplayName("관심 생성하기 - 성공")
 	@Test
 	void like_create_success(){
-		Category category = categoryRepository.findByName("TODO");
+		Category category = categoryRepository.getByName("TODO");
 		Interest interest = Interest.builder()
 			.member(member)
 			.category(category)
@@ -63,7 +63,7 @@ class InterestRepositoryTest extends AbstractContainerBaseTest {
 	@DisplayName("멤버와 카테고리로 관심 조회하기")
 	@Test
 	void interest_findByMemberAndCategory(){
-		Category category = categoryRepository.findByName("TODO");
+		Category category = categoryRepository.getByName("TODO");
 		Interest interest = Interest.builder()
 			.member(member)
 			.category(category)
