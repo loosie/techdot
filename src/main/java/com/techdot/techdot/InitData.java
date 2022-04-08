@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import com.techdot.techdot.modules.category.Category;
 import com.techdot.techdot.modules.member.Member;
 
 import lombok.RequiredArgsConstructor;
@@ -51,6 +52,14 @@ public class InitData {
 			member2.generateEmailCheckToken();
 			em.persist(member2);
 
+			// Category category1 = Category.builder()
+			// 	.name("백엔드")
+			// 	.build();
+			// em.persist(category1);
+			// Category category2 = Category.builder()
+			// 	.name("프론트엔드")
+			// 	.build();
+			// em.persist(category2);
 
 
 			// Category cs = Category.builder()

@@ -55,7 +55,7 @@ public class PostFormDto {
 		this.link = post.getLink();
 		this.writer = post.getWriter();
 		this.type = post.getType();
-		this.categoryName = post.getCategory().getName();
+		this.categoryName = post.getCategory().getViewName();
 		this.thumbnailImage = post.getThumbnailImage();
 		this.uploadDateTime = post.getUploadDateTime();
 	}

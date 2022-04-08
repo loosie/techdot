@@ -31,13 +31,20 @@ public class Category {
 	@Column(nullable = false, unique = true)
 	private String name;
 
+	@Column(nullable = false, unique = true)
+	private String title;
+
+	@Column(nullable = false, unique = true)
+	private String viewName;
+
 
 	@OneToMany(mappedBy = "category")
 	private List<Interest> interests = new ArrayList<>();
 
 	@Builder
-	public Category(String name) {
+	public Category(String name, String title, String viewName) {
 		this.name = name;
+		this.title = title;
+		this.viewName = viewName;
 	}
-
 }

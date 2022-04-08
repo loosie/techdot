@@ -21,6 +21,8 @@ public class CategoryService {
 	public void save(CategoryFormDto categoryForm) {
 		Category newCategory = Category.builder()
 			.name(categoryForm.getName())
+			.title(categoryForm.getTitle())
+			.viewName(categoryForm.getViewName())
 			.build();
 
 		categoryRepository.save(newCategory);

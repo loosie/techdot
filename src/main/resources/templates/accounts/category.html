@@ -27,8 +27,10 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col-2">#</th>
-                    <th scope="col-6">카테고리 이름</th>
+                    <th scope="col-1">#</th>
+                    <th scope="col-2">카테고리 이름</th>
+                    <th scope="col-2">카테고리 타이틀</th>
+                    <th scope="col-2">카테고리 view</th>
                     <th scope="col-1">수정</th>
                     <th scope="col-1">삭제</th>
                 </tr>
@@ -36,7 +38,10 @@
                 <tbody>
                 <tr th:each="category, index : ${categoryList}">
                     <th th:text="${index.index+1}" scope="row">#</th>
-                    <td th:text="${category.name}">title</td>
+                    <td th:text="${category.name}">name</td>
+                    <td th:text="${category.title}">title</td>
+                    <td th:text="${category.viewName}">viewName</td>
+
                     <td>
                         <a th:href="@{'/post/' + ${category.id} + '/edit'}" class="btn btn-light">수정</a>
                     </td>

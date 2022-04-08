@@ -14,7 +14,17 @@ public class CategoryFormDto {
 	@Length(max = 20)
 	private String name;
 
-	public CategoryFormDto(String name) {
+	@NotBlank
+	@Length(max = 20)
+	private String title;
+
+	@NotBlank
+	@Length(max = 20)
+	private String viewName;
+
+	public CategoryFormDto(String name, String title, String viewName) {
 		this.name = name;
+		this.title = title;
+		this.viewName = viewName;
 	}
 }

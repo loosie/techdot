@@ -31,8 +31,8 @@ public class MainController {
 				return "redirect:/check-email";
 			}
 			model.addAttribute(member);
-			model.addAttribute("categoryList", categoryService.getAll());
 		}
+		model.addAttribute("categoryList", categoryService.getAll());
 		return "index";
 	}
 
