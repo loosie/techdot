@@ -17,6 +17,7 @@ import com.techdot.techdot.modules.category.Category;
 import com.techdot.techdot.modules.category.CategoryRepository;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.member.MemberRepository;
+import com.techdot.techdot.modules.post.dto.MyUploadPostResponseDto;
 
 @TCDataJpaTest
 class PostRepositoryTest extends AbstractContainerBaseTest {
@@ -32,7 +33,7 @@ class PostRepositoryTest extends AbstractContainerBaseTest {
 	private Category category;
 
 	@BeforeEach
-	void setUp(){
+	void setUp() {
 		//given
 		member = Member.builder()
 			.nickname("loosie")
@@ -41,15 +42,12 @@ class PostRepositoryTest extends AbstractContainerBaseTest {
 			.emailVerified(false)
 			.build();
 
-		category = Category.builder()
-			.name("TODO")
-			.build();
+		category = Category.builder().name("자바").title("Java title").viewName("java").build();
 
 		// when
 		memberRepository.save(member);
 		categoryRepository.save(category);
 	}
-
 
 	@DisplayName("게시글 생성하기 - 성공")
 	@Test
@@ -98,7 +96,7 @@ class PostRepositoryTest extends AbstractContainerBaseTest {
 
 	@DisplayName("게시글 Manager정보로 조회하기")
 	@Test
-	void post_findByManager(){
+	void post_findByManager() {
 		Post post = Post.builder()
 			.title("title1")
 			.content("content.content...")
@@ -114,8 +112,11 @@ class PostRepositoryTest extends AbstractContainerBaseTest {
 		Post savePost = postRepository.save(post);
 
 		// then
-		Page<Post> byManager = postRepository.getByManager(member, Pageable.ofSize(1));
-		assertEquals(byManager.getContent().get(0).getId(), savePost.getId());
+		Page<MyUploadPostResponseDto> byManager = postRepository.getByManager(member, Pageable.ofSize(1));
+		MyUploadPostResponseDto result = byManager.getContent().get(0);
+		assertEquals(result.getId(), savePost.getId());
+		assertEquals(result.getTitle(), "title1");
+		assertEquals(result.getWriter(), "naver");
 
 	}
 

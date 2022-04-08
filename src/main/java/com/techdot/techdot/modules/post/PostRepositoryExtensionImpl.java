@@ -61,7 +61,7 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 	}
 
 	@Override
-	public List<PostQueryResponseDto> findAllDtoByCategoryName(final Long memberId, final String categoryViewName,
+	public List<PostQueryResponseDto> findAllDtoByCategoryViewName(final Long memberId, final String categoryViewName,
 		final Pageable pageable) {
 		JPQLQuery<PostQueryResponseDto> query = from(post)
 			.select(Projections.constructor(PostQueryResponseDto.class,

@@ -29,6 +29,7 @@ import com.techdot.techdot.modules.category.CategoryRepository;
 import com.techdot.techdot.modules.post.PostService;
 import com.techdot.techdot.modules.member.validator.PasswordFormValidator;
 import com.techdot.techdot.modules.member.validator.ProfileFormValidator;
+import com.techdot.techdot.modules.post.dto.MyUploadPostResponseDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -166,7 +167,7 @@ public class AccountsController {
 	@GetMapping(ACCOUNTS_MY_UPLOAD_VIEW_URL)
 	public String myUploadPostsView(@CurrentUser final Member member, Model model,
 		@PageableDefault(size = 10, page = 0, sort = "uploadDateTime", direction = Sort.Direction.DESC) final Pageable pageable) {
-		Page<Post> postPage = postService.getByManager(member, pageable);
+		Page<MyUploadPostResponseDto> postPage = postService.getByManager(member, pageable);
 
 		model.addAttribute(member);
 		model.addAttribute("postPage", postPage);

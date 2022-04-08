@@ -50,10 +50,7 @@ class PostRepositoryExtensionTest extends AbstractContainerBaseTest {
 			.email("jong9712@naver.com")
 			.emailVerified(true)
 			.build();
-
-		category = Category.builder()
-			.name("TODO")
-			.build();
+		category = Category.builder().name("자바").title("Java title").viewName("java").build();
 		post = Post.builder()
 			.title("title1")
 			.content("content.content...")
@@ -106,7 +103,8 @@ class PostRepositoryExtensionTest extends AbstractContainerBaseTest {
 		likeRepository.save(Like.builder().member(member).post(post).build());
 
 		// when
-		List<PostQueryResponseDto> result = postRepository.findAllDtoByLikesMemberId(member.getId(), PageRequest.of(1, 12));
+		List<PostQueryResponseDto> result = postRepository.findAllDtoByLikesMemberId(member.getId(),
+			PageRequest.of(1, 12));
 		PostQueryResponseDto post = result.get(0);
 
 		// then
@@ -123,12 +121,13 @@ class PostRepositoryExtensionTest extends AbstractContainerBaseTest {
 		interestRepository.save(Interest.builder().member(member).category(category).build());
 
 		// when
-		List<PostQueryResponseDto> result = postRepository.findAllDtoByInterestsMemberId(member.getId(), PageRequest.of(1, 12));
+		List<PostQueryResponseDto> result = postRepository.findAllDtoByInterestsMemberId(member.getId(),
+			PageRequest.of(1, 12));
 		PostQueryResponseDto post = result.get(0);
 
 		// then
 		assertTrue(result.size() > 0);
-		assertEquals(post.getCategoryName(), category.getName().toString());
+		assertEquals(post.getCategoryDisplayName(), category.getName());
 		assertEquals(post.getTitle(), "title1");
 		assertEquals(post.getType(), PostType.BLOG);
 	}
@@ -154,7 +153,8 @@ class PostRepositoryExtensionTest extends AbstractContainerBaseTest {
 		likeRepository.save(Like.builder().member(member).post(post).build());
 
 		// when
-		List<PostQueryResponseDto> result = postRepository.findAllDtoByKeyword(member.getId(), "title", PageRequest.of(1, 12));
+		List<PostQueryResponseDto> result = postRepository.findAllDtoByKeyword(member.getId(), "title",
+			PageRequest.of(1, 12));
 		PostQueryResponseDto post = result.get(0);
 
 		// then

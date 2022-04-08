@@ -38,7 +38,7 @@ class PostControllerTest extends AbstractContainerBaseTest {
 
 	@BeforeEach
 	void setUp() {
-		categoryRepository.save(Category.builder().name("TODO").build());
+		categoryRepository.save(Category.builder().name("자바").title("Java title").viewName("java").build());
 	}
 
 	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
@@ -62,7 +62,7 @@ class PostControllerTest extends AbstractContainerBaseTest {
 			.param("beforeLink", "http://google.com/")
 			.param("link", "http://google.com")
 			.param("writer", "google")
-			.param("categoryName", "CS")
+			.param("categoryName", "java")
 			.param("type", "BLOG")
 			.param("uploadDateTime", LocalDateTime.now().toString())
 			.with(csrf()))
@@ -81,7 +81,7 @@ class PostControllerTest extends AbstractContainerBaseTest {
 			.param("beforeLink", "http://google.com/")
 			.param("link", "//google.com")
 			.param("writer", "google")
-			.param("categoryName", "CS")
+			.param("categoryName", "java")
 			.param("type", "BLOG")
 			.param("uploadDateTime", LocalDateTime.now().toString())
 			.with(csrf()))
@@ -98,7 +98,7 @@ class PostControllerTest extends AbstractContainerBaseTest {
 	void updatePost_success() throws Exception {
 		// given
 		Member member = memberRepository.findByEmail(TEST_EMAIL).get();
-		Category category = categoryRepository.getByName("TODO");
+		Category category = categoryRepository.getByViewName("java");
 		Post post = Post.builder()
 			.title("title")
 			.content("content")
@@ -118,7 +118,7 @@ class PostControllerTest extends AbstractContainerBaseTest {
 			.param("beforeLink", "http://google.com/")
 			.param("link", "http://google.com/asdasd")
 			.param("writer", "google")
-			.param("categoryName", "CS")
+			.param("categoryName", "java")
 			.param("type", "BLOG")
 			.param("uploadDateTime", LocalDateTime.now().toString())
 			.with(csrf()))
@@ -138,7 +138,7 @@ class PostControllerTest extends AbstractContainerBaseTest {
 	void updatePost_fail_notAuth() throws Exception {
 		// given
 		Member member = memberRepository.findByEmail(TEST_EMAIL).get();
-		Category category = categoryRepository.getByName("TODO");
+		Category category = categoryRepository.getByViewName("java");
 		Post post = Post.builder()
 			.title("title")
 			.content("content")
@@ -158,7 +158,7 @@ class PostControllerTest extends AbstractContainerBaseTest {
 			.param("beforeLink", "http://google.com/")
 			.param("link", "oogle.com/asdasd")
 			.param("writer", "google")
-			.param("categoryName", "CS")
+			.param("categoryName", "java")
 			.param("type", "BLOG")
 			.param("uploadDateTime", LocalDateTime.now().toString())
 			.with(csrf()))

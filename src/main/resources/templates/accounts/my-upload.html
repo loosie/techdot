@@ -46,6 +46,7 @@
                     <th scope="col-1">id</th>
                     <th scope="col-4">카테고리</th>
                     <th scope="col-4">제목</th>
+                    <th scope="col-1">작성자</th>
                     <th scope="col-1">업로드 날짜</th>
                     <th scope="col-1">수정</th>
                     <th scope="col-1">삭제</th>
@@ -59,6 +60,7 @@
                     <td th:text="${post.id}">id</td>
                     <td th:text="${post.categoryName}">category</td>
                     <td th:text="${post.title}">title</td>
+                    <td th:text="${post.writer}">writer</td>
                     <td class="upload-time" th:text="${post.uploadDateTime}">uploadDateTime</td>
                     <td>
                         <a th:href="@{'/post/' + ${post.id} + '/edit'}" class="btn btn-light">수정</a>

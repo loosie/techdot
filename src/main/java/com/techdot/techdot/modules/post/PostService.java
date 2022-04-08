@@ -11,6 +11,7 @@ import com.techdot.techdot.modules.category.Category;
 import com.techdot.techdot.modules.category.CategoryRepository;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.member.MemberRepository;
+import com.techdot.techdot.modules.post.dto.MyUploadPostResponseDto;
 import com.techdot.techdot.modules.post.dto.PostFormDto;
 import com.techdot.techdot.modules.post.dto.PostQueryResponseDto;
 
@@ -84,7 +85,7 @@ public class PostService {
 	 * @param pageable
 	 * @return
 	 */
-	public Page<Post> getByManager(final Member member, final Pageable pageable) {
+	public Page<MyUploadPostResponseDto> getByManager(final Member member, final Pageable pageable) {
 		return postRepository.getByManager(member, pageable);
 	}
 
@@ -96,18 +97,18 @@ public class PostService {
 	 * @return
 	 */
 	public List<PostQueryResponseDto> getPostsByCategoryNameIfMemberWithMemberLikes(final Member member,
-		final String categoryName,
+		final String categoryViewName,
 		final Pageable pageable) {
 		Long memberId = -1L;
 		if (member != null) {
 			memberId = member.getId();
 		}
 
-		if (categoryName.equals("All")) {
+		if (categoryViewName.equals("All")) {
 			return postRepository.findAllDto(memberId, pageable);
 		}
 		// return postRepository.findAllDtoByCategoryName(memberId, CategoryName.valueOf(categoryName), pageable);
-		return postRepository.findAllDtoByCategoryName(memberId, categoryName, pageable);
+		return postRepository.findAllDtoByCategoryViewName(memberId, categoryViewName, pageable);
 	}
 
 	/**

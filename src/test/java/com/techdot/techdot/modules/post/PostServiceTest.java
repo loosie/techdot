@@ -41,17 +41,17 @@ class PostServiceTest {
 		// given
 		List<PostQueryResponseDto> allPosts = List.of(
 			new PostQueryResponseDto(1L, "title", "content", "http://link.com", "writer", PostType.BLOG,
-				"", LocalDateTime.now(), "TODO", false)
+				"", LocalDateTime.now(), "자바", false)
 		);
-		given(postRepository.findAllDtoByCategoryName(-1L, "TODO", PageRequest.of(1, 1)))
+		given(postRepository.findAllDtoByCategoryViewName(-1L, "java", PageRequest.of(1, 1)))
 			.willReturn(allPosts);
 
 		// when
-		List<PostQueryResponseDto> result = postService.getPostsByCategoryNameIfMemberWithMemberLikes(null, "CS",
+		List<PostQueryResponseDto> result = postService.getPostsByCategoryNameIfMemberWithMemberLikes(null, "java",
 			PageRequest.of(1, 1));
 
 		// then
-		then(postRepository).should(times(1)).findAllDtoByCategoryName(any(), any(), any());
+		then(postRepository).should(times(1)).findAllDtoByCategoryViewName(any(), any(), any());
 		assertEquals(result.get(0).getPostId(), 1L);
 		assertEquals(result.get(0).getContent(), "content");
 		assertFalse(result.get(0).getIsMemberLike());
@@ -70,17 +70,17 @@ class PostServiceTest {
 			.build();
 		List<PostQueryResponseDto> allPosts = List.of(
 			new PostQueryResponseDto(1L, "title", "content", "http://link.com", "writer", PostType.BLOG,
-				"", LocalDateTime.now(), "TODO", true)
+				"", LocalDateTime.now(), "자바", true)
 		);
-		given(postRepository.findAllDtoByCategoryName(member.getId(), "TODO", PageRequest.of(1, 1)))
+		given(postRepository.findAllDtoByCategoryViewName(member.getId(), "java", PageRequest.of(1, 1)))
 			.willReturn(allPosts);
 
 		// when
-		List<PostQueryResponseDto> result = postService.getPostsByCategoryNameIfMemberWithMemberLikes(member, "CS",
+		List<PostQueryResponseDto> result = postService.getPostsByCategoryNameIfMemberWithMemberLikes(member, "java",
 			PageRequest.of(1, 1));
 
 		// then
-		then(postRepository).should(times(1)).findAllDtoByCategoryName(any(), any(), any());
+		then(postRepository).should(times(1)).findAllDtoByCategoryViewName(any(), any(), any());
 		assertEquals(result.get(0).getPostId(), 1L);
 		assertEquals(result.get(0).getContent(), "content");
 		assertTrue(result.get(0).getIsMemberLike());
@@ -92,7 +92,7 @@ class PostServiceTest {
 		// given
 		List<PostQueryResponseDto> allPosts = List.of(
 			new PostQueryResponseDto(1L, "title", "content", "http://link.com", "writer", PostType.BLOG,
-				"", LocalDateTime.now(), "TODO", true)
+				"", LocalDateTime.now(), "자바", true)
 		);
 		given(postRepository.findAllDtoByLikesMemberId(1L, PageRequest.of(1, 1)))
 			.willReturn(allPosts);
@@ -113,7 +113,7 @@ class PostServiceTest {
 		// given
 		List<PostQueryResponseDto> allPosts = List.of(
 			new PostQueryResponseDto(1L, "title", "content", "http://link.com", "writer", PostType.BLOG,
-				"", LocalDateTime.now(), "TODO", true)
+				"", LocalDateTime.now(), "자바", true)
 		);
 		given(postRepository.findAllDtoByInterestsMemberId(1L, PageRequest.of(1, 1)))
 			.willReturn(allPosts);

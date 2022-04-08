@@ -134,17 +134,17 @@ public class PostController {
 	 * 카테고리별 게시글 조회 API
 	 * // 로그인된 멤버일 경우, 멤버가 좋아요 누른 게시글인지 내부 쿼리로 조회
 	 * 쿼리 발생 횟수 : 1 - PostQueryResponseDto 조회 쿼리
-	 * @param categoryName
+	 * @param categoryViewName
 	 * @param pageable
 	 * @param member
 	 * @return
 	 */
-	@GetMapping("/posts/{categoryName}")
-	public ResponseEntity<List<PostQueryResponseDto>> getPostsByCategory_scrolling(@PathVariable final String categoryName,
+	@GetMapping("/posts/{categoryViewName}")
+	public ResponseEntity<List<PostQueryResponseDto>> getPostsByCategory_scrolling(@PathVariable final String categoryViewName,
 		@PageableDefault(page = 0, size = 12, sort = "uploadDateTime", direction = Sort.Direction.DESC) final Pageable pageable,
 		@CurrentUser final Member member) {
 		return new ResponseEntity<>(
-			postService.getPostsByCategoryNameIfMemberWithMemberLikes(member, categoryName, pageable), HttpStatus.OK);
+			postService.getPostsByCategoryNameIfMemberWithMemberLikes(member, categoryViewName, pageable), HttpStatus.OK);
 	}
 
 
