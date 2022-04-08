@@ -37,15 +37,18 @@ public class CategoryController {
 		webDataBinder.addValidators(categoryFormValidator);
 	}
 
-	@GetMapping("/category/{categoryName}")
-	public String categoriesView(@PathVariable String categoryName, @CurrentUser Member member, Model model,
+	@GetMapping("/category/{viewName}")
+	public String categoriesView(@PathVariable final String viewName, @CurrentUser final Member member, Model model,
 		@PageableDefault(size = 10, page = 0, sort = "uploadDateTime", direction = Sort.Direction.DESC) Pageable pageable) {
 		if (member != null) {
 			model.addAttribute(member);
 		}
+
+		Category category = categoryService.getByViewName(viewName);
+		model.addAttribute("category", category);
 		model.addAttribute("sortProperty",
 			pageable.getSort().toString().contains("uploadDateTime") ? "uploadDateTime" : "createdDateTime");
-		return getMainViewName(categoryName);
+		return "main/" + viewName;
 	}
 
 	/**
@@ -73,7 +76,8 @@ public class CategoryController {
 	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/new-category")
-	public String newCategoryForm(@Valid @ModelAttribute("categoryForm") final CategoryFormDto categoryForm, Errors errors,
+	public String newCategoryForm(@Valid @ModelAttribute("categoryForm") final CategoryFormDto categoryForm,
+		Errors errors,
 		@CurrentUser final Member member, Model model) {
 		if (errors.hasErrors()) {
 			model.addAttribute(member);

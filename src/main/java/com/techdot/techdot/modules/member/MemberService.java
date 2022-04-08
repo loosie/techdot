@@ -164,7 +164,7 @@ public class MemberService {
 	 * @param redirectView
 	 * @return
 	 */
-	public Member findByEmail(final String email, final String redirectView) {
+	public Member getByEmail(final String email, final String redirectView) {
 		Optional<Member> opMember = memberRepository.findByEmail(email);
 		if (opMember.isEmpty()) {
 			throw new UserNotExistedException(email + "은 유효한 이메일이 아닙니다.", redirectView);

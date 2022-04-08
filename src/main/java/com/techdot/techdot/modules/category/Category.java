@@ -42,7 +42,7 @@ public class Category {
 	private List<Interest> interests = new ArrayList<>();
 
 	@Builder
-	public Category(String name, String title, String viewName) {
+	public Category(final String name, final String title, final String viewName) {
 		this.name = name;
 		this.title = title;
 		this.viewName = viewName;

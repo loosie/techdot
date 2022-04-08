@@ -14,13 +14,13 @@
 
     <a th:each="category : ${categoryList}" class="list-group-item list-group-item-action main-right-nav-link" href="#"
        th:text="${category.name}"
-       th:classappend="${categoryMenu == category.name}? 'active active-box'" th:href="@{'/category/' + ${category.name}}">
+       th:classappend="${categoryMenu == category.name}? 'active active-box'" th:href="@{'/category/' + ${category.viewName}}">
     </a>
 
-    <a th:each="category : ${T(com.techdot.techdot.modules.category.CategoryName).values()}" class="list-group-item list-group-item-action main-right-nav-link" href="#"
-       th:text="${category.getDisplayValue()}"
-       th:classappend="${categoryMenu == category.name}? 'active active-box'" th:href="@{'/category/' + ${category.getViewName()}}">
-    </a>
+<!--    <a th:each="category : ${T(com.techdot.techdot.modules.category.CategoryName).values()}" class="list-group-item list-group-item-action main-right-nav-link" href="#"-->
+<!--       th:text="${category.getDisplayValue()}"-->
+<!--       th:classappend="${categoryMenu == category.name}? 'active active-box'" th:href="@{'/category/' + ${category.getViewName()}}">-->
+<!--    </a>-->
 
 </div>
 </html>

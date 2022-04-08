@@ -74,7 +74,7 @@ public class MemberController {
 	@GetMapping("/confirm-email")
 	public String emailConfirm(final String token, final String email, Model model) {
 		String view = "member/confirm-email";
-		Member member = memberService.findByEmail(email, view);
+		Member member = memberService.getByEmail(email, view);
 
 		if (!member.isValidToken(token)) {
 			model.addAttribute("message", "토큰 정보가 정확하지 않습니다.");
@@ -116,7 +116,7 @@ public class MemberController {
 	 */
 	@GetMapping("/resend-confirm-email/{email}")
 	public String resendEmailConfirm(@PathVariable final String email, Model model) {
-		Member member = memberService.findByEmail(email, EMAIL_LOGIN_VIEW_NAME);
+		Member member = memberService.getByEmail(email, EMAIL_LOGIN_VIEW_NAME);
 
 		if (!member.canSendConfirmEmail()) {
 			model.addAttribute("error", "잠시 후에 다시 시도해주세요.");
@@ -137,7 +137,7 @@ public class MemberController {
 
 	@PostMapping("/email-login")
 	public String sendEmailLoginLink(final String email, Model model, RedirectAttributes attributes) {
-		Member member = memberService.findByEmail(email, EMAIL_LOGIN_VIEW_NAME);
+		Member member = memberService.getByEmail(email, EMAIL_LOGIN_VIEW_NAME);
 
 		if (!member.canSendConfirmEmail()) {
 			model.addAttribute("error", "잠시 후에 다시 시도해주세요.");
@@ -158,7 +158,7 @@ public class MemberController {
 	 */
 	@GetMapping("/login-by-email")
 	public String loginByEmail(final String token, final String email, Model model) {
-		Member member = memberService.findByEmail(email, EMAIL_LOGIN_VIEW_NAME);
+		Member member = memberService.getByEmail(email, EMAIL_LOGIN_VIEW_NAME);
 
 		if (!member.isValidToken(token)) {
 			model.addAttribute("error", "토큰이 유효하지 않습니다.");
