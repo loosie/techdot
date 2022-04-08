@@ -52,14 +52,18 @@ public class InitData {
 			member2.generateEmailCheckToken();
 			em.persist(member2);
 
-			// Category category1 = Category.builder()
-			// 	.name("백엔드")
-			// 	.build();
-			// em.persist(category1);
-			// Category category2 = Category.builder()
-			// 	.name("프론트엔드")
-			// 	.build();
-			// em.persist(category2);
+			Category category1 = Category.builder()
+				.name("백엔드")
+				.title("백엔드입니다")
+				.viewName("backend")
+				.build();
+			em.persist(category1);
+			Category category2 = Category.builder()
+				.name("자바")
+				.title("JAVA입니다")
+				.viewName("java")
+				.build();
+			em.persist(category2);
 
 
 			// Category cs = Category.builder()

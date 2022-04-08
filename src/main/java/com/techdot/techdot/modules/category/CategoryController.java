@@ -46,9 +46,10 @@ public class CategoryController {
 
 		Category category = categoryService.getByViewName(viewName);
 		model.addAttribute("category", category);
+		model.addAttribute("categoryList", categoryService.getAll());
 		model.addAttribute("sortProperty",
 			pageable.getSort().toString().contains("uploadDateTime") ? "uploadDateTime" : "createdDateTime");
-		return "main/" + viewName;
+		return "main/category-view";
 	}
 
 	/**
