@@ -30,7 +30,7 @@ public class PostFormValidator implements Validator {
 		}
 
 		if(postRepository.existsByLink(postForm.getLink())){
-			errors.rejectValue("link", "duplicate.link", "이미 등록된 url입니다.");
+			errors.rejectValue("link", "invalid.link", "이미 등록된 url입니다.");
 		}
 	}
 }

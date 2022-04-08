@@ -11,15 +11,17 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.techdot.techdot.modules.category.dto.CategoryFormDto;
+import com.techdot.techdot.modules.category.validator.CategoryFormValidator;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.member.auth.CurrentUser;
-import com.techdot.techdot.modules.post.dto.PostFormDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,6 +30,12 @@ import lombok.RequiredArgsConstructor;
 public class CategoryController {
 
 	private final CategoryService categoryService;
+	private final CategoryFormValidator categoryFormValidator;
+
+	@InitBinder("categoryForm")
+	public void initBinder(WebDataBinder webDataBinder) {
+		webDataBinder.addValidators(categoryFormValidator);
+	}
 
 	@GetMapping("/category/{categoryName}")
 	public String categoriesView(@PathVariable String categoryName, @CurrentUser Member member, Model model,
@@ -69,7 +77,7 @@ public class CategoryController {
 		@CurrentUser final Member member, Model model) {
 		if (errors.hasErrors()) {
 			model.addAttribute(member);
-			return "post/form";
+			return "category/form";
 		}
 
 		categoryService.save(categoryForm);
