@@ -54,7 +54,8 @@ public class MainController {
 	@GetMapping("/me/interests")
 	public String myInterestsView(@CurrentUser final Member member, Model model) {
 		model.addAttribute(member);
-		return "main/my-interests";
+		model.addAttribute("categoryList", categoryService.getAll());
+		return "main/my-interests-view";
 	}
 
 	/**

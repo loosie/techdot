@@ -29,8 +29,8 @@
         body.style = 'overflow: hidden; height: 210px';
 
         const category = document.createElement('span');
-        category.className = 'badge badge-light '+ data.categoryName;
-        category.textContent = data.categoryName;
+        category.className = 'badge badge-light';
+        category.textContent = data.categoryDisplayName;
         body.appendChild(category)
 
         const link1 = document.createElement('a');
@@ -282,7 +282,6 @@
             }
             customLikeBox.children[1].appendChild(like);
         }).fail(function (data) {
-            console.log(data.status);
             if(data.status == 405){
                 window.location.href = "/check-email";
                 return;

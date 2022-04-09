@@ -35,12 +35,19 @@ public class CategoryController {
 		webDataBinder.addValidators(categoryFormValidator);
 	}
 
-	// 쿼리 3
-	// viewName으로 카테고리 조회
-	// 전체 카테고리 조회 (nav)
-	// 카테고리별 게시글 조회
+
+	/**
+	 * 카테고리별 게시글 뷰
+	 * 쿼리 발생 횟수 : 3
+	 * viewName으로 카테고리 조회 + 전체 카테고리 조회 (nav) + 카테고리별 게시글 조회
+	 * @param viewName
+	 * @param member
+	 * @param model
+	 * @param pageable
+	 * @return
+	 */
 	@GetMapping("/category/{viewName}")
-	public String categoriesView(@PathVariable final String viewName, @CurrentUser final Member member, Model model,
+	public String categoryView(@PathVariable final String viewName, @CurrentUser final Member member, Model model,
 		@PageableDefault(size = 10, page = 0, sort = "uploadDateTime", direction = Sort.Direction.DESC) Pageable pageable) {
 		if (member != null) {
 			model.addAttribute(member);
