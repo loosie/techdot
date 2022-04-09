@@ -43,11 +43,11 @@
                     <td th:text="${category.viewName}">viewName</td>
 
                     <td>
-                        <a th:href="@{'/post/' + ${category.id} + '/edit'}" class="btn btn-light">수정</a>
+                        <a th:href="@{'/category/' + ${category.id} + '/edit'}" class="btn btn-light">수정</a>
                     </td>
                     <td>
                         <!--                    TODO: 삭제 기능 추가 -->
-                        <a th:href="@{'/post/' + ${category.id} + '/remove'}" class="btn btn-danger">삭제</a>
+                        <a th:href="@{'/category/' + ${category.id} + '/remove'}" class="btn btn-danger">삭제</a>
                     </td>
                 </tr>
 

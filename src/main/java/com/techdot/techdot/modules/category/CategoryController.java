@@ -15,11 +15,14 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.techdot.techdot.modules.category.dto.CategoryFormDto;
 import com.techdot.techdot.modules.category.validator.CategoryFormValidator;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.member.auth.CurrentUser;
+import com.techdot.techdot.modules.post.Post;
+import com.techdot.techdot.modules.post.dto.PostFormDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -40,11 +43,6 @@ public class CategoryController {
 	 * 카테고리별 게시글 뷰
 	 * 쿼리 발생 횟수 : 3
 	 * viewName으로 카테고리 조회 + 전체 카테고리 조회 (nav) + 카테고리별 게시글 조회
-	 * @param viewName
-	 * @param member
-	 * @param model
-	 * @param pageable
-	 * @return
 	 */
 	@GetMapping("/category/{viewName}")
 	public String categoryView(@PathVariable final String viewName, @CurrentUser final Member member, Model model,
@@ -63,9 +61,6 @@ public class CategoryController {
 
 	/**
 	 * (ADMIN) 카테고리 생성 뷰
-	 * @param member
-	 * @param model
-	 * @return
 	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/new-category")
@@ -78,11 +73,6 @@ public class CategoryController {
 
 	/**
 	 * (ADMIN) 카테고리 생성 요청
-	 * @param categoryForm
-	 * @param errors
-	 * @param member
-	 * @param model
-	 * @return
 	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/new-category")
@@ -96,5 +86,36 @@ public class CategoryController {
 
 		categoryService.save(categoryForm);
 		return "redirect:/accounts/settings/category";
+	}
+
+	/**
+	 * (ADMIN) 카테고리 업데이트 뷰
+	 */
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping("/category/{id}/edit")
+	public String updatePostView(@PathVariable final Long id, @CurrentUser final Member member, Model model) {
+		Category category = categoryService.getById(id);
+
+		model.addAttribute(member);
+		model.addAttribute("categoryId", id);
+		model.addAttribute("categoryForm", new CategoryFormDto(category));
+		return "category/updateForm";
+	}
+
+	/**
+	 * (ADMIN) 카테고리 업데이트 요청
+	 */
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PostMapping("/category/{id}/edit")
+	public String updatePostForm(@PathVariable Long id, @Valid @ModelAttribute("categoryForm") final CategoryFormDto categoryForm,
+		Errors errors, @CurrentUser final Member member, Model model, RedirectAttributes redirectAttributes) {
+		if (errors.hasErrors()) {
+			model.addAttribute(member);
+			return "category/updateForm";
+		}
+
+		categoryService.update(id, categoryForm);
+		redirectAttributes.addFlashAttribute("message", "카테고리가 정상적으로 수정되었습니다.");
+		return "redirect:/category/" + id + "/edit";
 	}
 }

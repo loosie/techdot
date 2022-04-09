@@ -6,7 +6,6 @@ import org.springframework.validation.Validator;
 
 import com.techdot.techdot.modules.category.CategoryRepository;
 import com.techdot.techdot.modules.category.dto.CategoryFormDto;
-import com.techdot.techdot.modules.post.dto.PostFormDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,17 +24,43 @@ public class CategoryFormValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 		CategoryFormDto categoryForm = (CategoryFormDto)target;
 
-		if(categoryRepository.existsByName(categoryForm.getName())){
-			errors.rejectValue("name", "invalid.name", "이미 등록된 name 입니다.");
-		}
+		// 생성: 새로 생성하는 데이터 중복 검사
+		if(categoryForm.getCurTitle().isEmpty()){
+			validateTitle(errors, categoryForm);
+			validateName(errors, categoryForm);
+			validateViewName(errors, categoryForm);
 
-		if(categoryRepository.existsByTitle(categoryForm.getTitle())){
-			errors.rejectValue("title", "invalid.title", "이미 등록된 title 입니다.");
-		}
+		}else{
+			// 수정: 수정된 데이터 중복 검사
+			if(!categoryForm.getCurTitle().equals(categoryForm.getTitle())){
+				validateTitle(errors, categoryForm);
+			}
 
+			if(!categoryForm.getCurName().equals(categoryForm.getName())){
+				validateName(errors, categoryForm);
+			}
+
+			if(!categoryForm.getCurViewName().equals(categoryForm.getViewName())){
+				validateViewName(errors, categoryForm);
+			}
+		}
+	}
+
+	private void validateViewName(Errors errors, CategoryFormDto categoryForm) {
 		if(categoryRepository.existsByViewName(categoryForm.getViewName())){
 			errors.rejectValue("viewName", "invalid.viewName", "이미 등록된 viewName 입니다.");
 		}
+	}
 
+	private void validateName(Errors errors, CategoryFormDto categoryForm) {
+		if(categoryRepository.existsByName(categoryForm.getName())){
+			errors.rejectValue("name", "invalid.name", "이미 등록된 name 입니다.");
+		}
+	}
+
+	private void validateTitle(Errors errors, CategoryFormDto categoryForm) {
+		if(categoryRepository.existsByTitle(categoryForm.getTitle())){
+			errors.rejectValue("title", "invalid.title", "이미 등록된 title 입니다.");
+		}
 	}
 }

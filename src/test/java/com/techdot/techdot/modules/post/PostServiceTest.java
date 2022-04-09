@@ -134,7 +134,7 @@ class PostServiceTest {
 		// given
 		List<PostQueryResponseDto> allPosts = List.of(
 			new PostQueryResponseDto(1L, "title", "content", "http://link.com", "writer", PostType.BLOG,
-				"", LocalDateTime.now(), "TODO", true)
+				"", LocalDateTime.now(), "java", true)
 		);
 		given(postRepository.findAllDtoByKeyword(-1L, "title", PageRequest.of(1, 1)))
 			.willReturn(allPosts);

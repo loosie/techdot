@@ -14,19 +14,14 @@ import lombok.extern.slf4j.Slf4j;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-	@ExceptionHandler(NullPointerException.class)
-	public String handleNullPointerException(NullPointerException ex, HttpServletRequest req) {
-		log.error("null error - {}", ex);
-		req.setAttribute("message", "알 수 없는 오류가 발생하였습니다.");
-		return "error/500";
-	}
 
-	@ExceptionHandler(CategoryViewNameNotExistedException.class)
-	public String handleCategoryViewNameNotExistedException(CategoryViewNameNotExistedException ex, HttpServletRequest req) {
+	@ExceptionHandler(NullPointerException.class)
+	public String handleCategoryViewNameNotExistedException(NullPointerException ex, HttpServletRequest req) {
 		log.error("user not existed - {}", ex.getMessage());
 		req.setAttribute("message", ex.getMessage());
 		return "error/404";
 	}
+
 	@ExceptionHandler(UserNotExistedException.class)
 	public String handleUserNotExistedException(UserNotExistedException ex, HttpServletRequest req) {
 		log.error("user not existed - {}", ex.getMessage());
@@ -43,7 +38,7 @@ public class GlobalExceptionHandler {
 		}
 		log.error("bad request - {}", ex.getMessage());
 		req.setAttribute("message", "해당 요청이 올바르지 않습니다.");
-		return "error/404";
+		return "error/500";
 	}
 
 }

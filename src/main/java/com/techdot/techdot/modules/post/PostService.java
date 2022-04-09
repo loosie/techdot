@@ -26,11 +26,7 @@ public class PostService {
 	private final CategoryRepository categoryRepository;
 
 	/**
-	 * 게시글 업로드
-	 * 쿼리 발생 횟수 : 4
-	 *  validator url 중복 조회 쿼리 + manger 조회 쿼리 + category 조회 쿼리 + 게시글 insert 쿼리
-	 * @param postForm
-	 * @param memberId
+	 * 게시글 저장
 	 */
 	public void save(final PostFormDto postForm, final Long memberId) {
 		// 엔티티 조회
@@ -56,12 +52,9 @@ public class PostService {
 
 	/**
 	 * 게시글 업데이트 하기
-	 * title, content, type, link, writer, thumbnailImage, uploadDateTime
-	 * @param postId
-	 * @param postForm
 	 */
 	public void update(final Long postId, final PostFormDto postForm) {
-		Post post = postRepository.getById(postId);
+		Post post = postRepository.findById(postId).orElseThrow(() -> new NullPointerException("존재하지 않는 게시글 입니다."));
 		Category category = categoryRepository.getByViewName(postForm.getCategoryName());
 
 		post.update(postForm, category);
@@ -71,19 +64,13 @@ public class PostService {
 
 	/**
 	 * 게시글 id로 조회하기
-	 * 쿼리 발생 횟수 : 1 - 게시글 조회 쿼리
-	 * @param id
-	 * @return
 	 */
-	public Post getPostById(final Long id) {
-		return postRepository.getById(id);
+	public Post getById(final Long id) {
+		return postRepository.findById(id).orElseThrow(() -> new NullPointerException("존재하지 않는 게시글 입니다."));
 	}
 
 	/**
 	 * 게시글 Manager로 조회하기
-	 * @param member
-	 * @param pageable
-	 * @return
 	 */
 	public Page<MyUploadPostResponseDto> getByManager(final Member member, final Pageable pageable) {
 		return postRepository.getByManager(member, pageable);
@@ -91,10 +78,6 @@ public class PostService {
 
 	/**
 	 * 카테고리별로 게시글 가져오기
-	 * @param member
-	 * @param categoryName
-	 * @param pageable
-	 * @return
 	 */
 	public List<PostQueryResponseDto> getPostsByCategoryNameIfMemberWithMemberLikes(final Member member,
 		final String categoryViewName,
@@ -107,7 +90,6 @@ public class PostService {
 		if (categoryViewName.equals("All")) {
 			return postRepository.findAllDto(memberId, pageable);
 		}
-		// return postRepository.findAllDtoByCategoryName(memberId, CategoryName.valueOf(categoryName), pageable);
 		return postRepository.findAllDtoByCategoryViewName(memberId, categoryViewName, pageable);
 	}
 

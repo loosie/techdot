@@ -92,7 +92,7 @@ public class PostController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/post/{id}/edit")
 	public String updatePostView(@PathVariable final Long id, @CurrentUser final Member member, Model model) {
-		Post post = postService.getPostById(id);
+		Post post = postService.getById(id);
 		if (!post.isManager(member)) {
 			return "redirect:/";
 		}

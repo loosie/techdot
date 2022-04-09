@@ -24,8 +24,8 @@ public class PostFormValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 		PostFormDto postForm = (PostFormDto)target;
 
-		// 변경되지 않은 링크는 중복 예외
-		if(!postForm.getBeforeLink().isEmpty() && postForm.getBeforeLink().equals(postForm.getLink())){
+		// 변경되지 않은 링크는 중복 처리 예외
+		if(!postForm.getCurLink().isEmpty() && postForm.getCurLink().equals(postForm.getLink())){
 			return;
 		}
 

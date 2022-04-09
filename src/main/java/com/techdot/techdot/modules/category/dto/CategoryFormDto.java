@@ -5,6 +5,8 @@ import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.techdot.techdot.modules.category.Category;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,12 +23,20 @@ public class CategoryFormDto {
 
 	@NotBlank
 	@Length(max = 20)
-	@Pattern(regexp = "^[a-z,-]{1,20}$", message = "공백없이 영어 소문자와 - 만 20자 내외로 입력이 가능합니다.")
+	@Pattern(regexp = "^[a-z0-9,-]{1,20}$", message = "공백없이 영어 소문자, 숫자와 - 만 20자 내외로 입력이 가능합니다.")
 	private String viewName;
 
-	public CategoryFormDto(String name, String title, String viewName) {
-		this.name = name;
-		this.title = title;
-		this.viewName = viewName;
+	private String curName;
+	private String curTitle;
+	private String curViewName;
+
+	public CategoryFormDto(Category category) {
+		this.curName = category.getName();
+		this.curTitle = category.getTitle();
+		this.curViewName = category.getViewName();
+
+		this.name = category.getName();
+		this.title = category.getTitle();
+		this.viewName = category.getViewName();
 	}
 }
