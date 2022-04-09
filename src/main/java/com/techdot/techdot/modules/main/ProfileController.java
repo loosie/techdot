@@ -16,7 +16,6 @@ public class ProfileController {
 
 	/**
 	 * app profile 체크
-	 * @return
 	 */
 	@GetMapping("/app/profile")
 	public String profile() {

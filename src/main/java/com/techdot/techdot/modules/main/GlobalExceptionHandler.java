@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.server.MethodNotAllowedException;
 
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.member.auth.CurrentUser;
@@ -16,8 +17,8 @@ public class GlobalExceptionHandler {
 
 
 	@ExceptionHandler(NullPointerException.class)
-	public String handleCategoryViewNameNotExistedException(NullPointerException ex, HttpServletRequest req) {
-		log.error("user not existed - {}", ex.getMessage());
+	public String handleNullPointerException(NullPointerException ex, HttpServletRequest req) {
+		log.error("data not existed - {}", ex.getMessage());
 		req.setAttribute("message", ex.getMessage());
 		return "error/404";
 	}

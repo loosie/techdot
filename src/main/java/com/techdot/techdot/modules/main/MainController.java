@@ -26,10 +26,6 @@ public class MainController {
 	@GetMapping("/")
 	public String home(@CurrentUser final Member member, Model model) {
 		if (member != null) {
-			if (!member.getEmailVerified()) {
-				model.addAttribute("email", member.getEmail());
-				return "redirect:/check-email";
-			}
 			model.addAttribute(member);
 		}
 		model.addAttribute("categoryList", categoryService.getAll());

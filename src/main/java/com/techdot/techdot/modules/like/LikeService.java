@@ -21,8 +21,6 @@ public class LikeService {
 
 	/**
 	 * 좋아요 추가하기
-	 * @param memberId
-	 * @param postId
 	 */
 	public void add(final Long memberId, final Long postId) {
 		// 엔티티 조회
@@ -44,9 +42,6 @@ public class LikeService {
 
 	/**
 	 * 좋아요 삭제하기
-	 * 쿼리 발생 횟수: 1
-	 * @param memberId
-	 * @param postId
 	 */
 	public void remove(Long memberId, Long postId) {
 		// 엔티티 조회

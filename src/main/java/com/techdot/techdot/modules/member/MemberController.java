@@ -37,8 +37,6 @@ public class MemberController {
 
 	/**
 	 * 회원가입 뷰
-	 * @param model
-	 * @return
 	 */
 	@GetMapping("/join")
 	public String joinView(Model model) {
@@ -48,10 +46,6 @@ public class MemberController {
 
 	/**
 	 * 회원가입 요청
-	 * @param joinForm
-	 * @param errors
-	 * @param model
-	 * @return
 	 */
 	@PostMapping("/join")
 	public String joinForm(@Valid @ModelAttribute("joinForm") final JoinFormDto joinForm,
@@ -66,10 +60,6 @@ public class MemberController {
 
 	/**
 	 * 이메일 인증 확인 링크
-	 * @param token
-	 * @param email
-	 * @param model
-	 * @return
 	 */
 	@GetMapping("/confirm-email")
 	public String emailConfirm(final String token, final String email, Model model) {
@@ -88,10 +78,6 @@ public class MemberController {
 
 	/**
 	 * 이메일 인증 완료 뷰
-	 * @param member
-	 * @param email
-	 * @param model
-	 * @return
 	 */
 	@GetMapping("/check-email")
 	public String checkEmail(@CurrentUser final Member member, final String email, Model model) {
@@ -110,9 +96,6 @@ public class MemberController {
 
 	/**
 	 * 인증 메일 재전송 뷰
-	 * @param email
-	 * @param model
-	 * @return
 	 */
 	@GetMapping("/resend-confirm-email/{email}")
 	public String resendEmailConfirm(@PathVariable final String email, Model model) {
@@ -151,10 +134,6 @@ public class MemberController {
 
 	/**
 	 * 비밀번호없이 이메일로 로그인 하기
-	 * @param token
-	 * @param email
-	 * @param model
-	 * @return
 	 */
 	@GetMapping("/login-by-email")
 	public String loginByEmail(final String token, final String email, Model model) {
@@ -177,9 +156,6 @@ public class MemberController {
 
 	/**
 	 * 멤버가 좋아하는 게시글 뷰
-	 * @param member
-	 * @param model
-	 * @return
 	 */
 	@GetMapping("/me/likes")
 	public String MyLikesView(@CurrentUser final Member member, Model model) {

@@ -18,7 +18,7 @@ import javax.persistence.Lob;
 
 import org.springframework.util.Assert;
 
-import com.techdot.techdot.infra.BaseEntity;
+import com.techdot.techdot.infra.domain.BaseEntity;
 import com.techdot.techdot.modules.member.dto.ProfileFormDto;
 
 import lombok.Builder;

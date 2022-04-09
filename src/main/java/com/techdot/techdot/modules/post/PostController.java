@@ -45,9 +45,6 @@ public class PostController {
 
 	/**
 	 * (ADMIN) 게시글 업로드 뷰
-	 * @param member
-	 * @param model
-	 * @return
 	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/new-post")
@@ -63,11 +60,6 @@ public class PostController {
 	 * (ADMIN) 게시글 업로드 요청
 	 * 쿼리 발생 횟수 : 4
 	 * validator url 중복 조회 쿼리 + manger 조회 쿼리 + category 조회 쿼리 + 게시글 insert 쿼리
-	 * @param postForm
-	 * @param errors
-	 * @param member
-	 * @param model
-	 * @return
 	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/new-post")
@@ -84,10 +76,6 @@ public class PostController {
 
 	/**
 	 * (ADMIN) 게시글 업데이트 뷰
-	 * @param id
-	 * @param member
-	 * @param model
-	 * @return
 	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/post/{id}/edit")
@@ -108,13 +96,6 @@ public class PostController {
 	 * 쿼리 발생 횟수 : 7
 	 * 카테고리 조회 + 게시글 조회 + 게시글 업데이트
 	 * 리다이렉션) 업데이트된 게시글 +  게시글 카테고리 조회 + 전체 카테고리 조회 + 멤버 인가 조회
-	 * @param id
-	 * @param postForm
-	 * @param errors
-	 * @param member
-	 * @param model
-	 * @param redirectAttributes
-	 * @return
 	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/post/{id}/edit")
@@ -134,10 +115,6 @@ public class PostController {
 	 * 카테고리별 게시글 조회 API
 	 * // 로그인된 멤버일 경우, 멤버가 좋아요 누른 게시글인지 내부 쿼리로 조회
 	 * 쿼리 발생 횟수 : 1 - PostQueryResponseDto 조회 쿼리
-	 * @param categoryViewName
-	 * @param pageable
-	 * @param member
-	 * @return
 	 */
 	@GetMapping("/posts/{categoryViewName}")
 	public ResponseEntity<List<PostQueryResponseDto>> getPostsByCategory_scrolling(@PathVariable final String categoryViewName,
@@ -151,9 +128,6 @@ public class PostController {
 	/**
 	 * 멤버가 좋아요 누른 게시글 조회 API
 	 * 쿼리 발생 횟수 : 1 - PostQueryResponseDto 조회 쿼리
-	 * @param pageable
-	 * @param member
-	 * @return
 	 */
 	@GetMapping("/posts/me/likes")
 	public ResponseEntity<List<PostQueryResponseDto>> getPostsByMemberLikes_scrolling(
@@ -165,9 +139,6 @@ public class PostController {
 	/**
 	 * 멤버 관심 카테고리에 속한 게시글 조회 API
 	 * 쿼리 발생 횟수 : 1 - PostQueryResponseDto 조회 쿼리
-	 * @param pageable
-	 * @param member
-	 * @return
 	 */
 	@GetMapping("/posts/me/interests")
 	public ResponseEntity<List<PostQueryResponseDto>> getPostsByMemberInterests_scrolling(
@@ -179,10 +150,6 @@ public class PostController {
 	/**
 	 * keyword 검색 API
 	 * 쿼리 발생 횟수 : 1 - PostQueryResponseDto 조회 쿼리
-	 * @param keyword
-	 * @param member
-	 * @param pageable
-	 * @return
 	 */
 	@GetMapping("/search/{keyword}")
 	public ResponseEntity<List<PostQueryResponseDto>> searchPostsByKeyword_scrolling(

@@ -41,8 +41,6 @@ public class MemberService {
 	 * 회원가입
 	 * -> 멤버 저장하기
 	 * -> 인증 메일 전송
-	 * @param joinForm
-	 * @return
 	 */
 	public Member save(final JoinFormDto joinForm) {
 		Member newMember = saveMember(joinForm);
@@ -52,7 +50,6 @@ public class MemberService {
 
 	/**
 	 * 인증 메일 전송하기
-	 * @param newMember
 	 */
 	public void sendConfirmEmail(final Member newMember) {
 		Context context = new Context();
@@ -75,8 +72,6 @@ public class MemberService {
 
 	/**
 	 * 멤버 저장하기
-	 * @param joinForm
-	 * @return
 	 */
 	private Member saveMember(final JoinFormDto joinForm) {
 		Member member = Member.builder()
@@ -93,7 +88,6 @@ public class MemberService {
 	 * 로그인 완료
 	 * -> 이메일 인증 완료 처리
 	 * -> SecurityContextHolder에 멤버 세션 저장하여 최종 로그인 처리
-	 * @param member
 	 */
 	public void completeLogin(final Member member) {
 		member.completeEmailVerified();
@@ -102,7 +96,6 @@ public class MemberService {
 
 	/**
 	 * Security 세션에 멤버 정보 등록하여 로그인
-	 * @param member
 	 */
 	public void login(final Member member) {
 		Collection<GrantedAuthority> authorities = new ArrayList<>();
@@ -118,8 +111,6 @@ public class MemberService {
 	/**
 	 * 멤버 프로필 업데이트
 	 * nickname, bio, profileImage
-	 * @param member
-	 * @param profileForm
 	 */
 	public void updateProfile(final Member member, final ProfileFormDto profileForm) {
 		member.updateProfile(profileForm);
@@ -128,8 +119,6 @@ public class MemberService {
 
 	/**
 	 * 멤버 비밀번호 업데이트
-	 * @param member
-	 * @param passwordForm
 	 */
 	public void updatePassword(final Member member, final PasswordFormDto passwordForm) {
 		member.updatePassword(passwordEncoder.encode(passwordForm.getNewPassword()));
@@ -138,7 +127,6 @@ public class MemberService {
 
 	/**
 	 * 로그인 링크 이메일로 전송하기
-	 * @param member
 	 */
 	public void sendLoginLink(final Member member) {
 		Context context = new Context();
@@ -160,9 +148,6 @@ public class MemberService {
 
 	/**
 	 * email로 멤버 조회하기
-	 * @param email
-	 * @param redirectView
-	 * @return
 	 */
 	public Member getByEmail(final String email, final String redirectView) {
 		Optional<Member> opMember = memberRepository.findByEmail(email);

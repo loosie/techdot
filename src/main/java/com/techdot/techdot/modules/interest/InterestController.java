@@ -26,9 +26,6 @@ public class InterestController {
 	 * 관심 카테고리 추가 API
 	 * 쿼리 발생 횟수 : 4
 	 * 멤버 조회 + 카테고리 조회 + 관심 조회 + 관심 추가
-	 * @param member
-	 * @param interestForm
-	 * @return
 	 */
 	@PostMapping("/interest/add")
 	public ResponseEntity likeAdd(@CurrentUser Member member, @RequestBody InterestFormDto interestForm) {
@@ -40,9 +37,6 @@ public class InterestController {
 	 * 관심 카테고리 삭제 API
 	 * 쿼리 발생 횟수 : 4
 	 * 멤버 조회 + 카테고리 조회 + 관심 조회 + 관심 삭제
-	 * @param member
-	 * @param interestForm
-	 * @return
 	 */
 	@PostMapping("/interest/remove")
 	public ResponseEntity likeRemove(@CurrentUser Member member, @RequestBody InterestFormDto interestForm) {
@@ -52,8 +46,6 @@ public class InterestController {
 
 	/**
 	 * 멤버 관심 카테고리 목록 조회 API
-	 * @param member
-	 * @return
 	 */
 	@GetMapping("/interests/me/list")
 	public ResponseEntity<List<InterestCategoryResponseDto>> getInterestCategoriesByMember(@CurrentUser Member member) {

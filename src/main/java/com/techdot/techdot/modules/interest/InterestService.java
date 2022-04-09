@@ -24,8 +24,6 @@ public class InterestService {
 
 	/**
 	 * 멤버 관심 카테고리 등록하기
-	 * @param memberId
-	 * @param categoryViewName
 	 */
 	public void add(final Long memberId, final String categoryViewName) {
 		// 엔티티 조회
@@ -47,8 +45,6 @@ public class InterestService {
 
 	/**
 	 * 멤버 관심 카테고리 제거하기
-	 * @param memberId
-	 * @param categoryViewName
 	 */
 	public void remove(final Long memberId, final String categoryViewName) {
 		// 엔티티 조회

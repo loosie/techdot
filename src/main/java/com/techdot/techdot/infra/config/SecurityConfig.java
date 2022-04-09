@@ -5,6 +5,7 @@ import javax.sql.DataSource;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -31,7 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.mvcMatchers("/join", "/login").not().fullyAuthenticated()
 			.mvcMatchers("/", "/check-email",  "/email-login", "/login-by-email", "/confirm-email", "/resend-confirm-email/**", "/error/**",
 				"/posts/**", "/category/**",  "/search", "/search/**", "/app/profile").permitAll()
-			.mvcMatchers("/interest/**", "/like/**", "/me/likes", "/accounts/**").access("hasRole('ROLE_MEMBER') or hasRole('ROLE_ADMIN')")
+			.mvcMatchers("/me/**", "/accounts", "/accounts/change-password", "accounts/settings").access("hasRole('ROLE_USER') or hasRole('ROLE_MEMBER') or hasRole('ROLE_ADMIN')")
+			.mvcMatchers("/interest/**", "/like/**").access("hasRole('ROLE_MEMBER') or hasRole('ROLE_ADMIN')")
 			.mvcMatchers("/new-post", "/post/**", "/accounts/my-upload", "/accounts/settings/category").access("hasRole('ROLE_ADMIN')")
 			.anyRequest().authenticated();
 

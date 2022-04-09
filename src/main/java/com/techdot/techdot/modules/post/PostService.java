@@ -95,9 +95,6 @@ public class PostService {
 
 	/**
 	 * 멤버가 좋아요 누른 게시글 가져오기
-	 * @param memberId
-	 * @param pageable
-	 * @return
 	 */
 	public List<PostQueryResponseDto> getPostsByLikesMemberId(final Long memberId, final Pageable pageable) {
 		List<PostQueryResponseDto> allLikePosts = postRepository.findAllDtoByLikesMemberId(memberId, pageable);
@@ -106,9 +103,6 @@ public class PostService {
 
 	/**
 	 * 멤버의 관심 카테고리 게시글 가져오기
-	 * @param memberId
-	 * @param pageable
-	 * @return
 	 */
 	public List<PostQueryResponseDto> getPostsByInterestsMemberId(final Long memberId, final Pageable pageable) {
 		List<PostQueryResponseDto> allInterestPosts = postRepository.findAllDtoByInterestsMemberId(memberId, pageable);
@@ -117,10 +111,6 @@ public class PostService {
 
 	/**
 	 * {keyword}로 게시글 검색하기
-	 * @param member
-	 * @param keyword
-	 * @param pageable
-	 * @return
 	 */
 	public List<PostQueryResponseDto> getPostsByKeyword(final Member member, String keyword, final Pageable pageable) {
 		Long memberId = -1L;
