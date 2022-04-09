@@ -14,6 +14,7 @@
                 <form class="needs-validation" th:action="@{/new-category}" th:object="${categoryForm}" method="post" novalidate>
                     <div class="form-group mb-4">
                         <label for="name">카테고리 display 이름</label>
+                        <input id="curName" type="hidden" th:field="*{curName}" class="form-control" />
                         <input id="name" type="text" th:field="*{name}" class="form-control"
                                placeholder="nav에 보여질 이름을 입력하세요" aria-describedby="titleHelp" required max="20">
                         <small class="invalid-feedback">20자 이내로 카테고리 display 이름을 입력하세요.</small>
@@ -21,6 +22,7 @@
                     </div>
 
                     <div class="form-group mb-4">
+                        <input id="curViewName" type="hidden" th:field="*{curViewName}" class="form-control" />
                         <label for="viewName">카테고리 view 이름</label>
                         <input id="viewName" type="text" th:field="*{viewName}" class="form-control"
                                placeholder="view 이름을 입력하세요" aria-describedby="titleHelp" required max="20">
@@ -29,6 +31,7 @@
                     </div>
 
                     <div class="form-group mb-4">
+                        <input id="curTitle" type="hidden" th:field="*{curTitle}" class="form-control" />
                         <label for="title">카테고리 타이틀</label>
                         <input id="title" type="text" th:field="*{title}" class="form-control"
                                placeholder="이름을 입력하세요" aria-describedby="titleHelp" required max="20">

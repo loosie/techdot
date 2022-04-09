@@ -25,11 +25,10 @@ public class CategoryFormValidator implements Validator {
 		CategoryFormDto categoryForm = (CategoryFormDto)target;
 
 		// 생성: 새로 생성하는 데이터 중복 검사
-		if(categoryForm.getCurTitle().isEmpty()){
+		if(categoryForm.getCurTitle() == null){
 			validateTitle(errors, categoryForm);
 			validateName(errors, categoryForm);
 			validateViewName(errors, categoryForm);
-
 		}else{
 			// 수정: 수정된 데이터 중복 검사
 			if(!categoryForm.getCurTitle().equals(categoryForm.getTitle())){

@@ -21,8 +21,6 @@ import com.techdot.techdot.modules.category.dto.CategoryFormDto;
 import com.techdot.techdot.modules.category.validator.CategoryFormValidator;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.member.auth.CurrentUser;
-import com.techdot.techdot.modules.post.Post;
-import com.techdot.techdot.modules.post.dto.PostFormDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -77,8 +75,7 @@ public class CategoryController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/new-category")
 	public String newCategoryForm(@Valid @ModelAttribute("categoryForm") final CategoryFormDto categoryForm,
-		Errors errors,
-		@CurrentUser final Member member, Model model) {
+		Errors errors, @CurrentUser final Member member, Model model) {
 		if (errors.hasErrors()) {
 			model.addAttribute(member);
 			return "category/form";

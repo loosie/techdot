@@ -38,7 +38,11 @@ class PostControllerTest extends AbstractContainerBaseTest {
 
 	@BeforeEach
 	void setUp() {
-		categoryRepository.save(Category.builder().name("자바").title("Java title").viewName("java").build());
+		categoryRepository.save(Category.builder()
+			.name("자바")
+			.title("Java title")
+			.viewName("java")
+			.build());
 	}
 
 	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
@@ -59,7 +63,7 @@ class PostControllerTest extends AbstractContainerBaseTest {
 		mockMvc.perform(post("/new-post")
 			.param("title", "title")
 			.param("content", "content")
-			.param("beforeLink", "http://google.com/")
+			.param("curLink", "http://google.com/")
 			.param("link", "http://google.com")
 			.param("writer", "google")
 			.param("categoryName", "java")
@@ -78,7 +82,7 @@ class PostControllerTest extends AbstractContainerBaseTest {
 		mockMvc.perform(post("/new-post")
 			.param("title", "title")
 			.param("content", "content")
-			.param("beforeLink", "http://google.com/")
+			.param("curLink", "http://google.com/")
 			.param("link", "//google.com")
 			.param("writer", "google")
 			.param("categoryName", "java")
@@ -115,7 +119,7 @@ class PostControllerTest extends AbstractContainerBaseTest {
 		mockMvc.perform(post("/post/" + save.getId() + "/edit")
 			.param("title", "updateTitle")
 			.param("content", "content2222")
-			.param("beforeLink", "http://google.com/")
+			.param("curLink", "http://google.com/")
 			.param("link", "http://google.com/asdasd")
 			.param("writer", "google")
 			.param("categoryName", "java")
@@ -133,7 +137,7 @@ class PostControllerTest extends AbstractContainerBaseTest {
 
 	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
 	@Transactional
-	@DisplayName("게시글 수정하기 실패 - 입력값 오류 link")
+	@DisplayName("게시글 수정하기 실패 - link 입력값 오류 ")
 	@Test
 	void updatePost_fail_notAuth() throws Exception {
 		// given
@@ -155,7 +159,7 @@ class PostControllerTest extends AbstractContainerBaseTest {
 		mockMvc.perform(post("/post/" + save.getId() + "/edit")
 			.param("title", "updateTitle")
 			.param("content", "content2222")
-			.param("beforeLink", "http://google.com/")
+			.param("curLink", "http://google.com/")
 			.param("link", "oogle.com/asdasd")
 			.param("writer", "google")
 			.param("categoryName", "java")

@@ -1,7 +1,6 @@
 package com.techdot.techdot.modules.category;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,18 +41,16 @@ public class CategoryService {
 	 * viewName으로 카테고리 가져오기
 	 */
 	public Category getByViewName(final String viewName) {
-		Optional<Category> category = categoryRepository.findByViewName(viewName);
-		if (category.isEmpty()) {
-			throw new NullPointerException(viewName + " 해당 카테고리는 존재하지 않습니다.");
-		}
-		return category.get();
+		return categoryRepository.findByViewName(viewName)
+			.orElseThrow(() -> new NullPointerException(viewName + " 해당 카테고리는 존재하지 않습니다."));
 	}
 
 	/**
 	 * id로 카테고리 가져오기
 	 */
 	public Category getById(Long id) {
-		return categoryRepository.findById(id).orElseThrow(() -> new NullPointerException("해당 카테고리는 존재하지 않습니다."));
+		return categoryRepository.findById(id)
+			.orElseThrow(() -> new NullPointerException("해당 카테고리는 존재하지 않습니다."));
 	}
 
 	/**

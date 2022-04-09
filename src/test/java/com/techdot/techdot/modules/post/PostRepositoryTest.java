@@ -117,7 +117,6 @@ class PostRepositoryTest extends AbstractContainerBaseTest {
 		assertEquals(result.getId(), savePost.getId());
 		assertEquals(result.getTitle(), "title1");
 		assertEquals(result.getWriter(), "naver");
-
 	}
 
 }

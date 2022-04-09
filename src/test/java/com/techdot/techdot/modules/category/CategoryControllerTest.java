@@ -1,22 +1,30 @@
 package com.techdot.techdot.modules.category;
 
 import static com.techdot.techdot.infra.Constant.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.techdot.techdot.infra.AbstractContainerBaseTest;
 import com.techdot.techdot.infra.MockMvcTest;
+import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.member.auth.WithCurrentUser;
+import com.techdot.techdot.modules.post.Post;
+import com.techdot.techdot.modules.post.PostType;
 
 @MockMvcTest
-class CategoryControllerTest {
+class CategoryControllerTest extends AbstractContainerBaseTest {
 
 	@Autowired private MockMvc mockMvc;
 	@Autowired private CategoryService categoryService;
@@ -24,7 +32,11 @@ class CategoryControllerTest {
 
 	@BeforeEach
 	void setUp(){
-		categoryRepository.save(Category.builder().viewName("java").title("JAVA").name("자바").build());
+		categoryRepository.save(Category.builder()
+			.viewName("java")
+			.title("JAVA")
+			.name("자바")
+			.build());
 	}
 
 	@DisplayName("카테고리 별로 뷰")
@@ -57,7 +69,7 @@ class CategoryControllerTest {
 	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
 	@DisplayName("카테고리 생성 성공")
 	@Test
-	void createNewCategory_success() throws Exception {
+	void createCategory_success() throws Exception {
 		mockMvc.perform(post("/new-category")
 			.param("name", "nav 이름")
 			.param("title", "메인 타이틀")
@@ -80,6 +92,61 @@ class CategoryControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(model().hasErrors())
 			.andExpect(view().name("category/form"))
+			.andExpect(authenticated());
+	}
+
+	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
+	@DisplayName("카테고리 수정하기 성공")
+	@Test
+	void updateCategory_success() throws Exception {
+		// given
+		Category category = categoryService.getByViewName("java");
+
+		// when, then
+		mockMvc.perform(post("/category/" + category.getId() + "/edit")
+			.param("title", "Java title 222")
+			.param("name", "자바 222")
+			.param("viewName", "java-2")
+			.param("curTitle", category.getTitle())
+			.param("curName", category.getName())
+			.param("curViewName", category.getViewName())
+			.with(csrf()))
+			.andExpect(status().is3xxRedirection())
+			.andExpect(flash().attributeExists("message"))
+			.andExpect(authenticated());
+
+		// then
+		Category changeCategory = categoryRepository.findById(category.getId()).get();
+		assertEquals("Java title 222", changeCategory.getTitle());
+		assertEquals("java-2", changeCategory.getViewName());
+		assertEquals("자바 222", changeCategory.getName());
+	}
+
+	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
+	@DisplayName("게시글 수정하기 실패 - 데이터 중복")
+	@Test
+	void updateCategory_fail_invalidData() throws Exception {
+		// given
+		categoryRepository.save(Category.builder()
+			.viewName("backend")
+			.title("BACKEND")
+			.name("백엔드")
+			.build());
+		Category category = categoryService.getByViewName("java");
+
+		// when, then
+		mockMvc.perform(post("/category/" + category.getId() + "/edit")
+			.param("title", "BACKEND...")
+			.param("name", "백엔드...")
+			.param("viewName", "backend") // 중복
+			.param("curTitle", category.getTitle())
+			.param("curName", category.getName())
+			.param("curViewName", category.getViewName())
+			.with(csrf()))
+			.andExpect(status().isOk())
+			.andExpect(model().hasErrors())
+			.andExpect(model().attributeExists("member"))
+			.andExpect(view().name("category/updateForm"))
 			.andExpect(authenticated());
 	}
 
