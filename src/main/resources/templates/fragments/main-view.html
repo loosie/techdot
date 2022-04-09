@@ -43,7 +43,7 @@
                 type: "GET"
             }).done(function (data, status) {
                 for (var i = 0; i < data.length; i++) {
-                    if (data[i].categoryName == '[(${categoryMenuName})]') {
+                    if (data[i].categoryViewName == '[(${categoryMenuName})]') {
                         interestButton.attr('checked', true);
                         document.getElementById("interest-switch").classList.add('interest-active');
                     }
@@ -71,7 +71,7 @@
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify({
-                    categoryName: e.target.value
+                    categoryViewName: e.target.value
                 })
             }).done(function () {
                 if ('[(${#authentication.name})]' == 'anonymousUser') {
