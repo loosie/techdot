@@ -43,8 +43,10 @@ class LikeServiceTest {
 			.emailVerified(false)
 			.build();
 
-		Category category = Category.builder()
-			.name("TODO")
+		Category category =  Category.builder()
+			.viewName("java")
+			.title("자바")
+			.name("Java")
 			.build();
 
 		post = Post.builder()

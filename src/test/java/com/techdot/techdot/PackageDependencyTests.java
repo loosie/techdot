@@ -25,18 +25,18 @@ public class PackageDependencyTests {
 	@ArchTest
 	ArchRule memberPackageRule = classes().that().resideInAPackage(MEMBER)
 		.should().accessClassesThat().resideInAnyPackage(MEMBER)
-		.andShould().onlyBeAccessed().byAnyPackage(MEMBER, MAIN, POST, LIKE, INTEREST);
+		.andShould().onlyBeAccessed().byAnyPackage(MAIN, MEMBER, POST, LIKE, INTEREST);
 
 	@ArchTest
 	ArchRule postPackageRule = classes().that().resideInAPackage(POST)
 		.should().accessClassesThat().resideInAnyPackage(POST, CATEGORY, MEMBER)
 		.andShould().onlyBeAccessed().byClassesThat()
-		.resideInAnyPackage(POST, MAIN, LIKE, MEMBER); // MEMBER (only ADMIN)
+		.resideInAnyPackage(MAIN, POST, LIKE, MEMBER); // MEMBER (only ADMIN)
 
 	@ArchTest
 	ArchRule categoryPackageRule = classes().that().resideInAPackage(CATEGORY)
 		.should().accessClassesThat().resideInAnyPackage(CATEGORY, INTEREST)
-		.andShould().onlyBeAccessed().byClassesThat().resideInAnyPackage(CATEGORY, POST, INTEREST, LIKE);
+		.andShould().onlyBeAccessed().byClassesThat().resideInAnyPackage(MAIN, CATEGORY, POST, INTEREST, LIKE);
 
 	@ArchTest
 	ArchRule likePackageRule = classes().that().resideInAPackage(LIKE)

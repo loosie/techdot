@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-	Category getByName(final String name);
 	Category getByViewName(String viewName);
 
 	Optional<Category> findByViewName(final String viewName);

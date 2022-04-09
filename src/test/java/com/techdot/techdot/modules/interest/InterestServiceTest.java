@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.util.Assert;
 
 import com.techdot.techdot.modules.category.Category;
 import com.techdot.techdot.modules.member.Member;
@@ -43,7 +44,9 @@ class InterestServiceTest {
 			.build();
 
 		category = Category.builder()
-			.name("TODO")
+			.viewName("java")
+			.title("JAVA")
+			.name("자바")
 			.build();
 	}
 
@@ -56,16 +59,16 @@ class InterestServiceTest {
 	@Test
 	void interestAdd() {
 		// given
-		given(memberRepository.findById(1L)).willReturn(Optional.of(member));
-		given(categoryRepository.getByName("TODO")).willReturn(category);
+		given(memberRepository.getById(1L)).willReturn(member);
+		given(categoryRepository.getByViewName("java")).willReturn(category);
 		given(interestRepository.findByMemberAndCategory(member, category)).willReturn(Optional.empty());
 
 		// when
-		interestService.add(1L, "CS");
+		interestService.add(1L, "java");
 
 		// then
-		then(memberRepository).should(times(1)).findById(any());
-		then(categoryRepository).should(times(1)).getByName(any());
+		then(memberRepository).should(times(1)).getById(any());
+		then(categoryRepository).should(times(1)).getByViewName(any());
 		then(interestRepository).should(times(1)).findByMemberAndCategory(any(), any());
 		then(interestRepository).should(times(1)).save(Interest.builder().member(member).category(category).build());
 	}
@@ -75,16 +78,16 @@ class InterestServiceTest {
 	void interestRemove() {
 		// given
 		Interest interest = Interest.builder().member(member).category(category).build();
-		given(memberRepository.findById(1L)).willReturn(Optional.of(member));
-		given(categoryRepository.getByName("TODO")).willReturn(category);
+		given(memberRepository.getById(1L)).willReturn(member);
+		given(categoryRepository.getByViewName("java")).willReturn(category);
 		given(interestRepository.findByMemberAndCategory(member, category)).willReturn(Optional.of(interest));
 
 		// when
-		interestService.remove(1L, "CS");
+		interestService.remove(1L, "java");
 
 		// then
-		then(memberRepository).should(times(1)).findById(any());
-		then(categoryRepository).should(times(1)).getByName(any());
+		then(memberRepository).should(times(1)).getById(any());
+		then(categoryRepository).should(times(1)).getByViewName(any());
 		then(interestRepository).should(times(1)).findByMemberAndCategory(any(), any());
 		then(interestRepository).should(times(1)).delete(interest);
 	}
@@ -93,7 +96,7 @@ class InterestServiceTest {
 	@Test
 	void getInterestCategories_byMemberId(){
 		List<InterestCategoryResponseDto> input = List.of(
-			new InterestCategoryResponseDto("TODO"), new InterestCategoryResponseDto("TODO"));
+			new InterestCategoryResponseDto("java"), new InterestCategoryResponseDto("backend"));
 		given(interestRepository.findAllCategoriesByMemberId(member.getId())).willReturn(input);
 		List<InterestCategoryResponseDto> result = interestService.getInterestCategoriesByMember(member.getId());
 

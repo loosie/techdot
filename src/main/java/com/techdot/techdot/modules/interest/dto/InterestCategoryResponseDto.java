@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class InterestCategoryResponseDto {
-	private String categoryName;
+	private String categoryViewName;
 
-	public InterestCategoryResponseDto(String categoryName) {
-		this.categoryName = categoryName;
+	public InterestCategoryResponseDto(String categoryViewName) {
+		this.categoryViewName = categoryViewName;
 	}
 }

@@ -25,12 +25,12 @@ public class InterestService {
 	/**
 	 * 멤버 관심 카테고리 등록하기
 	 * @param memberId
-	 * @param categoryName
+	 * @param categoryViewName
 	 */
-	public void add(final Long memberId, final String categoryName) {
+	public void add(final Long memberId, final String categoryViewName) {
 		// 엔티티 조회
 		Member findMember = memberRepository.getById(memberId);
-		Category findCategory = categoryRepository.getByViewName(categoryName);
+		Category findCategory = categoryRepository.getByViewName(categoryViewName);
 
 		if(interestRepository.findByMemberAndCategory(findMember, findCategory).isPresent()){
 			throw new RuntimeException("이미 관심 카테고리에 등록한 카테고리입니다.");
@@ -48,12 +48,12 @@ public class InterestService {
 	/**
 	 * 멤버 관심 카테고리 제거하기
 	 * @param memberId
-	 * @param categoryName
+	 * @param categoryViewName
 	 */
-	public void remove(final Long memberId, final String categoryName) {
+	public void remove(final Long memberId, final String categoryViewName) {
 		// 엔티티 조회
 		Member findMember = memberRepository.getById(memberId);
-		Category findCategory = categoryRepository.getByViewName(categoryName);
+		Category findCategory = categoryRepository.getByViewName(categoryViewName);
 
 		Optional<Interest> interest = interestRepository.findByMemberAndCategory(findMember, findCategory);
 		if(interest.isEmpty()){

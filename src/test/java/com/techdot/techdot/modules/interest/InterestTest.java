@@ -10,7 +10,7 @@ import com.techdot.techdot.modules.member.Member;
 
 class InterestTest {
 
-	@DisplayName("관심 생성 실패 - 입력값 오류 member or category null")
+	@DisplayName("관심 생성 실패 - 입력값 null인 경우")
 	@Test
 	void like_create_fail_nullValue(){
 		// given
@@ -21,8 +21,10 @@ class InterestTest {
 			.emailVerified(false)
 			.build();
 
-		Category category = Category.builder()
-			.name("TODO")
+		Category category =  Category.builder()
+			.viewName("java")
+			.title("자바")
+			.name("Java")
 			.build();
 
 		// when, then

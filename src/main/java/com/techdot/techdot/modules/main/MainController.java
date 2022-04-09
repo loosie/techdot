@@ -53,6 +53,11 @@ public class MainController {
 	 */
 	@GetMapping("/me/interests")
 	public String myInterestsView(@CurrentUser final Member member, Model model) {
+		if (!member.getEmailVerified()) {
+			model.addAttribute("email", member.getEmail());
+			return "redirect:/check-email";
+		}
+
 		model.addAttribute(member);
 		model.addAttribute("categoryList", categoryService.getAll());
 		return "main/my-interests-view";

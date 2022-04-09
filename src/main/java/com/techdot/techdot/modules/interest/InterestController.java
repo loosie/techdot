@@ -32,7 +32,7 @@ public class InterestController {
 	 */
 	@PostMapping("/interest/add")
 	public ResponseEntity likeAdd(@CurrentUser Member member, @RequestBody InterestFormDto interestForm) {
-		interestService.add(member.getId(), interestForm.getCategoryName());
+		interestService.add(member.getId(), interestForm.getCategoryViewName());
 		return ResponseEntity.ok().build();
 	}
 
@@ -46,7 +46,7 @@ public class InterestController {
 	 */
 	@PostMapping("/interest/remove")
 	public ResponseEntity likeRemove(@CurrentUser Member member, @RequestBody InterestFormDto interestForm) {
-		interestService.remove(member.getId(), interestForm.getCategoryName());
+		interestService.remove(member.getId(), interestForm.getCategoryViewName());
 		return ResponseEntity.ok().build();
 	}
 

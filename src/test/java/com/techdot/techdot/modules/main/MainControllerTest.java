@@ -70,12 +70,22 @@ class MainControllerTest extends AbstractContainerBaseTest {
 
 
 	@WithCurrentUser(value = TEST_EMAIL, role= MEMBER)
-	@DisplayName("관심 카테고리 뷰 - 이메일 인증 받지 않은 경우")
+	@DisplayName("관심 카테고리 뷰 - 이메일 인증 받은 경우")
 	@Test
-	void mainMyInterestsView() throws Exception{
+	void mainMyInterestsView_member_authenticated() throws Exception {
 		mockMvc.perform(get("/me/interests"))
 			.andExpect(status().isOk())
-			.andExpect(view().name("main/my-interests"))
+			.andExpect(view().name("main/my-interests-view"))
+			.andExpect(authenticated());
+	}
+
+	@WithCurrentUser(value = TEST_EMAIL, role= USER)
+	@DisplayName("관심 카테고리 뷰 - 이메일 인증 받지 않은 경우")
+	@Test
+	void mainMyInterestsView_user_unauthenticated() throws Exception{
+		mockMvc.perform(get("/me/interests"))
+			.andExpect(status().is3xxRedirection())
+			.andExpect(redirectedUrl("/check-email"))
 			.andExpect(authenticated());
 	}
 
@@ -87,6 +97,7 @@ class MainControllerTest extends AbstractContainerBaseTest {
 			.with(csrf()))
 			.andExpect(status().isOk())
 			.andExpect(model().attributeExists("keyword"))
+			.andExpect(model().attributeExists("categoryList"))
 			.andExpect(view().name("search"))
 			.andExpect(unauthenticated());
 	}

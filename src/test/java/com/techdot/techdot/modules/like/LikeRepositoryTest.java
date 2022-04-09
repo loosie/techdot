@@ -36,7 +36,7 @@ class LikeRepositoryTest extends AbstractContainerBaseTest {
 	private Post post;
 
 	@BeforeEach
-	void setUp(){
+	void setUp() {
 		member = Member.builder()
 			.nickname("loosie")
 			.password("12345678")
@@ -45,7 +45,9 @@ class LikeRepositoryTest extends AbstractContainerBaseTest {
 			.build();
 
 		category = Category.builder()
-			.name("TODO")
+			.viewName("java")
+			.title("자바")
+			.name("Java")
 			.build();
 
 		post = Post.builder()
@@ -66,7 +68,7 @@ class LikeRepositoryTest extends AbstractContainerBaseTest {
 
 	@DisplayName("좋아요 생성하기 - 성공")
 	@Test
-	void like_create_success(){
+	void like_create_success() {
 		Like like = Like.builder()
 			.member(member)
 			.post(post)
@@ -80,7 +82,7 @@ class LikeRepositoryTest extends AbstractContainerBaseTest {
 
 	@DisplayName("멤버와 게시글로 좋아요 조회하기")
 	@Test
-	void like_findByMemberAndPost(){
+	void like_findByMemberAndPost() {
 		Like like = Like.builder()
 			.member(member)
 			.post(post)
@@ -94,6 +96,5 @@ class LikeRepositoryTest extends AbstractContainerBaseTest {
 		assertEquals(findLike.getPost(), post);
 		assertEquals(findLike.getMember(), member);
 	}
-
 
 }
