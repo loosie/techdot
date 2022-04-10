@@ -35,10 +35,10 @@ public class Category {
 	@Column(nullable = false, unique = true)
 	private String viewName;
 
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	private String name; // nav display name
 
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	private String title;
 
 	@OneToMany(mappedBy = "category")
