@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
 	@Override
-	public void handle( HttpServletRequest req, HttpServletResponse res,
+	public void handle(HttpServletRequest req, HttpServletResponse res,
 		AccessDeniedException ex) throws IOException, ServletException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if(authentication != null){

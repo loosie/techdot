@@ -8,17 +8,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import com.techdot.techdot.infra.AbstractContainerBaseTest;
+import com.techdot.techdot.infra.TCDataJpaTest;
 import com.techdot.techdot.modules.category.Category;
-import com.techdot.techdot.modules.category.CategoryName;
 import com.techdot.techdot.modules.category.CategoryRepository;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.interest.dto.InterestCategoryResponseDto;
 import com.techdot.techdot.modules.member.MemberRepository;
 
-@DataJpaTest
-class InterestRepositoryTest {
+@TCDataJpaTest
+class InterestRepositoryTest extends AbstractContainerBaseTest {
 
 	@Autowired
 	private InterestRepository interestRepository;
@@ -39,15 +39,13 @@ class InterestRepositoryTest {
 			.build();
 
 		memberRepository.save(member);
-		for(CategoryName categoryName : CategoryName.values()){
-			categoryRepository.save(Category.builder().name(categoryName).build());
-		}
+		categoryRepository.save(Category.builder().viewName("java").title("자바").name("Java").build());
 	}
 
 	@DisplayName("관심 생성하기 - 성공")
 	@Test
 	void like_create_success(){
-		Category category = categoryRepository.findByName(CategoryName.CS);
+		Category category = categoryRepository.getByViewName("java");
 		Interest interest = Interest.builder()
 			.member(member)
 			.category(category)
@@ -62,7 +60,7 @@ class InterestRepositoryTest {
 	@DisplayName("멤버와 카테고리로 관심 조회하기")
 	@Test
 	void interest_findByMemberAndCategory(){
-		Category category = categoryRepository.findByName(CategoryName.CS);
+		Category category = categoryRepository.getByViewName("java");
 		Interest interest = Interest.builder()
 			.member(member)
 			.category(category)

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace ="fragments/header.html :: head"></head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/header.html :: head"></head>
 
 <body class="bg-light">
 <nav th:replace="fragments/navbar.html :: auth-nav"></nav>
@@ -12,26 +12,50 @@
         </div>
 
         <div class="col-8">
-            <h1 class="my-4">카테고리 관리</h1>
+            <div class="row justify-content-center pt-1 pb-3">
+                <div class="col" style="display: flex;">
+                    <div>
+                        <h1 class="my-4">카테고리 관리</h1>
+                    </div>
+                    <a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-dark pull-right ml-auto mr-4 my-4"
+                       style="width: 7rem; align-items: end" th:href="@{/new-category}">
+                        <p style="margin: 5% 0">추가</p>
+                    </a>
+                </div>
+            </div>
+
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col-2">#</th>
-                    <th scope="col-8">이름</th>
+                    <th scope="col-1">#</th>
+                    <th scope="col-2">카테고리 이름</th>
+                    <th scope="col-2">카테고리 타이틀</th>
+                    <th scope="col-2">카테고리 view</th>
+                    <th scope="col-1">수정</th>
+                    <th scope="col-1">삭제</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="category, index : ${categoryList}">
                     <th th:text="${index.index+1}" scope="row">#</th>
-                    <td th:text="${category.name}">title</td>
+                    <td th:text="${category.name}">name</td>
+                    <td th:text="${category.title}">title</td>
+                    <td th:text="${category.viewName}">viewName</td>
+
+                    <td>
+                        <a th:href="@{'/category/' + ${category.id} + '/edit'}" class="btn btn-light">수정</a>
+                    </td>
+                    <td>
+                        <!--                    TODO: 삭제 기능 추가 -->
+                        <a th:href="@{'/category/' + ${category.id} + '/remove'}" class="btn btn-danger">삭제</a>
+                    </td>
                 </tr>
+
                 </tbody>
             </table>
 
         </div>
     </div>
-
-
 </div>
 
 

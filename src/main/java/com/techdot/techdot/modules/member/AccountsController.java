@@ -29,6 +29,7 @@ import com.techdot.techdot.modules.category.CategoryRepository;
 import com.techdot.techdot.modules.post.PostService;
 import com.techdot.techdot.modules.member.validator.PasswordFormValidator;
 import com.techdot.techdot.modules.member.validator.ProfileFormValidator;
+import com.techdot.techdot.modules.post.dto.MyUploadPostResponseDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -58,25 +59,32 @@ public class AccountsController {
 	private final ProfileFormValidator profileFormValidator;
 
 	@InitBinder("passwordForm")
-	public void pwInitBinder(WebDataBinder webDataBinder){
+	public void pwInitBinder(WebDataBinder webDataBinder) {
 		webDataBinder.addValidators(new PasswordFormValidator());
 	}
 
 	@InitBinder("profileForm")
-	public void profileInitBinder(WebDataBinder webDataBinder){
+	public void profileInitBinder(WebDataBinder webDataBinder) {
 		webDataBinder.addValidators(profileFormValidator);
 	}
 
+	/**
+	 * 개인정보설정 메인 뷰 (프로필)
+	 */
 	@GetMapping(ACCOUNTS_MAIN_VIEW_URL)
-	public String profileSettingView(Model model, @CurrentUser Member member) {
+	public String profileSettingView(Model model, @CurrentUser final Member member) {
 		model.addAttribute(member);
 		model.addAttribute("profileForm", new ProfileFormDto(member));
 		return ACCOUNTS_PROFILE_VIEW_NAME;
 	}
 
+	/**
+	 * 계정 프로필 변경 요청
+	 */
 	@PostMapping(ACCOUNTS_MAIN_VIEW_URL)
-	public String profileSettingForm(@Valid @ModelAttribute("profileForm") ProfileFormDto profileForm, Errors errors,
-		Model model, @CurrentUser Member member, RedirectAttributes redirectAttributes) {
+	public String profileSettingForm(@Valid @ModelAttribute("profileForm") final ProfileFormDto profileForm,
+		Errors errors,
+		Model model, @CurrentUser final Member member, RedirectAttributes redirectAttributes) {
 		if (errors.hasErrors()) {
 			model.addAttribute(member);
 			return ACCOUNTS_PROFILE_VIEW_NAME;
@@ -88,16 +96,23 @@ public class AccountsController {
 		return "redirect:/accounts";
 	}
 
+	/**
+	 * 계정 비밀번호 변경 뷰
+	 */
 	@GetMapping(ACCOUNTS_PASSWORD_VIEW_URL)
-	public String passwordSettingView(Model model, @CurrentUser Member member) {
+	public String passwordSettingView(Model model, @CurrentUser final Member member) {
 		model.addAttribute(member);
 		model.addAttribute("passwordForm", new PasswordFormDto());
 		return ACCOUNTS_PASSWORD_VIEW_NAME;
 	}
 
+	/**
+	 * 계정 비밀번호 변경 요청
+	 */
 	@PostMapping(ACCOUNTS_PASSWORD_VIEW_URL)
-	public String passwordSettingForm(@Valid @ModelAttribute("passwordForm") PasswordFormDto passwordForm, Errors errors,
-		Model model, @CurrentUser Member member, RedirectAttributes redirectAttributes) {
+	public String passwordSettingForm(@Valid @ModelAttribute("passwordForm") final PasswordFormDto passwordForm,
+		Errors errors,
+		Model model, @CurrentUser final Member member, RedirectAttributes redirectAttributes) {
 		if (errors.hasErrors() || !passwordForm.getNewPassword().equals(passwordForm.getNewPasswordConfirm())) {
 			model.addAttribute(member);
 			return ACCOUNTS_PASSWORD_VIEW_NAME;
@@ -107,35 +122,45 @@ public class AccountsController {
 		model.addAttribute(member);
 		model.addAttribute("passwordForm", new PasswordFormDto());
 		redirectAttributes.addFlashAttribute("message", "비밀번호가 정상적으로 변경되었습니다.");
-		return "redirect:" + ACCOUNTS_PASSWORD_VIEW_URL;
+		return "redirect:/accounts" + ACCOUNTS_PASSWORD_VIEW_URL;
 	}
 
+	/**
+	 * 계정 설정 뷰
+	 */
 	@GetMapping(ACCOUNTS_SETTING_VIEW_URL)
-	public String accountsSettingView(Model model, @CurrentUser Member member) {
+	public String accountsSettingView(Model model, @CurrentUser final Member member) {
 		model.addAttribute(member);
 		return ACCOUNTS_SETTING_VIEW_NAME;
 	}
 
+	/**
+	 * (ADMIN)계정이 업로드한 게시글 뷰
+	 * 쿼리 발생 횟수 : 2 - 게시글 조회 쿼리 + 카운트 쿼리
+	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping(ACCOUNTS_MY_UPLOAD_VIEW_URL)
-	public String myUploadPostsView(@CurrentUser Member member, Model model,
-		@PageableDefault(size = 10, page = 0, sort = "uploadDateTime", direction = Sort.Direction.DESC) Pageable pageable) {
-		Page<Post> postPage = postService.getByManager(member, pageable);
+	public String myUploadPostsView(@CurrentUser final Member member, Model model,
+		@PageableDefault(size = 10, page = 0, sort = "uploadDateTime", direction = Sort.Direction.DESC) final Pageable pageable) {
+		Page<MyUploadPostResponseDto> postPage = postService.getByManager(member, pageable);
 
 		model.addAttribute(member);
 		model.addAttribute("postPage", postPage);
-		model.addAttribute("sortProperty", pageable.getSort().toString().contains("uploadDateTime") ? "uploadDateTime" : "createdDateTime");
+		model.addAttribute("sortProperty",
+			pageable.getSort().toString().contains("uploadDateTime") ? "uploadDateTime" : "createdDateTime");
 		return ACCOUNTS_MY_UPLOAD_VIEW_NAME;
 	}
 
+	/**
+	 * (ADMIN) 카테고리 설정 뷰
+	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping(ACCOUNTS_CATEGORY_VIEW_URL)
-	public String myUploadPostsView(@CurrentUser Member member, Model model) {
+	public String categorySettingsView(@CurrentUser final Member member, Model model) {
 		List<Category> categoryList = categoryRepository.findAll();
 		model.addAttribute("categoryList", categoryList);
 		model.addAttribute(member);
 		return ACCOUNTS_CATEGORY_VIEW_NAME;
 	}
-
 
 }

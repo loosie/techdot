@@ -37,13 +37,21 @@ public class MemberService {
 	private final TemplateEngine templateEngine;
 	private final AppProperties appProperties;
 
-	public Member save(JoinFormDto joinForm) {
+	/**
+	 * 회원가입
+	 * -> 멤버 저장하기
+	 * -> 인증 메일 전송
+	 */
+	public Member save(final JoinFormDto joinForm) {
 		Member newMember = saveMember(joinForm);
 		sendConfirmEmail(newMember);
 		return newMember;
 	}
 
-	public void sendConfirmEmail(Member newMember) {
+	/**
+	 * 인증 메일 전송하기
+	 */
+	public void sendConfirmEmail(final Member newMember) {
 		Context context = new Context();
 		context.setVariable("link", "/confirm-email?token=" + newMember.getEmailCheckToken() + "&email=" + newMember.getEmail());
 		context.setVariable("nickname", newMember.getNickname());
@@ -62,7 +70,10 @@ public class MemberService {
 		emailService.sendEmail(emailMessageDto);
 	}
 
-	private Member saveMember(JoinFormDto joinForm) {
+	/**
+	 * 멤버 저장하기
+	 */
+	private Member saveMember(final JoinFormDto joinForm) {
 		Member member = Member.builder()
 			.email(joinForm.getEmail())
 			.nickname(joinForm.getNickname())
@@ -73,12 +84,20 @@ public class MemberService {
 		return memberRepository.save(member);
 	}
 
-	public void completeLogin(Member member) {
+	/**
+	 * 로그인 완료
+	 * -> 이메일 인증 완료 처리
+	 * -> SecurityContextHolder에 멤버 세션 저장하여 최종 로그인 처리
+	 */
+	public void completeLogin(final Member member) {
 		member.completeEmailVerified();
 		login(member);
 	}
 
-	public void login(Member member) {
+	/**
+	 * Security 세션에 멤버 정보 등록하여 로그인
+	 */
+	public void login(final Member member) {
 		Collection<GrantedAuthority> authorities = new ArrayList<>();
 		member.getRoles().stream().forEach(role -> authorities.add((GrantedAuthority)() -> role.toString()));
 
@@ -89,17 +108,27 @@ public class MemberService {
 		SecurityContextHolder.getContext().setAuthentication(token);
 	}
 
-	public void updateProfile(Member member, ProfileFormDto profileForm) {
+	/**
+	 * 멤버 프로필 업데이트
+	 * nickname, bio, profileImage
+	 */
+	public void updateProfile(final Member member, final ProfileFormDto profileForm) {
 		member.updateProfile(profileForm);
 		memberRepository.save(member);
 	}
 
-	public void updatePassword(Member member, PasswordFormDto passwordForm) {
+	/**
+	 * 멤버 비밀번호 업데이트
+	 */
+	public void updatePassword(final Member member, final PasswordFormDto passwordForm) {
 		member.updatePassword(passwordEncoder.encode(passwordForm.getNewPassword()));
 		memberRepository.save(member);
 	}
 
-	public void sendLoginLink(Member member) {
+	/**
+	 * 로그인 링크 이메일로 전송하기
+	 */
+	public void sendLoginLink(final Member member) {
 		Context context = new Context();
 		context.setVariable("link", "/login-by-email?token=" + member.getEmailCheckToken() + "&email=" + member.getEmail());
 		context.setVariable("nickname", member.getNickname());
@@ -117,7 +146,10 @@ public class MemberService {
 		emailService.sendEmail(emailMessageDto);
 	}
 
-	public Member findByEmail(String email, String redirectView) {
+	/**
+	 * email로 멤버 조회하기
+	 */
+	public Member getByEmail(final String email, final String redirectView) {
 		Optional<Member> opMember = memberRepository.findByEmail(email);
 		if (opMember.isEmpty()) {
 			throw new UserNotExistedException(email + "은 유효한 이메일이 아닙니다.", redirectView);

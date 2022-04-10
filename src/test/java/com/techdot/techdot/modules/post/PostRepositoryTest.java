@@ -8,18 +8,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.techdot.techdot.infra.AbstractContainerBaseTest;
+import com.techdot.techdot.infra.TCDataJpaTest;
 import com.techdot.techdot.modules.category.Category;
-import com.techdot.techdot.modules.category.CategoryName;
 import com.techdot.techdot.modules.category.CategoryRepository;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.member.MemberRepository;
+import com.techdot.techdot.modules.post.dto.MyUploadPostResponseDto;
 
-@DataJpaTest
-class PostRepositoryTest {
+@TCDataJpaTest
+class PostRepositoryTest extends AbstractContainerBaseTest {
 
 	@Autowired
 	private PostRepository postRepository;
@@ -32,7 +33,7 @@ class PostRepositoryTest {
 	private Category category;
 
 	@BeforeEach
-	void setUp(){
+	void setUp() {
 		//given
 		member = Member.builder()
 			.nickname("loosie")
@@ -41,15 +42,12 @@ class PostRepositoryTest {
 			.emailVerified(false)
 			.build();
 
-		category = Category.builder()
-			.name(CategoryName.CS)
-			.build();
+		category = Category.builder().name("자바").title("Java title").viewName("java").build();
 
 		// when
 		memberRepository.save(member);
 		categoryRepository.save(category);
 	}
-
 
 	@DisplayName("게시글 생성하기 - 성공")
 	@Test
@@ -98,7 +96,7 @@ class PostRepositoryTest {
 
 	@DisplayName("게시글 Manager정보로 조회하기")
 	@Test
-	void post_findByManager(){
+	void post_findByManager() {
 		Post post = Post.builder()
 			.title("title1")
 			.content("content.content...")
@@ -114,9 +112,11 @@ class PostRepositoryTest {
 		Post savePost = postRepository.save(post);
 
 		// then
-		Page<Post> byManager = postRepository.findByManager(member, Pageable.ofSize(1));
-		assertEquals(byManager.getContent().get(0).getId(), savePost.getId());
-
+		Page<MyUploadPostResponseDto> byManager = postRepository.getByManager(member, Pageable.ofSize(1));
+		MyUploadPostResponseDto result = byManager.getContent().get(0);
+		assertEquals(result.getId(), savePost.getId());
+		assertEquals(result.getTitle(), "title1");
+		assertEquals(result.getWriter(), "naver");
 	}
 
 }

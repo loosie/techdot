@@ -17,6 +17,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
-@ContextConfiguration(initializers = {MySqlContainerInitializer.class})
 public @interface MockMvcTest {
 }

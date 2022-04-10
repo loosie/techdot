@@ -8,10 +8,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import com.techdot.techdot.infra.AbstractContainerBaseTest;
+import com.techdot.techdot.infra.TCDataJpaTest;
 import com.techdot.techdot.modules.category.Category;
-import com.techdot.techdot.modules.category.CategoryName;
 import com.techdot.techdot.modules.category.CategoryRepository;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.post.Post;
@@ -19,8 +19,8 @@ import com.techdot.techdot.modules.post.PostRepository;
 import com.techdot.techdot.modules.post.PostType;
 import com.techdot.techdot.modules.member.MemberRepository;
 
-@DataJpaTest
-class LikeRepositoryTest {
+@TCDataJpaTest
+class LikeRepositoryTest extends AbstractContainerBaseTest {
 
 	@Autowired
 	private LikeRepository likeRepository;
@@ -36,7 +36,7 @@ class LikeRepositoryTest {
 	private Post post;
 
 	@BeforeEach
-	void setUp(){
+	void setUp() {
 		member = Member.builder()
 			.nickname("loosie")
 			.password("12345678")
@@ -45,7 +45,9 @@ class LikeRepositoryTest {
 			.build();
 
 		category = Category.builder()
-			.name(CategoryName.CS)
+			.viewName("java")
+			.title("자바")
+			.name("Java")
 			.build();
 
 		post = Post.builder()
@@ -66,7 +68,7 @@ class LikeRepositoryTest {
 
 	@DisplayName("좋아요 생성하기 - 성공")
 	@Test
-	void like_create_success(){
+	void like_create_success() {
 		Like like = Like.builder()
 			.member(member)
 			.post(post)
@@ -80,7 +82,7 @@ class LikeRepositoryTest {
 
 	@DisplayName("멤버와 게시글로 좋아요 조회하기")
 	@Test
-	void like_findByMemberAndPost(){
+	void like_findByMemberAndPost() {
 		Like like = Like.builder()
 			.member(member)
 			.post(post)
@@ -94,6 +96,5 @@ class LikeRepositoryTest {
 		assertEquals(findLike.getPost(), post);
 		assertEquals(findLike.getMember(), member);
 	}
-
 
 }

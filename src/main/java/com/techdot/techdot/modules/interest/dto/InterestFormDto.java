@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class InterestFormDto {
-	private String categoryName;
+	private String categoryViewName;
 }

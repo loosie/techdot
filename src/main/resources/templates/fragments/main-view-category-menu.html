@@ -2,19 +2,19 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.com"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<div th:fragment="category-menu (categoryMenu)" class="list-group justify-content-center nav main-right-nav-tabs">
+<div th:fragment="category-menu (categoryMenuName)" class="list-group justify-content-center nav main-right-nav-tabs">
     <a class="list-group-item list-group-item-action main-right-nav-link" href="#"
-       th:classappend="${categoryMenu == 'All'}? 'active active-box'" th:href="@{'/'}">
+       th:classappend="${categoryMenuName == 'All'}? 'active active-box'" th:href="@{'/'}">
         New!
     </a>
     <a sec:authorize="isAuthenticated()" class="list-group-item list-group-item-action main-right-nav-link" href="#"
-       th:classappend="${categoryMenu == 'MyInterests'}? 'active active-box'" th:href="@{'/me/interests'}">
+       th:classappend="${categoryMenuName == 'MyInterests'}? 'active active-box'" th:href="@{'/me/interests'}">
         관심 카테고리
     </a>
 
-    <a th:each="category : ${T(com.techdot.techdot.modules.category.CategoryName).values()}" class="list-group-item list-group-item-action main-right-nav-link" href="#"
-       th:text="${category.getDisplayValue()}"
-       th:classappend="${categoryMenu == category.name}? 'active active-box'" th:href="@{'/category/' + ${category.getViewName()}}">
+    <a th:each="category : ${categoryList}" class="list-group-item list-group-item-action main-right-nav-link" href="#"
+       th:text="${category.name}"
+       th:classappend="${categoryMenuName == category.viewName}? 'active active-box'" th:href="@{'/category/' + ${category.viewName}}">
     </a>
 
 </div>

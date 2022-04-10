@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.techdot.techdot.modules.category.Category;
-import com.techdot.techdot.modules.category.CategoryName;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.interest.dto.InterestCategoryResponseDto;
 import com.techdot.techdot.modules.category.CategoryRepository;
@@ -23,10 +22,13 @@ public class InterestService {
 	private final CategoryRepository categoryRepository;
 	private final InterestRepository interestRepository;
 
-	public void add(Long memberId, String categoryName) {
+	/**
+	 * 멤버 관심 카테고리 등록하기
+	 */
+	public void add(final Long memberId, final String categoryViewName) {
 		// 엔티티 조회
-		Member findMember = memberRepository.findById(memberId).get(); // 이미 인증된 객체
-		Category findCategory = categoryRepository.findByName(CategoryName.valueOf(categoryName));
+		Member findMember = memberRepository.getById(memberId);
+		Category findCategory = categoryRepository.getByViewName(categoryViewName);
 
 		if(interestRepository.findByMemberAndCategory(findMember, findCategory).isPresent()){
 			throw new RuntimeException("이미 관심 카테고리에 등록한 카테고리입니다.");
@@ -41,10 +43,13 @@ public class InterestService {
 		interestRepository.save(interest);
 	}
 
-	public void remove(Long memberId, String categoryName) {
+	/**
+	 * 멤버 관심 카테고리 제거하기
+	 */
+	public void remove(final Long memberId, final String categoryViewName) {
 		// 엔티티 조회
-		Member findMember = memberRepository.findById(memberId).get(); // 이미 인증된 객체
-		Category findCategory = categoryRepository.findByName(CategoryName.valueOf(categoryName));
+		Member findMember = memberRepository.getById(memberId);
+		Category findCategory = categoryRepository.getByViewName(categoryViewName);
 
 		Optional<Interest> interest = interestRepository.findByMemberAndCategory(findMember, findCategory);
 		if(interest.isEmpty()){
@@ -54,7 +59,7 @@ public class InterestService {
 		interestRepository.delete(interest.get());
 	}
 
-	public List<InterestCategoryResponseDto>  getInterestCategoriesByMember(Long memberId) {
+	public List<InterestCategoryResponseDto>  getInterestCategoriesByMember(final Long memberId) {
 		List<InterestCategoryResponseDto> allCategories = interestRepository.findAllCategoriesByMemberId(
 			memberId);
 		return allCategories;

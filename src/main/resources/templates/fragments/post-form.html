@@ -61,12 +61,14 @@
                     </div>
 
                     <div class="form-group col-md-4">
-                        <label for="category" style="width: 100%">게시글 카테고리</label>
-                        <select th:if="${requestUrl}=='/new-post'" id="category" class="form-select" style="width: 50%" th:field="*{categoryName}" aria-label="post-category-select">
-                            <option th:each="categoryOpt : ${T(com.techdot.techdot.modules.category.CategoryName).values()}"
-                                    th:value="${categoryOpt}" th:text="${categoryOpt.getDisplayValue()}"></option>
+                        <label for="category" style="width: 100%">카테고리 선택</label>
+                        <select id="category" class="form-select" style="width: 50%" th:field="*{categoryName}" aria-label="post-category-select">
+                            <option th:each="category : ${categoryList}"
+                                    th:selected="${category.viewName} == *{categoryName}"
+                                    th:value="${category.viewName}"
+                                    th:text="${category.viewName}">
+                            </option>
                         </select>
-                        <input th:if="${requestUrl}!='/new-post'" id="category-readonly" class="form-select" style="width: 50%" th:field="*{categoryName_readOnly}" readonly>
                     </div>
 
                     <div class="form-group col-md-4">
@@ -76,7 +78,7 @@
                     </div>
                 </div>
                 <div class="form-group mb-4">
-                    <input id="beforeLink" type="hidden" th:field="*{beforeLink}" class="form-control" />
+                    <input id="curLink" type="hidden" th:field="*{curLink}" class="form-control" />
                     <label for="link">게시글 링크</label>
                     <input id="link" type="text" th:field="*{link}" class="form-control"
                            placeholder="링크를 입력하세요" aria-describedby="linkHelp" required>

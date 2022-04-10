@@ -4,18 +4,18 @@ import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 
-import com.techdot.techdot.modules.category.CategoryName;
 import com.techdot.techdot.modules.post.dto.PostQueryResponseDto;
 
 public interface PostRepositoryExtension {
 
-	List<PostQueryResponseDto> findAllDto(Long memberId, Pageable pageable);
+	List<PostQueryResponseDto> findAllDto(final Long memberId, final Pageable pageable);
 
-	List<PostQueryResponseDto> findAllDtoByKeyword(Long memberId, String keyword, Pageable pageable);
+	List<PostQueryResponseDto> findAllDtoByKeyword(final Long memberId, final String keyword, final Pageable pageable);
 
-	List<PostQueryResponseDto> findAllDtoByCategoryName(Long memberId, CategoryName categoryName, Pageable pageable);
+	List<PostQueryResponseDto> findAllDtoByCategoryViewName(final Long memberId, final String categoryViewName, final Pageable pageable);
 
-	List<PostQueryResponseDto> findAllDtoByLikesMemberId(Long memberId, Pageable pageable);
+	List<PostQueryResponseDto> findAllDtoByLikesMemberId(final Long memberId, final Pageable pageable);
 
-	List<PostQueryResponseDto> findAllDtoByInterestsMemberId(Long memberId, Pageable pageable);
+	List<PostQueryResponseDto> findAllDtoByInterestsMemberId(final Long memberId, final Pageable pageable);
+
 }

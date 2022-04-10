@@ -13,7 +13,7 @@ import org.springframework.util.Assert;
 
 import com.techdot.techdot.modules.category.Category;
 import com.techdot.techdot.modules.member.Member;
-import com.techdot.techdot.infra.BaseEntity;
+import com.techdot.techdot.infra.domain.BaseEntity;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -40,7 +40,7 @@ public class Interest extends BaseEntity {
 	private Member member;
 
 	@Builder
-	public Interest(Member member, Category category) {
+	public Interest(final Member member, final Category category) {
 		Assert.notNull(member, "interest.member 값이 존재하지 않습니다.");
 		Assert.notNull(category, "interest.category 값이 존재하지 않습니다.");
 

@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.techdot.techdot.modules.category.Category;
-import com.techdot.techdot.modules.category.CategoryName;
 import com.techdot.techdot.modules.category.CategoryRepository;
 import com.techdot.techdot.modules.member.Member;
-import com.techdot.techdot.modules.post.dto.PostQueryResponseDto;
-import com.techdot.techdot.modules.post.dto.PostFormDto;
 import com.techdot.techdot.modules.member.MemberRepository;
+import com.techdot.techdot.modules.post.dto.MyUploadPostResponseDto;
+import com.techdot.techdot.modules.post.dto.PostFormDto;
+import com.techdot.techdot.modules.post.dto.PostQueryResponseDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,15 +25,13 @@ public class PostService {
 	private final MemberRepository memberRepository;
 	private final CategoryRepository categoryRepository;
 
-	// 쿼리 발생 횟수 : 4
-	// validator url 중복 조회 쿼리
-	// manger 조회 쿼리
-	// category 조회 쿼리
-	// post insert 쿼리
-	public void save(PostFormDto postForm, Long memberId) {
+	/**
+	 * 게시글 저장
+	 */
+	public void save(final PostFormDto postForm, final Long memberId) {
 		// 엔티티 조회
 		Member manager = memberRepository.findById(memberId).get(); // 이미 인증된 객체
-		Category category = categoryRepository.findByName(postForm.getCategoryName());
+		Category category = categoryRepository.getByViewName(postForm.getCategoryName());
 
 		// 게시글 생성
 		Post newPost = Post.builder()
@@ -52,51 +50,71 @@ public class PostService {
 		postRepository.save(newPost);
 	}
 
-	public Post getPostById(Long id) {
-		return postRepository.getById(id);
-	}
+	/**
+	 * 게시글 업데이트 하기
+	 */
+	public void update(final Long postId, final PostFormDto postForm) {
+		Post post = postRepository.findById(postId).orElseThrow(() -> new NullPointerException("존재하지 않는 게시글 입니다."));
+		Category category = categoryRepository.getByViewName(postForm.getCategoryName());
 
-	public void updatePost(Long postId, PostFormDto postForm) {
-		Post post = postRepository.findById(postId).orElseThrow(NullPointerException::new);
-		post.update(postForm);
+		post.update(postForm, category);
+
 		postRepository.save(post);
 	}
 
-	public Page<Post> getByManager(Member member, Pageable pageable) {
-		return postRepository.findByManager(member, pageable);
+	/**
+	 * 게시글 id로 조회하기
+	 */
+	public Post getById(final Long id) {
+		return postRepository.findById(id).orElseThrow(() -> new NullPointerException("존재하지 않는 게시글 입니다."));
 	}
 
-	// 카테고리별로 게시글 가져오기 (만약 멤버가 좋아하면 멤버가 좋아요 누른 게시글 정보도 가져오기)
-	// post 조회(if(Member) 좋아요 여부) 쿼리 1번
-	public List<PostQueryResponseDto> getPostsByCategoryNameIfMemberWithMemberLikes(Member member, String categoryName,
-		Pageable pageable) {
+	/**
+	 * 게시글 Manager로 조회하기
+	 */
+	public Page<MyUploadPostResponseDto> getByManager(final Member member, final Pageable pageable) {
+		return postRepository.getByManager(member, pageable);
+	}
+
+	/**
+	 * 카테고리별로 게시글 가져오기
+	 */
+	public List<PostQueryResponseDto> getPostsByCategoryNameIfMemberWithMemberLikes(final Member member,
+		final String categoryViewName,
+		final Pageable pageable) {
 		Long memberId = -1L;
-		if(member != null){
+		if (member != null) {
 			memberId = member.getId();
 		}
 
-		if (categoryName.equals("All")) {
+		if (categoryViewName.equals("All")) {
 			return postRepository.findAllDto(memberId, pageable);
 		}
-		return postRepository.findAllDtoByCategoryName(memberId, CategoryName.valueOf(categoryName), pageable);
+		return postRepository.findAllDtoByCategoryViewName(memberId, categoryViewName, pageable);
 	}
 
-	// 멤버가 좋아요 누른 게시글 가져오기
-	public List<PostQueryResponseDto> getPostsByLikesMemberId(Long memberId, Pageable pageable) {
+	/**
+	 * 멤버가 좋아요 누른 게시글 가져오기
+	 */
+	public List<PostQueryResponseDto> getPostsByLikesMemberId(final Long memberId, final Pageable pageable) {
 		List<PostQueryResponseDto> allLikePosts = postRepository.findAllDtoByLikesMemberId(memberId, pageable);
 		return allLikePosts;
 	}
 
-	// 멤버의 관심 카테고리 게시글 가져오기
-	public List<PostQueryResponseDto> getPostsByInterestsMemberId(Long memberId, Pageable pageable) {
+	/**
+	 * 멤버의 관심 카테고리 게시글 가져오기
+	 */
+	public List<PostQueryResponseDto> getPostsByInterestsMemberId(final Long memberId, final Pageable pageable) {
 		List<PostQueryResponseDto> allInterestPosts = postRepository.findAllDtoByInterestsMemberId(memberId, pageable);
 		return allInterestPosts;
 	}
 
-	// keyword 검색
-	public List<PostQueryResponseDto> getPostsByKeyword(Member member, String keyword, Pageable pageable) {
+	/**
+	 * {keyword}로 게시글 검색하기
+	 */
+	public List<PostQueryResponseDto> getPostsByKeyword(final Member member, String keyword, final Pageable pageable) {
 		Long memberId = -1L;
-		if(member != null){
+		if (member != null) {
 			memberId = member.getId();
 		}
 		return postRepository.findAllDtoByKeyword(memberId, keyword, pageable);

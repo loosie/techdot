@@ -1,4 +1,4 @@
-package com.techdot.techdot.infra;
+package com.techdot.techdot.infra.domain;
 
 import java.time.LocalDateTime;
 

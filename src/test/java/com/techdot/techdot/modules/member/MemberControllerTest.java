@@ -1,5 +1,6 @@
 package com.techdot.techdot.modules.member;
 
+import static com.techdot.techdot.infra.Constant.*;
 import static com.techdot.techdot.modules.member.MemberController.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,13 +19,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.techdot.techdot.infra.AbstractContainerBaseTest;
 import com.techdot.techdot.infra.MockMvcTest;
 import com.techdot.techdot.infra.mail.EmailMessageDto;
 import com.techdot.techdot.infra.mail.EmailService;
 import com.techdot.techdot.modules.member.auth.WithCurrentUser;
 
 @MockMvcTest
-class MemberControllerTest {
+class MemberControllerTest extends AbstractContainerBaseTest {
 
 	@Autowired private MockMvc mockMvc;
 	@Autowired private MemberRepository memberRepository;
@@ -173,7 +175,7 @@ class MemberControllerTest {
 
 	}
 
-	@WithCurrentUser(value = TEST_EMAIL, role="MEMBER")
+	@WithCurrentUser(value = TEST_EMAIL, role= MEMBER)
 	@DisplayName("내가 좋아요한 게시글 뷰")
 	@Test
 	void profileForm() throws Exception {

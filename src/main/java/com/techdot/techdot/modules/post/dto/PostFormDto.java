@@ -8,7 +8,6 @@ import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.techdot.techdot.modules.category.CategoryName;
 import com.techdot.techdot.modules.post.Post;
 import com.techdot.techdot.modules.post.PostType;
 
@@ -27,7 +26,7 @@ public class PostFormDto {
 	@Length(max = 200)
 	private String content;
 
-	private String beforeLink;
+	private String curLink;
 
 	@NotBlank
 	@Pattern(regexp = "https?://(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)", message = "올바른 입력 형태가 아닙니다.")
@@ -42,20 +41,18 @@ public class PostFormDto {
 
 	private PostType type;
 
-	private CategoryName categoryName;
-
-	private String categoryName_readOnly;
+	private String categoryName;
 
 	private String thumbnailImage;
 
 	public PostFormDto(Post post) {
 		this.title = post.getTitle();
 		this.content = post.getContent();
-		this.beforeLink = post.getLink();
+		this.curLink = post.getLink();
 		this.link = post.getLink();
 		this.writer = post.getWriter();
 		this.type = post.getType();
-		this.categoryName_readOnly = post.getCategory().getName().getDisplayValue();
+		this.categoryName = post.getCategory().getViewName();
 		this.thumbnailImage = post.getThumbnailImage();
 		this.uploadDateTime = post.getUploadDateTime();
 	}

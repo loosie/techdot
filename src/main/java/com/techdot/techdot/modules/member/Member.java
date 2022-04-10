@@ -18,7 +18,7 @@ import javax.persistence.Lob;
 
 import org.springframework.util.Assert;
 
-import com.techdot.techdot.infra.BaseEntity;
+import com.techdot.techdot.infra.domain.BaseEntity;
 import com.techdot.techdot.modules.member.dto.ProfileFormDto;
 
 import lombok.Builder;
@@ -29,7 +29,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-@EqualsAndHashCode(of ="id", callSuper = false)
+@EqualsAndHashCode(of = "id", callSuper = false)
 public class Member extends BaseEntity {
 
 	@Id
@@ -65,7 +65,8 @@ public class Member extends BaseEntity {
 	private String profileImage;
 
 	@Builder
-	public Member(Long id, String email, String nickname, String password, Boolean emailVerified) {
+	public Member(final Long id, final String email, final String nickname, final String password,
+		final Boolean emailVerified) {
 		Assert.notNull(email, "member.email 값이 존재하지 않습니다.");
 		Assert.notNull(nickname, "member.nickname 값이 존재하지 않습니다.");
 		Assert.notNull(password, "member.password 값이 존재하지 않습니다.");
@@ -95,7 +96,7 @@ public class Member extends BaseEntity {
 		this.emailVerified = true;
 	}
 
-	private void updateRoleToMember(){
+	private void updateRoleToMember() {
 		this.roles.add(Role.ROLE_MEMBER);
 	}
 
@@ -105,15 +106,15 @@ public class Member extends BaseEntity {
 
 	public boolean canSendConfirmEmail() {
 		// 5초에 1번씩 총 5회 전송 가능
-		if(emailSendTime == 1 ||
-			(emailSendTime < 5 && this.emailCheckTokenSendAt.isBefore(LocalDateTime.now().minusSeconds(5)))){
+		if (emailSendTime == 1 ||
+			(emailSendTime < 5 && this.emailCheckTokenSendAt.isBefore(LocalDateTime.now().minusSeconds(5)))) {
 			this.emailCheckTokenSendAt = LocalDateTime.now();
 			this.emailSendTime += 1;
 			return true;
 		}
 
 		// 5회 경과시 3분 지나야 재전송 가능
-		if(this.emailCheckTokenSendAt.isBefore(LocalDateTime.now().minusMinutes(3))){
+		if (this.emailCheckTokenSendAt.isBefore(LocalDateTime.now().minusMinutes(3))) {
 			this.emailCheckTokenSendAt = LocalDateTime.now();
 			this.emailSendTime = 1;
 			return true;
@@ -122,22 +123,20 @@ public class Member extends BaseEntity {
 		return false;
 	}
 
-	public void updateProfile(ProfileFormDto profileForm) {
+	public void updateProfile(final ProfileFormDto profileForm) {
 		this.nickname = profileForm.getNewNickname();
 		this.bio = profileForm.getBio();
 		this.profileImage = profileForm.getProfileImage();
 		updateDateTime();
 	}
 
-	public void updatePassword(String newPassword) {
+	public void updatePassword(final String newPassword) {
 		this.password = newPassword;
 		updateDateTime();
 	}
 
-
-	public boolean isValidToken(String token) {
+	public boolean isValidToken(final String token) {
 		return this.emailCheckToken.equals(token);
 	}
-
 
 }

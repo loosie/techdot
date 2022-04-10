@@ -14,7 +14,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.techdot.techdot.modules.category.Category;
-import com.techdot.techdot.modules.category.CategoryName;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.post.Post;
 import com.techdot.techdot.modules.post.PostType;
@@ -44,8 +43,10 @@ class LikeServiceTest {
 			.emailVerified(false)
 			.build();
 
-		Category category = Category.builder()
-			.name(CategoryName.CS)
+		Category category =  Category.builder()
+			.viewName("java")
+			.title("자바")
+			.name("Java")
 			.build();
 
 		post = Post.builder()

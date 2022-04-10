@@ -9,11 +9,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.PageRequest;
 
+import com.techdot.techdot.infra.AbstractContainerBaseTest;
+import com.techdot.techdot.infra.TCDataJpaTest;
 import com.techdot.techdot.modules.category.Category;
-import com.techdot.techdot.modules.category.CategoryName;
 import com.techdot.techdot.modules.category.CategoryRepository;
 import com.techdot.techdot.modules.interest.Interest;
 import com.techdot.techdot.modules.like.Like;
@@ -23,8 +23,8 @@ import com.techdot.techdot.modules.member.MemberRepository;
 import com.techdot.techdot.modules.interest.InterestRepository;
 import com.techdot.techdot.modules.like.LikeRepository;
 
-@DataJpaTest
-class PostRepositoryExtensionTest {
+@TCDataJpaTest
+class PostRepositoryExtensionTest extends AbstractContainerBaseTest {
 
 	@Autowired
 	private PostRepository postRepository;
@@ -50,10 +50,7 @@ class PostRepositoryExtensionTest {
 			.email("jong9712@naver.com")
 			.emailVerified(true)
 			.build();
-
-		category = Category.builder()
-			.name(CategoryName.CS)
-			.build();
+		category = Category.builder().name("자바").title("Java title").viewName("java").build();
 		post = Post.builder()
 			.title("title1")
 			.content("content.content...")
@@ -106,7 +103,8 @@ class PostRepositoryExtensionTest {
 		likeRepository.save(Like.builder().member(member).post(post).build());
 
 		// when
-		List<PostQueryResponseDto> result = postRepository.findAllDtoByLikesMemberId(member.getId(), PageRequest.of(1, 12));
+		List<PostQueryResponseDto> result = postRepository.findAllDtoByLikesMemberId(member.getId(),
+			PageRequest.of(1, 12));
 		PostQueryResponseDto post = result.get(0);
 
 		// then
@@ -123,12 +121,13 @@ class PostRepositoryExtensionTest {
 		interestRepository.save(Interest.builder().member(member).category(category).build());
 
 		// when
-		List<PostQueryResponseDto> result = postRepository.findAllDtoByInterestsMemberId(member.getId(), PageRequest.of(1, 12));
+		List<PostQueryResponseDto> result = postRepository.findAllDtoByInterestsMemberId(member.getId(),
+			PageRequest.of(1, 12));
 		PostQueryResponseDto post = result.get(0);
 
 		// then
 		assertTrue(result.size() > 0);
-		assertEquals(post.getCategoryName(), category.getName().toString());
+		assertEquals(post.getCategoryDisplayName(), category.getName());
 		assertEquals(post.getTitle(), "title1");
 		assertEquals(post.getType(), PostType.BLOG);
 	}
@@ -154,7 +153,8 @@ class PostRepositoryExtensionTest {
 		likeRepository.save(Like.builder().member(member).post(post).build());
 
 		// when
-		List<PostQueryResponseDto> result = postRepository.findAllDtoByKeyword(member.getId(), "title", PageRequest.of(1, 12));
+		List<PostQueryResponseDto> result = postRepository.findAllDtoByKeyword(member.getId(), "title",
+			PageRequest.of(1, 12));
 		PostQueryResponseDto post = result.get(0);
 
 		// then

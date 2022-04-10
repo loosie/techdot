@@ -13,7 +13,7 @@ import org.springframework.util.Assert;
 
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.post.Post;
-import com.techdot.techdot.infra.BaseEntity;
+import com.techdot.techdot.infra.domain.BaseEntity;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -40,7 +40,7 @@ public class Like extends BaseEntity {
 	private Member member;
 
 	@Builder
-	public Like(Post post, Member member) {
+	public Like(final Post post, final Member member) {
 		Assert.notNull(post, "like.post 값이 존재하지 않습니다.");
 		Assert.notNull(member, "like.member 값이 존재하지 않습니다.");
 

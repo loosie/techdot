@@ -22,18 +22,31 @@ public class InterestController {
 
 	private final InterestService interestService;
 
+	/**
+	 * 관심 카테고리 추가 API
+	 * 쿼리 발생 횟수 : 4
+	 * 멤버 조회 + 카테고리 조회 + 관심 조회 + 관심 추가
+	 */
 	@PostMapping("/interest/add")
 	public ResponseEntity likeAdd(@CurrentUser Member member, @RequestBody InterestFormDto interestForm) {
-		interestService.add(member.getId(), interestForm.getCategoryName());
+		interestService.add(member.getId(), interestForm.getCategoryViewName());
 		return ResponseEntity.ok().build();
 	}
 
+	/**
+	 * 관심 카테고리 삭제 API
+	 * 쿼리 발생 횟수 : 4
+	 * 멤버 조회 + 카테고리 조회 + 관심 조회 + 관심 삭제
+	 */
 	@PostMapping("/interest/remove")
 	public ResponseEntity likeRemove(@CurrentUser Member member, @RequestBody InterestFormDto interestForm) {
-		interestService.remove(member.getId(), interestForm.getCategoryName());
+		interestService.remove(member.getId(), interestForm.getCategoryViewName());
 		return ResponseEntity.ok().build();
 	}
 
+	/**
+	 * 멤버 관심 카테고리 목록 조회 API
+	 */
 	@GetMapping("/interests/me/list")
 	public ResponseEntity<List<InterestCategoryResponseDto>> getInterestCategoriesByMember(@CurrentUser Member member) {
 		return new ResponseEntity<>(interestService.getInterestCategoriesByMember(member.getId()), HttpStatus.OK);
