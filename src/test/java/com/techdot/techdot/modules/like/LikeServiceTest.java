@@ -43,18 +43,11 @@ class LikeServiceTest {
 			.emailVerified(false)
 			.build();
 
-		Category category =  Category.builder()
-			.viewName("java")
-			.title("자바")
-			.name("Java")
-			.build();
-
 		post = Post.builder()
 			.title("title1")
 			.content("content.content...")
 			.link("http://~~~.com")
 			.type(PostType.BLOG)
-			.category(category)
 			.uploadDateTime(LocalDateTime.now())
 			.writer("naver")
 			.manager(member)

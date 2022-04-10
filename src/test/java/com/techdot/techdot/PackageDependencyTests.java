@@ -29,14 +29,14 @@ public class PackageDependencyTests {
 
 	@ArchTest
 	ArchRule postPackageRule = classes().that().resideInAPackage(POST)
-		.should().accessClassesThat().resideInAnyPackage(POST, CATEGORY, MEMBER)
+		.should().accessClassesThat().resideInAnyPackage(POST, LIKE, CATEGORY, MEMBER)
 		.andShould().onlyBeAccessed().byClassesThat()
 		.resideInAnyPackage(MAIN, POST, LIKE, MEMBER); // MEMBER (only ADMIN)
 
 	@ArchTest
 	ArchRule categoryPackageRule = classes().that().resideInAPackage(CATEGORY)
 		.should().accessClassesThat().resideInAnyPackage(CATEGORY, INTEREST)
-		.andShould().onlyBeAccessed().byClassesThat().resideInAnyPackage(MAIN, CATEGORY, POST, INTEREST, LIKE);
+		.andShould().onlyBeAccessed().byClassesThat().resideInAnyPackage(MAIN, CATEGORY, POST, INTEREST);
 
 	@ArchTest
 	ArchRule likePackageRule = classes().that().resideInAPackage(LIKE)
@@ -46,7 +46,7 @@ public class PackageDependencyTests {
 	@ArchTest
 	ArchRule interestPackageRule = classes().that().resideInAPackage(INTEREST)
 		.should().accessClassesThat().resideInAnyPackage(INTEREST, CATEGORY, MEMBER)
-		.andShould().onlyBeAccessed().byClassesThat().resideInAnyPackage(INTEREST, POST, CATEGORY); // POST 복잡한 r (findAllDtoByInterestsMemberId)
+		.andShould().onlyBeAccessed().byClassesThat().resideInAnyPackage(INTEREST, CATEGORY, POST); // POST 복잡한 r (findAllDtoByInterestsMemberId)
 
 	@ArchTest
 	ArchRule freeOfCycles = slices().matching("..techdot.(*)..")

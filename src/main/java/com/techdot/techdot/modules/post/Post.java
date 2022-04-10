@@ -84,7 +84,6 @@ public class Post extends BaseEntity {
 		Assert.notNull(writer, "post.writer 값이 존재하지 않습니다.");
 		Assert.notNull(type, "post.type 값이 존재하지 않습니다.");
 		Assert.notNull(manager, "post.member 값이 존재하지 않습니다.");
-		Assert.notNull(category, "post.category 값이 존재하지 않습니다.");
 		Assert.notNull(uploadDateTime, "post.uploadDateTime 값이 존재하지 않습니다.");
 
 		this.title = title;

@@ -34,8 +34,6 @@ class PostTest {
 		assertThrows(IllegalArgumentException.class, () -> Post.builder()
 			.manager(null).category(category).title(title1).content(content).link(link).writer(writer).type(blog).uploadDateTime(now).build());
 		assertThrows(IllegalArgumentException.class, () -> Post.builder()
-			.manager(member).category(null).title(title1).content(content).link(link).writer(writer).type(blog).uploadDateTime(now).build());
-		assertThrows(IllegalArgumentException.class, () -> Post.builder()
 			.manager(member).category(category).title(null).content(content).link(link).writer(writer).type(blog).uploadDateTime(now).build());
 		assertThrows(IllegalArgumentException.class, () -> Post.builder()
 			.manager(member).category(category).title(title1).content(null).link(link).writer(writer).type(blog).uploadDateTime(now).build());

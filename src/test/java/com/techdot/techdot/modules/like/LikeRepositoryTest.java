@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.techdot.techdot.infra.AbstractContainerBaseTest;
 import com.techdot.techdot.infra.TCDataJpaTest;
-import com.techdot.techdot.modules.category.Category;
-import com.techdot.techdot.modules.category.CategoryRepository;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.post.Post;
 import com.techdot.techdot.modules.post.PostRepository;
@@ -28,11 +26,8 @@ class LikeRepositoryTest extends AbstractContainerBaseTest {
 	private PostRepository postRepository;
 	@Autowired
 	private MemberRepository memberRepository;
-	@Autowired
-	private CategoryRepository categoryRepository;
 
 	private Member member;
-	private Category category;
 	private Post post;
 
 	@BeforeEach
@@ -44,25 +39,17 @@ class LikeRepositoryTest extends AbstractContainerBaseTest {
 			.emailVerified(false)
 			.build();
 
-		category = Category.builder()
-			.viewName("java")
-			.title("자바")
-			.name("Java")
-			.build();
-
 		post = Post.builder()
 			.title("title1")
 			.content("content.content...")
 			.link("http://~~~.com")
 			.type(PostType.BLOG)
-			.category(category)
 			.uploadDateTime(LocalDateTime.now())
 			.writer("naver")
 			.manager(member)
 			.build();
 
 		memberRepository.save(member);
-		categoryRepository.save(category);
 		postRepository.save(post);
 	}
 
