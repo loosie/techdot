@@ -4,11 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,15 +14,13 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import com.techdot.techdot.infra.config.AppProperties;
-import com.techdot.techdot.modules.interest.InterestRepository;
-import com.techdot.techdot.modules.like.LikeRepository;
+import com.techdot.techdot.infra.mail.EmailMessageDto;
+import com.techdot.techdot.infra.mail.EmailService;
+import com.techdot.techdot.modules.main.UserNotExistedException;
 import com.techdot.techdot.modules.member.auth.PrincipalDetails;
 import com.techdot.techdot.modules.member.dto.JoinFormDto;
 import com.techdot.techdot.modules.member.dto.PasswordFormDto;
 import com.techdot.techdot.modules.member.dto.ProfileFormDto;
-import com.techdot.techdot.modules.main.UserNotExistedException;
-import com.techdot.techdot.infra.mail.EmailMessageDto;
-import com.techdot.techdot.infra.mail.EmailService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,10 +36,6 @@ public class MemberService {
 	private final PasswordEncoder passwordEncoder;
 	private final TemplateEngine templateEngine;
 	private final AppProperties appProperties;
-
-	// delete
-	private final LikeRepository likeRepository;
-	private final InterestRepository interestRepository;
 
 	/**
 	 * 회원가입
@@ -170,11 +161,9 @@ public class MemberService {
 
 	/**
 	 * 회원 탈퇴
+	 * like, interest 관계 cascade.REMOVE
 	 */
 	public void withdrawal(Member member) {
-		Long id = member.getId();
-		likeRepository.deleteAllByMemberId(id);
-		interestRepository.deleteAllByMemberId(id);
 		memberRepository.delete(member);
 
 		SecurityContextHolder.getContext().setAuthentication(null);

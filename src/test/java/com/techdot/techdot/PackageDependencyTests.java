@@ -43,12 +43,12 @@ public class PackageDependencyTests {
 	@ArchTest
 	ArchRule likePackageRule = classes().that().resideInAPackage(LIKE)
 		.should().accessClassesThat().resideInAnyPackage(LIKE, MEMBER, POST)
-		.andShould().onlyBeAccessed().byClassesThat().resideInAnyPackage(LIKE, POST, MEMBER); // Member 회원 탈퇴
+		.andShould().onlyBeAccessed().byClassesThat().resideInAnyPackage(LIKE, POST); // Member 회원 탈퇴
 
 	@ArchTest
 	ArchRule interestPackageRule = classes().that().resideInAPackage(INTEREST)
 		.should().accessClassesThat().resideInAnyPackage(INTEREST, CATEGORY, MEMBER)
-		.andShould().onlyBeAccessed().byClassesThat().resideInAnyPackage(INTEREST, CATEGORY, POST, MEMBER); // POST 복잡한 r (findAllDtoByInterestsMemberId), Member 회원 탈퇴
+		.andShould().onlyBeAccessed().byClassesThat().resideInAnyPackage(INTEREST, CATEGORY, POST); // POST 복잡한 r (findAllDtoByInterestsMemberId), Member 회원 탈퇴
 
 	@ArchTest
 	ArchRule freeOfCycles = slices().matching("..techdot.(*)..")

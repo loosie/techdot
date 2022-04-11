@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 
 import org.springframework.util.Assert;
 
+import com.techdot.techdot.infra.domain.BaseEntity;
 import com.techdot.techdot.modules.category.dto.CategoryFormDto;
 import com.techdot.techdot.modules.interest.Interest;
 import com.techdot.techdot.modules.post.Post;
@@ -28,7 +29,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 @EqualsAndHashCode(of = "id")
-public class Category {
+public class Category extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,11 +59,13 @@ public class Category {
 		this.viewName = viewName;
 		this.name = name;
 		this.title = title;
+		createDateTime();
 	}
 
 	public void update(CategoryFormDto categoryForm) {
 		this.viewName = categoryForm.getViewName();
 		this.name = categoryForm.getName();
 		this.title = categoryForm.getTitle();
+		updateDateTime();
 	}
 }
