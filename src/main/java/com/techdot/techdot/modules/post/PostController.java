@@ -112,6 +112,16 @@ public class PostController {
 	}
 
 	/**
+	 * (ADMIN) {id}로 게시글 삭제 요청
+	 */
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PostMapping("/post/{id}/remove")
+	public String removePostForm(@PathVariable Long id) {
+		postService.remove(id);
+		return "redirect:/accounts/my-upload";
+	}
+
+	/**
 	 * 카테고리별 게시글 조회 API
 	 * // 로그인된 멤버일 경우, 멤버가 좋아요 누른 게시글인지 내부 쿼리로 조회
 	 * 쿼리 발생 횟수 : 1 - PostQueryResponseDto 조회 쿼리
