@@ -32,7 +32,6 @@
                     <th scope="col-2">카테고리 타이틀</th>
                     <th scope="col-2">카테고리 view</th>
                     <th scope="col-1">수정</th>
-                    <th scope="col-1">삭제</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -44,10 +43,6 @@
 
                     <td>
                         <a th:href="@{'/category/' + ${category.id} + '/edit'}" class="btn btn-light">수정</a>
-                    </td>
-                    <td>
-                        <!--                    TODO: 삭제 기능 추가 -->
-                        <a th:href="@{'/category/' + ${category.id} + '/remove'}" class="btn btn-danger">삭제</a>
                     </td>
                 </tr>
 

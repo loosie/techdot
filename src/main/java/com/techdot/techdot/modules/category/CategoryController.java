@@ -115,4 +115,14 @@ public class CategoryController {
 		redirectAttributes.addFlashAttribute("message", "카테고리가 정상적으로 수정되었습니다.");
 		return "redirect:/category/" + id + "/edit";
 	}
+
+	/**
+	 * (ADMIN) 카테고리 삭제
+	 */
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PostMapping("/category/{id}/remove")
+	public String removePostForm(@PathVariable Long id) {
+		categoryService.remove(id);
+		return "redirect:/accounts/settings/category";
+	}
 }

@@ -3,6 +3,7 @@ package com.techdot.techdot.modules.category;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,6 +17,7 @@ import org.springframework.util.Assert;
 
 import com.techdot.techdot.modules.category.dto.CategoryFormDto;
 import com.techdot.techdot.modules.interest.Interest;
+import com.techdot.techdot.modules.post.Post;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -41,8 +43,11 @@ public class Category {
 	@Column(nullable = false)
 	private String title;
 
-	@OneToMany(mappedBy = "category")
+	@OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
 	private List<Interest> interests = new ArrayList<>();
+
+	@OneToMany(mappedBy = "category")
+	private List<Post> posts = new ArrayList<>();
 
 	@Builder
 	public Category(final String viewName, final String name, final String title) {
