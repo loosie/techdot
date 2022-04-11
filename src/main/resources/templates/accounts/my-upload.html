@@ -66,12 +66,36 @@
                         <a th:href="@{'/post/' + ${post.id} + '/edit'}" class="btn btn-light">수정</a>
                     </td>
                     <td>
-                        <!--                    TODO: 삭제 기능 추가 -->
-                        <a th:href="@{'/post/' + ${post.id} + '/remove'}" class="btn btn-danger">삭제</a>
+                        <button class="btn btn-danger mr-2 pull-right" data-toggle="modal" data-target="#postRemove">
+                            삭제 </button>
                     </td>
+                    <!-- Modal -->
+                    <div class="modal fade" id="postRemove" tabindex="-1" aria-labelledby="postRemoveModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="postRemoveModalLabel">정말 삭제하시겠어요?</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p> 삭제하면 해당 게시글은 추후에 복구할 수 없습니다.</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                                    <form class="form-inline" action="#" th:action="@{'/post/' + ${post.id} + '/remove'}" method="post">
+                                        <button class="btn btn-danger" type="submit">삭제</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </tr>
                 </tbody>
             </table>
+
+
 
             <div class="row mt-5 justify-content-center">
                 <div class="col-8 py-4">
@@ -103,6 +127,8 @@
             </div>
         </div>
     </div>
+
+
 </div>
 
 <footer th:replace="fragments/footer.html :: footer"></footer>
