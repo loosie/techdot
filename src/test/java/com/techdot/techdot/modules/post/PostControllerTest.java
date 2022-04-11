@@ -127,6 +127,7 @@ class PostControllerTest extends AbstractContainerBaseTest {
 			.param("uploadDateTime", LocalDateTime.now().toString())
 			.with(csrf()))
 			.andExpect(status().is3xxRedirection())
+			.andExpect(redirectedUrl("/post/" + save.getId() + "/edit"))
 			.andExpect(flash().attributeExists("message"))
 			.andExpect(authenticated());
 
@@ -137,7 +138,7 @@ class PostControllerTest extends AbstractContainerBaseTest {
 
 	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
 	@Transactional
-	@DisplayName("게시글 수정하기 실패 - link 입력값 오류 ")
+	@DisplayName("게시글 수정하기 실패 - link 입력값 오류")
 	@Test
 	void updatePost_fail_notAuth() throws Exception {
 		// given
@@ -171,6 +172,36 @@ class PostControllerTest extends AbstractContainerBaseTest {
 			.andExpect(model().attributeExists("member"))
 			.andExpect(view().name("post/updateForm"))
 			.andExpect(authenticated());
+	}
+
+
+	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
+	@Transactional
+	@DisplayName("게시글 삭제하기 성공")
+	@Test
+	void removePost_success() throws Exception {
+		// given
+		Member member = memberRepository.findByEmail(TEST_EMAIL).get();
+		Post post = Post.builder()
+			.title("title")
+			.content("content")
+			.writer("google")
+			.link("http://google.com/")
+			.type(PostType.BLOG)
+			.uploadDateTime(LocalDateTime.now())
+			.manager(member)
+			.build();
+		Post save = postRepository.save(post);
+
+		// when, then
+		mockMvc.perform(post("/post/" + save.getId() + "/remove")
+			.with(csrf()))
+			.andExpect(status().is3xxRedirection())
+			.andExpect(redirectedUrl("/accounts/my-upload"))
+			.andExpect(authenticated());
+
+		// then
+		assertTrue(postRepository.findById(save.getId()).isEmpty());
 	}
 
 }

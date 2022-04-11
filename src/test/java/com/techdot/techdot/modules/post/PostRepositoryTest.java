@@ -119,4 +119,27 @@ class PostRepositoryTest extends AbstractContainerBaseTest {
 		assertEquals(result.getWriter(), "naver");
 	}
 
+	@DisplayName("게시글 id로 삭제하기")
+	@Test
+	void post_deleteById() {
+		// given
+		Post post = Post.builder()
+			.title("title1")
+			.content("content.content...")
+			.link("http://testlink.com")
+			.type(PostType.BLOG)
+			.category(category)
+			.writer("naver")
+			.uploadDateTime(LocalDateTime.now())
+			.manager(member)
+			.build();
+		Post savePost = postRepository.save(post);
+
+		// when
+		postRepository.deleteById(savePost.getId());
+
+		// then
+		assertTrue(postRepository.findById(savePost.getId()).isEmpty());
+	}
+
 }
