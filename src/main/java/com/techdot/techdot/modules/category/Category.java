@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 @EqualsAndHashCode(of = "id")
-public class Category extends BaseEntity {
+public class Category {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,13 +57,11 @@ public class Category extends BaseEntity {
 		this.viewName = viewName;
 		this.name = name;
 		this.title = title;
-		createDateTime();
 	}
 
 	public void update(CategoryFormDto categoryForm) {
 		this.viewName = categoryForm.getViewName();
 		this.name = categoryForm.getName();
 		this.title = categoryForm.getTitle();
-		updateDateTime();
 	}
 }
