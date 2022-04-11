@@ -7,21 +7,15 @@ import static org.springframework.security.test.web.servlet.response.SecurityMoc
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import java.time.LocalDateTime;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.techdot.techdot.infra.AbstractContainerBaseTest;
 import com.techdot.techdot.infra.MockMvcTest;
-import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.member.auth.WithCurrentUser;
-import com.techdot.techdot.modules.post.Post;
-import com.techdot.techdot.modules.post.PostType;
 
 @MockMvcTest
 class CategoryControllerTest extends AbstractContainerBaseTest {
@@ -123,7 +117,7 @@ class CategoryControllerTest extends AbstractContainerBaseTest {
 	}
 
 	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
-	@DisplayName("게시글 수정하기 실패 - 데이터 중복")
+	@DisplayName("카테고리 수정하기 실패 - 데이터 중복")
 	@Test
 	void updateCategory_fail_invalidData() throws Exception {
 		// given
@@ -147,6 +141,21 @@ class CategoryControllerTest extends AbstractContainerBaseTest {
 			.andExpect(model().hasErrors())
 			.andExpect(model().attributeExists("member"))
 			.andExpect(view().name("category/updateForm"))
+			.andExpect(authenticated());
+	}
+
+	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
+	@DisplayName("카테고리 삭제하기 성공")
+	@Test
+	void removeCategory_success() throws Exception {
+		// given
+		Category category = categoryService.getByViewName("java");
+
+		// when, then
+		mockMvc.perform(post("/category/" + category.getId() + "/remove")
+			.with(csrf()))
+			.andExpect(status().is3xxRedirection())
+			.andExpect(redirectedUrl("/accounts/settings/category"))
 			.andExpect(authenticated());
 	}
 

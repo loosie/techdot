@@ -13,9 +13,8 @@ import com.techdot.techdot.infra.AbstractContainerBaseTest;
 import com.techdot.techdot.infra.TCDataJpaTest;
 import com.techdot.techdot.modules.category.Category;
 import com.techdot.techdot.modules.category.CategoryRepository;
-import com.techdot.techdot.modules.like.Like;
-import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.interest.dto.InterestCategoryResponseDto;
+import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.member.MemberRepository;
 
 @TCDataJpaTest

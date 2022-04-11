@@ -3,8 +3,6 @@ package com.techdot.techdot;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.*;
 import static com.tngtech.archunit.library.dependencies.SlicesRuleDefinition.*;
 
-import com.techdot.techdot.modules.member.Member;
-import com.techdot.techdot.modules.member.MemberService;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
@@ -43,12 +41,12 @@ public class PackageDependencyTests {
 	@ArchTest
 	ArchRule likePackageRule = classes().that().resideInAPackage(LIKE)
 		.should().accessClassesThat().resideInAnyPackage(LIKE, MEMBER, POST)
-		.andShould().onlyBeAccessed().byClassesThat().resideInAnyPackage(LIKE, POST); // Member 회원 탈퇴
+		.andShould().onlyBeAccessed().byClassesThat().resideInAnyPackage(LIKE, POST);
 
 	@ArchTest
 	ArchRule interestPackageRule = classes().that().resideInAPackage(INTEREST)
 		.should().accessClassesThat().resideInAnyPackage(INTEREST, CATEGORY, MEMBER)
-		.andShould().onlyBeAccessed().byClassesThat().resideInAnyPackage(INTEREST, CATEGORY, POST); // POST 복잡한 r (findAllDtoByInterestsMemberId), Member 회원 탈퇴
+		.andShould().onlyBeAccessed().byClassesThat().resideInAnyPackage(INTEREST, CATEGORY, POST); // POST 복잡한 r (findAllDtoByInterestsMemberId)
 
 	@ArchTest
 	ArchRule freeOfCycles = slices().matching("..techdot.(*)..")
