@@ -12,7 +12,7 @@ public class LayerDependencyTests {
 
 	@ArchTest
 	ArchRule controllerClassRule = classes().that().haveSimpleNameEndingWith("Controller")
-		.and().areAssignableFrom(Member.class)
+		.and().areAssignableFrom(Member.class) // Login User
 		.should().accessClassesThat().haveSimpleNameEndingWith("Service")
 		.allowEmptyShould(true);
 

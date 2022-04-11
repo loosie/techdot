@@ -168,17 +168,16 @@ public class MemberService {
 		return opMember.get();
 	}
 
+	/**
+	 * 회원 탈퇴
+	 */
 	public void withdrawal(Member member) {
-		try {
-			Long id = member.getId();
-			likeRepository.deleteAllByMemberId(id);
-			interestRepository.deleteAllByMemberId(id);
-			memberRepository.delete(member);
+		Long id = member.getId();
+		likeRepository.deleteAllByMemberId(id);
+		interestRepository.deleteAllByMemberId(id);
+		memberRepository.delete(member);
 
-			SecurityContextHolder.getContext().setAuthentication(null);
-			log.info(member.getEmail() + " 회원 탈퇴가 정상적으로 처리되었습니다. ");
-		} catch (Exception ex) {
-			log.error(ex.getMessage());
-		}
+		SecurityContextHolder.getContext().setAuthentication(null);
+		log.info(member.getEmail() + " 회원 탈퇴가 정상적으로 처리되었습니다. ");
 	}
 }

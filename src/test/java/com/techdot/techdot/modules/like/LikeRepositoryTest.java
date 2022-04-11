@@ -84,4 +84,22 @@ class LikeRepositoryTest extends AbstractContainerBaseTest {
 		assertEquals(findLike.getMember(), member);
 	}
 
+	@DisplayName("멤버 id로 해당 멤버 좋아요 모두 삭제하기")
+	@Test
+	void likes_allDelete_byMemberId(){
+		// given
+		Like like = Like.builder()
+			.member(member)
+			.post(post)
+			.build();
+		likeRepository.save(like);
+
+		// when
+		assertTrue(likeRepository.findByMemberAndPost(member, post).isPresent());
+		likeRepository.deleteAllByMemberId(member.getId());
+
+		// then
+		assertTrue(likeRepository.findByMemberAndPost(member, post).isEmpty());
+	}
+
 }
