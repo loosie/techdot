@@ -16,10 +16,12 @@ import com.techdot.techdot.modules.post.dto.PostFormDto;
 import com.techdot.techdot.modules.post.dto.PostQueryResponseDto;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class PostService {
 	private final PostRepository postRepository;
 	private final MemberRepository memberRepository;
@@ -110,7 +112,10 @@ public class PostService {
 	}
 
 	/**
-	 * {keyword}로 게시글 검색하기
+	 * keyword에 포함하는 게시글 검색하기
+	 * 검색 범위
+	 * - 게시글 tite, content, writer
+	 * - 카테고리 name, title, viewName
 	 */
 	public List<PostQueryResponseDto> getPostsByKeyword(final Member member, String keyword, final Pageable pageable) {
 		Long memberId = -1L;
@@ -118,5 +123,13 @@ public class PostService {
 			memberId = member.getId();
 		}
 		return postRepository.findAllDtoByKeyword(memberId, keyword, pageable);
+	}
+
+	/**
+	 * id로 게시글 삭제하기
+	 */
+	public void remove(Long id) {
+		postRepository.deleteById(id);
+		log.info(id +"번 게시글이 정상적으로 삭제되었습니다.");
 	}
 }

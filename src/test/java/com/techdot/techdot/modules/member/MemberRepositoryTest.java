@@ -77,4 +77,15 @@ class MemberRepositoryTest extends AbstractContainerBaseTest {
 		// when, then
 		assertTrue(memberRepository.findByNickname(member.getNickname()).isPresent());
 	}
+
+	@DisplayName("멤버 삭제하기")
+	@Test
+	void member_delete(){
+		// when
+		memberRepository.delete(member);
+
+		// then
+		assertTrue(memberRepository.findByEmail(member.getEmail()).isEmpty());
+	}
+
 }

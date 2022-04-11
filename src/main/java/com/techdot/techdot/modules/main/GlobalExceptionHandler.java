@@ -30,6 +30,13 @@ public class GlobalExceptionHandler {
 		return ex.getViewName();
 	}
 
+	@ExceptionHandler(CategoryCanNotDeleteException.class)
+	public String handleCategoryCanNotDeleteException(CategoryCanNotDeleteException ex, HttpServletRequest req) {
+		log.error("category can not deleted - {}", ex.getMessage());
+		req.setAttribute("message", ex.getMessage());
+		return "error/404";
+	}
+
 	@ExceptionHandler
 	public String handleRuntimeException(RuntimeException ex, HttpServletRequest req, @CurrentUser Member member) {
 		if (member != null) {

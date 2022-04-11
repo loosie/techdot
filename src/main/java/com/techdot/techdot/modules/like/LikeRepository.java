@@ -11,4 +11,7 @@ import com.techdot.techdot.modules.post.Post;
 @Transactional(readOnly = true)
 public interface LikeRepository extends JpaRepository<Like, Long> {
 	Optional<Like> findByMemberAndPost(Member member, Post post);
+
+	@Transactional
+	void deleteAllByMemberId(Long memberId);
 }

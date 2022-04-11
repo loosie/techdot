@@ -14,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.techdot.techdot.infra.AbstractContainerBaseTest;
-import com.techdot.techdot.infra.Constant;
 import com.techdot.techdot.infra.MockMvcTest;
 import com.techdot.techdot.modules.member.auth.WithCurrentUser;
 
@@ -31,7 +30,7 @@ class AccountsControllerTest extends AbstractContainerBaseTest {
 	private final String TEST_NICKNAME = "testNickname";
 	private final String REQUEST_URL = "/accounts";
 
-	@WithCurrentUser(value = TEST_EMAIL, role = MEMBER)
+	@WithCurrentUser(value = TEST_EMAIL, role = USER)
 	@DisplayName("개인정보 설정 메인 뷰")
 	@Test
 	void profileSettingsView() throws Exception {
@@ -41,7 +40,7 @@ class AccountsControllerTest extends AbstractContainerBaseTest {
 			.andExpect(model().attributeExists("member"));
 	}
 
-	@WithCurrentUser(value = TEST_EMAIL, role = MEMBER)
+	@WithCurrentUser(value = TEST_EMAIL, role = USER)
 	@DisplayName("프로필 수정하기 - 정상")
 	@Test
 	void updateProfile_success() throws Exception {
@@ -60,7 +59,7 @@ class AccountsControllerTest extends AbstractContainerBaseTest {
 		assertEquals(findMember.getBio(), bio);
 	}
 
-	@WithCurrentUser(value = TEST_EMAIL, role = MEMBER)
+	@WithCurrentUser(value = TEST_EMAIL, role = USER)
 	@DisplayName("프로필 수정하기 - 입력값 에러 - 소개글 범위 초과")
 	@Test
 	void updateProfile_error_wrongInput() throws Exception {
@@ -80,7 +79,7 @@ class AccountsControllerTest extends AbstractContainerBaseTest {
 		assertNull(findMember.getBio());
 	}
 
-	@WithCurrentUser(value = TEST_EMAIL, role = MEMBER)
+	@WithCurrentUser(value = TEST_EMAIL, role = USER)
 	@DisplayName("프로필 수정하기 - 입력값 에러 - 닉네임 중복")
 	@Test
 	void updateProfile_error_duplicatedNickname() throws Exception {
@@ -107,7 +106,7 @@ class AccountsControllerTest extends AbstractContainerBaseTest {
 		assertFalse(findMember.equals(newMember));
 	}
 
-	@WithCurrentUser(value = TEST_EMAIL, role = MEMBER)
+	@WithCurrentUser(value = TEST_EMAIL, role = USER)
 	@DisplayName("비밀번호 변경 뷰")
 	@Test
 	void updatePasswordView() throws Exception {
@@ -117,7 +116,7 @@ class AccountsControllerTest extends AbstractContainerBaseTest {
 			.andExpect(model().attributeExists("passwordForm"));
 	}
 
-	@WithCurrentUser(value = TEST_EMAIL, role = MEMBER)
+	@WithCurrentUser(value = TEST_EMAIL, role = USER)
 	@DisplayName("비밀번호 변경하기 - 정상")
 	@Test
 	void updatePassword_success() throws Exception {
@@ -135,7 +134,7 @@ class AccountsControllerTest extends AbstractContainerBaseTest {
 		assertTrue(passwordEncoder.matches(newPw, findMember.getPassword()));
 	}
 
-	@WithCurrentUser(value = TEST_EMAIL, role = MEMBER)
+	@WithCurrentUser(value = TEST_EMAIL, role = USER)
 	@DisplayName("비밀번호 변경하기 - 입력값 에러")
 	@Test
 	void updatePassword_error_unMatchedPassword() throws Exception {
@@ -150,7 +149,7 @@ class AccountsControllerTest extends AbstractContainerBaseTest {
 			.andExpect(model().attributeExists("member"));
 	}
 
-	@WithCurrentUser(value = TEST_EMAIL, role = MEMBER)
+	@WithCurrentUser(value = TEST_EMAIL, role = USER)
 	@DisplayName("설정 뷰")
 	@Test
 	void accountsSettingView() throws Exception {
@@ -158,6 +157,16 @@ class AccountsControllerTest extends AbstractContainerBaseTest {
 			.andExpect(status().isOk())
 			.andExpect(view().name(ACCOUNTS_SETTING_VIEW_NAME))
 			.andExpect(model().attributeExists("member"));
+	}
+
+	@WithCurrentUser(value = TEST_EMAIL, role = USER)
+	@DisplayName("회원 탈퇴")
+	@Test
+	void accountsWithdrawal() throws Exception {
+		mockMvc.perform(post(REQUEST_URL + "/withdrawal")
+			.with(csrf()))
+			.andExpect(status().is3xxRedirection())
+			.andExpect(redirectedUrl("/"));
 	}
 
 	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)

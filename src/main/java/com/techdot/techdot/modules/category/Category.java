@@ -3,10 +3,9 @@ package com.techdot.techdot.modules.category;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,8 +13,10 @@ import javax.persistence.OneToMany;
 
 import org.springframework.util.Assert;
 
+import com.techdot.techdot.infra.domain.BaseEntity;
 import com.techdot.techdot.modules.category.dto.CategoryFormDto;
 import com.techdot.techdot.modules.interest.Interest;
+import com.techdot.techdot.modules.post.Post;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -26,7 +27,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 @EqualsAndHashCode(of = "id")
-public class Category {
+public class Category extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,8 +42,11 @@ public class Category {
 	@Column(nullable = false)
 	private String title;
 
-	@OneToMany(mappedBy = "category")
+	@OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
 	private List<Interest> interests = new ArrayList<>();
+
+	@OneToMany(mappedBy = "category")
+	private List<Post> posts = new ArrayList<>();
 
 	@Builder
 	public Category(final String viewName, final String name, final String title) {
@@ -53,11 +57,13 @@ public class Category {
 		this.viewName = viewName;
 		this.name = name;
 		this.title = title;
+		createDateTime();
 	}
 
 	public void update(CategoryFormDto categoryForm) {
 		this.viewName = categoryForm.getViewName();
 		this.name = categoryForm.getName();
 		this.title = categoryForm.getTitle();
+		updateDateTime();
 	}
 }

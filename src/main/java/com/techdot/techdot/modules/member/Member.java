@@ -1,10 +1,13 @@
 package com.techdot.techdot.modules.member;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -15,11 +18,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 
 import org.springframework.util.Assert;
 
 import com.techdot.techdot.infra.domain.BaseEntity;
+import com.techdot.techdot.modules.interest.Interest;
+import com.techdot.techdot.modules.like.Like;
 import com.techdot.techdot.modules.member.dto.ProfileFormDto;
+import com.techdot.techdot.modules.post.Post;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -60,6 +67,11 @@ public class Member extends BaseEntity {
 	@ElementCollection(fetch = FetchType.EAGER)
 	@Enumerated(EnumType.STRING)
 	private Set<Role> roles = new HashSet<>();
+
+	@OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+	private List<Like> likes = new ArrayList<>();
+	@OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+	private List<Interest> interests = new ArrayList<>();
 
 	@Lob
 	private String profileImage;

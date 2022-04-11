@@ -19,4 +19,7 @@ public interface InterestRepository extends JpaRepository<Interest, Long> {
 
 	@Query("select new com.techdot.techdot.modules.interest.dto.InterestCategoryResponseDto(c.viewName) from Interest i join i.category c where i.member.id = :memberId")
 	List<InterestCategoryResponseDto> findAllCategoriesByMemberId(@Param("memberId") final Long memberId);
+
+	@Transactional
+	void deleteAllByMemberId(Long memberId);
 }

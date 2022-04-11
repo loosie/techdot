@@ -6,12 +6,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.techdot.techdot.modules.category.dto.CategoryFormDto;
+import com.techdot.techdot.modules.main.CategoryCanNotDeleteException;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class CategoryService {
 
 	private final CategoryRepository categoryRepository;
@@ -61,4 +64,16 @@ public class CategoryService {
 		category.update(categoryForm);
 	}
 
+	/**
+	 * 카테고리 삭제하기
+	 * - 게시글이 존재하는 카테고리는 삭제 불가능
+	 */
+	public void remove(Long id) {
+		if(categoryRepository.findPostsByCategoryId(id).size()>0) {
+			throw new CategoryCanNotDeleteException("게시글이 존재하는 카테고리는 삭제할 수 없습니다.");
+		}
+
+		categoryRepository.deleteById(id);
+		log.info(id +"번 카테고리가 정상적으로 삭제되었습니다.");
+	}
 }

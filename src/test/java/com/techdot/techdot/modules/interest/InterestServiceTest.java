@@ -1,9 +1,8 @@
 package com.techdot.techdot.modules.interest;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
-import static org.mockito.Mockito.times;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,12 +14,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.util.Assert;
 
 import com.techdot.techdot.modules.category.Category;
-import com.techdot.techdot.modules.member.Member;
-import com.techdot.techdot.modules.interest.dto.InterestCategoryResponseDto;
 import com.techdot.techdot.modules.category.CategoryRepository;
+import com.techdot.techdot.modules.interest.dto.InterestCategoryResponseDto;
+import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.member.MemberRepository;
 
 @ExtendWith(MockitoExtension.class)

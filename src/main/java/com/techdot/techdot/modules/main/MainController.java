@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.techdot.techdot.modules.category.CategoryService;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.member.auth.CurrentUser;
-import com.techdot.techdot.modules.post.PostService;
 
 import lombok.RequiredArgsConstructor;
 
