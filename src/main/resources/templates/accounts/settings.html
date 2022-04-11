@@ -17,13 +17,43 @@
             <div class="dropdown-divider mb-4"></div>
 
             <div th:replace="fragments/message.html :: message"></div>
-            <div class="row">
+            <div class="row mt-3 col-8">
                 <div class="col-sm-12">
-                    <h2 class="text-danger mb-4">계정 삭제</h2>
-                    <div class="alert alert-danger mb-4" role="alert">
-                        해당 기능은 이용할 수 없습니다.
+                    <h2 class="text mb-4">회원 탈퇴</h2>
+                    <div class="alert alert-light mb-4" role="alert">
+                        탈퇴하시면 회원님이 이용한 모든 정보와 기록이 사라집니다. 추후 복구가 불가능하오니 신중하게 결정해주세요.
                     </div>
-                    <button class="btn btn-outline-danger disabled">계정 삭제</button>
+
+                    <form class="form-inline pull-right" action="#" th:action="@{/logout}" method="post">
+                        <button class="btn btn-outline-dark"  type="submit">
+                            로그아웃 </button>
+                    </form>
+                    <button class="btn btn-outline-secondary mr-2 pull-right" data-toggle="modal" data-target="#exampleModal">
+                        회원탈퇴 </button>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">정말 탈퇴하시겠어요?</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p style="margin: 0"> 탈퇴하시면 회원님이 이용한 모든 정보와 기록이 사라집니다.</p>
+                                <p> 추후 복구가 불가능하오니 신중하게 결정해주세요. </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                                <form class="form-inline" action="#" th:action="@{/logout}" method="post">
+                                    <button class="btn btn-danger" type="submit">탈퇴</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
