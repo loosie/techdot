@@ -22,7 +22,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.techdot.techdot.modules.member.auth.CurrentUser;
 import com.techdot.techdot.modules.category.Category;
-import com.techdot.techdot.modules.post.Post;
 import com.techdot.techdot.modules.member.dto.PasswordFormDto;
 import com.techdot.techdot.modules.member.dto.ProfileFormDto;
 import com.techdot.techdot.modules.category.CategoryRepository;
@@ -32,6 +31,7 @@ import com.techdot.techdot.modules.member.validator.ProfileFormValidator;
 import com.techdot.techdot.modules.post.dto.MyUploadPostResponseDto;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("accounts")
@@ -126,15 +126,6 @@ public class AccountsController {
 	}
 
 	/**
-	 * 계정 설정 뷰
-	 */
-	@GetMapping(ACCOUNTS_SETTING_VIEW_URL)
-	public String accountsSettingView(Model model, @CurrentUser final Member member) {
-		model.addAttribute(member);
-		return ACCOUNTS_SETTING_VIEW_NAME;
-	}
-
-	/**
 	 * (ADMIN)계정이 업로드한 게시글 뷰
 	 * 쿼리 발생 횟수 : 2 - 게시글 조회 쿼리 + 카운트 쿼리
 	 */
@@ -162,5 +153,22 @@ public class AccountsController {
 		model.addAttribute(member);
 		return ACCOUNTS_CATEGORY_VIEW_NAME;
 	}
+
+	/**
+	 * 계정 설정 뷰
+	 */
+	@GetMapping(ACCOUNTS_SETTING_VIEW_URL)
+	public String accountsSettingView(@CurrentUser final Member member, Model model) {
+		model.addAttribute(member);
+		return ACCOUNTS_SETTING_VIEW_NAME;
+	}
+
+	@PostMapping("/withdrawal")
+	public String accountsWithdrawalForm(@CurrentUser final Member member){
+		memberService.withdrawal(member);
+
+		return "redirect:/";
+	}
+
 
 }

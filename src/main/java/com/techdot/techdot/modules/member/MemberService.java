@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,8 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import com.techdot.techdot.infra.config.AppProperties;
+import com.techdot.techdot.modules.interest.InterestRepository;
+import com.techdot.techdot.modules.like.LikeRepository;
 import com.techdot.techdot.modules.member.auth.PrincipalDetails;
 import com.techdot.techdot.modules.member.dto.JoinFormDto;
 import com.techdot.techdot.modules.member.dto.PasswordFormDto;
@@ -37,6 +42,10 @@ public class MemberService {
 	private final TemplateEngine templateEngine;
 	private final AppProperties appProperties;
 
+	// delete
+	private final LikeRepository likeRepository;
+	private final InterestRepository interestRepository;
+
 	/**
 	 * 회원가입
 	 * -> 멤버 저장하기
@@ -53,7 +62,8 @@ public class MemberService {
 	 */
 	public void sendConfirmEmail(final Member newMember) {
 		Context context = new Context();
-		context.setVariable("link", "/confirm-email?token=" + newMember.getEmailCheckToken() + "&email=" + newMember.getEmail());
+		context.setVariable("link",
+			"/confirm-email?token=" + newMember.getEmailCheckToken() + "&email=" + newMember.getEmail());
 		context.setVariable("nickname", newMember.getNickname());
 		context.setVariable("linkName", "이메일 인증하기");
 		context.setVariable("message", "테크닷 서비스를 사용하려면 인증 링크를 클릭해주세요.");
@@ -130,7 +140,8 @@ public class MemberService {
 	 */
 	public void sendLoginLink(final Member member) {
 		Context context = new Context();
-		context.setVariable("link", "/login-by-email?token=" + member.getEmailCheckToken() + "&email=" + member.getEmail());
+		context.setVariable("link",
+			"/login-by-email?token=" + member.getEmailCheckToken() + "&email=" + member.getEmail());
 		context.setVariable("nickname", member.getNickname());
 		context.setVariable("linkName", "이메일로 로그인하기");
 		context.setVariable("message", "로그인하려면 인증 링크를 클릭해주세요.");
@@ -155,5 +166,19 @@ public class MemberService {
 			throw new UserNotExistedException(email + "은 유효한 이메일이 아닙니다.", redirectView);
 		}
 		return opMember.get();
+	}
+
+	public void withdrawal(Member member) {
+		try {
+			Long id = member.getId();
+			likeRepository.deleteAllByMemberId(id);
+			interestRepository.deleteAllByMemberId(id);
+			memberRepository.delete(member);
+
+			SecurityContextHolder.getContext().setAuthentication(null);
+			log.info(member.getEmail() + " 회원 탈퇴가 정상적으로 처리되었습니다. ");
+		} catch (Exception ex) {
+			log.error(ex.getMessage());
+		}
 	}
 }
