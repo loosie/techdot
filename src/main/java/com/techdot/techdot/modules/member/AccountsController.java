@@ -72,7 +72,7 @@ public class AccountsController {
 	 * 개인정보설정 메인 뷰 (프로필)
 	 */
 	@GetMapping(ACCOUNTS_MAIN_VIEW_URL)
-	public String profileSettingView(Model model, @CurrentUser final Member member) {
+	public String profileSettingView(final Model model, @CurrentUser final Member member) {
 		model.addAttribute(member);
 		model.addAttribute("profileForm", new ProfileFormDto(member));
 		return ACCOUNTS_PROFILE_VIEW_NAME;
@@ -84,7 +84,7 @@ public class AccountsController {
 	@PostMapping(ACCOUNTS_MAIN_VIEW_URL)
 	public String profileSettingForm(@Valid @ModelAttribute("profileForm") final ProfileFormDto profileForm,
 		Errors errors,
-		Model model, @CurrentUser final Member member, RedirectAttributes redirectAttributes) {
+		Model model, @CurrentUser final Member member, final RedirectAttributes redirectAttributes) {
 		if (errors.hasErrors()) {
 			model.addAttribute(member);
 			return ACCOUNTS_PROFILE_VIEW_NAME;
@@ -100,7 +100,7 @@ public class AccountsController {
 	 * 계정 비밀번호 변경 뷰
 	 */
 	@GetMapping(ACCOUNTS_PASSWORD_VIEW_URL)
-	public String passwordSettingView(Model model, @CurrentUser final Member member) {
+	public String passwordSettingView(final Model model, @CurrentUser final Member member) {
 		model.addAttribute(member);
 		model.addAttribute("passwordForm", new PasswordFormDto());
 		return ACCOUNTS_PASSWORD_VIEW_NAME;
@@ -111,8 +111,8 @@ public class AccountsController {
 	 */
 	@PostMapping(ACCOUNTS_PASSWORD_VIEW_URL)
 	public String passwordSettingForm(@Valid @ModelAttribute("passwordForm") final PasswordFormDto passwordForm,
-		Errors errors,
-		Model model, @CurrentUser final Member member, RedirectAttributes redirectAttributes) {
+		final Errors errors, final Model model,
+		@CurrentUser final Member member, final RedirectAttributes redirectAttributes) {
 		if (errors.hasErrors() || !passwordForm.getNewPassword().equals(passwordForm.getNewPasswordConfirm())) {
 			model.addAttribute(member);
 			return ACCOUNTS_PASSWORD_VIEW_NAME;
@@ -131,7 +131,7 @@ public class AccountsController {
 	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping(ACCOUNTS_MY_UPLOAD_VIEW_URL)
-	public String myUploadPostsView(@CurrentUser final Member member, Model model,
+	public String myUploadPostsView(@CurrentUser final Member member, final Model model,
 		@PageableDefault(size = 10, page = 0, sort = "uploadDateTime", direction = Sort.Direction.DESC) final Pageable pageable) {
 		Page<MyUploadPostResponseDto> postPage = postService.getByManager(member, pageable);
 
@@ -147,7 +147,7 @@ public class AccountsController {
 	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping(ACCOUNTS_CATEGORY_VIEW_URL)
-	public String categorySettingsView(@CurrentUser final Member member, Model model) {
+	public String categorySettingsView(@CurrentUser final Member member, final Model model) {
 		List<Category> categoryList = categoryRepository.findAll();
 		model.addAttribute("categoryList", categoryList);
 		model.addAttribute(member);
@@ -158,11 +158,14 @@ public class AccountsController {
 	 * 계정 설정 뷰
 	 */
 	@GetMapping(ACCOUNTS_SETTING_VIEW_URL)
-	public String accountsSettingView(@CurrentUser final Member member, Model model) {
+	public String accountsSettingView(@CurrentUser final Member member, final Model model) {
 		model.addAttribute(member);
 		return ACCOUNTS_SETTING_VIEW_NAME;
 	}
 
+	/**
+	 * 계정 탈퇴
+	 */
 	@PostMapping("/withdrawal")
 	public String accountWithdrawal(@CurrentUser final Member member){
 		memberService.withdrawal(member);

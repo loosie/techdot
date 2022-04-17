@@ -12,7 +12,7 @@ class InterestTest {
 
 	@DisplayName("관심 생성 실패 - 입력값 null인 경우")
 	@Test
-	void like_create_fail_nullValue(){
+	void interestCreate_InsertValueIsNull_ExceptionThrown(){
 		// given
 		Member member = Member.builder()
 			.nickname("loosie")

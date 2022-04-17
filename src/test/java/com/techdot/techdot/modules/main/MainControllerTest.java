@@ -36,7 +36,7 @@ class MainControllerTest extends AbstractContainerBaseTest {
 
 	@DisplayName("로그인 성공")
 	@Test
-	void login_success() throws Exception {
+	void userLogin_Success() throws Exception {
 		mockMvc.perform(post("/login")
 			.param("username", "test@naver.com")
 			.param("password", "12345678")
@@ -48,7 +48,7 @@ class MainControllerTest extends AbstractContainerBaseTest {
 
 	@DisplayName("로그인 실패 - 가입되지 않은 이메일")
 	@Test
-	void login_failed() throws Exception {
+	void userLogin_NotExistedEmail_Fail() throws Exception {
 		mockMvc.perform(post("/login")
 			.param("username", "1111@naver.com")
 			.param("password", "12345678")
@@ -60,7 +60,7 @@ class MainControllerTest extends AbstractContainerBaseTest {
 
 	@DisplayName("로그아웃")
 	@Test
-	void logout() throws Exception {
+	void logout_Success() throws Exception {
 		mockMvc.perform(post("/logout")
 			.with(csrf()))
 			.andExpect(status().is3xxRedirection())
@@ -72,7 +72,7 @@ class MainControllerTest extends AbstractContainerBaseTest {
 	@WithCurrentUser(value = TEST_EMAIL, role= MEMBER)
 	@DisplayName("관심 카테고리 뷰 - 이메일 인증 받은 경우")
 	@Test
-	void mainMyInterestsView_member_authenticated() throws Exception {
+	void mainMyInterestsView_MemberIsAuthenticated_Success() throws Exception {
 		mockMvc.perform(get("/me/interests"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("main/my-interests-view"))
@@ -82,7 +82,7 @@ class MainControllerTest extends AbstractContainerBaseTest {
 	@WithCurrentUser(value = TEST_EMAIL, role= USER)
 	@DisplayName("관심 카테고리 뷰 - 이메일 인증 받지 않은 경우")
 	@Test
-	void mainMyInterestsView_user_unauthenticated() throws Exception{
+	void mainMyInterestsView_MemberIsUnAuthenticated_Success() throws Exception{
 		mockMvc.perform(get("/me/interests"))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/check-email"))
@@ -91,7 +91,7 @@ class MainControllerTest extends AbstractContainerBaseTest {
 
 	@DisplayName("검색 뷰")
 	@Test
-	void searchView() throws Exception{
+	void searchView_Success() throws Exception{
 		mockMvc.perform(get("/search")
 			.param("keyword", "검색")
 			.with(csrf()))
@@ -104,7 +104,7 @@ class MainControllerTest extends AbstractContainerBaseTest {
 
 	@DisplayName("에러 뷰")
 	@Test
-	void errorView() throws Exception{
+	void errorView_Success() throws Exception{
 		mockMvc.perform(get("/error/403"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("error/403"))

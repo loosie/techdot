@@ -13,7 +13,6 @@ import javax.persistence.OneToMany;
 
 import org.springframework.util.Assert;
 
-import com.techdot.techdot.infra.domain.BaseEntity;
 import com.techdot.techdot.modules.category.dto.CategoryFormDto;
 import com.techdot.techdot.modules.interest.Interest;
 import com.techdot.techdot.modules.post.Post;
@@ -59,7 +58,7 @@ public class Category {
 		this.title = title;
 	}
 
-	public void update(CategoryFormDto categoryForm) {
+	public void update(final CategoryFormDto categoryForm) {
 		this.viewName = categoryForm.getViewName();
 		this.name = categoryForm.getName();
 		this.title = categoryForm.getTitle();

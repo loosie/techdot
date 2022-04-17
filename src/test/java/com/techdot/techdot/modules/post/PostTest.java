@@ -16,7 +16,7 @@ class PostTest {
 
 	@DisplayName("게시글 생성하기 - 입력값 null인 경우")
 	@Test
-	void post_create_fail_nullValue() {
+	void postCreate_insertValueIsNull_ExceptionThrown() {
 		Member member  = Member.builder()
 			.nickname("loosie")
 			.password("12345678")
@@ -49,7 +49,7 @@ class PostTest {
 
 	@DisplayName("게시글 링크 정규식 테스트")
 	@Test
-	void postLink_regex(){
+	void postLink_RegexTest(){
 		String regex = "https?://(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@!:%_\\+.~#?&//=]*)";
 		Pattern compile = Pattern.compile(regex);
 

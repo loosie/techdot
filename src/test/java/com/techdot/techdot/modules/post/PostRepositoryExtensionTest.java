@@ -70,7 +70,7 @@ class PostRepositoryExtensionTest extends AbstractContainerBaseTest {
 
 	@DisplayName("모든 게시글 가져오기")
 	@Test
-	void findAllDto() {
+	void findAll() {
 		// when
 		List<PostQueryResponseDto> result = postRepository.findAllDto(-1L, PageRequest.of(1, 12));
 		PostQueryResponseDto post = result.get(0);
@@ -84,7 +84,7 @@ class PostRepositoryExtensionTest extends AbstractContainerBaseTest {
 
 	@DisplayName("카테고리별로 게시글 가져오기")
 	@Test
-	void findAllDto_byCategoryName() {
+	void findAllByCategoryName_postHasCategory_returnCategoryAllPosts() {
 		// when
 		List<PostQueryResponseDto> result = postRepository.findAllDtoByKeyword(-1L, "title", PageRequest.of(1, 12));
 		PostQueryResponseDto post = result.get(0);
@@ -98,7 +98,7 @@ class PostRepositoryExtensionTest extends AbstractContainerBaseTest {
 
 	@DisplayName("멤버가 좋아요한 게시글 가져오기")
 	@Test
-	void findAllDto_byLikesMemberId() {
+	void findAllByLikesMemberId_existsMemberAddLikePost_returnLikeAllPosts() {
 		//given
 		likeRepository.save(Like.builder().member(member).post(post).build());
 
@@ -114,9 +114,9 @@ class PostRepositoryExtensionTest extends AbstractContainerBaseTest {
 		assertEquals(post.getType(), PostType.BLOG);
 	}
 
-	@DisplayName("멤버가 좋아요한 게시글 가져오기")
+	@DisplayName("멤버의 관심 카테고리에 해당하는 게시글 가져오기")
 	@Test
-	void findAllDto_byInterestsMemberId() {
+	void findAllByInterestMemberId_existsMemberAddInterestCategory_returnInterestAllPosts() {
 		//given
 		interestRepository.save(Interest.builder().member(member).category(category).build());
 
@@ -132,9 +132,9 @@ class PostRepositoryExtensionTest extends AbstractContainerBaseTest {
 		assertEquals(post.getType(), PostType.BLOG);
 	}
 
-	@DisplayName("keyword로 게시글(title, content, writer) 조회하기 - member가 존재하는 경우")
+	@DisplayName("keyword로 게시글(title, content, writer) 검색하기  (member가 존재하지 않는 경우 좋아요 여부 false)")
 	@Test
-	void findAllDto_byKeyword_NullMember() {
+	void findAllByKeyword_IfNotExistedMemberThenLikeIsFalse_returnKeywordAllPosts() {
 		// when
 		List<PostQueryResponseDto> result = postRepository.findAllDtoByKeyword(-1L, "title", PageRequest.of(1, 12));
 		PostQueryResponseDto post = result.get(0);
@@ -146,9 +146,9 @@ class PostRepositoryExtensionTest extends AbstractContainerBaseTest {
 		assertEquals(post.getType(), PostType.BLOG);
 	}
 
-	@DisplayName("keyword로 게시글(title, content, writer) 검색하기 - member가 존재하지 않는 경우")
+	@DisplayName("keyword로 게시글(title, content, writer) 조회하기 (member가 존재하고 게시글 좋아요 등록한 경우 좋아요 여부 true)")
 	@Test
-	void findAllDto_byKeyword_withMember() {
+	void findAllByKeyword_IfExistedMemberAndAddLikePostThenLikeIsTrue_returnKeywordAllPosts() {
 		//given
 		likeRepository.save(Like.builder().member(member).post(post).build());
 

@@ -54,6 +54,7 @@ public class PostService {
 
 	/**
 	 * 게시글 업데이트 하기
+	 * @throws NullPointerException 존재하지 않는 게시글 id이면 예외 발생
 	 */
 	public void update(final Long postId, final PostFormDto postForm) {
 		Post post = postRepository.findById(postId).orElseThrow(() -> new NullPointerException("존재하지 않는 게시글 입니다."));
@@ -66,6 +67,8 @@ public class PostService {
 
 	/**
 	 * 게시글 id로 조회하기
+	 * @param id
+	 * @throws NullPointerException 존재하지 않는 게시글 id이면 예외 발생
 	 */
 	public Post getById(final Long id) {
 		return postRepository.findById(id).orElseThrow(() -> new NullPointerException("존재하지 않는 게시글 입니다."));

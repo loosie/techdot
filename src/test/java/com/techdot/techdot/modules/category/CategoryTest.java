@@ -12,7 +12,7 @@ class CategoryTest {
 
 	@DisplayName("카테고리 생성 오류 - 입력 값이 null인 경우")
 	@Test
-	void category_create_fail_nullValue() {
+	void categoryCreate_InsertValueIsNull_ExceptionThrown() {
 		assertThrows(IllegalArgumentException.class,
 			() -> Category.builder().viewName(null).title("자바").name("Java").build());
 		assertThrows(IllegalArgumentException.class,
@@ -23,7 +23,7 @@ class CategoryTest {
 
 	@DisplayName("카테고리 viewName 정규식 테스트")
 	@Test
-	void categoryViewName_regex() {
+	void categoryViewName_RegexTest() {
 		String regex = "^[a-z0-9,-]{1,20}$";
 		Pattern compile = Pattern.compile(regex);
 

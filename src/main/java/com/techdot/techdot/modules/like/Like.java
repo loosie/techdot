@@ -1,6 +1,5 @@
 package com.techdot.techdot.modules.like;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,9 +11,9 @@ import javax.persistence.Table;
 
 import org.springframework.util.Assert;
 
+import com.techdot.techdot.infra.domain.BaseEntity;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.post.Post;
-import com.techdot.techdot.infra.domain.BaseEntity;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

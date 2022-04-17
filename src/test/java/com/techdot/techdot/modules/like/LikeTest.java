@@ -16,7 +16,7 @@ class LikeTest {
 
 	@DisplayName("좋아요 생성 실패 - 입력 값 null인 경우")
 	@Test
-	void like_create_fail_nullValue(){
+	void likeCreate_InsertValueIsNull_ExceptionThrown(){
 		// given
 		Member member = Member.builder()
 			.nickname("loosie")

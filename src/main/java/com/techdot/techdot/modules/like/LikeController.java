@@ -2,7 +2,6 @@ package com.techdot.techdot.modules.like;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -20,7 +19,7 @@ public class LikeController {
 
 	/**
 	 * 좋아요 추가 API
-	 * 쿼리 발생 횟수 : 3
+	 * 조회 쿼리 발생 횟수 : 3
 	 * 멤버 조회 + 게시글 조회 + 좋아요 등록
 	 */
 	@PostMapping("/like/add")
@@ -31,7 +30,7 @@ public class LikeController {
 
 	/**
 	 * 좋아요 삭제 API
-	 * 쿼리 발생 횟수 : 3
+	 * 조회 쿼리 발생 횟수 : 3
 	 * 멤버 조회 + 게시글 조회 + 좋아요 삭제 
 	 */
 	@PostMapping("/like/remove")

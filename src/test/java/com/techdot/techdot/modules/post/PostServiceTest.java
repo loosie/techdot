@@ -37,7 +37,7 @@ class PostServiceTest {
 
 	@DisplayName("카테고리별로 게시글 가져오기 - 멤버가 존재하지 않는 경우")
 	@Test
-	void getPosts_byCategory() {
+	void getPostsByCategoryName_IfMemberNotExistMemberLikesIsFalse_Success() {
 		// given
 		List<PostQueryResponseDto> allPosts = List.of(
 			new PostQueryResponseDto(1L, "title", "content", "http://link.com", "writer", PostType.BLOG,
@@ -59,7 +59,7 @@ class PostServiceTest {
 
 	@DisplayName("카테고리별로 게시글 가져오기 - 멤버가 존재하는 경우")
 	@Test
-	void getPosts_byCategoryName() {
+	void getPostsByCategoryName_ifMemberExistMemberLikeIsTrue_Success() {
 		// given
 		Member member = Member.builder()
 			.id(1L)
@@ -88,7 +88,7 @@ class PostServiceTest {
 
 	@DisplayName("멤버가 좋아요 누른 게시글 가져오기")
 	@Test
-	void getPosts_byLikesMemberId() {
+	void getPostsByLikesMemberId_Success() {
 		// given
 		List<PostQueryResponseDto> allPosts = List.of(
 			new PostQueryResponseDto(1L, "title", "content", "http://link.com", "writer", PostType.BLOG,
@@ -109,7 +109,7 @@ class PostServiceTest {
 
 	@DisplayName("멤버의 관심 카테고리 게시글 가져오기")
 	@Test
-	void getPosts_byInterestsMemberId() {
+	void getPostsByInterestsMemberId_Success() {
 		// given
 		List<PostQueryResponseDto> allPosts = List.of(
 			new PostQueryResponseDto(1L, "title", "content", "http://link.com", "writer", PostType.BLOG,
@@ -130,7 +130,7 @@ class PostServiceTest {
 
 	@DisplayName("keyword로 게시글 검색하기")
 	@Test
-	void getPosts_byKeyword() {
+	void getPostsByKeyword_Success() {
 		// given
 		List<PostQueryResponseDto> allPosts = List.of(
 			new PostQueryResponseDto(1L, "title", "content", "http://link.com", "writer", PostType.BLOG,

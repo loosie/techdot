@@ -30,11 +30,10 @@ public class CategoryFormDto {
 	private String curTitle;
 	private String curViewName;
 
-	public CategoryFormDto(Category category) {
+	public CategoryFormDto(final Category category) {
 		this.curName = category.getName();
 		this.curTitle = category.getTitle();
 		this.curViewName = category.getViewName();
-
 		this.name = category.getName();
 		this.title = category.getTitle();
 		this.viewName = category.getViewName();

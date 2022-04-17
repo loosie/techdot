@@ -42,6 +42,8 @@ public class CategoryService {
 
 	/**
 	 * viewName으로 카테고리 가져오기
+	 * @param viewName
+	 * @throws NullPointerException viewName에 해당하는 카테고리가 없을 경우 예외 발생
 	 */
 	public Category getByViewName(final String viewName) {
 		return categoryRepository.findByViewName(viewName)
@@ -50,25 +52,30 @@ public class CategoryService {
 
 	/**
 	 * id로 카테고리 가져오기
+	 * @param id
+	 * @throws NullPointerException id에 해당하는 카테고리가 없을 경우 예외 발생
 	 */
-	public Category getById(Long id) {
+	public Category getById(final Long id) {
 		return categoryRepository.findById(id)
 			.orElseThrow(() -> new NullPointerException("해당 카테고리는 존재하지 않습니다."));
 	}
 
 	/**
 	 * 카테고리 업데이트 하기
+	 * @param id
+	 * @param categoryForm
 	 */
-	public void update(Long id, CategoryFormDto categoryForm) {
+	public void update(final Long id, final CategoryFormDto categoryForm) {
 		Category category = getById(id);
 		category.update(categoryForm);
 	}
 
 	/**
-	 * 카테고리 삭제하기
-	 * - 게시글이 존재하는 카테고리는 삭제 불가능
+	 * id 카테고리 삭제하기 (게시글이 존재하는 카테고리는 삭제 불가능)
+	 * @param id
+	 * @throws CategoryCanNotDeleteException 카테고리에 해당하는 게시글이 1개 이상 존재할 경우 예외 발생
 	 */
-	public void remove(Long id) {
+	public void remove(final Long id) {
 		if(categoryRepository.findPostsByCategoryId(id).size()>0) {
 			throw new CategoryCanNotDeleteException("게시글이 존재하는 카테고리는 삭제할 수 없습니다.");
 		}

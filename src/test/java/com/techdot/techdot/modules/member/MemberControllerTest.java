@@ -47,7 +47,7 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 
 	@DisplayName("회원 가입 테스트 - 정상")
 	@Test
-	void memberJoin_success() throws Exception {
+	void memberJoin_Success() throws Exception {
 		mockMvc.perform(post("/join")
 			.param("nickname", "testnickname")
 			.param("email", "test@naver.com")
@@ -68,7 +68,7 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 
 	@DisplayName("회원 가입 테스트 - 입력값 오류")
 	@Test
-	void memberJoin_error_wrongInput() throws Exception {
+	void memberJoin_emailIsNotValidType_Error() throws Exception {
 		mockMvc.perform(post("/join")
 			.param("nickname", "loosie")
 			.param("email", "email...")
@@ -83,7 +83,7 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 	@DisplayName("인증 메일 확인 - 정상")
 	@Transactional
 	@Test
-	void emailConfirm_success() throws Exception {
+	void emailConfirm_Success() throws Exception {
 		// given
 		Member member = Member.builder()
 			.email("test@naver.com")
@@ -108,7 +108,7 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 
 	@DisplayName("인증 메일 확인 - 입력값 오류")
 	@Test
-	void emailConfirm_error_wrongInput() throws Exception {
+	void emailConfirm_TokenIsWrongValue_Error() throws Exception {
 		// given
 		Member member = Member.builder()
 			.email("test@naver.com")
@@ -132,7 +132,7 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 	@DisplayName("이메일로 로그인하기 - 정상")
 	@Transactional
 	@Test
-	void emailLogin_sucess() throws Exception {
+	void emailLogin_Success() throws Exception {
 		// given
 		Member member = Member.builder()
 			.email("test@naver.com")
@@ -155,7 +155,7 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 	@DisplayName("이메일로 로그인하기 - 입력값 오류")
 	@Transactional
 	@Test
-	void emailLogin_error_wrongValue() throws Exception {
+	void emailLogin_TokenIsWrongValue_Error() throws Exception {
 		// given
 		Member member = Member.builder()
 			.email("test@naver.com")
@@ -178,7 +178,7 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 	@WithCurrentUser(value = TEST_EMAIL, role= MEMBER)
 	@DisplayName("내가 좋아요한 게시글 뷰")
 	@Test
-	void profileForm() throws Exception {
+	void myLikesView_Success() throws Exception {
 		mockMvc.perform(get("/me/likes"))
 			.andExpect(status().isOk())
 			.andExpect(view().name(MEMBER_ME_LIKES_VIEW_NAME))

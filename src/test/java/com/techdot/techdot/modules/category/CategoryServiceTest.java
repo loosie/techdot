@@ -27,7 +27,7 @@ class CategoryServiceTest {
 
 	@DisplayName("카테고리 id로 삭제하기")
 	@Test
-	void removeCategory_byId(){
+	void removeCategoryById_Success(){
 		// given
 		given(categoryRepository.findPostsByCategoryId(1L)).willReturn(List.of());
 
@@ -41,7 +41,7 @@ class CategoryServiceTest {
 
 	@DisplayName("카테고리 id로 삭제하기 실패 - 해당 카테고리에 게시글이 존재할 경우")
 	@Test
-	void removeCategory_byId_fail(){
+	void removeCategoryById_CategoryPostsIsExisted_ExceptionThrown(){
 		// given
 		given(categoryRepository.findPostsByCategoryId(1L)).willReturn(List.of(1L));
 

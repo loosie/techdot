@@ -150,20 +150,17 @@ public class MemberService {
 
 	/**
 	 * email로 멤버 조회하기
+	 * @throws UserNotExistedException 존재하지 않는 email이면 예외 발생 -> redirectView로 리다이렉트
 	 */
 	public Member getByEmail(final String email, final String redirectView) {
-		Optional<Member> opMember = memberRepository.findByEmail(email);
-		if (opMember.isEmpty()) {
-			throw new UserNotExistedException(email + "은 유효한 이메일이 아닙니다.", redirectView);
-		}
-		return opMember.get();
+		return memberRepository.findByEmail(email)
+			.orElseThrow(() -> new UserNotExistedException(email + "은 유효한 이메일이 아닙니다.", redirectView));
 	}
 
 	/**
-	 * 회원 탈퇴
-	 * like, interest 관계 cascade.REMOVE
+	 * 회원 탈퇴 (like, interest 관계 cascade.REMOVE)
 	 */
-	public void withdrawal(Member member) {
+	public void withdrawal(final Member member) {
 		memberRepository.delete(member);
 
 		SecurityContextHolder.getContext().setAuthentication(null);

@@ -16,12 +16,12 @@ public class CategoryFormValidator implements Validator {
 	private final CategoryRepository categoryRepository;
 
 	@Override
-	public boolean supports(Class<?> clazz) {
+	public boolean supports(final Class<?> clazz) {
 		return CategoryFormDto.class.isAssignableFrom(clazz);
 	}
 
 	@Override
-	public void validate(Object target, Errors errors) {
+	public void validate(final Object target, final Errors errors) {
 		CategoryFormDto categoryForm = (CategoryFormDto)target;
 
 		// 생성: 새로 생성하는 데이터 중복 검사
@@ -45,19 +45,19 @@ public class CategoryFormValidator implements Validator {
 		}
 	}
 
-	private void validateViewName(Errors errors, CategoryFormDto categoryForm) {
+	private void validateViewName(final Errors errors, final CategoryFormDto categoryForm) {
 		if(categoryRepository.existsByViewName(categoryForm.getViewName())){
 			errors.rejectValue("viewName", "invalid.viewName", "이미 등록된 viewName 입니다.");
 		}
 	}
 
-	private void validateName(Errors errors, CategoryFormDto categoryForm) {
+	private void validateName(final Errors errors, final CategoryFormDto categoryForm) {
 		if(categoryRepository.existsByName(categoryForm.getName())){
 			errors.rejectValue("name", "invalid.name", "이미 등록된 name 입니다.");
 		}
 	}
 
-	private void validateTitle(Errors errors, CategoryFormDto categoryForm) {
+	private void validateTitle(final Errors errors, final CategoryFormDto categoryForm) {
 		if(categoryRepository.existsByTitle(categoryForm.getTitle())){
 			errors.rejectValue("title", "invalid.title", "이미 등록된 title 입니다.");
 		}

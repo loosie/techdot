@@ -23,7 +23,7 @@ public class MainController {
 	 * @return
 	 */
 	@GetMapping("/")
-	public String home(@CurrentUser final Member member, Model model) {
+	public String mainView(@CurrentUser final Member member, final Model model) {
 		if (member != null) {
 			model.addAttribute(member);
 		}
@@ -36,7 +36,7 @@ public class MainController {
 	 * @return
 	 */
 	@GetMapping("/login")
-	public String login() {
+	public String loginView() {
 		return "login";
 	}
 
@@ -47,7 +47,7 @@ public class MainController {
 	 * @return
 	 */
 	@GetMapping("/me/interests")
-	public String myInterestsView(@CurrentUser final Member member, Model model) {
+	public String myInterestsView(@CurrentUser final Member member, final Model model) {
 		if (!member.getEmailVerified()) {
 			model.addAttribute("email", member.getEmail());
 			return "redirect:/check-email";
@@ -66,7 +66,7 @@ public class MainController {
 	 * @return
 	 */
 	@GetMapping("/search")
-	public String search(@CurrentUser final Member member, final String keyword, final Model model) {
+	public String searchView(@CurrentUser final Member member, final String keyword, final Model model) {
 		if(member != null){
 			model.addAttribute(member);
 		}

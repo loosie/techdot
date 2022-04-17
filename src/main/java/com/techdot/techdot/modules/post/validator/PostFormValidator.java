@@ -21,7 +21,7 @@ public class PostFormValidator implements Validator {
 	}
 
 	@Override
-	public void validate(Object target, Errors errors) {
+	public void validate(final Object target, final Errors errors) {
 		PostFormDto postForm = (PostFormDto)target;
 
 		// 변경되지 않은 링크는 중복 처리 예외

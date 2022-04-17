@@ -1,9 +1,8 @@
 package com.techdot.techdot.modules.like;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 
+import com.sun.jdi.request.DuplicateRequestException;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.post.Post;
 import com.techdot.techdot.modules.member.MemberRepository;
@@ -21,14 +20,17 @@ public class LikeService {
 
 	/**
 	 * 좋아요 추가하기
+	 * @param memberId
+	 * @param postId
+	 * @throws DuplicateRequestException 이미 등록된 좋아요 정보가 있을 경우 예외 발생
 	 */
 	public void add(final Long memberId, final Long postId) {
 		// 엔티티 조회
-		Member findMember = memberRepository.findById(memberId).get(); // 이미 인증된 객체
+		Member findMember = memberRepository.getById(memberId); // 이미 인증된 객체
 		Post findPost = postRepository.findById(postId).orElseThrow(NullPointerException::new);
 
 		if(likeRepository.findByMemberAndPost(findMember, findPost).isPresent()){
-			throw new RuntimeException("이미 좋아요를 누른 게시글입니다.");
+			throw new DuplicateRequestException("이미 좋아요를 누른 게시글입니다.");
 		}
 
 		// 좋아요 생성
@@ -42,17 +44,18 @@ public class LikeService {
 
 	/**
 	 * 좋아요 삭제하기
+	 * @param memberId
+	 * @param postId
+	 * @throws NullPointerException 등록된 좋아요 정보가 없을 경우 예외 발생
 	 */
-	public void remove(Long memberId, Long postId) {
+	public void remove(final Long memberId, final Long postId) {
 		// 엔티티 조회
-		Member findMember = memberRepository.findById(memberId).get(); // 이미 인증된 객체
+		Member findMember = memberRepository.getById(memberId); // 이미 인증된 객체
 		Post findPost = postRepository.findById(postId).orElseThrow(NullPointerException::new);
 
-		Optional<Like> like = likeRepository.findByMemberAndPost(findMember, findPost);
-		if(like.isEmpty()){
-			throw new RuntimeException("게시글의 정보가 올바르지 않습니다. 다시 시도해주세요.");
-		}
+		Like like = likeRepository.findByMemberAndPost(findMember, findPost).orElseThrow(() ->
+			new NullPointerException("게시글의 정보가 올바르지 않습니다. 다시 시도해주세요."));
 
-		likeRepository.delete(like.get());
+		likeRepository.delete(like);
 	}
 }

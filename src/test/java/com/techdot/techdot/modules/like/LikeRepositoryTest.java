@@ -55,7 +55,7 @@ class LikeRepositoryTest extends AbstractContainerBaseTest {
 
 	@DisplayName("좋아요 생성하기 - 성공")
 	@Test
-	void like_create_success() {
+	void likeCreate_Success() {
 		Like like = Like.builder()
 			.member(member)
 			.post(post)
@@ -69,7 +69,7 @@ class LikeRepositoryTest extends AbstractContainerBaseTest {
 
 	@DisplayName("멤버와 게시글로 좋아요 조회하기")
 	@Test
-	void like_findByMemberAndPost() {
+	void findByMemberAndPost_Success() {
 		Like like = Like.builder()
 			.member(member)
 			.post(post)
@@ -86,7 +86,7 @@ class LikeRepositoryTest extends AbstractContainerBaseTest {
 
 	@DisplayName("멤버 id로 해당 멤버 좋아요 모두 삭제하기")
 	@Test
-	void likes_allDelete_byMemberId(){
+	void likeAllDeleteByMemberId_Success(){
 		// given
 		Like like = Like.builder()
 			.member(member)

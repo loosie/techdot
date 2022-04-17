@@ -21,5 +21,5 @@ public interface InterestRepository extends JpaRepository<Interest, Long> {
 	List<InterestCategoryResponseDto> findAllCategoriesByMemberId(@Param("memberId") final Long memberId);
 
 	@Transactional
-	void deleteAllByMemberId(Long memberId);
+	void deleteAllByMemberId(final Long memberId);
 }

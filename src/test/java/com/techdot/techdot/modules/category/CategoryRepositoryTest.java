@@ -16,7 +16,7 @@ class CategoryRepositoryTest extends AbstractContainerBaseTest {
 
 	@DisplayName("카테고리 생성하기")
 	@Test
-	void member_create_success() {
+	void categoryCreate_Success() {
 		// given
 		Category category = Category.builder()
 			.viewName("java")
@@ -33,7 +33,7 @@ class CategoryRepositoryTest extends AbstractContainerBaseTest {
 
 	@DisplayName("카테고리 viewName으로 조회하기")
 	@Test
-	void category_findViewName() {
+	void categoryFindViewName_Success() {
 		// given
 		Category category = Category.builder()
 			.viewName("java")
@@ -53,7 +53,7 @@ class CategoryRepositoryTest extends AbstractContainerBaseTest {
 
 	@DisplayName("카테고리 존재여부 확인하기 (Name, Title, ViewName)")
 	@Test
-	void category_isExisted_data() {
+	void categoryCheckIsExisted_Success() {
 		// given
 		Category category = Category.builder()
 			.viewName("java")
@@ -72,7 +72,7 @@ class CategoryRepositoryTest extends AbstractContainerBaseTest {
 
 	@DisplayName("카테고리에 속한 게시글 조회하기")
 	@Test
-	void category_findPostsByCategoryId() {
+	void categoryFindPostsByCategoryId_Success() {
 		// given
 		Category category = Category.builder()
 			.viewName("java")

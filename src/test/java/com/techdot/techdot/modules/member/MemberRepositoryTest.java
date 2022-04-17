@@ -29,7 +29,7 @@ class MemberRepositoryTest extends AbstractContainerBaseTest {
 
 	@DisplayName("멤버 생성하기 - 성공")
 	@Test
-	void member_create_success() {
+	void memberCreate_Success() {
 		// given
 		Member saveMember = memberRepository.save(member);
 
@@ -40,7 +40,7 @@ class MemberRepositoryTest extends AbstractContainerBaseTest {
 
 	@DisplayName("이메일로 멤버 존재여부 확인하기")
 	@Test
-	void member_isExistedByEmail(){
+	void memberExistedByEmail_Success(){
 		// given
 		memberRepository.save(member);
 
@@ -50,7 +50,7 @@ class MemberRepositoryTest extends AbstractContainerBaseTest {
 
 	@DisplayName("닉네임으로 멤버 존재여부 확인하기")
 	@Test
-	void member_isExistedByNickname(){
+	void memberIsExistedByNickname_Success(){
 		// given
 		 memberRepository.save(member);
 
@@ -60,7 +60,7 @@ class MemberRepositoryTest extends AbstractContainerBaseTest {
 
 	@DisplayName("이메일로 멤버 찾기")
 	@Test
-	void member_findByEmail(){
+	void memberFindByEmail_Success(){
 		// given
 		memberRepository.save(member);
 
@@ -70,7 +70,7 @@ class MemberRepositoryTest extends AbstractContainerBaseTest {
 
 	@DisplayName("닉네임로 멤버 찾기")
 	@Test
-	void member_findByNickname(){
+	void memberFindByNickname_Success(){
 		// given
 		memberRepository.save(member);
 
@@ -80,7 +80,7 @@ class MemberRepositoryTest extends AbstractContainerBaseTest {
 
 	@DisplayName("멤버 삭제하기")
 	@Test
-	void member_delete(){
+	void memberDelete_Success(){
 		// when
 		memberRepository.delete(member);
 

@@ -45,7 +45,7 @@ public class PostFormDto {
 
 	private String thumbnailImage;
 
-	public PostFormDto(Post post) {
+	public PostFormDto(final Post post) {
 		this.title = post.getTitle();
 		this.content = post.getContent();
 		this.curLink = post.getLink();

@@ -61,7 +61,7 @@ class LikeServiceTest {
 
 	@DisplayName("좋아요 생성하기")
 	@Test
-	void likeAdd() {
+	void likeAdd_Success() {
 		// given
 		given(memberRepository.findById(1L)).willReturn(Optional.of(member));
 		given(postRepository.findById(1L)).willReturn(Optional.of(post));
@@ -80,7 +80,7 @@ class LikeServiceTest {
 
 	@DisplayName("좋아요 삭제하기")
 	@Test
-	void likeRemove() {
+	void likeRemove_Success() {
 		// given
 		Like like = Like.builder().member(member).post(post).build();
 		given(memberRepository.findById(1L)).willReturn(Optional.of(member));

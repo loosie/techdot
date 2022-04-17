@@ -18,7 +18,7 @@ public class ProfileController {
 	 * app profile 체크
 	 */
 	@GetMapping("/app/profile")
-	public String profile() {
+	public String appProfileHealthCheck() {
 		List<String> profiles = Arrays.asList(env.getActiveProfiles());
 
 		List<String> realProfiles = Arrays.asList("real", "real1", "real2");

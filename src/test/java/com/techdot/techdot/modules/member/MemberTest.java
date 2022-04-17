@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.util.Assert;
 
 import com.techdot.techdot.modules.member.dto.ProfileFormDto;
 
@@ -13,7 +12,7 @@ class MemberTest {
 
 	@DisplayName("멤버 생성 실패 - 입력값 null인 경우")
 	@Test
-	void member_create_fail_nullValue() {
+	void memberCreate_insertValueIsNull_ExceptionThrown() {
 		assertThrows(IllegalArgumentException.class, () -> Member.builder()
 			.nickname(null).password("test1234").email("jong9712@naver.com").emailVerified(false).build());
 		assertThrows(IllegalArgumentException.class, () -> Member.builder()
@@ -27,7 +26,7 @@ class MemberTest {
 
 	@DisplayName("멤버 이메일 체크 토큰 생성 - 성공")
 	@Test
-	void member_generateEmailCheckToken_success() {
+	void memberGenerateEmailCheckToken_Success() {
 		// given
 		Member member = Member.builder()
 			.nickname("loosie")
@@ -45,7 +44,7 @@ class MemberTest {
 
 	@DisplayName("멤버 이메일 인증 토큰 업데이트하기")
 	@Test
-	void member_updateEmailCheckToken() {
+	void memberUpdateEmailCheckToken_Success() {
 		// given
 		Member member = Member.builder()
 			.nickname("loosie")
@@ -65,7 +64,7 @@ class MemberTest {
 
 	@DisplayName("멤버 이메일 인증 완료하기")
 	@Test
-	void member_completeEmailVerified() {
+	void memberCompleteEmailVerified_Success() {
 		// given
 		Member member = Member.builder()
 			.nickname("loosie")
@@ -83,7 +82,7 @@ class MemberTest {
 
 	@DisplayName("멤버 확인 이메일 전송하기")
 	@Test
-	void member_sendConfirmEmail() {
+	void memberSendConfirmEmail_Success() {
 		// given
 		Member member = Member.builder()
 			.nickname("loosie")
@@ -102,7 +101,7 @@ class MemberTest {
 
 	@DisplayName("멤버 프로필 업데이트하기")
 	@Test
-	void member_updateProfile() {
+	void memberUpdateProfile_Success() {
 		// given
 		Member member = Member.builder()
 			.nickname("loosie")
@@ -127,7 +126,7 @@ class MemberTest {
 
 	@DisplayName("멤버 비밀번호 업데이트하기")
 	@Test
-	void member_updatePassword() {
+	void memberUpdatePassword_Success() {
 		// given
 		Member member = Member.builder()
 			.nickname("loosie")
@@ -145,7 +144,7 @@ class MemberTest {
 
 	@DisplayName("멤버 토큰 유효한지 검사하기")
 	@Test
-	void member_has_a_validToken() {
+	void memberCheckIsValidToken_Success() {
 		// given
 		Member member = Member.builder()
 			.nickname("loosie")

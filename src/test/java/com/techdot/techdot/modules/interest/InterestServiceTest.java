@@ -55,7 +55,7 @@ class InterestServiceTest {
 
 	@DisplayName("관심 카테고리 추가하기")
 	@Test
-	void interestAdd() {
+	void interestAdd_Success() {
 		// given
 		given(memberRepository.getById(1L)).willReturn(member);
 		given(categoryRepository.getByViewName("java")).willReturn(category);
@@ -73,7 +73,7 @@ class InterestServiceTest {
 
 	@DisplayName("관심 카테고리 삭제하기")
 	@Test
-	void interestRemove() {
+	void interestRemove_Success() {
 		// given
 		Interest interest = Interest.builder().member(member).category(category).build();
 		given(memberRepository.getById(1L)).willReturn(member);
@@ -92,12 +92,16 @@ class InterestServiceTest {
 
 	@DisplayName("멤버 ID로 멤버 관심 카테고리 목록 가져오기")
 	@Test
-	void getInterestCategories_byMemberId(){
+	void getInterestCategoriesByMemberId_Success(){
+		// given
 		List<InterestCategoryResponseDto> input = List.of(
 			new InterestCategoryResponseDto("java"), new InterestCategoryResponseDto("backend"));
 		given(interestRepository.findAllCategoriesByMemberId(member.getId())).willReturn(input);
+
+		// when
 		List<InterestCategoryResponseDto> result = interestService.getInterestCategoriesByMember(member.getId());
 
+		// then
 		then(interestRepository).should(times(1)).findAllCategoriesByMemberId(any());
 		assertEquals(input.get(0), result.get(0));
 	}

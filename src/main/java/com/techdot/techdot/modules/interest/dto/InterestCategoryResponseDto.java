@@ -6,7 +6,7 @@ import lombok.Data;
 public class InterestCategoryResponseDto {
 	private String categoryViewName;
 
-	public InterestCategoryResponseDto(String categoryViewName) {
+	public InterestCategoryResponseDto(final String categoryViewName) {
 		this.categoryViewName = categoryViewName;
 	}
 }

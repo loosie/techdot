@@ -19,8 +19,9 @@ public class PostQueryResponseDto {
 	private String categoryDisplayName;
 	private Boolean isMemberLike;
 
-	public PostQueryResponseDto(Long postId, String title, String content, String link, String writer, PostType type, String thumbnailImage,
-		LocalDateTime uploadDateTime, String categoryDisplayName, Boolean isMemberLike) {
+	public PostQueryResponseDto(final Long postId, final String title,final  String content,
+		final String link, final String writer, final PostType type, final String thumbnailImage,
+		final LocalDateTime uploadDateTime, final String categoryDisplayName, final Boolean isMemberLike) {
 		this.postId = postId;
 		this.title = title;
 		this.content = content;

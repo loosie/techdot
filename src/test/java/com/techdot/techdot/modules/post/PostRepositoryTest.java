@@ -51,7 +51,7 @@ class PostRepositoryTest extends AbstractContainerBaseTest {
 
 	@DisplayName("게시글 생성하기 - 성공")
 	@Test
-	void post_create_success() {
+	void postCreate_Success() {
 		//given
 		Post post = Post.builder()
 			.title("title1")
@@ -75,7 +75,7 @@ class PostRepositoryTest extends AbstractContainerBaseTest {
 
 	@DisplayName("게시글 링크 존재여부 확인하기")
 	@Test
-	void post_isExistedLink() {
+	void existsByLink_Success() {
 		Post post = Post.builder()
 			.title("title1")
 			.content("content.content...")
@@ -86,17 +86,15 @@ class PostRepositoryTest extends AbstractContainerBaseTest {
 			.writer("naver")
 			.manager(member)
 			.build();
-
-		// when
 		postRepository.save(post);
 
-		// then
+		// when, then
 		assertTrue(postRepository.existsByLink("http://testlink.com"));
 	}
 
 	@DisplayName("게시글 Manager정보로 조회하기")
 	@Test
-	void post_findByManager() {
+	void getByManager_Success() {
 		Post post = Post.builder()
 			.title("title1")
 			.content("content.content...")
@@ -107,12 +105,12 @@ class PostRepositoryTest extends AbstractContainerBaseTest {
 			.uploadDateTime(LocalDateTime.now())
 			.manager(member)
 			.build();
-
-		// when
 		Post savePost = postRepository.save(post);
 
-		// then
+		// when
 		Page<MyUploadPostResponseDto> byManager = postRepository.getByManager(member, Pageable.ofSize(1));
+
+		// then
 		MyUploadPostResponseDto result = byManager.getContent().get(0);
 		assertEquals(result.getId(), savePost.getId());
 		assertEquals(result.getTitle(), "title1");
@@ -121,7 +119,7 @@ class PostRepositoryTest extends AbstractContainerBaseTest {
 
 	@DisplayName("게시글 id로 삭제하기")
 	@Test
-	void post_deleteById() {
+	void deleteById_Success() {
 		// given
 		Post post = Post.builder()
 			.title("title1")

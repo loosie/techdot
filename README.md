@@ -22,6 +22,8 @@
 <br>
 
 ## 테스트 코드 작성 규칙
+- 테스트 코드 작명 규칙: MethodName_{Option}_ExpectedBehavior
+
 ### Controller단 테스트 (MockMvcTest)
 Controller 층에서는 Jsp View를 반환하는 API를 @MockMvcTest로 통합 테스트 진행
 - @MockMvcTest = @SpringBootTest + @AutoConfigureMockMvc + TestContainer

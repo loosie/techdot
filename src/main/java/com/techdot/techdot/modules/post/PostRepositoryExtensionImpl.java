@@ -13,7 +13,6 @@ import com.querydsl.jpa.JPQLQuery;
 import com.techdot.techdot.modules.category.QCategory;
 import com.techdot.techdot.modules.interest.QInterest;
 import com.techdot.techdot.modules.like.QLike;
-import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.post.dto.PostQueryResponseDto;
 
 public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport implements PostRepositoryExtension {
@@ -34,10 +33,7 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 	@Override
 	public List<PostQueryResponseDto> findAllDtoByKeyword(final Long memberId, final String keyword,
 		final Pageable pageable) {
-		JPQLQuery<PostQueryResponseDto> query = from(post)
-			.select(Projections.constructor(PostQueryResponseDto.class,
-				post.id, post.title, post.content, post.link, post.writer, post.type,
-				post.thumbnailImage, post.uploadDateTime, category.name, getBooleanExpressionIsMemberLike(memberId)))
+		JPQLQuery<PostQueryResponseDto> query = getSelectPostQueryDtoQuery(memberId)
 			.join(post.category, category)
 			.where(post.title.containsIgnoreCase(keyword)
 				.or(post.content.containsIgnoreCase(keyword))
@@ -51,10 +47,7 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 
 	@Override
 	public List<PostQueryResponseDto> findAllDto(final Long memberId, final Pageable pageable) {
-		JPQLQuery<PostQueryResponseDto> query = from(post)
-			.select(Projections.constructor(PostQueryResponseDto.class,
-				post.id, post.title, post.content, post.link, post.writer, post.type,
-				post.thumbnailImage, post.uploadDateTime, category.name, getBooleanExpressionIsMemberLike(memberId)))
+		JPQLQuery<PostQueryResponseDto> query = getSelectPostQueryDtoQuery(memberId)
 			.join(post.category, category);
 		addSorting(pageable.getSort(), query);
 		return getPagingResults(pageable, query);
@@ -63,10 +56,7 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 	@Override
 	public List<PostQueryResponseDto> findAllDtoByCategoryViewName(final Long memberId, final String categoryViewName,
 		final Pageable pageable) {
-		JPQLQuery<PostQueryResponseDto> query = from(post)
-			.select(Projections.constructor(PostQueryResponseDto.class,
-				post.id, post.title, post.content, post.link, post.writer, post.type,
-				post.thumbnailImage, post.uploadDateTime, category.name, getBooleanExpressionIsMemberLike(memberId)))
+		JPQLQuery<PostQueryResponseDto> query = getSelectPostQueryDtoQuery(memberId)
 			.join(post.category, category)
 			.where(category.viewName.eq(categoryViewName));
 		addSorting(pageable.getSort(), query);
@@ -75,10 +65,7 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 
 	@Override
 	public List<PostQueryResponseDto> findAllDtoByLikesMemberId(final Long memberId, final Pageable pageable) {
-		JPQLQuery<PostQueryResponseDto> query = from(post)
-			.select(Projections.constructor(PostQueryResponseDto.class,
-				post.id, post.title, post.content, post.link, post.writer, post.type,
-				post.thumbnailImage, post.uploadDateTime, category.name, getBooleanExpressionIsMemberLike(memberId)))
+		JPQLQuery<PostQueryResponseDto> query = getSelectPostQueryDtoQuery(memberId)
 			.join(post.category, category)
 			.join(post.likes, like)
 			.where(like.member.id.eq(memberId));
@@ -88,15 +75,19 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 
 	@Override
 	public List<PostQueryResponseDto> findAllDtoByInterestsMemberId(final Long memberId, final Pageable pageable) {
-		JPQLQuery<PostQueryResponseDto> query = from(post)
-			.select(Projections.constructor(PostQueryResponseDto.class,
-				post.id, post.title, post.content, post.link, post.writer, post.type,
-				post.thumbnailImage, post.uploadDateTime, category.name, getBooleanExpressionIsMemberLike(memberId)))
+		JPQLQuery<PostQueryResponseDto> query = getSelectPostQueryDtoQuery(memberId)
 			.join(post.category, category)
 			.join(category.interests, interest)
 			.where(interest.member.id.eq(memberId));
 		addSorting(pageable.getSort(), query);
 		return getPagingResults(pageable, query);
+	}
+
+	private JPQLQuery<PostQueryResponseDto> getSelectPostQueryDtoQuery(Long memberId) {
+		return from(post)
+			.select(Projections.constructor(PostQueryResponseDto.class,
+				post.id, post.title, post.content, post.link, post.writer, post.type,
+				post.thumbnailImage, post.uploadDateTime, category.name, getBooleanExpressionIsMemberLike(memberId)));
 	}
 
 	private List<PostQueryResponseDto> getPagingResults(final Pageable pageable,

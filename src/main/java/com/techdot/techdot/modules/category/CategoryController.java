@@ -39,12 +39,12 @@ public class CategoryController {
 
 	/**
 	 * 카테고리별 게시글 뷰
-	 * 쿼리 발생 횟수 : 3
+	 * 조회 쿼리 발생 횟수 : 3
 	 * viewName으로 카테고리 조회 + 전체 카테고리 조회 (nav) + 카테고리별 게시글 조회
 	 */
 	@GetMapping("/category/{viewName}")
-	public String categoryView(@PathVariable final String viewName, @CurrentUser final Member member, Model model,
-		@PageableDefault(size = 10, page = 0, sort = "uploadDateTime", direction = Sort.Direction.DESC) Pageable pageable) {
+	public String categoryView(@PathVariable final String viewName, @CurrentUser final Member member, final Model model,
+		@PageableDefault(size = 10, page = 0, sort = "uploadDateTime", direction = Sort.Direction.DESC) final Pageable pageable) {
 		if (member != null) {
 			model.addAttribute(member);
 		}
@@ -62,7 +62,7 @@ public class CategoryController {
 	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/new-category")
-	public String newCategoryView(@CurrentUser final Member member, Model model) {
+	public String categoryCreateView(@CurrentUser final Member member, final Model model) {
 		model.addAttribute("member", member);
 		model.addAttribute("categoryForm", new CategoryFormDto());
 
@@ -74,8 +74,8 @@ public class CategoryController {
 	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/new-category")
-	public String newCategoryForm(@Valid @ModelAttribute("categoryForm") final CategoryFormDto categoryForm,
-		Errors errors, @CurrentUser final Member member, Model model) {
+	public String categoryCreateForm(@Valid @ModelAttribute("categoryForm") final CategoryFormDto categoryForm,
+		Errors errors, @CurrentUser final Member member, final Model model) {
 		if (errors.hasErrors()) {
 			model.addAttribute(member);
 			return "category/form";
@@ -90,7 +90,7 @@ public class CategoryController {
 	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/category/{id}/edit")
-	public String updatePostView(@PathVariable final Long id, @CurrentUser final Member member, Model model) {
+	public String categoryUpdateView(@PathVariable final Long id, @CurrentUser final Member member, final Model model) {
 		Category category = categoryService.getById(id);
 
 		model.addAttribute(member);
@@ -104,8 +104,8 @@ public class CategoryController {
 	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/category/{id}/edit")
-	public String updatePostForm(@PathVariable Long id, @Valid @ModelAttribute("categoryForm") final CategoryFormDto categoryForm,
-		Errors errors, @CurrentUser final Member member, Model model, RedirectAttributes redirectAttributes) {
+	public String categoryUpdateForm(@PathVariable Long id, @Valid @ModelAttribute("categoryForm") final CategoryFormDto categoryForm,
+		Errors errors, @CurrentUser final Member member, final Model model, final RedirectAttributes redirectAttributes) {
 		if (errors.hasErrors()) {
 			model.addAttribute(member);
 			return "category/updateForm";
@@ -121,7 +121,7 @@ public class CategoryController {
 	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/category/{id}/remove")
-	public String removePostForm(@PathVariable Long id) {
+	public String categoryRemove(@PathVariable final Long id) {
 		categoryService.remove(id);
 		return "redirect:/accounts/settings/category";
 	}

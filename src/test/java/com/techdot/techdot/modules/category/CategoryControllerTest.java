@@ -35,7 +35,7 @@ class CategoryControllerTest extends AbstractContainerBaseTest {
 
 	@DisplayName("카테고리 별로 뷰")
 	@Test
-	void categoryView() throws Exception {
+	void categoryView_Success() throws Exception {
 		Category category = categoryService.getByViewName("java");
 
 		mockMvc.perform(get("/category/" + category.getViewName()))
@@ -50,7 +50,7 @@ class CategoryControllerTest extends AbstractContainerBaseTest {
 	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
 	@DisplayName("카테고리 생성 뷰")
 	@Test
-	void categoryCreateView() throws Exception {
+	void categoryCreateView_Success() throws Exception {
 		mockMvc.perform(get("/new-category"))
 			.andExpect(status().isOk())
 			.andExpect(status().isOk())
@@ -63,7 +63,7 @@ class CategoryControllerTest extends AbstractContainerBaseTest {
 	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
 	@DisplayName("카테고리 생성 성공")
 	@Test
-	void createCategory_success() throws Exception {
+	void categoryCreateForm_Success() throws Exception {
 		mockMvc.perform(post("/new-category")
 			.param("name", "nav 이름")
 			.param("title", "메인 타이틀")
@@ -77,7 +77,7 @@ class CategoryControllerTest extends AbstractContainerBaseTest {
 	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
 	@DisplayName("카테고리 생성 실패 - viewName 입력값 오류")
 	@Test
-	void createNewCategory_fail_invalidViewName() throws Exception {
+	void categoryCreate_ViewNameIsNotValidType_Error() throws Exception {
 		mockMvc.perform(post("/new-category")
 			.param("name", "nav 이름")
 			.param("title", "메인 타이틀")
@@ -92,7 +92,7 @@ class CategoryControllerTest extends AbstractContainerBaseTest {
 	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
 	@DisplayName("카테고리 수정하기 성공")
 	@Test
-	void updateCategory_success() throws Exception {
+	void categoryUpdateForm_Success() throws Exception {
 		// given
 		Category category = categoryService.getByViewName("java");
 
@@ -119,7 +119,7 @@ class CategoryControllerTest extends AbstractContainerBaseTest {
 	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
 	@DisplayName("카테고리 수정하기 실패 - 데이터 중복")
 	@Test
-	void updateCategory_fail_invalidData() throws Exception {
+	void categoryUpdate_ViewNameIsDuplicatedData_Error() throws Exception {
 		// given
 		categoryRepository.save(Category.builder()
 			.viewName("backend")
@@ -147,7 +147,7 @@ class CategoryControllerTest extends AbstractContainerBaseTest {
 	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
 	@DisplayName("카테고리 삭제하기 성공")
 	@Test
-	void removeCategory_success() throws Exception {
+	void categoryRemove_Success() throws Exception {
 		// given
 		Category category = categoryService.getByViewName("java");
 

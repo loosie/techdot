@@ -33,7 +33,7 @@ class AccountsControllerTest extends AbstractContainerBaseTest {
 	@WithCurrentUser(value = TEST_EMAIL, role = USER)
 	@DisplayName("개인정보 설정 메인 뷰")
 	@Test
-	void profileSettingsView() throws Exception {
+	void profileSettingsView_Success() throws Exception {
 		mockMvc.perform(get(REQUEST_URL))
 			.andExpect(status().isOk())
 			.andExpect(view().name(ACCOUNTS_PROFILE_VIEW_NAME))
@@ -43,7 +43,7 @@ class AccountsControllerTest extends AbstractContainerBaseTest {
 	@WithCurrentUser(value = TEST_EMAIL, role = USER)
 	@DisplayName("프로필 수정하기 - 정상")
 	@Test
-	void updateProfile_success() throws Exception {
+	void profileUpdate_Success() throws Exception {
 		String bio = "소개를 수정하는 경우";
 		mockMvc.perform(post(REQUEST_URL + ACCOUNTS_MAIN_VIEW_URL)
 			.param("curNickname", TEST_NICKNAME)
@@ -62,7 +62,7 @@ class AccountsControllerTest extends AbstractContainerBaseTest {
 	@WithCurrentUser(value = TEST_EMAIL, role = USER)
 	@DisplayName("프로필 수정하기 - 입력값 에러 - 소개글 범위 초과")
 	@Test
-	void updateProfile_error_wrongInput() throws Exception {
+	void profileUpdate_BioTextIsTooLong_Error() throws Exception {
 		String bio = "소개를 수정하는 길이가 너무 긴 경우.소개를 수정하는 길이가 너무 긴 경우.소개를 수정하는 길이가 너무 긴 경우.소개를 수정하는 길이가 너무 긴 경우.";
 		mockMvc.perform(post(REQUEST_URL + ACCOUNTS_MAIN_VIEW_URL)
 			.param("curNickname", TEST_NICKNAME)
@@ -82,7 +82,7 @@ class AccountsControllerTest extends AbstractContainerBaseTest {
 	@WithCurrentUser(value = TEST_EMAIL, role = USER)
 	@DisplayName("프로필 수정하기 - 입력값 에러 - 닉네임 중복")
 	@Test
-	void updateProfile_error_duplicatedNickname() throws Exception {
+	void profileUpdate_NickNameIsDuplicated_Error() throws Exception {
 		// given
 		Member newMember = memberRepository.save(Member.builder()
 			.email("test2@naver.com")
@@ -109,7 +109,7 @@ class AccountsControllerTest extends AbstractContainerBaseTest {
 	@WithCurrentUser(value = TEST_EMAIL, role = USER)
 	@DisplayName("비밀번호 변경 뷰")
 	@Test
-	void updatePasswordView() throws Exception {
+	void updatePasswordView_Success() throws Exception {
 		mockMvc.perform(get(REQUEST_URL + ACCOUNTS_PASSWORD_VIEW_URL))
 			.andExpect(status().isOk())
 			.andExpect(model().attributeExists("member"))
@@ -119,7 +119,7 @@ class AccountsControllerTest extends AbstractContainerBaseTest {
 	@WithCurrentUser(value = TEST_EMAIL, role = USER)
 	@DisplayName("비밀번호 변경하기 - 정상")
 	@Test
-	void updatePassword_success() throws Exception {
+	void updatePasswordForm_Success() throws Exception {
 		String newPw = "1234567890";
 		mockMvc.perform(post(REQUEST_URL + ACCOUNTS_PASSWORD_VIEW_URL)
 			.param("newPassword", newPw)
@@ -137,7 +137,7 @@ class AccountsControllerTest extends AbstractContainerBaseTest {
 	@WithCurrentUser(value = TEST_EMAIL, role = USER)
 	@DisplayName("비밀번호 변경하기 - 입력값 에러")
 	@Test
-	void updatePassword_error_unMatchedPassword() throws Exception {
+	void updatePassword_PasswordIsNotMatched_Error() throws Exception {
 		String newPw = "1234567890";
 		mockMvc.perform(post(REQUEST_URL + ACCOUNTS_PASSWORD_VIEW_URL)
 			.param("newPassword", newPw)
@@ -152,7 +152,7 @@ class AccountsControllerTest extends AbstractContainerBaseTest {
 	@WithCurrentUser(value = TEST_EMAIL, role = USER)
 	@DisplayName("설정 뷰")
 	@Test
-	void accountsSettingView() throws Exception {
+	void accountsSettingView_Success() throws Exception {
 		mockMvc.perform(get(REQUEST_URL + ACCOUNTS_SETTING_VIEW_URL))
 			.andExpect(status().isOk())
 			.andExpect(view().name(ACCOUNTS_SETTING_VIEW_NAME))
@@ -162,7 +162,7 @@ class AccountsControllerTest extends AbstractContainerBaseTest {
 	@WithCurrentUser(value = TEST_EMAIL, role = USER)
 	@DisplayName("회원 탈퇴")
 	@Test
-	void accountsWithdrawal() throws Exception {
+	void accountsWithdrawal_Success() throws Exception {
 		mockMvc.perform(post(REQUEST_URL + "/withdrawal")
 			.with(csrf()))
 			.andExpect(status().is3xxRedirection())
@@ -172,7 +172,7 @@ class AccountsControllerTest extends AbstractContainerBaseTest {
 	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
 	@DisplayName("카테고리 관리 뷰")
 	@Test
-	void accountsSettingCategoryView() throws Exception {
+	void accountsSettingCategoryView_Success() throws Exception {
 		mockMvc.perform(get(REQUEST_URL + ACCOUNTS_CATEGORY_VIEW_URL))
 			.andExpect(status().isOk())
 			.andExpect(view().name(ACCOUNTS_CATEGORY_VIEW_NAME))
@@ -182,7 +182,7 @@ class AccountsControllerTest extends AbstractContainerBaseTest {
 	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
 	@DisplayName("게시글 관리 뷰")
 	@Test
-	void accountsMyUploadView() throws Exception {
+	void accountsMyUploadView_Success() throws Exception {
 		mockMvc.perform(get(REQUEST_URL + ACCOUNTS_MY_UPLOAD_VIEW_URL))
 			.andExpect(status().isOk())
 			.andExpect(view().name(ACCOUNTS_MY_UPLOAD_VIEW_NAME))

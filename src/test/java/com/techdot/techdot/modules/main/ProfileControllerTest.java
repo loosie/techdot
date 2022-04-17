@@ -12,7 +12,7 @@ class ProfileControllerTest {
 
 	@DisplayName("spring profile 조회하기")
 	@Test
-	void real_profile_조회(){
+	void appProfileHealthCheck(){
 		// given
 		String expectedProfile = "real";
 		MockEnvironment env = new MockEnvironment();
@@ -22,7 +22,7 @@ class ProfileControllerTest {
 
 		// when
 		profileController = new ProfileController(env);
-		String profile = profileController.profile();
+		String profile = profileController.appProfileHealthCheck();
 
 		// then
 		assertEquals(profile, expectedProfile);
