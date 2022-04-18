@@ -1,10 +1,10 @@
 package com.techdot.techdot.modules.member;
 
+import static com.techdot.techdot.infra.util.TokenGenerator.*;
 import static com.techdot.techdot.modules.member.dao.AuthDao.TokenType.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.UUID;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -51,17 +51,18 @@ public class MemberService {
 	public Member save(final JoinFormDto joinForm) {
 		Member newMember = saveMember(joinForm);
 
-		authDao.saveAuthToken(newMember.getId(), UUID.randomUUID().toString(), EMAIL);
-
+		authDao.saveAndGetAuthToken(newMember.getId(), generateToken(), EMAIL);
 		sendConfirmEmail(newMember);
+
 		return newMember;
 	}
 
 	/**
 	 * 인증 메일 전송하기
+	 *
 	 */
 	public void sendConfirmEmail(final Member newMember) {
-		String token = authDao.getAuthTokenByMemberId(newMember.getId(), EMAIL);
+		String token = authDao.saveAndGetAuthToken(newMember.getId(), generateToken(), EMAIL);;
 		if(token == null || token.isEmpty()){
 			throw new NullPointerException("올바르지 않은 토큰 값입니다.");
 		}
@@ -95,8 +96,7 @@ public class MemberService {
 			.password(passwordEncoder.encode(joinForm.getPassword()))
 			.emailVerified(false)
 			.build();
-		// member.generateEmailCheckToken();
-
+		member.countEmailSendTime();
 		return memberRepository.save(member);
 	}
 
@@ -188,7 +188,14 @@ public class MemberService {
 	/**
 	 * 캐시에 저장된 토큰이 일치하는지 확인하기
 	 */
-	public boolean isValidEmailToken(Long memberId, String token) {
+	public boolean isValidEmailToken(final Long memberId, final String token) {
 		return token.equals(authDao.getAuthTokenByMemberId(memberId, EMAIL));
+	}
+
+	/**
+	 * 이메일 전송 한도가 초과되었는지 확인하기
+	 */
+	public boolean isExceededEmailSendTime(final Member member) {
+		return member.canSendConfirmEmail();
 	}
 }

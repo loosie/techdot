@@ -19,7 +19,6 @@ public class PrincipalDetailsService implements UserDetailsService {
 
 	private final MemberRepository memberRepository;
 
-	@Transactional
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		Optional<Member> opMember = memberRepository.findByEmail(email);
@@ -27,9 +26,7 @@ public class PrincipalDetailsService implements UserDetailsService {
 			throw new UsernameNotFoundException(email);
 		}
 
-		Member member = opMember.get();
-		member.updateEmailCheckToken(); // 로그인할 때마다 token 값 갱신
-		return new PrincipalDetails(member);
+		return new PrincipalDetails(opMember.get());
 
 	}
 }

@@ -101,12 +101,13 @@ public class MemberController {
 	public String resendEmailConfirm(@PathVariable final String email, Model model) {
 		Member member = memberService.getByEmail(email, EMAIL_LOGIN_VIEW_NAME);
 
-		// if (!member.canSendConfirmEmail()) {
-		// 	model.addAttribute("error", "잠시 후에 다시 시도해주세요.");
-		// 	return MEMBER_CHECK_EMAIL_VIEW_NAME;
-		// }
+		if (!memberService.isExceededEmailSendTime(member)) {
+			model.addAttribute("error", "잠시 후에 다시 시도해주세요.");
+			return MEMBER_CHECK_EMAIL_VIEW_NAME;
+		}
 
 		memberService.sendConfirmEmail(member);
+		model.addAttribute("message", "이메일 재전송이 완료되었습니다.");
 		return MEMBER_CHECK_EMAIL_VIEW_NAME;
 	}
 
@@ -139,10 +140,10 @@ public class MemberController {
 	public String loginByEmail(final String token, final String email, Model model) {
 		Member member = memberService.getByEmail(email, EMAIL_LOGIN_VIEW_NAME);
 
-		if (!member.isValidToken(token)) {
-			model.addAttribute("error", "토큰이 유효하지 않습니다.");
-			return EMAIL_LOGIN_VIEW_NAME;
-		}
+		// if (!member.isValidToken(token)) {
+		// 	model.addAttribute("error", "토큰이 유효하지 않습니다.");
+		// 	return EMAIL_LOGIN_VIEW_NAME;
+		// }
 
 		if (!member.getEmailVerified()) {
 			// 이메일 인증 처리 완료

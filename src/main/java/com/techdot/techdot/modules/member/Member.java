@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -26,7 +25,6 @@ import com.techdot.techdot.infra.domain.BaseEntity;
 import com.techdot.techdot.modules.interest.Interest;
 import com.techdot.techdot.modules.like.Like;
 import com.techdot.techdot.modules.member.dto.ProfileFormDto;
-import com.techdot.techdot.modules.post.Post;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -57,8 +55,6 @@ public class Member extends BaseEntity {
 
 	@Column(nullable = false)
 	private Boolean emailVerified;
-
-	private String emailCheckToken;
 
 	private LocalDateTime emailCheckTokenSendAt;
 
@@ -93,17 +89,11 @@ public class Member extends BaseEntity {
 		createDateTime();
 	}
 
-	public void generateEmailCheckToken() {
-		this.emailCheckToken = UUID.randomUUID().toString();
+	public void countEmailSendTime() {
 		this.emailCheckTokenSendAt = LocalDateTime.now();
 		this.emailSendTime = 1;
 	}
 
-
-
-	public void updateEmailCheckToken() {
-		this.emailCheckToken = UUID.randomUUID().toString();
-	}
 
 	public void completeEmailVerified() {
 		updateRoleToMember();
@@ -147,10 +137,6 @@ public class Member extends BaseEntity {
 	public void updatePassword(final String newPassword) {
 		this.password = newPassword;
 		updateDateTime();
-	}
-
-	public boolean isValidToken(final String token) {
-		return this.emailCheckToken.equals(token);
 	}
 
 }

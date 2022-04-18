@@ -26,9 +26,14 @@ public class AuthDao {
 
 	private final RedisTemplate<String, Object> redisTemplate;
 
-
-	public String saveAuthToken(Long memberId, String token, TokenType tokenType){
+	public String saveAndGetAuthToken(Long memberId, String token, TokenType tokenType) {
 		String key = generateAuthTokenKey(memberId, tokenType);
+
+		// 이미 존재하면 해당 토큰 반환
+		String findToken = getAuthTokenByMemberId(memberId, tokenType);
+		if (findToken != null) {
+			return findToken;
+		}
 
 		redisTemplate.opsForValue().set(key, token);
 		redisTemplate.expire(key, 5, TimeUnit.MINUTES);
@@ -36,8 +41,7 @@ public class AuthDao {
 		return token;
 	}
 
-
-	public String getAuthTokenByMemberId(Long memberId, TokenType tokenType){
+	public String getAuthTokenByMemberId(Long memberId, TokenType tokenType) {
 		String key = generateAuthTokenKey(memberId, tokenType);
 
 		String token = (String)redisTemplate.opsForValue().get(key);
@@ -47,11 +51,11 @@ public class AuthDao {
 	}
 
 	private String generateAuthTokenKey(Long memberId, TokenType tokenType) {
-		if(tokenType.equals(TokenType.EMAIL)){
+		if (tokenType.equals(TokenType.EMAIL)) {
 			return generateEmailCheckTokenKey(memberId);
 		}
 
-		if(tokenType.equals(TokenType.LOGIN)){
+		if (tokenType.equals(TokenType.LOGIN)) {
 			return generateLoginTokenKey(memberId);
 		}
 		throw new IllegalArgumentException("잘못된 토큰 타입입니다.");

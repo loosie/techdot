@@ -92,7 +92,7 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 			.nickname("testNickname")
 			.build();
 		Member newMember = memberRepository.save(member);
-		newMember.generateEmailCheckToken();
+		newMember.countEmailSendTime();
 
 		// when, then
 		mockMvc.perform(get("/confirm-email")
@@ -117,7 +117,7 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 			.nickname("testNickname")
 			.build();
 		Member newMember = memberRepository.save(member);
-		newMember.generateEmailCheckToken();
+		newMember.countEmailSendTime();
 
 		mockMvc.perform(get("/confirm-email")
 			.param("token", "testToken")
@@ -141,7 +141,7 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 			.emailVerified(false)
 			.build();
 		Member newMember = memberRepository.save(member);
-		newMember.generateEmailCheckToken();
+		newMember.countEmailSendTime();
 
 		mockMvc.perform(get("/login-by-email")
 			.param("token", newMember.getEmailCheckToken())
@@ -164,7 +164,7 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 			.emailVerified(false)
 			.build();
 		Member newMember = memberRepository.save(member);
-		newMember.generateEmailCheckToken();
+		newMember.countEmailSendTime();
 
 		mockMvc.perform(get("/login-by-email")
 			.param("token", "testToken")

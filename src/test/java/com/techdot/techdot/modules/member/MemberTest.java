@@ -34,10 +34,10 @@ class MemberTest {
 			.email("jong9712@naver.com")
 			.emailVerified(false)
 			.build();
-		member.generateEmailCheckToken();
+		member.countEmailSendTime();
 
 		// when, then
-		assertNotNull(member.getEmailCheckToken());
+		// assertNotNull(member.getEmailCheckToken());
 		assertNotNull(member.getEmailCheckTokenSendAt());
 		assertEquals(member.getEmailSendTime(), 1);
 	}
@@ -52,14 +52,14 @@ class MemberTest {
 			.email("jong9712@naver.com")
 			.emailVerified(false)
 			.build();
-		member.generateEmailCheckToken();
-		String firstToken = member.getEmailCheckToken();
+		member.countEmailSendTime();
+		// String firstToken = member.getEmailCheckToken();
 
 		// when
-		member.updateEmailCheckToken();
+		// member.updateEmailCheckToken();
 
 		// then
-		assertNotEquals(firstToken, member.getEmailCheckToken());
+		// assertNotEquals(firstToken, member.getEmailCheckToken());
 	}
 
 	@DisplayName("멤버 이메일 인증 완료하기")
@@ -90,7 +90,7 @@ class MemberTest {
 			.email("jong9712@naver.com")
 			.emailVerified(false)
 			.build();
-		member.generateEmailCheckToken();
+		member.countEmailSendTime();
 
 		// when, then
 		assertEquals(member.getEmailSendTime(), 1);
@@ -152,7 +152,7 @@ class MemberTest {
 			.email("jong9712@naver.com")
 			.emailVerified(false)
 			.build();
-		member.generateEmailCheckToken();
+		member.countEmailSendTime();
 
 		// when, then
 		assertTrue(member.isValidToken(member.getEmailCheckToken()));
