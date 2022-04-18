@@ -66,7 +66,7 @@ public class MemberController {
 		String view = "member/confirm-email";
 		Member member = memberService.getByEmail(email, view);
 
-		if (!member.isValidToken(token)) {
+		if (!memberService.isValidEmailToken(member.getId(), token)) {
 			model.addAttribute("message", "토큰 정보가 정확하지 않습니다.");
 			return view;
 		}
@@ -101,10 +101,10 @@ public class MemberController {
 	public String resendEmailConfirm(@PathVariable final String email, Model model) {
 		Member member = memberService.getByEmail(email, EMAIL_LOGIN_VIEW_NAME);
 
-		if (!member.canSendConfirmEmail()) {
-			model.addAttribute("error", "잠시 후에 다시 시도해주세요.");
-			return MEMBER_CHECK_EMAIL_VIEW_NAME;
-		}
+		// if (!member.canSendConfirmEmail()) {
+		// 	model.addAttribute("error", "잠시 후에 다시 시도해주세요.");
+		// 	return MEMBER_CHECK_EMAIL_VIEW_NAME;
+		// }
 
 		memberService.sendConfirmEmail(member);
 		return MEMBER_CHECK_EMAIL_VIEW_NAME;

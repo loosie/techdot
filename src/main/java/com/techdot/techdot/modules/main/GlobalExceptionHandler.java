@@ -16,6 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+	// 400 : BAD REQUEST
+	// 404 : NOT FOUND
+	// 500 : INTERNAL SERVER ERROR
 
 	@ExceptionHandler(NullPointerException.class)
 	public String handleNullPointerException(NullPointerException ex, HttpServletRequest req) {
@@ -23,6 +26,14 @@ public class GlobalExceptionHandler {
 		req.setAttribute("message", ex.getMessage());
 		return "error/404";
 	}
+
+	@ExceptionHandler(IllegalStateException.class)
+	public String handleIllegalStateException(IllegalStateException ex, HttpServletRequest req) {
+		log.error("data is invalid type  - {}", ex.getMessage());
+		req.setAttribute("message", ex.getMessage());
+		return "error/404";
+	}
+
 
 	@ExceptionHandler(UserNotExistedException.class)
 	public String handleUserNotExistedException(UserNotExistedException ex, HttpServletRequest req) {

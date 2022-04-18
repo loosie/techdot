@@ -1,8 +1,10 @@
 package com.techdot.techdot.modules.member;
 
+import static com.techdot.techdot.modules.member.dao.AuthDao.TokenType.*;
+
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,6 +20,7 @@ import com.techdot.techdot.infra.mail.EmailMessageDto;
 import com.techdot.techdot.infra.mail.EmailService;
 import com.techdot.techdot.modules.main.UserNotExistedException;
 import com.techdot.techdot.modules.member.auth.PrincipalDetails;
+import com.techdot.techdot.modules.member.dao.AuthDao;
 import com.techdot.techdot.modules.member.dto.JoinFormDto;
 import com.techdot.techdot.modules.member.dto.PasswordFormDto;
 import com.techdot.techdot.modules.member.dto.ProfileFormDto;
@@ -37,13 +40,19 @@ public class MemberService {
 	private final TemplateEngine templateEngine;
 	private final AppProperties appProperties;
 
+	private final AuthDao authDao;
+
 	/**
 	 * 회원가입
 	 * -> 멤버 저장하기
+	 * -> 캐시에 멤버 이메일 인증 토큰 생성 후 저장 (유효기간 5분)
 	 * -> 인증 메일 전송
 	 */
 	public Member save(final JoinFormDto joinForm) {
 		Member newMember = saveMember(joinForm);
+
+		authDao.saveAuthToken(newMember.getId(), UUID.randomUUID().toString(), EMAIL);
+
 		sendConfirmEmail(newMember);
 		return newMember;
 	}
@@ -52,9 +61,14 @@ public class MemberService {
 	 * 인증 메일 전송하기
 	 */
 	public void sendConfirmEmail(final Member newMember) {
+		String token = authDao.getAuthTokenByMemberId(newMember.getId(), EMAIL);
+		if(token == null || token.isEmpty()){
+			throw new NullPointerException("올바르지 않은 토큰 값입니다.");
+		}
+
 		Context context = new Context();
 		context.setVariable("link",
-			"/confirm-email?token=" + newMember.getEmailCheckToken() + "&email=" + newMember.getEmail());
+			"/confirm-email?token=" + token + "&email=" + newMember.getEmail());
 		context.setVariable("nickname", newMember.getNickname());
 		context.setVariable("linkName", "이메일 인증하기");
 		context.setVariable("message", "테크닷 서비스를 사용하려면 인증 링크를 클릭해주세요.");
@@ -81,7 +95,8 @@ public class MemberService {
 			.password(passwordEncoder.encode(joinForm.getPassword()))
 			.emailVerified(false)
 			.build();
-		member.generateEmailCheckToken();
+		// member.generateEmailCheckToken();
+
 		return memberRepository.save(member);
 	}
 
@@ -130,9 +145,12 @@ public class MemberService {
 	 * 로그인 링크 이메일로 전송하기
 	 */
 	public void sendLoginLink(final Member member) {
+		// if token 없으면 ?
+		String token = authDao.getAuthTokenByMemberId(member.getId(), LOGIN);
+
 		Context context = new Context();
 		context.setVariable("link",
-			"/login-by-email?token=" + member.getEmailCheckToken() + "&email=" + member.getEmail());
+			"/login-by-email?token=" + token + "&email=" + member.getEmail());
 		context.setVariable("nickname", member.getNickname());
 		context.setVariable("linkName", "이메일로 로그인하기");
 		context.setVariable("message", "로그인하려면 인증 링크를 클릭해주세요.");
@@ -165,5 +183,12 @@ public class MemberService {
 
 		SecurityContextHolder.getContext().setAuthentication(null);
 		log.info(member.getEmail() + " 회원 탈퇴가 정상적으로 처리되었습니다. ");
+	}
+
+	/**
+	 * 캐시에 저장된 토큰이 일치하는지 확인하기
+	 */
+	public boolean isValidEmailToken(Long memberId, String token) {
+		return token.equals(authDao.getAuthTokenByMemberId(memberId, EMAIL));
 	}
 }

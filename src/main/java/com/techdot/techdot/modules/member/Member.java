@@ -99,6 +99,8 @@ public class Member extends BaseEntity {
 		this.emailSendTime = 1;
 	}
 
+
+
 	public void updateEmailCheckToken() {
 		this.emailCheckToken = UUID.randomUUID().toString();
 	}
