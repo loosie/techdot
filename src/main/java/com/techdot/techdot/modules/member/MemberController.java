@@ -1,5 +1,7 @@
 package com.techdot.techdot.modules.member;
 
+import static com.techdot.techdot.modules.member.dao.AuthDao.TokenType.*;
+
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.techdot.techdot.modules.member.auth.CurrentUser;
+import com.techdot.techdot.modules.member.dao.AuthDao;
 import com.techdot.techdot.modules.member.dto.JoinFormDto;
 import com.techdot.techdot.modules.member.validator.JoinFormValidator;
 
@@ -66,7 +69,7 @@ public class MemberController {
 		String view = "member/confirm-email";
 		Member member = memberService.getByEmail(email, view);
 
-		if (!memberService.isValidEmailToken(member.getId(), token)) {
+		if (!memberService.isValidAuthToken(member.getId(), token, EMAIL)) {
 			model.addAttribute("message", "토큰 정보가 정확하지 않습니다.");
 			return view;
 		}
@@ -123,7 +126,7 @@ public class MemberController {
 	public String sendEmailLoginLink(final String email, Model model, RedirectAttributes attributes) {
 		Member member = memberService.getByEmail(email, EMAIL_LOGIN_VIEW_NAME);
 
-		if (!member.canSendConfirmEmail()) {
+		if (!memberService.isExceededEmailSendTime(member)) {
 			model.addAttribute("error", "잠시 후에 다시 시도해주세요.");
 			return EMAIL_LOGIN_VIEW_NAME;
 		}
@@ -140,15 +143,15 @@ public class MemberController {
 	public String loginByEmail(final String token, final String email, Model model) {
 		Member member = memberService.getByEmail(email, EMAIL_LOGIN_VIEW_NAME);
 
-		// if (!member.isValidToken(token)) {
-		// 	model.addAttribute("error", "토큰이 유효하지 않습니다.");
-		// 	return EMAIL_LOGIN_VIEW_NAME;
-		// }
+		if (!memberService.isValidAuthToken(member.getId(), token, LOGIN)) {
+			model.addAttribute("error", "토큰이 유효하지 않습니다.");
+			return EMAIL_LOGIN_VIEW_NAME;
+		}
 
 		if (!member.getEmailVerified()) {
 			// 이메일 인증 처리 완료
 			memberService.completeLogin(member);
-		} else{
+		} else {
 			memberService.login(member);
 		}
 

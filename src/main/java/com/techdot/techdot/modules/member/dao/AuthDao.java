@@ -26,6 +26,10 @@ public class AuthDao {
 
 	private final RedisTemplate<String, Object> redisTemplate;
 
+	/**
+	 * AuthToken 생성 후 캐시에 저장. 만약 캐시에 이미 존재하면 해당 토큰 반환
+	 * tokenType: EMAIL, LOGIN
+	 */
 	public String saveAndGetAuthToken(Long memberId, String token, TokenType tokenType) {
 		String key = generateAuthTokenKey(memberId, tokenType);
 
@@ -41,6 +45,10 @@ public class AuthDao {
 		return token;
 	}
 
+	/**
+	 * 캐시에 저장된 토큰 가져오기
+	 * tokenType: EMAIL, LOGIN
+	 */
 	public String getAuthTokenByMemberId(Long memberId, TokenType tokenType) {
 		String key = generateAuthTokenKey(memberId, tokenType);
 

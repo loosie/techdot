@@ -1,6 +1,7 @@
 package com.techdot.techdot.modules.member;
 
 import static com.techdot.techdot.infra.util.TokenGenerator.*;
+import static com.techdot.techdot.modules.member.dao.AuthDao.*;
 import static com.techdot.techdot.modules.member.dao.AuthDao.TokenType.*;
 
 import java.util.ArrayList;
@@ -145,8 +146,7 @@ public class MemberService {
 	 * 로그인 링크 이메일로 전송하기
 	 */
 	public void sendLoginLink(final Member member) {
-		// if token 없으면 ?
-		String token = authDao.getAuthTokenByMemberId(member.getId(), LOGIN);
+		String token = authDao.saveAndGetAuthToken(member.getId(), generateToken(), LOGIN);
 
 		Context context = new Context();
 		context.setVariable("link",
@@ -188,8 +188,8 @@ public class MemberService {
 	/**
 	 * 캐시에 저장된 토큰이 일치하는지 확인하기
 	 */
-	public boolean isValidEmailToken(final Long memberId, final String token) {
-		return token.equals(authDao.getAuthTokenByMemberId(memberId, EMAIL));
+	public boolean isValidAuthToken(final Long memberId, final String token, final TokenType tokenType) {
+		return token.equals(authDao.getAuthTokenByMemberId(memberId, tokenType));
 	}
 
 	/**
