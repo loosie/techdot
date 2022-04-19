@@ -116,13 +116,16 @@ public class MemberController {
 	}
 
 	/**
-	 * 패스워드없이 로그인하기
+	 * 패스워드 없이 로그인 하기 뷰
 	 */
 	@GetMapping("/email-login")
 	public String emailLoginView() {
 		return EMAIL_LOGIN_VIEW_NAME;
 	}
 
+	/**
+	 *  패스워드 없이 로그인 링크 보내기
+	 */
 	@PostMapping("/email-login")
 	public String sendEmailLoginLink(final String email, Model model, RedirectAttributes attributes) {
 		Member member = memberService.getByEmail(email, EMAIL_LOGIN_VIEW_NAME);
@@ -138,7 +141,7 @@ public class MemberController {
 	}
 
 	/**
-	 * 비밀번호없이 이메일로 로그인 하기
+	 * 패스워드 없이 이메일로 로그인 링크 체크
 	 */
 	@GetMapping("/login-by-email")
 	public String loginByEmail(final String token, final String email, Model model) {
