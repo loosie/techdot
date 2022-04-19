@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.techdot.techdot.modules.member.auth.CurrentUser;
-import com.techdot.techdot.modules.member.dao.AuthDao;
 import com.techdot.techdot.modules.member.dto.JoinFormDto;
 import com.techdot.techdot.modules.member.validator.JoinFormValidator;
 

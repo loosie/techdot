@@ -1,7 +1,9 @@
 package com.techdot.techdot.modules.member;
 
 import static com.techdot.techdot.infra.Constant.*;
+import static com.techdot.techdot.infra.util.TokenGenerator.*;
 import static com.techdot.techdot.modules.member.MemberController.*;
+import static com.techdot.techdot.modules.member.dao.AuthDao.TokenType.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
@@ -23,13 +25,17 @@ import com.techdot.techdot.infra.AbstractContainerBaseTest;
 import com.techdot.techdot.infra.MockMvcTest;
 import com.techdot.techdot.infra.mail.EmailMessageDto;
 import com.techdot.techdot.infra.mail.EmailService;
+import com.techdot.techdot.infra.util.TokenGenerator;
 import com.techdot.techdot.modules.member.auth.WithCurrentUser;
+import com.techdot.techdot.modules.member.dao.AuthDao;
+import com.techdot.techdot.modules.member.dao.AuthDao.TokenType;
 
 @MockMvcTest
 class MemberControllerTest extends AbstractContainerBaseTest {
 
 	@Autowired private MockMvc mockMvc;
 	@Autowired private MemberRepository memberRepository;
+	@Autowired private AuthDao authDao;
 	@MockBean private EmailService emailService;
 
 
@@ -93,10 +99,11 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 			.build();
 		Member newMember = memberRepository.save(member);
 		newMember.countEmailSendTime();
+		String token = authDao.saveAndGetAuthToken(newMember.getId(), generateToken(), EMAIL);
 
 		// when, then
 		mockMvc.perform(get("/confirm-email")
-			.param("token", newMember.getEmailCheckToken())
+			.param("token", token)
 			.param("email", newMember.getEmail()))
 			.andExpect(status().isOk())
 			.andExpect(model().attributeDoesNotExist("message"))
@@ -142,9 +149,10 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 			.build();
 		Member newMember = memberRepository.save(member);
 		newMember.countEmailSendTime();
+		String token = authDao.saveAndGetAuthToken(newMember.getId(), generateToken(), LOGIN);
 
 		mockMvc.perform(get("/login-by-email")
-			.param("token", newMember.getEmailCheckToken())
+			.param("token", token)
 			.param("email", newMember.getEmail()))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/accounts/change-password"))
