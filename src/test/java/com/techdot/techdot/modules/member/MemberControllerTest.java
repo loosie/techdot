@@ -17,7 +17,10 @@ import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,19 +28,20 @@ import com.techdot.techdot.infra.AbstractContainerBaseTest;
 import com.techdot.techdot.infra.MockMvcTest;
 import com.techdot.techdot.infra.mail.EmailMessageDto;
 import com.techdot.techdot.infra.mail.EmailService;
-import com.techdot.techdot.infra.util.TokenGenerator;
 import com.techdot.techdot.modules.member.auth.WithCurrentUser;
 import com.techdot.techdot.modules.member.dao.AuthDao;
-import com.techdot.techdot.modules.member.dao.AuthDao.TokenType;
 
 @MockMvcTest
 class MemberControllerTest extends AbstractContainerBaseTest {
 
-	@Autowired private MockMvc mockMvc;
-	@Autowired private MemberRepository memberRepository;
-	@Autowired private AuthDao authDao;
-	@MockBean private EmailService emailService;
-
+	@Autowired
+	private MockMvc mockMvc;
+	@Autowired
+	private MemberRepository memberRepository;
+	@Autowired
+	private AuthDao authDao;
+	@MockBean
+	private EmailService emailService;
 
 	private final String TEST_EMAIL = "test@naver.com";
 
@@ -61,7 +65,7 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 			.param("passwordConfirm", "12345678")
 			.with(csrf()))
 			.andExpect(status().isOk())
-			.andExpect(view().name(MEMBER_CHECK_EMAIL_VIEW_NAME))
+			.andExpect(view().name(CHECK_EMAIL_VIEW_NAME))
 			.andExpect(unauthenticated());
 
 		// then
@@ -72,7 +76,7 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 		then(emailService).should().sendEmail(any(EmailMessageDto.class));
 	}
 
-	@DisplayName("회원 가입 테스트 - 입력값 오류")
+	@DisplayName("회원 가입 테스트 - 이메일 타 오류")
 	@Test
 	void memberJoin_emailIsNotValidType_Error() throws Exception {
 		mockMvc.perform(post("/join")
@@ -86,7 +90,7 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 			.andExpect(unauthenticated());
 	}
 
-	@DisplayName("인증 메일 확인 - 정상")
+	@DisplayName("이메일 인증 메일 확인 - 정상")
 	@Transactional
 	@Test
 	void emailConfirm_Success() throws Exception {
@@ -113,7 +117,7 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 		assertTrue(newMember.getEmailVerified());
 	}
 
-	@DisplayName("인증 메일 확인 - 입력값 오류")
+	@DisplayName("이메일 인증 메일 확인 - 토큰값 오류")
 	@Test
 	void emailConfirm_TokenIsWrongValue_Error() throws Exception {
 		// given
@@ -135,9 +139,69 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 			.andExpect(unauthenticated());
 	}
 
+	@WithCurrentUser(value = TEST_EMAIL, role = USER)
+	@DisplayName("이메일 인증 확인 요청 뷰")
+	@Test
+	void checkEmailView() throws Exception {
+		// given
+		mockMvc.perform(get("/check-email")
+			.param("email", TEST_EMAIL))
+			.andExpect(status().isOk())
+			.andExpect(model().attributeExists("email"))
+			.andExpect(view().name("member/check-email"))
+			.andExpect(authenticated());
+	}
+
+	@WithCurrentUser(value = TEST_EMAIL, role = MEMBER)
+	@DisplayName("이메일 인증 확인 요청 뷰 - 이미 인증된 회원")
+	@Test
+	void checkEmailView_AlreadyAuthenticatedMember_Redirect() throws Exception {
+		mockMvc.perform(get("/check-email")
+			.param("email", TEST_EMAIL))
+			.andExpect(status().is3xxRedirection())
+			.andExpect(redirectedUrl("/"))
+			.andExpect(authenticated());
+	}
+
+	@DisplayName("이메일로 로그인하기 요청 뷰")
+	@Test
+	void emailLoginView() throws Exception {
+		mockMvc.perform(get("/email-login"))
+			.andExpect(view().name("member/email-login"))
+			.andExpect(unauthenticated());
+	}
+
+	@WithCurrentUser(value = TEST_EMAIL, role = MEMBER)
+	@DisplayName("이메일로 로그인 링크 보내기")
+	@Test
+	void sendEmailLoginLink_Success() throws Exception {
+		mockMvc.perform(post("/email-login")
+			.param("email", TEST_EMAIL)
+			.with(csrf()))
+			.andExpect(status().is3xxRedirection())
+			.andExpect(flash().attributeExists("message"))
+			.andExpect(redirectedUrl("/email-login"))
+			.andExpect(authenticated());
+	}
+
+	@WithCurrentUser(value = TEST_EMAIL, role = MEMBER)
+	@DisplayName("이메일로 로그인 링크 보내기 - 요청 횟수가 초과할 경우")
+	@Test
+	void sendEmailLoginLink_IfEmailSendingIsUnavailable_Error() throws Exception {
+		Member member = memberRepository.findByEmail(TEST_EMAIL).get();
+		while(member.canSendConfirmEmail()){
+		}
+
+		mockMvc.perform(post("/email-login")
+			.param("email", TEST_EMAIL)
+			.with(csrf()))
+			.andExpect(status().isOk())
+			.andExpect(model().attributeExists("error"))
+			.andExpect(view().name("member/email-login"));
+	}
+
 	// 인증 메일 확인 테스트와 동일
 	@DisplayName("이메일로 로그인하기 - 정상")
-	@Transactional
 	@Test
 	void emailLogin_Success() throws Exception {
 		// given
@@ -161,7 +225,6 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 
 	// 인증 메일 확인 테스트와 동일
 	@DisplayName("이메일로 로그인하기 - 입력값 오류")
-	@Transactional
 	@Test
 	void emailLogin_TokenIsWrongValue_Error() throws Exception {
 		// given
@@ -180,18 +243,16 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 			.andExpect(status().isOk())
 			.andExpect(view().name("member/email-login"))
 			.andExpect(unauthenticated());
-
 	}
 
-	@WithCurrentUser(value = TEST_EMAIL, role= MEMBER)
+	@WithCurrentUser(value = TEST_EMAIL, role = MEMBER)
 	@DisplayName("내가 좋아요한 게시글 뷰")
 	@Test
 	void myLikesView_Success() throws Exception {
 		mockMvc.perform(get("/me/likes"))
 			.andExpect(status().isOk())
-			.andExpect(view().name(MEMBER_ME_LIKES_VIEW_NAME))
+			.andExpect(view().name(ME_LIKES_VIEW_NAME))
 			.andExpect(model().attributeExists("member"));
 	}
-
 
 }

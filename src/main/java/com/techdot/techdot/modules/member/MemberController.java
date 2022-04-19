@@ -25,9 +25,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberController {
 
-	static final String MEMBER_ME_LIKES_VIEW_NAME = "member/likes";
+	static final String ME_LIKES_VIEW_NAME = "member/likes";
 	static final String EMAIL_LOGIN_VIEW_NAME = "member/email-login";
-	static final String MEMBER_CHECK_EMAIL_VIEW_NAME = "member/check-email";
+	static final String CHECK_EMAIL_VIEW_NAME = "member/check-email";
 
 	private final JoinFormValidator joinFormValidator;
 	private final MemberService memberService;
@@ -57,7 +57,7 @@ public class MemberController {
 		}
 		Member saveMember = memberService.save(joinForm);
 		model.addAttribute("email", saveMember.getEmail());
-		return MEMBER_CHECK_EMAIL_VIEW_NAME;
+		return CHECK_EMAIL_VIEW_NAME;
 	}
 
 	/**
@@ -83,17 +83,19 @@ public class MemberController {
 	 */
 	@GetMapping("/check-email")
 	public String checkEmail(@CurrentUser final Member member, final String email, Model model) {
-		if (member.getEmailVerified()) {
+		if (memberService.isAuthUser(member)) {
 			return "redirect:/";
 		}
 
+		// 로그인 상태에서 인증 완료
 		if (member != null) {
 			model.addAttribute("email", member.getEmail());
-			return MEMBER_CHECK_EMAIL_VIEW_NAME;
+			return CHECK_EMAIL_VIEW_NAME;
 		}
 
+		// 회원가입 후 인증 완료
 		model.addAttribute("email", email);
-		return MEMBER_CHECK_EMAIL_VIEW_NAME;
+		return CHECK_EMAIL_VIEW_NAME;
 	}
 
 	/**
@@ -103,21 +105,21 @@ public class MemberController {
 	public String resendEmailConfirm(@PathVariable final String email, Model model) {
 		Member member = memberService.getByEmail(email, EMAIL_LOGIN_VIEW_NAME);
 
-		if (!memberService.isExceededEmailSendTime(member)) {
+		if (!memberService.checkIsAvailableSendEmail(member)) {
 			model.addAttribute("error", "잠시 후에 다시 시도해주세요.");
-			return MEMBER_CHECK_EMAIL_VIEW_NAME;
+			return CHECK_EMAIL_VIEW_NAME;
 		}
 
 		memberService.sendConfirmEmail(member);
 		model.addAttribute("message", "이메일 재전송이 완료되었습니다.");
-		return MEMBER_CHECK_EMAIL_VIEW_NAME;
+		return CHECK_EMAIL_VIEW_NAME;
 	}
 
 	/**
 	 * 패스워드없이 로그인하기
 	 */
 	@GetMapping("/email-login")
-	public String emailLoginForm() {
+	public String emailLoginView() {
 		return EMAIL_LOGIN_VIEW_NAME;
 	}
 
@@ -125,7 +127,7 @@ public class MemberController {
 	public String sendEmailLoginLink(final String email, Model model, RedirectAttributes attributes) {
 		Member member = memberService.getByEmail(email, EMAIL_LOGIN_VIEW_NAME);
 
-		if (!memberService.isExceededEmailSendTime(member)) {
+		if (!memberService.checkIsAvailableSendEmail(member)) {
 			model.addAttribute("error", "잠시 후에 다시 시도해주세요.");
 			return EMAIL_LOGIN_VIEW_NAME;
 		}
@@ -163,7 +165,7 @@ public class MemberController {
 	@GetMapping("/me/likes")
 	public String MyLikesView(@CurrentUser final Member member, Model model) {
 		model.addAttribute(member);
-		return MEMBER_ME_LIKES_VIEW_NAME;
+		return ME_LIKES_VIEW_NAME;
 	}
 
 }

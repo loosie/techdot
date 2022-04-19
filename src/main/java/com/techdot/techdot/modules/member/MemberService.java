@@ -193,9 +193,18 @@ public class MemberService {
 	}
 
 	/**
-	 * 이메일 전송 한도가 초과되었는지 확인하기
+	 * 이메일 전송이 가능한지 확인하기
+	 * - 5초에 1번씩 총 5회 전송 가능
+	 * - 5회 경과시 3분 지나야 재전송 가능
 	 */
-	public boolean isExceededEmailSendTime(final Member member) {
+	public boolean checkIsAvailableSendEmail(final Member member) {
 		return member.canSendConfirmEmail();
+	}
+
+	/**
+	 * 인증된 회원인지 확인하기
+	 */
+	public boolean isAuthUser(Member member) {
+		return member.getEmailVerified();
 	}
 }
