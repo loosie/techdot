@@ -7,7 +7,7 @@
 <nav th:replace="fragments/navbar.html :: main-nav"></nav>
 
 <div class="log-container container py-5">
-    <h2 class="text-center pt-5 pb-3">Not Found 잘못된 요청입니다</h2>
+    <h2 class="text-center pt-5 pb-3">해당 요청은 찾을 수 없습니다</h2>
     <div class="row justify-content-center py-2">
         <div th:fragment="message" th:if="${message}" class="alert alert-danger text-center alert-dismissible fade show mt-3" style="width: 50%" role="alert">
             <span th:text="${message}"></span>

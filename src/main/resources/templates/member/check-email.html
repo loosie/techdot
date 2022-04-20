@@ -12,11 +12,15 @@
 
         <div>
             <p class="lead" th:text="${email}">example@email.com</p>
+
+            <div class="mx-auto" style="width: 50%">
+                <div th:replace="fragments/message.html :: message"></div>
+            </div>
             <a class="btn btn-outline-dark mt-3" th:href="@{'/resend-confirm-email/'+${email}}">
                 인증 이메일 다시 보내기
             </a>
 
-            <div class = "py-5 text-center" th:if="${error}">
+            <div class = "py-5 mx-auto text-center" style="width: 50%" th:if="${error}">
                 <div class ="alert alert-danger" role="alert" th:text="${error}"></div>
             </div>
         </div>

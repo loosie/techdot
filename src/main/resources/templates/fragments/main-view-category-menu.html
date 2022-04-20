@@ -4,11 +4,11 @@
 
 <div th:fragment="category-menu (categoryMenuName)" class="list-group justify-content-center nav main-right-nav-tabs">
     <a class="list-group-item list-group-item-action main-right-nav-link" href="#"
-       th:classappend="${categoryMenuName == 'All'}? 'active active-box'" th:href="@{'/'}">
+       th:classappend="${categoryMenuName == 'all'}? 'active active-box'" th:href="@{'/'}">
         New!
     </a>
     <a sec:authorize="isAuthenticated()" class="list-group-item list-group-item-action main-right-nav-link" href="#"
-       th:classappend="${categoryMenuName == 'MyInterests'}? 'active active-box'" th:href="@{'/me/interests'}">
+       th:classappend="${categoryMenuName == 'myInterests'}? 'active active-box'" th:href="@{'/me/interests'}">
         관심 카테고리
     </a>
 

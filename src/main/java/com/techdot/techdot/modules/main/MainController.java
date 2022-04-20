@@ -18,9 +18,6 @@ public class MainController {
 	private final CategoryService categoryService;
 	/**
 	 * 메인 뷰
-	 * @param member
-	 * @param model
-	 * @return
 	 */
 	@GetMapping("/")
 	public String mainView(@CurrentUser final Member member, final Model model) {
@@ -33,7 +30,6 @@ public class MainController {
 
 	/**
 	 * 로그인 뷰
-	 * @return
 	 */
 	@GetMapping("/login")
 	public String loginView() {
@@ -42,9 +38,6 @@ public class MainController {
 
 	/**
 	 * 멤버 관심 카테고리 뷰
-	 * @param member
-	 * @param model
-	 * @return
 	 */
 	@GetMapping("/me/interests")
 	public String myInterestsView(@CurrentUser final Member member, final Model model) {
@@ -60,10 +53,6 @@ public class MainController {
 
 	/**
 	 * 검색 뷰
-	 * @param member
-	 * @param keyword
-	 * @param model
-	 * @return
 	 */
 	@GetMapping("/search")
 	public String searchView(@CurrentUser final Member member, final String keyword, final Model model) {
@@ -76,9 +65,7 @@ public class MainController {
 	}
 
 	/**
-	 * 에러 {stauts} 뷰
-	 * @param status
-	 * @return
+	 * 에러 {status} 뷰
 	 */
 	@GetMapping("/error/{status}")
 	public String errorView(@PathVariable final String status) {

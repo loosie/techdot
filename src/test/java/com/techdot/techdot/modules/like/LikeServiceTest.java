@@ -13,12 +13,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.techdot.techdot.modules.category.Category;
 import com.techdot.techdot.modules.member.Member;
-import com.techdot.techdot.modules.post.Post;
-import com.techdot.techdot.modules.post.PostType;
 import com.techdot.techdot.modules.member.MemberRepository;
+import com.techdot.techdot.modules.post.Post;
 import com.techdot.techdot.modules.post.PostRepository;
+import com.techdot.techdot.modules.post.PostType;
 
 @ExtendWith(MockitoExtension.class)
 class LikeServiceTest {
@@ -62,8 +61,10 @@ class LikeServiceTest {
 	@DisplayName("좋아요 생성하기")
 	@Test
 	void likeAdd_Success() {
+		System.out.println("dd!!" + member);
+		System.out.println("dd!!" + post);
 		// given
-		given(memberRepository.findById(1L)).willReturn(Optional.of(member));
+		given(memberRepository.getById(1L)).willReturn(member);
 		given(postRepository.findById(1L)).willReturn(Optional.of(post));
 		given(likeRepository.findByMemberAndPost(member, post)).willReturn(Optional.empty());
 
@@ -71,7 +72,7 @@ class LikeServiceTest {
 		likeService.add(1L, 1L);
 
 		// then
-		then(memberRepository).should(times(1)).findById(any());
+		then(memberRepository).should(times(1)).getById(any());
 		then(postRepository).should(times(1)).findById(any());
 		then(likeRepository).should(times(1)).findByMemberAndPost(any(), any());
 		then(likeRepository).should(times(1)).save(Like.builder().member(member).post(post).build());
@@ -83,7 +84,7 @@ class LikeServiceTest {
 	void likeRemove_Success() {
 		// given
 		Like like = Like.builder().member(member).post(post).build();
-		given(memberRepository.findById(1L)).willReturn(Optional.of(member));
+		given(memberRepository.getById(1L)).willReturn(member);
 		given(postRepository.findById(1L)).willReturn(Optional.of(post));
 		given(likeRepository.findByMemberAndPost(member, post)).willReturn(Optional.of(like));
 
@@ -91,7 +92,7 @@ class LikeServiceTest {
 		likeService.remove(1L, 1L);
 
 		// then
-		then(memberRepository).should(times(1)).findById(any());
+		then(memberRepository).should(times(1)).getById(any());
 		then(postRepository).should(times(1)).findById(any());
 		then(likeRepository).should(times(1)).findByMemberAndPost(any(), any());
 		then(likeRepository).should(times(1)).delete(like);

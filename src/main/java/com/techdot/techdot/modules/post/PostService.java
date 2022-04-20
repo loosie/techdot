@@ -2,6 +2,7 @@ package com.techdot.techdot.modules.post;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -92,8 +93,9 @@ public class PostService {
 			memberId = member.getId();
 		}
 
-		if (categoryViewName.equals("All")) {
-			return postRepository.findAllDto(memberId, pageable);
+		if (categoryViewName.equals("all")) {
+			List<PostQueryResponseDto> allPosts = postRepository.findAllDto(memberId, pageable);
+			return allPosts;
 		}
 		return postRepository.findAllDtoByCategoryViewName(memberId, categoryViewName, pageable);
 	}
