@@ -1,4 +1,4 @@
-# TechDot (alpha v0.0.2)
+# TechDot (alpha v0.0.4)
 기술 및 개발 관련 콘텐츠 큐레이션 서비스 
 
 <br>
@@ -12,7 +12,8 @@
 <br>
 
 ## 프로젝트 구성도
-<img width="920" alt="스크린샷 2022-04-07 오후 3 43 15" src="https://user-images.githubusercontent.com/54282927/162609841-d8c6edd5-158e-4967-adcc-421b70ac8373.png">
+<img width="920" alt="스크린샷 2022-04-21 오전 12 35 04" src="https://user-images.githubusercontent.com/54282927/164268447-fe5eccd6-f1a6-43d0-9125-7e4816f31310.png">
+
 
 <br>
 
