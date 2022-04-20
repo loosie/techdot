@@ -16,7 +16,7 @@
                     <div>
                         <h1 th:text="${title}"></h1>
                     </div>
-                    <div th:if="${categoryMenuName}!='All' and ${categoryMenuName}!='MyInterests'" id="interest-switch"
+                    <div th:if="${categoryMenuName}!='all' and ${categoryMenuName}!='myInterests'" id="interest-switch"
                          class="custom-control custom-switch ml-auto mr-4" style="display:flex; align-items: center">
                         <input type="checkbox" class="custom-control-input" th:value="${categoryMenuName}" id="customSwitch1">
                         <label class="custom-control-label" for="customSwitch1">관심 카테고리</label>
@@ -51,7 +51,7 @@
             })
         }
 
-        if ('[(${#authentication.name})]' != 'anonymousUser' && '[(${categoryMenuName})]' != 'All') {
+        if ('[(${#authentication.name})]' != 'anonymousUser' && '[(${categoryMenuName})]' != 'all') {
             getMemberCategories();
         }
 

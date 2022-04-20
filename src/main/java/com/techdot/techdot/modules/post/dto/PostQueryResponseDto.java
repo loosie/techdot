@@ -1,5 +1,6 @@
 package com.techdot.techdot.modules.post.dto;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import com.techdot.techdot.modules.post.PostType;
@@ -7,7 +8,7 @@ import com.techdot.techdot.modules.post.PostType;
 import lombok.Data;
 
 @Data
-public class PostQueryResponseDto {
+public class PostQueryResponseDto implements Serializable {
 	private Long postId;
 	private String title;
 	private String content;

@@ -12,14 +12,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.util.Assert;
 
-import com.techdot.techdot.modules.category.Category;
 import com.techdot.techdot.modules.member.Member;
-import com.techdot.techdot.modules.post.Post;
-import com.techdot.techdot.modules.post.PostType;
 import com.techdot.techdot.modules.member.MemberRepository;
+import com.techdot.techdot.modules.post.Post;
 import com.techdot.techdot.modules.post.PostRepository;
+import com.techdot.techdot.modules.post.PostType;
 
 @ExtendWith(MockitoExtension.class)
 class LikeServiceTest {
@@ -35,10 +33,6 @@ class LikeServiceTest {
 	private static Member member;
 	private static Post post;
 
-	// Assert.notNull(email, "member.email 값이 존재하지 않습니다.");
-	// 	Assert.notNull(nickname, "member.nickname 값이 존재하지 않습니다.");
-	// 	Assert.notNull(password, "member.password 값이 존재하지 않습니다.");
-	// 	Assert.notNull(emailVerified, "member.emailVerified 값이 존재하지 않습니다.");
 	@BeforeAll
 	static void init() {
 		member = Member.builder()
