@@ -41,7 +41,7 @@ public class AuthDao {
 
 		redisTemplate.opsForValue().set(key, token);
 		redisTemplate.expire(key, 5, TimeUnit.MINUTES);
-		log.info("member {} - {} token save to cache : {}", memberId, tokenType, token);
+		log.info("member {} - {} token save to cache", memberId, tokenType);
 		return token;
 	}
 
