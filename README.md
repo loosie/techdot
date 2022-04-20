@@ -4,10 +4,10 @@
 <br>
 
 ## 사용 스택
-- Back: Java 11, Spring Boot 2.6.4, Spring Security, Spring Data JPA, QueryDsl, MySQL 8  
+- Back: Java 11, Spring Boot 2.6.4, Spring Security, Spring Data JPA, QueryDsl, MySQL, Redis
 - Front: Thymeleaf, BootStrap, Ajax, JQuery
 - Test: JUnit5, Mockito, TestContainers, ArchUnit
-- DevOps: AWS (EC2, RDS, S3, CodeDeploy), Jenkins, Nginx
+- DevOps: AWS (EC2, RDS, ElasticCache, S3, CodeDeploy), Jenkins, Nginx
 
 <br>
 
