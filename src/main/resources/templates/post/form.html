@@ -61,6 +61,7 @@
             }
         });
 
+        var fileName = date()+ '_' + uuidv4() + '.png';
         // 취소 버튼 로직
         $resetBtn.click(function() {
             $currentThumbnailImage.show();
@@ -87,11 +88,46 @@
             newImage.height = 170;
             $resultImage.html(newImage);
 
+
             $newThumbnailImage.html(newImage);
             $confirmBtn.hide();
-            $thumbnailImage.val(dataUrl);
-
+            // $thumbnailImage.val(dataUrl);
+            $thumbnailImage.val(fileName);
         });
+
+
+        $('#btn-save').on('click', uploadImage);
+
+        function uploadImage() {
+            cropper.getCroppedCanvas().toBlob((blob) => {
+                //HTMLCanvasElement를 return 받아서 blob파일로 변환해준다
+                const formData = new FormData();
+
+                //새로운 formData를 생성해서 변경된 cropper image blob파일을 삽입
+                formData.append('file', blob, fileName); // 맨 뒤 매개변수는 화질 설정
+
+                $.ajax('/api/image-upload', {
+                    method: 'POST',
+                    data: formData,
+                    processData : false,	// data 파라미터 강제 string 변환 방지
+                    contentType : false,	// application/x-www-form-urlencoded; 방지
+
+                }).done(function (data, status) {
+                    console.log(status);
+                })
+            });
+        }
+
+        function date() {
+            return Date.now();
+        }
+        function uuidv4() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
     });
 </script>
 </body>

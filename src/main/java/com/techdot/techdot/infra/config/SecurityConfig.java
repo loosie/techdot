@@ -30,12 +30,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 			.mvcMatchers("/join", "/login").not().fullyAuthenticated()
-			.mvcMatchers("/", "/check-email",  "/email-login", "/login-by-email", "/confirm-email", "/resend-confirm-email/**", "/error/**",
+			.mvcMatchers("/s3", "/s3/**",
+				"/", "/check-email",  "/email-login", "/login-by-email", "/confirm-email", "/resend-confirm-email/**", "/error/**",
 				"/posts/**", "/category/**",  "/search", "/search/**", "/app/profile").permitAll()
 			.mvcMatchers("/me/**", "/accounts", "/accounts/change-password", "/accounts/settings", "/accounts/withdrawal").access("hasRole('ROLE_USER') or hasRole('ROLE_MEMBER') or hasRole('ROLE_ADMIN')")
 			.mvcMatchers("/interest/**", "/like/**").access("hasRole('ROLE_MEMBER') or hasRole('ROLE_ADMIN')")
-			.mvcMatchers("/new-post", "/post/**", "/accounts/my-upload", "/accounts/settings/category").access("hasRole('ROLE_ADMIN')")
+			.mvcMatchers("/new-post", "/post/**", "/accounts/my-upload", "/accounts/settings/category", "/api/**").access("hasRole('ROLE_ADMIN')")
 			.anyRequest().authenticated();
+
+		/**
+		 * TODO: 테스트용 need to delete
+		 */
+		// http.csrf().disable();
 
 		http.formLogin()
 			.loginPage("/login").permitAll();
