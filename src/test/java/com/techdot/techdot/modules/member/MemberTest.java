@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.techdot.techdot.infra.util.TokenGenerator;
 import com.techdot.techdot.modules.member.dto.ProfileFormDto;
 
 class MemberTest {
