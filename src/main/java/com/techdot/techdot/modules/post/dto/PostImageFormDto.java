@@ -12,8 +12,6 @@ public class PostImageFormDto {
 	private String thumbnailImageUrl;
 
 	public PostImageFormDto(final Post post) {
-		if(post.getThumbnailImageUrl() != null && !post.getThumbnailImageUrl().isEmpty()){
-			this.thumbnailImageUrl = "https://s3.ap-northeast-2.amazonaws.com/cdn.techdot.info/static/" + post.getThumbnailImageUrl();
-		}
+		this.thumbnailImageUrl = post.getThumbnailImageUrl();
 	}
 }

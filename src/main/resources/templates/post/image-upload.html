@@ -16,11 +16,11 @@
                     썸네일 이미지
                 </div>
                 <div id="current-thumbnail-image" class="mt-3">
-                    <img th:if="${#strings.isEmpty(postImageForm.thumbnailImageUrl) or !#strings.contains(postImageForm.thumbnailImageUrl, 'cdn')}" class="thumbnail-img rounded"
+                    <img th:if="${#strings.isEmpty(postImageForm.thumbnailImageUrl)}" class="thumbnail-img rounded"
                          src="/images/default_thumbnail.png"
                          width="320" height="192"  alt="name" />
-                    <img th:if="${!#strings.isEmpty(postImageForm.thumbnailImageUrl) and #strings.contains(postImageForm.thumbnailImageUrl, 'cdn')}" class="thumbnail-img rounded"
-                         th:src="${postImageForm.thumbnailImageUrl}"
+                    <img th:if="${!#strings.isEmpty(postImageForm.thumbnailImageUrl)}" class="thumbnail-img rounded"
+                         th:src="'https://s3.ap-northeast-2.amazonaws.com/cdn.techdot.info/static/' + ${postImageForm.thumbnailImageUrl}"
                          width="320" height="192"  alt="name" />
                 </div>
                 <div id="new-thumbnail-image" class="mt-3"></div>
@@ -99,7 +99,12 @@
             }
         });
 
+        // 이미지가 이미 존재하는 경우 덮어씌우기
         var fileName = date()+ '_' + uuidv4() + '.png';
+        if('[(${postImageForm.thumbnailImageUrl})]' != null){
+            fileName = '[(${postImageForm.thumbnailImageUrl})]';
+        }
+
         // 취소 버튼 로직
         $resetBtn.click(function() {
             $currentThumbnailImage.show();
