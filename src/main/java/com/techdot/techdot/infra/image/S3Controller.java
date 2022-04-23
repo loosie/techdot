@@ -45,7 +45,7 @@ public class S3Controller {
 	 * TODO: test
 	 */
 	@PostMapping("/api/image-upload")
-	public String imageUpload(MultipartFile file) throws IOException{
+	public ResponseEntity<String> imageUpload(MultipartFile file) throws IOException{
 		String fileName = "static/" + file.getOriginalFilename();
 		ObjectMetadata metadata = new ObjectMetadata();
 		metadata.setContentType(MediaType.IMAGE_PNG_VALUE);
@@ -54,7 +54,7 @@ public class S3Controller {
 		amazonS3.putObject(new PutObjectRequest(bucket, fileName, file.getInputStream(), metadata)
 			.withCannedAcl(CannedAccessControlList.PublicRead));
 
-		return amazonS3.getUrl(bucket, fileName).toString();
+		return ResponseEntity.ok(amazonS3.getUrl(bucket, fileName).toString());
 	}
 
 	/**
