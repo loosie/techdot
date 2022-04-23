@@ -1,4 +1,4 @@
-package com.techdot.techdot.infra;
+package com.techdot.techdot.infra.image;
 
 import java.io.BufferedReader;
 import java.io.File;

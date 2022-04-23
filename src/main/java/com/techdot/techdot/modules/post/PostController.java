@@ -1,6 +1,8 @@
 package com.techdot.techdot.modules.post;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -25,6 +27,7 @@ import com.techdot.techdot.modules.category.CategoryService;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.member.auth.CurrentUser;
 import com.techdot.techdot.modules.post.dto.PostFormDto;
+import com.techdot.techdot.modules.post.dto.PostImageFormDto;
 import com.techdot.techdot.modules.post.dto.PostQueryResponseDto;
 import com.techdot.techdot.modules.post.validator.PostFormValidator;
 
@@ -67,10 +70,48 @@ public class PostController {
 		@CurrentUser final Member member, final Model model) {
 		if (errors.hasErrors()) {
 			model.addAttribute(member);
+			model.addAttribute("categoryList", categoryService.getAll());
 			return "post/form";
 		}
 
-		postService.save(postForm, member.getId());
+		Post save = postService.save(postForm, member.getId());
+		return "redirect:/post/" + save.getId() + "/image-upload";
+	}
+
+	/**
+	 * (ADMIN) 게시글 이미지 업로드 뷰
+	 */
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping("/post/{id}/image-upload")
+	public String postImageUploadView(
+		@PathVariable Long id,
+		@Valid @ModelAttribute("postImageForm") final PostImageFormDto postImageFormDto, @CurrentUser final Member member, final Model model) throws IOException {
+		model.addAttribute("member", member);
+		model.addAttribute("postId", id);
+
+		Optional<Post> opPost = postService.findById(id);
+		if(!opPost.isEmpty()){
+			model.addAttribute("postImageForm", new PostImageFormDto(opPost.get()));
+		}else{
+			model.addAttribute("postImageForm", new PostImageFormDto());
+		}
+
+		return "post/image-upload";
+	}
+
+	/**
+	 * (ADMIN) 게시글 이미지 업로드 요청
+	 * db에 이미지 url 저장, S3에 이미지 파일 저장
+	 */
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PostMapping("/post/{id}/image-upload")
+	public String postImageUploadForm(
+		@PathVariable Long id,
+		@Valid @ModelAttribute("postImageForm") final PostImageFormDto postImageFormDto, @CurrentUser final Member member, final Model model) throws IOException {
+		model.addAttribute("member", member);
+		model.addAttribute("PostImageForm", new PostImageFormDto());
+
+		postService.saveImageUrl(id, postImageFormDto);
 		return "redirect:/";
 	}
 
@@ -105,7 +146,7 @@ public class PostController {
 			model.addAttribute(member);
 			return "post/updateForm";
 		}
-
+		model.addAttribute("postId", id);
 		postService.update(id, postForm);
 		redirectAttributes.addFlashAttribute("message", "게시글이 정상적으로 수정되었습니다.");
 		return "redirect:/post/" + id + "/edit";

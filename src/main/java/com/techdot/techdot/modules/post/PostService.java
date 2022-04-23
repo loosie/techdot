@@ -1,6 +1,7 @@
 package com.techdot.techdot.modules.post;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,7 @@ import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.member.MemberRepository;
 import com.techdot.techdot.modules.post.dto.MyUploadPostResponseDto;
 import com.techdot.techdot.modules.post.dto.PostFormDto;
+import com.techdot.techdot.modules.post.dto.PostImageFormDto;
 import com.techdot.techdot.modules.post.dto.PostQueryResponseDto;
 
 import lombok.RequiredArgsConstructor;
@@ -30,7 +32,7 @@ public class PostService {
 	/**
 	 * 게시글 저장
 	 */
-	public void save(final PostFormDto postForm, final Long memberId) {
+	public Post save(final PostFormDto postForm, final Long memberId) {
 		// 엔티티 조회
 		Member manager = memberRepository.findById(memberId).get(); // 이미 인증된 객체
 		Category category = categoryRepository.getByViewName(postForm.getCategoryName());
@@ -39,7 +41,6 @@ public class PostService {
 		Post newPost = Post.builder()
 			.title(postForm.getTitle())
 			.link(postForm.getLink())
-			.thumbnailImage(postForm.getThumbnailImage())
 			.content(postForm.getContent())
 			.type(postForm.getType())
 			.writer(postForm.getWriter())
@@ -49,7 +50,7 @@ public class PostService {
 			.build();
 
 		// 게시글 저장
-		postRepository.save(newPost);
+		return postRepository.save(newPost);
 	}
 
 	/**
@@ -135,5 +136,21 @@ public class PostService {
 	public void remove(Long id) {
 		postRepository.deleteById(id);
 		log.info(id +"번 게시글이 정상적으로 삭제되었습니다.");
+	}
+
+	/**
+	 * thumbnail 이미지 url 저장하기
+	 */
+	public void saveImageUrl(Long postId, PostImageFormDto postImageFormDto) {
+		Post post = postRepository.getById(postId);
+		post.setImageUrl(postImageFormDto.getThumbnailImageUrl());
+		postRepository.save(post);
+	}
+
+	/**
+	 * id로 게시글 조회하기
+	 */
+	public Optional<Post> findById(Long id) {
+		return postRepository.findById(id);
 	}
 }
