@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
 
+import com.techdot.techdot.infra.image.S3Service;
 import com.techdot.techdot.modules.category.CategoryRepository;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.post.dto.PostQueryResponseDto;
@@ -30,9 +31,12 @@ class PostServiceTest {
 	@Mock
 	private CategoryRepository categoryRepository;
 
+	@Mock
+	private S3Service s3Service;
+
 	@BeforeEach
 	void setUp() {
-		postService = new PostService(postRepository, memberRepository, categoryRepository);
+		postService = new PostService(postRepository, memberRepository, categoryRepository, s3Service);
 	}
 
 	@DisplayName("카테고리별로 게시글 가져오기 - 멤버가 존재하지 않는 경우")

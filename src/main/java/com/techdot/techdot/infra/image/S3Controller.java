@@ -39,11 +39,10 @@ public class S3Controller {
 	@Value("${aws.s3.bucket}")
 	public String bucket;
 
-
-
 	/**
 	 * S3에 File 업로드
 	 * inputStream으로 로컬에 쓰기 작업을 거치지 않고 바로 S3에 업로드
+	 * TODO: test
 	 */
 	@PostMapping("/api/image-upload")
 	public String imageUpload(MultipartFile file) throws IOException{

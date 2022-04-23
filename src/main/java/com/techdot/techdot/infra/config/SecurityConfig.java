@@ -38,11 +38,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.mvcMatchers("/new-post", "/post/**", "/accounts/my-upload", "/accounts/settings/category", "/api/**").access("hasRole('ROLE_ADMIN')")
 			.anyRequest().authenticated();
 
-		/**
-		 * TODO: 테스트용 need to delete
-		 */
-		// http.csrf().disable();
-
 		http.formLogin()
 			.loginPage("/login").permitAll();
 

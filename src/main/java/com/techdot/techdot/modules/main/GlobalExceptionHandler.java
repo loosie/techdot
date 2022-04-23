@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.server.MethodNotAllowedException;
 
 import com.sun.jdi.request.DuplicateRequestException;

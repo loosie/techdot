@@ -80,6 +80,7 @@ public class PostController {
 
 	/**
 	 * (ADMIN) 게시글 이미지 업로드 뷰
+	 * TODO: test
 	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/post/{id}/image-upload")
@@ -102,6 +103,7 @@ public class PostController {
 	/**
 	 * (ADMIN) 게시글 이미지 업로드 요청
 	 * db에 이미지 url 저장, S3에 이미지 파일 저장
+	 * TODO: test
 	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/post/{id}/image-upload")

@@ -148,12 +148,11 @@
                 $.ajax('/api/image-upload', {
                     method: 'POST',
                     data: formData,
-                    async: false,
                     processData : false,	// data 파라미터 강제 string 변환 방지
                     contentType : false,	// application/x-www-form-urlencoded; 방지
-
                 }).done(function (data, status) {
                     console.log(status);
+                    alert("success");
                 })
             });
         }

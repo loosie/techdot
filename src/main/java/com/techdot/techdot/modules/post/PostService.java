@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.techdot.techdot.infra.image.S3Service;
 import com.techdot.techdot.modules.category.Category;
 import com.techdot.techdot.modules.category.CategoryRepository;
 import com.techdot.techdot.modules.member.Member;
@@ -28,6 +29,8 @@ public class PostService {
 	private final PostRepository postRepository;
 	private final MemberRepository memberRepository;
 	private final CategoryRepository categoryRepository;
+
+	private final S3Service s3Service;
 
 	/**
 	 * 게시글 저장
@@ -134,7 +137,13 @@ public class PostService {
 	 * id로 게시글 삭제하기
 	 */
 	public void remove(Long id) {
+		Post post = postRepository.getById(id);
+		String key = post.getThumbnailImageUrl();
 		postRepository.deleteById(id);
+		if(key != null) {
+			s3Service.delete(key);
+		}
+
 		log.info(id +"번 게시글이 정상적으로 삭제되었습니다.");
 	}
 
