@@ -90,7 +90,7 @@ public class PostController {
 		model.addAttribute("postId", id);
 
 		Optional<Post> opPost = postService.findById(id);
-		if(!opPost.isEmpty()){
+		if(!opPost.isEmpty() && opPost.get().getThumbnailImageUrl() !=null){
 			model.addAttribute("postImageForm", new PostImageFormDto(opPost.get()));
 		}else{
 			model.addAttribute("postImageForm", new PostImageFormDto());

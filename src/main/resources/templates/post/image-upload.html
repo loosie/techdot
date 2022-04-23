@@ -101,7 +101,7 @@
 
         // 이미지가 이미 존재하는 경우 덮어씌우기
         var fileName = date()+ '_' + uuidv4() + '.png';
-        if('[(${postImageForm.thumbnailImageUrl})]' != null){
+        if('[(${postImageForm.thumbnailImageUrl})]' != null && '[(${postImageForm.thumbnailImageUrl})]' != ''){
             fileName = '[(${postImageForm.thumbnailImageUrl})]';
         }
 
