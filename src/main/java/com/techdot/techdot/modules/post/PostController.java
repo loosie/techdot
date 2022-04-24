@@ -80,20 +80,17 @@ public class PostController {
 
 	/**
 	 * (ADMIN) 게시글 이미지 업로드 뷰
-	 * TODO: test
 	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/post/{id}/image-upload")
-	public String postImageUploadView(
-		@PathVariable Long id,
-		@Valid @ModelAttribute("postImageForm") final PostImageFormDto postImageFormDto, @CurrentUser final Member member, final Model model) throws IOException {
+	public String postImageUploadView(@PathVariable Long id, @CurrentUser final Member member, final Model model) {
 		model.addAttribute("member", member);
 		model.addAttribute("postId", id);
 
 		Optional<Post> opPost = postService.findById(id);
-		if(!opPost.isEmpty() && opPost.get().getThumbnailImageUrl() !=null){
+		if (!opPost.isEmpty() && opPost.get().getThumbnailImageUrl() != null) {
 			model.addAttribute("postImageForm", new PostImageFormDto(opPost.get()));
-		}else{
+		} else {
 			model.addAttribute("postImageForm", new PostImageFormDto());
 		}
 
@@ -103,16 +100,11 @@ public class PostController {
 	/**
 	 * (ADMIN) 게시글 이미지 업로드 요청
 	 * db에 이미지 url 저장, S3에 이미지 파일 저장
-	 * TODO: test
 	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/post/{id}/image-upload")
-	public String postImageUploadForm(
-		@PathVariable Long id,
-		@Valid @ModelAttribute("postImageForm") final PostImageFormDto postImageFormDto, @CurrentUser final Member member, final Model model) throws IOException {
-		model.addAttribute("member", member);
-		model.addAttribute("PostImageForm", new PostImageFormDto());
-
+	public String postImageUploadForm(@PathVariable Long id,
+		@Valid @ModelAttribute("postImageForm") final PostImageFormDto postImageFormDto) {
 		postService.saveImageUrl(id, postImageFormDto);
 		return "redirect:/";
 	}
@@ -143,7 +135,8 @@ public class PostController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/post/{id}/edit")
 	public String updatePostForm(@PathVariable Long id, @Valid @ModelAttribute("postForm") final PostFormDto postForm,
-		final Errors errors, @CurrentUser final Member member, final Model model, final RedirectAttributes redirectAttributes) {
+		final Errors errors, @CurrentUser final Member member, final Model model,
+		final RedirectAttributes redirectAttributes) {
 		if (errors.hasErrors()) {
 			model.addAttribute(member);
 			return "post/updateForm";
@@ -169,13 +162,14 @@ public class PostController {
 	 * 쿼리 발생 횟수 : 1 - PostQueryResponseDto 조회 쿼리
 	 */
 	@GetMapping("/posts/{categoryViewName}")
-	public ResponseEntity<List<PostQueryResponseDto>> getPostsByCategory_scrolling(@PathVariable final String categoryViewName,
+	public ResponseEntity<List<PostQueryResponseDto>> getPostsByCategory_scrolling(
+		@PathVariable final String categoryViewName,
 		@PageableDefault(page = 0, size = 12, sort = "uploadDateTime", direction = Sort.Direction.DESC) final Pageable pageable,
 		@CurrentUser final Member member) {
 		return new ResponseEntity<>(
-			postService.getPostsByCategoryNameIfMemberWithMemberLikes(member, categoryViewName, pageable), HttpStatus.OK);
+			postService.getPostsByCategoryNameIfMemberWithMemberLikes(member, categoryViewName, pageable),
+			HttpStatus.OK);
 	}
-
 
 	/**
 	 * 멤버가 좋아요 누른 게시글 조회 API
