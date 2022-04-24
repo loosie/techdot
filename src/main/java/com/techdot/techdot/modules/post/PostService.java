@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.techdot.techdot.infra.image.S3Service;
+import com.techdot.techdot.modules.post.image.PostS3Service;
 import com.techdot.techdot.modules.category.Category;
 import com.techdot.techdot.modules.category.CategoryRepository;
 import com.techdot.techdot.modules.member.Member;
@@ -30,7 +30,7 @@ public class PostService {
 	private final MemberRepository memberRepository;
 	private final CategoryRepository categoryRepository;
 
-	private final S3Service s3Service;
+	private final PostS3Service s3Service;
 
 	/**
 	 * 게시글 저장

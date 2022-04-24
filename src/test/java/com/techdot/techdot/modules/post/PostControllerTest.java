@@ -71,7 +71,7 @@ class PostControllerTest extends AbstractContainerBaseTest {
 			.param("uploadDateTime", LocalDateTime.now().toString())
 			.with(csrf()))
 			.andExpect(status().is3xxRedirection())
-			.andExpect(redirectedUrl("/"))
+			.andExpect(redirectedUrl("/post/1/image-upload"))
 			.andExpect(authenticated());
 	}
 

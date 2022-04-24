@@ -1,4 +1,4 @@
-package com.techdot.techdot.infra.image;
+package com.techdot.techdot.modules.post.image;
 
 import java.io.IOException;
 
@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class S3Service {
+public class PostS3Service {
 
 	private final AmazonS3 amazonS3;
 

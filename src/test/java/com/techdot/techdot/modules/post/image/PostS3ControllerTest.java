@@ -1,4 +1,4 @@
-package com.techdot.techdot.infra.image;
+package com.techdot.techdot.modules.post.image;
 
 import static com.techdot.techdot.infra.Constant.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
@@ -27,7 +27,7 @@ import com.techdot.techdot.modules.member.auth.WithCurrentUser;
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = LocalStackS3Config.class)
 @AutoConfigureMockMvc
-class S3ControllerTest {
+class PostS3ControllerTest {
 
 	@Autowired
 	private AmazonS3 amazonS3;

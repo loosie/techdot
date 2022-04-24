@@ -14,7 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
 
-import com.techdot.techdot.infra.image.S3Service;
+import com.techdot.techdot.modules.post.image.PostS3Service;
 import com.techdot.techdot.modules.category.CategoryRepository;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.post.dto.PostQueryResponseDto;
@@ -32,7 +32,7 @@ class PostServiceTest {
 	private CategoryRepository categoryRepository;
 
 	@Mock
-	private S3Service s3Service;
+	private PostS3Service s3Service;
 
 	@BeforeEach
 	void setUp() {
