@@ -11,6 +11,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.techdot.techdot.infra.config.LocalStackS3Config;
+
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @ActiveProfiles("test")

@@ -3,6 +3,21 @@ spring:
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
     url: jdbc:tc:mysql:8:///
 
+  main:
+    allow-bean-definition-overriding: true
+
+cloud:
+  aws:
+    credentials:
+      access-key: test
+      secret-key: test
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+aws:
+  s3:
+    bucket: test
 
 ## h2 mem test
 #spring:
