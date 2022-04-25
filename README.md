@@ -1,4 +1,4 @@
-# TechDot (alpha v0.0.4)
+# TechDot (alpha v0.0.5)
 기술 및 개발 관련 콘텐츠 큐레이션 서비스 
 
 <br>

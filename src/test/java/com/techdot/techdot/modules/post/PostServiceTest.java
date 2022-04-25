@@ -18,6 +18,7 @@ import com.techdot.techdot.modules.category.CategoryRepository;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.post.dto.PostQueryResponseDto;
 import com.techdot.techdot.modules.member.MemberRepository;
+import com.techdot.techdot.modules.post.image.PostS3Service;
 
 @ExtendWith(MockitoExtension.class)
 class PostServiceTest {
@@ -30,9 +31,12 @@ class PostServiceTest {
 	@Mock
 	private CategoryRepository categoryRepository;
 
+	@Mock
+	private PostS3Service s3Service;
+
 	@BeforeEach
 	void setUp() {
-		postService = new PostService(postRepository, memberRepository, categoryRepository);
+		postService = new PostService(postRepository, memberRepository, categoryRepository, s3Service);
 	}
 
 	@DisplayName("카테고리별로 게시글 가져오기 - 멤버가 존재하지 않는 경우")

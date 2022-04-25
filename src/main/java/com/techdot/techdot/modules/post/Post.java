@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -57,8 +58,7 @@ public class Post extends BaseEntity {
 	@Column(nullable = false)
 	private LocalDateTime uploadDateTime;
 
-	@Lob
-	private String thumbnailImage;
+	private String thumbnailImageUrl;
 
 	@Enumerated(EnumType.STRING)
 	private PostType type;
@@ -71,12 +71,12 @@ public class Post extends BaseEntity {
 	@JoinColumn(name = "category_id")
 	private Category category;
 
-	@OneToMany(mappedBy = "post")
+	@OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
 	private List<Like> likes = new ArrayList<>();
 
 	@Builder
 	public Post(final String title, final String content, final String writer, final String link,
-		final String thumbnailImage, final PostType type, final Member manager, final Category category,
+		final String thumbnailImageUrl, final PostType type, final Member manager, final Category category,
 		final LocalDateTime uploadDateTime) {
 		Assert.notNull(title, "post.title 값이 존재하지 않습니다.");
 		Assert.notNull(content, "post.content 값이 존재하지 않습니다.");
@@ -91,7 +91,7 @@ public class Post extends BaseEntity {
 		this.link = link;
 		this.writer = writer;
 		this.type = type;
-		this.thumbnailImage = thumbnailImage;
+		this.thumbnailImageUrl = thumbnailImageUrl;
 		this.uploadDateTime = uploadDateTime;
 		setManager(manager);
 		setCategory(category);
@@ -106,13 +106,16 @@ public class Post extends BaseEntity {
 		this.manager = manager;
 	}
 
+	public void setImageUrl(String thumbnailImageUrl) {
+		this.thumbnailImageUrl = thumbnailImageUrl;
+	}
+
 	public void update(final PostFormDto postForm, final Category category) {
 		this.title = postForm.getTitle();
 		this.content = postForm.getContent();
 		this.type = postForm.getType();
 		this.link = postForm.getLink();
 		this.writer = postForm.getWriter();
-		this.thumbnailImage = postForm.getThumbnailImage();
 		this.uploadDateTime = postForm.getUploadDateTime();
 		updateCategory(category);
 		updateDateTime();
@@ -126,4 +129,5 @@ public class Post extends BaseEntity {
 	public boolean isManager(final Member member) {
 		return manager.equals(member);
 	}
+
 }

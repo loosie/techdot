@@ -1,10 +1,10 @@
 package com.techdot.techdot.modules.post;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -26,6 +26,7 @@ import com.techdot.techdot.modules.category.CategoryService;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.member.auth.CurrentUser;
 import com.techdot.techdot.modules.post.dto.PostFormDto;
+import com.techdot.techdot.modules.post.dto.PostImageFormDto;
 import com.techdot.techdot.modules.post.dto.PostQueryResponseDto;
 import com.techdot.techdot.modules.post.validator.PostFormValidator;
 
@@ -68,11 +69,32 @@ public class PostController {
 		@CurrentUser final Member member, final Model model) {
 		if (errors.hasErrors()) {
 			model.addAttribute(member);
+			model.addAttribute("categoryList", categoryService.getAll());
 			return "post/form";
 		}
 
-		postService.save(postForm, member.getId());
-		return "redirect:/";
+		Post save = postService.save(postForm, member.getId());
+		return "redirect:/post/" + save.getId() + "/image-upload";
+	}
+
+	/**
+	 * (ADMIN) 게시글 이미지 업로드 뷰
+	 * (PostS3Service)db에 이미지 url 저장, S3에 이미지 파일 저장
+	 */
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping("/post/{id}/image-upload")
+	public String postImageUploadView(@PathVariable Long id, @CurrentUser final Member member, final Model model) {
+		model.addAttribute("member", member);
+		model.addAttribute("postId", id);
+
+		Optional<Post> opPost = postService.findById(id);
+		if (!opPost.isEmpty() && opPost.get().getThumbnailImageUrl() != null) {
+			model.addAttribute("postImageForm", new PostImageFormDto(opPost.get()));
+		} else {
+			model.addAttribute("postImageForm", new PostImageFormDto());
+		}
+
+		return "post/image-upload";
 	}
 
 	/**
@@ -101,12 +123,13 @@ public class PostController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/post/{id}/edit")
 	public String updatePostForm(@PathVariable Long id, @Valid @ModelAttribute("postForm") final PostFormDto postForm,
-		final Errors errors, @CurrentUser final Member member, final Model model, final RedirectAttributes redirectAttributes) {
+		final Errors errors, @CurrentUser final Member member, final Model model,
+		final RedirectAttributes redirectAttributes) {
 		if (errors.hasErrors()) {
 			model.addAttribute(member);
 			return "post/updateForm";
 		}
-
+		model.addAttribute("postId", id);
 		postService.update(id, postForm);
 		redirectAttributes.addFlashAttribute("message", "게시글이 정상적으로 수정되었습니다.");
 		return "redirect:/post/" + id + "/edit";
@@ -127,13 +150,14 @@ public class PostController {
 	 * 쿼리 발생 횟수 : 1 - PostQueryResponseDto 조회 쿼리
 	 */
 	@GetMapping("/posts/{categoryViewName}")
-	public ResponseEntity<List<PostQueryResponseDto>> getPostsByCategory_scrolling(@PathVariable final String categoryViewName,
+	public ResponseEntity<List<PostQueryResponseDto>> getPostsByCategory_scrolling(
+		@PathVariable final String categoryViewName,
 		@PageableDefault(page = 0, size = 12, sort = "uploadDateTime", direction = Sort.Direction.DESC) final Pageable pageable,
 		@CurrentUser final Member member) {
 		return new ResponseEntity<>(
-			postService.getPostsByCategoryNameIfMemberWithMemberLikes(member, categoryViewName, pageable), HttpStatus.OK);
+			postService.getPostsByCategoryNameIfMemberWithMemberLikes(member, categoryViewName, pageable),
+			HttpStatus.OK);
 	}
-
 
 	/**
 	 * 멤버가 좋아요 누른 게시글 조회 API

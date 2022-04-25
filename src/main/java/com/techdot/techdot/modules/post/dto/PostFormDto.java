@@ -43,8 +43,6 @@ public class PostFormDto {
 
 	private String categoryName;
 
-	private String thumbnailImage;
-
 	public PostFormDto(final Post post) {
 		this.title = post.getTitle();
 		this.content = post.getContent();
@@ -53,7 +51,6 @@ public class PostFormDto {
 		this.writer = post.getWriter();
 		this.type = post.getType();
 		this.categoryName = post.getCategory().getViewName();
-		this.thumbnailImage = post.getThumbnailImage();
 		this.uploadDateTime = post.getUploadDateTime();
 	}
 }

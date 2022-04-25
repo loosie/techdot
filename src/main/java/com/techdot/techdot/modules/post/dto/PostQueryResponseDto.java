@@ -15,13 +15,13 @@ public class PostQueryResponseDto implements Serializable {
 	private String link;
 	private String writer;
 	private PostType type;
-	private String thumbnailImage;
+	private String thumbnailImageUrl;
 	private LocalDateTime uploadDateTime;
 	private String categoryDisplayName;
 	private Boolean isMemberLike;
 
 	public PostQueryResponseDto(final Long postId, final String title,final  String content,
-		final String link, final String writer, final PostType type, final String thumbnailImage,
+		final String link, final String writer, final PostType type, final String thumbnailImageUrl,
 		final LocalDateTime uploadDateTime, final String categoryDisplayName, final Boolean isMemberLike) {
 		this.postId = postId;
 		this.title = title;
@@ -29,7 +29,7 @@ public class PostQueryResponseDto implements Serializable {
 		this.link = link;
 		this.writer = writer;
 		this.type = type;
-		this.thumbnailImage = thumbnailImage;
+		this.thumbnailImageUrl = thumbnailImageUrl;
 		this.uploadDateTime = uploadDateTime;
 		this.categoryDisplayName = categoryDisplayName;
 		this.isMemberLike = isMemberLike;

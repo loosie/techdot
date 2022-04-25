@@ -87,7 +87,7 @@ public class PostRepositoryExtensionImpl extends QuerydslRepositorySupport imple
 		return from(post)
 			.select(Projections.constructor(PostQueryResponseDto.class,
 				post.id, post.title, post.content, post.link, post.writer, post.type,
-				post.thumbnailImage, post.uploadDateTime, category.name, getBooleanExpressionIsMemberLike(memberId)));
+				post.thumbnailImageUrl, post.uploadDateTime, category.name, getBooleanExpressionIsMemberLike(memberId)));
 	}
 
 	private List<PostQueryResponseDto> getPagingResults(final Pageable pageable,

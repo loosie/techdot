@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.techdot.techdot.infra.util.TokenGenerator;
 import com.techdot.techdot.modules.member.dto.ProfileFormDto;
 
 class MemberTest {
@@ -42,25 +41,6 @@ class MemberTest {
 		assertEquals(member.getEmailSendTime(), 1);
 	}
 
-	// @DisplayName("멤버 이메일 인증 토큰 업데이트하기")
-	// @Test
-	// void memberUpdateEmailCheckToken_Success() {
-	// 	// given
-	// 	Member member = Member.builder()
-	// 		.nickname("loosie")
-	// 		.password("12345678")
-	// 		.email("jong9712@naver.com")
-	// 		.emailVerified(false)
-	// 		.build();
-	// 	member.countEmailSendTime();
-	// 	// String firstToken = member.getEmailCheckToken();
-	//
-	// 	// when
-	// 	member.updateEmailCheckToken();
-	//
-	// 	// then
-	// 	assertNotEquals(firstToken, member.getEmailCheckToken());
-	// }
 
 	@DisplayName("멤버 이메일 인증 완료하기")
 	@Test
@@ -142,22 +122,4 @@ class MemberTest {
 		assertTrue(member.getPassword().equals("87654321"));
 	}
 
-	// @DisplayName("멤버 토큰 유효한지 검사하기")
-	// @Test
-	// void memberCheckIsValidToken_Success() {
-	// 	// given
-	// 	Member member = Member.builder()
-	// 		.nickname("loosie")
-	// 		.password("12345678")
-	// 		.email("jong9712@naver.com")
-	// 		.emailVerified(false)
-	// 		.build();
-	// 	member.countEmailSendTime();
-	//
-	// 	String token = TokenGenerator.generateToken();
-	//
-	// 	// when, then
-	// 	assertTrue(member.isValidToken(member.getEmailCheckToken()));
-	// 	assertFalse(member.isValidToken(member.getEmailCheckToken() + "11"));
-	// }
 }

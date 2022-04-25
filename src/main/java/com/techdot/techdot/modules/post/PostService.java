@@ -1,8 +1,8 @@
 package com.techdot.techdot.modules.post;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,6 +15,7 @@ import com.techdot.techdot.modules.member.MemberRepository;
 import com.techdot.techdot.modules.post.dto.MyUploadPostResponseDto;
 import com.techdot.techdot.modules.post.dto.PostFormDto;
 import com.techdot.techdot.modules.post.dto.PostQueryResponseDto;
+import com.techdot.techdot.modules.post.image.PostS3Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,10 +29,12 @@ public class PostService {
 	private final MemberRepository memberRepository;
 	private final CategoryRepository categoryRepository;
 
+	private final PostS3Service s3Service;
+
 	/**
 	 * 게시글 저장
 	 */
-	public void save(final PostFormDto postForm, final Long memberId) {
+	public Post save(final PostFormDto postForm, final Long memberId) {
 		// 엔티티 조회
 		Member manager = memberRepository.findById(memberId).get(); // 이미 인증된 객체
 		Category category = categoryRepository.getByViewName(postForm.getCategoryName());
@@ -40,7 +43,6 @@ public class PostService {
 		Post newPost = Post.builder()
 			.title(postForm.getTitle())
 			.link(postForm.getLink())
-			.thumbnailImage(postForm.getThumbnailImage())
 			.content(postForm.getContent())
 			.type(postForm.getType())
 			.writer(postForm.getWriter())
@@ -50,7 +52,7 @@ public class PostService {
 			.build();
 
 		// 게시글 저장
-		postRepository.save(newPost);
+		return postRepository.save(newPost);
 	}
 
 	/**
@@ -134,7 +136,20 @@ public class PostService {
 	 * id로 게시글 삭제하기
 	 */
 	public void remove(Long id) {
+		Post post = postRepository.getById(id);
+		String key = post.getThumbnailImageUrl();
 		postRepository.deleteById(id);
+		if(key != null) {
+			s3Service.delete(key);
+		}
+
 		log.info(id +"번 게시글이 정상적으로 삭제되었습니다.");
+	}
+
+	/**
+	 * id로 게시글 조회하기
+	 */
+	public Optional<Post> findById(Long id) {
+		return postRepository.findById(id);
 	}
 }

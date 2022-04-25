@@ -12,10 +12,10 @@
     function getPostImage(data) {
         const image = new Image();
         image.className = 'post-list__item__image post-list__item__image--loading';
-        if (data.thumbnailImage == null || data.thumbnailImage == '') {
+        if (data.thumbnailImageUrl == null || data.thumbnailImageUrl == '') {
             image.src = '/images/default_thumbnail.png'
         } else {
-            image.src = data.thumbnailImage;
+            image.src = data.thumbnailImageUrl;
         }
         image.onload = function () {
             image.classList.remove('post-list__item__image--loading');

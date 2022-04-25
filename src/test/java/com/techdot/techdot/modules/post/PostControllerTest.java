@@ -36,6 +36,7 @@ class PostControllerTest extends AbstractContainerBaseTest {
 	@Autowired
 	private CategoryRepository categoryRepository;
 
+
 	@BeforeEach
 	void setUp() {
 		categoryRepository.save(Category.builder()
@@ -71,7 +72,6 @@ class PostControllerTest extends AbstractContainerBaseTest {
 			.param("uploadDateTime", LocalDateTime.now().toString())
 			.with(csrf()))
 			.andExpect(status().is3xxRedirection())
-			.andExpect(redirectedUrl("/"))
 			.andExpect(authenticated());
 	}
 
@@ -96,7 +96,32 @@ class PostControllerTest extends AbstractContainerBaseTest {
 	}
 
 	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
-	@Transactional
+	@DisplayName("게시글 이미지 업로드 뷰 테스트")
+	@Test
+	void postImageUploadView_Success() throws Exception {
+		Member member = memberRepository.findByEmail(TEST_EMAIL).get();
+		Category category = categoryRepository.getByViewName("java");
+		Post save = postRepository.save(Post.builder()
+			.title("title")
+			.content("content")
+			.link("http://google.com/")
+			.type(PostType.BLOG)
+			.category(category)
+			.writer("naver")
+			.manager(member)
+			.uploadDateTime(LocalDateTime.now())
+			.build());
+
+		mockMvc.perform(get("/post/" + save.getId() + "/image-upload"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("post/image-upload"))
+			.andExpect(model().attributeExists("postImageForm"))
+			.andExpect(model().attributeExists("member"))
+			.andExpect(model().attributeExists("postId"))
+			.andExpect(authenticated());
+	}
+
+	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
 	@DisplayName("게시글 수정하기 성공")
 	@Test
 	void updatePost_Success() throws Exception {
