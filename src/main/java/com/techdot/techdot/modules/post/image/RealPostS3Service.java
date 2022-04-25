@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,10 +30,10 @@ public class RealPostS3Service implements PostS3Service{
 	private final PostRepository postRepository;
 
 	@Value("${aws.s3.bucket}")
-	public String bucket;
+	public String BUCKET;
 
 	@Value("${cdn.public-url}")
-	public String publicUrl;
+	public String PUBLIC_URL;
 
 	static final String FOLDER_NAME = "static/";
 
@@ -45,15 +44,20 @@ public class RealPostS3Service implements PostS3Service{
 	 */
 	@Override
 	public String upload(Long id, MultipartFile file) {
+		String fileName = file.getOriginalFilename();
+
 		int i = file.getOriginalFilename().indexOf("static/");
-		String fileName = file.getOriginalFilename().substring(i+7);
+		if(i != -1) {
+			fileName = file.getOriginalFilename().substring(i + 7);
+		}
 		String fileStorageName = FOLDER_NAME + fileName;
+
 		ObjectMetadata metadata = new ObjectMetadata();
 		metadata.setContentType(MediaType.IMAGE_PNG_VALUE);
 		metadata.setContentLength(file.getSize());
 
 		try {
-			amazonS3.putObject(new PutObjectRequest(bucket, fileStorageName, file.getInputStream(), metadata)
+			amazonS3.putObject(new PutObjectRequest(BUCKET, fileStorageName, file.getInputStream(), metadata)
 				.withCannedAcl(CannedAccessControlList.PublicRead));
 		} catch (IOException e) {
 			throw new RuntimeException(e.getMessage());
@@ -64,11 +68,13 @@ public class RealPostS3Service implements PostS3Service{
 
 	private String savePostImageUrl(Long id, String fileName) {
 		Post post = postRepository.getById(id);
-		String url = post.getThumbnailImageUrl();
-		if(url.isEmpty() || url.isBlank()){
-			url = publicUrl + fileName;
+		String url = "";
+		if(post.getThumbnailImageUrl() == null || post.getThumbnailImageUrl().isEmpty()){
+			url = PUBLIC_URL + FOLDER_NAME + fileName;
 			post.setImageUrl(url);
 			postRepository.save(post);
+		} else {
+			url = post.getThumbnailImageUrl();
 		}
 
 		log.info("s3 버킷 이미지 등록 완료 - {}", url);
@@ -81,8 +87,8 @@ public class RealPostS3Service implements PostS3Service{
 	@Override
 	public void delete(String key){
 		key = FOLDER_NAME + key;
-		if(amazonS3.doesObjectExist(bucket, key)){
-			amazonS3.deleteObject(bucket, key);
+		if(amazonS3.doesObjectExist(BUCKET, key)){
+			amazonS3.deleteObject(BUCKET, key);
 			log.info("s3 버킷 이미지 삭제 완료 - {}", key);
 		}
 	}
