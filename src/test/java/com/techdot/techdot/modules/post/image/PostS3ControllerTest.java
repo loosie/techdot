@@ -13,16 +13,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.techdot.techdot.infra.config.LocalStackS3Config;
+import com.techdot.techdot.infra.AbstractContainerBaseTest;
+import com.techdot.techdot.infra.MockMvcTest;
 import com.techdot.techdot.modules.category.Category;
 import com.techdot.techdot.modules.category.CategoryRepository;
 import com.techdot.techdot.modules.member.Member;
@@ -32,11 +29,8 @@ import com.techdot.techdot.modules.post.Post;
 import com.techdot.techdot.modules.post.PostRepository;
 import com.techdot.techdot.modules.post.PostType;
 
-@ActiveProfiles("test")
-@Transactional
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = LocalStackS3Config.class)
-@AutoConfigureMockMvc
-class PostS3ControllerTest {
+@MockMvcTest
+class PostS3ControllerTest extends AbstractContainerBaseTest {
 
 	@Autowired
 	private AmazonS3 amazonS3;

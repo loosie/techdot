@@ -17,7 +17,7 @@ import com.techdot.techdot.infra.config.LocalStackS3Config;
 @Target(ElementType.TYPE)
 @ActiveProfiles("test")
 @Transactional
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = LocalStackS3Config.class)
 @AutoConfigureMockMvc
 public @interface MockMvcTest {
 }
