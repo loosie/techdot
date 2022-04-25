@@ -12,7 +12,7 @@
 <br>
 
 ## 프로젝트 구성도
-<img width="920" alt="스크린샷 2022-04-21 오전 12 35 04" src="https://user-images.githubusercontent.com/54282927/164268447-fe5eccd6-f1a6-43d0-9125-7e4816f31310.png">
+<img width="920" alt="스크린샷 2022-04-26 오전 3 14 11" src="https://user-images.githubusercontent.com/54282927/165149071-60ef7426-b576-45f1-a092-80404994b679.png">
 
 
 <br>
@@ -34,10 +34,11 @@ Controller 층에서는 Jsp View를 반환하는 API를 @MockMvcTest로 통합 �
 ### Service단 테스트 (Mockito)
 Service 층에서는 Json 데이터를 반환하여 Ajax와 통신하는 API를 비즈니스 로직 순서 보장해주는지 Mockito을 통해 단위 테스트 진행 
 
+
 <br>
 
 ### Repository단 테스트 (DataJpaTest)
-Repository 층에서는 Spring Data JPA를 사용하여 모든 Repository가 JpaRepository를 확장하였기 때문에 @TCDataJpaTest로 비즈니스 로직에서 사용하는 모든 쿼리 단위 테스트 진행
+Repository 층에서는 Spring Data JPA를 사용하여 모든 Repository가 JpaRepository를 확장하였기 때문에 @TCDataJpaTest로 비즈니스 로직에서 사용하는 모든 쿼리 테스트 진행
 - @TCDataJpaTest = @DataJpaTest(@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)) + TestContainer 
 
 <br>
