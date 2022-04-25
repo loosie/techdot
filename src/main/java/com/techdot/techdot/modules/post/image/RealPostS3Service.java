@@ -45,13 +45,15 @@ public class RealPostS3Service implements PostS3Service{
 	 */
 	@Override
 	public String upload(Long id, MultipartFile file) {
-		String fileName = FOLDER_NAME + file.getOriginalFilename();
+		int i = file.getOriginalFilename().indexOf("static/");
+		String fileName = file.getOriginalFilename().substring(i+7);
+		String fileStorageName = FOLDER_NAME + fileName;
 		ObjectMetadata metadata = new ObjectMetadata();
 		metadata.setContentType(MediaType.IMAGE_PNG_VALUE);
 		metadata.setContentLength(file.getSize());
 
 		try {
-			amazonS3.putObject(new PutObjectRequest(bucket, fileName, file.getInputStream(), metadata)
+			amazonS3.putObject(new PutObjectRequest(bucket, fileStorageName, file.getInputStream(), metadata)
 				.withCannedAcl(CannedAccessControlList.PublicRead));
 		} catch (IOException e) {
 			throw new RuntimeException(e.getMessage());
@@ -61,11 +63,13 @@ public class RealPostS3Service implements PostS3Service{
 	}
 
 	private String savePostImageUrl(Long id, String fileName) {
-		String url = publicUrl + fileName;
-
 		Post post = postRepository.getById(id);
-		post.setImageUrl(url);
-		postRepository.save(post);
+		String url = post.getThumbnailImageUrl();
+		if(url.isEmpty() || url.isBlank()){
+			url = publicUrl + fileName;
+			post.setImageUrl(url);
+			postRepository.save(post);
+		}
 
 		log.info("s3 버킷 이미지 등록 완료 - {}", url);
 		return url;
