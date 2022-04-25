@@ -122,31 +122,6 @@ class PostControllerTest extends AbstractContainerBaseTest {
 	}
 
 	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
-	@DisplayName("게시글 이미지 업로드 요청 성공")
-	@Test
-	void postImageUpload_Success() throws Exception {
-		Member member = memberRepository.findByEmail(TEST_EMAIL).get();
-		Category category = categoryRepository.getByViewName("java");
-		Post save = postRepository.save(Post.builder()
-			.title("title")
-			.content("content")
-			.link("http://google.com/")
-			.type(PostType.BLOG)
-			.category(category)
-			.writer("naver")
-			.manager(member)
-			.uploadDateTime(LocalDateTime.now())
-			.build());
-
-		mockMvc.perform(post("/post/" + save.getId() + "/image-upload")
-			.param("thumbnailImageUrl", "test.png")
-			.with(csrf()))
-			.andExpect(status().is3xxRedirection())
-			.andExpect(redirectedUrl("/"))
-			.andExpect(authenticated());
-	}
-
-	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
 	@DisplayName("게시글 수정하기 성공")
 	@Test
 	void updatePost_Success() throws Exception {

@@ -1,6 +1,5 @@
 package com.techdot.techdot.modules.post;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -80,6 +79,7 @@ public class PostController {
 
 	/**
 	 * (ADMIN) 게시글 이미지 업로드 뷰
+	 * (PostS3Service)db에 이미지 url 저장, S3에 이미지 파일 저장
 	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/post/{id}/image-upload")
@@ -95,18 +95,6 @@ public class PostController {
 		}
 
 		return "post/image-upload";
-	}
-
-	/**
-	 * (ADMIN) 게시글 이미지 업로드 요청
-	 * db에 이미지 url 저장, S3에 이미지 파일 저장
-	 */
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PostMapping("/post/{id}/image-upload")
-	public String postImageUploadForm(@PathVariable Long id,
-		@Valid @ModelAttribute("postImageForm") final PostImageFormDto postImageFormDto) {
-		postService.saveImageUrl(id, postImageFormDto);
-		return "redirect:/";
 	}
 
 	/**

@@ -1,0 +1,18 @@
+
+cloud:
+  aws:
+    credentials:
+      instance-profile: false
+      access-key: AKIAW7KGFM243QVRUYLY
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+
+aws:
+  s3:
+    bucket: cdn.techdot.info # real
+
+cdn:
+  public-url: https://s3.ap-northeast-2.amazonaws.com/cdn.techdot.info/

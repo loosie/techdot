@@ -5,7 +5,7 @@
     <h2 class="text-center py-5 px-3" th:text="@{'게시글 ' + ${type}}"></h2>
 
     <div class="row justify-content-center py-12">
-        <form class="row needs-validation" th:action="@{${requestUrl}}" th:object="${postForm}" method="post" enctype="multipart/form-data" novalidate>
+        <form class="row needs-validation" th:action="@{${requestUrl}}" th:object="${postForm}" method="post" novalidate>
             <div class="col">
                 <div th:replace="fragments/message.html :: message"></div>
 

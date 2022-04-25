@@ -1,10 +1,10 @@
 spring:
   profiles:
     group:
-      "default": "local, s3"
+      "default": "local"
       "dev": "dev, mail, s3"
-      "real1": "real-db, mail, s3"
-      "real2": "real-db, mail, s3"
+      "real1": "real-db, mail, real-s3"
+      "real2": "real-db, mail, real-s3"
 
   jpa:
     hibernate:
@@ -26,6 +26,20 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
+
+cloud:
+  aws:
+    credentials:
+      access-key: test
+      secret-key: test
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+aws:
+  s3:
+    bucket: cdn.techdot.info
+
 
 logging:
   level:

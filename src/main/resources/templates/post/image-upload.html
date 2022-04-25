@@ -20,7 +20,7 @@
                          src="/images/default_thumbnail.png"
                          width="320" height="192" alt="name"/>
                     <img th:if="${!#strings.isEmpty(postImageForm.thumbnailImageUrl)}" class="thumbnail-img rounded"
-                         th:src="'https://s3.ap-northeast-2.amazonaws.com/cdn.techdot.info/static/' + ${postImageForm.thumbnailImageUrl}"
+                         th:src="${postImageForm.thumbnailImageUrl}"
                          width="320" height="192" alt="name"/>
                 </div>
                 <div id="new-thumbnail-image" class="mt-3"></div>
@@ -34,13 +34,8 @@
                         <button type="button" class="btn btn-outline-warning btn-block" id="reset-button">취소</button>
                     </div>
                 </div>
-                <form class="row needs-validation" th:action="@{'/post/'+ ${postId} +'/image-upload'}"
-                      th:object="${postImageForm}" method="post" novalidate>
-                    <div class="form-group">
-                        <input id="input-thumbnailImage-url" type="hidden" th:field="*{thumbnailImageUrl}"
-                               class="form-control"/>
-                    </div>
-                    <button type="sumbit" class="btn btn-outline-primary btn-block" id="submit-button">등록</button>
+                <form class="row needs-validation mt-3">
+                    <a href="/" type="sumbit" class="btn btn-outline-primary btn-block" id="submit-button">등록</a>
                 </form>
             </div>
         </div>
@@ -60,7 +55,6 @@
         let $currentThumbnailImage = $("#current-thumbnail-image"); // 현재 프로필 이미지
         let $resultImage = $("#cropped-new-thumbnail-image");  // 선택한 이미지 자른 부분
         let $thumbnailImage = $("#thumbnailImage"); // 최종 프로필 이미지
-        let $inputThumbnailImageUrl = $("#input-thumbnailImage-url"); // 최종 프로필 이미지
 
         // 버튼 숨기기
         $newThumbnailImage.hide();
@@ -102,7 +96,7 @@
         });
 
         // 이미지가 이미 존재하는 경우 덮어씌우기
-        var fileName = date() + '_' + uuidv4() + '.png';
+        var fileName =  date() + '_' + uuidv4() + '.png';
         if ('[(${postImageForm.thumbnailImageUrl})]' != null && '[(${postImageForm.thumbnailImageUrl})]' != '') {
             fileName = '[(${postImageForm.thumbnailImageUrl})]';
         }
@@ -135,27 +129,29 @@
             $newThumbnailImage.html(newImage);
             $confirmBtn.hide();
             $thumbnailImage.val(dataUrl);
-            $inputThumbnailImageUrl.val(fileName);
         });
 
         $("#submit-button").on("click", uploadImage);
 
         function uploadImage() {
+            var postId = '[(${postId})]';
             cropper.getCroppedCanvas().toBlob((blob) => {
                 // HTMLCanvasElement를 return 받아서 blob파일로 변환해준다
                 const formData = new FormData();
                 // 새로운 formData를 생성해서 변경된 cropper image blob파일을 삽입
                 formData.append('file', blob, fileName); // 맨 뒤 매개변수는 화질 설정
 
-                $.ajax('/api/image-upload', {
+                $.ajax('/api/post/'+postId+'/image-upload', {
                     method: 'POST',
                     data: formData,
                     async: false,
                     processData: false,	// data 파라미터 강제 string 변환 방지
                     contentType: false,	// application/x-www-form-urlencoded; 방지
                 }).done(function (data, status) {
-                    alert("s3 upload :" + status + "- [" + data + "]");
-                })
+                    alert("s3 upload done :" + status + "- [" + data + "]");
+                }).fail(function (data, status) {
+                    alert("s3 upload fail :" + status + "- [" + data + "]");
+                });
             });
         }
 

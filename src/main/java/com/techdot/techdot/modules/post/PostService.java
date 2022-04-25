@@ -8,15 +8,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.techdot.techdot.modules.post.image.PostS3Service;
 import com.techdot.techdot.modules.category.Category;
 import com.techdot.techdot.modules.category.CategoryRepository;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.member.MemberRepository;
 import com.techdot.techdot.modules.post.dto.MyUploadPostResponseDto;
 import com.techdot.techdot.modules.post.dto.PostFormDto;
-import com.techdot.techdot.modules.post.dto.PostImageFormDto;
 import com.techdot.techdot.modules.post.dto.PostQueryResponseDto;
+import com.techdot.techdot.modules.post.image.PostS3Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -145,15 +144,6 @@ public class PostService {
 		}
 
 		log.info(id +"번 게시글이 정상적으로 삭제되었습니다.");
-	}
-
-	/**
-	 * thumbnail 이미지 url 저장하기
-	 */
-	public void saveImageUrl(Long postId, PostImageFormDto postImageFormDto) {
-		Post post = postRepository.getById(postId);
-		post.setImageUrl(postImageFormDto.getThumbnailImageUrl());
-		postRepository.save(post);
 	}
 
 	/**
