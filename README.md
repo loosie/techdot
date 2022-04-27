@@ -10,13 +10,6 @@ TechDot은 기술 및 개발 콘텐츠를 큐레이팅한 게시글을 접해볼
 
 <br>
 
-### 프로젝트에 임하는 자세
-- 지난 하반기 동안 배우고 학습한 내용을 적용해보고 스스로가 사용하고 싶은 서비스를 구현할 것입니다.
-- 단순하게 동작만 하는 서비스 구현이 아니라 유연하고 확장 가능한 객체지향 서비스를 구현하여 계속해서 확장한 버전을 배포 및 운영할 것입니다.
-- 어느 자극에도 깨지기 쉬운 서비스가 아니라 대용량 트래픽 처리까지 핸들링이 가능한 서비스를 구현할 것입니다.
-
-<br>
-
 ## 💻 기술 사용 스택
 - Back: Java 11, Spring Boot 2.6.4, Spring Security, Spring Data JPA, QueryDsl, MySQL, Redis
 - Front: Thymeleaf, BootStrap, Ajax, JQuery
