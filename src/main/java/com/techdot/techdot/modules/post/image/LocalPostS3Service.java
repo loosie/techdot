@@ -60,7 +60,8 @@ public class LocalPostS3Service implements PostS3Service{
 	private String savePostImageUrl(Long id, String fileName) {
 		String url = amazonS3.getUrl(bucket, fileName).toString();
 
-		Post post = postRepository.getById(id);
+		Post post = postRepository.findById(id)
+			.orElseThrow(() -> new NullPointerException(id + "는 존재하지 않는 게시글 입니다."));
 		post.setImageUrl(url);
 		postRepository.save(post);
 

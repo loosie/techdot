@@ -49,7 +49,7 @@ class PostRepositoryTest extends AbstractContainerBaseTest {
 		categoryRepository.save(category);
 	}
 
-	@DisplayName("게시글 생성하기 - 성공")
+	@DisplayName("게시글 생성하기")
 	@Test
 	void postCreate_Success() {
 		//given
@@ -73,9 +73,9 @@ class PostRepositoryTest extends AbstractContainerBaseTest {
 		assertEquals(savePost.getType(), PostType.BLOG);
 	}
 
-	@DisplayName("게시글 링크 존재여부 확인하기")
+	@DisplayName("게시글 Link로 존재여부 확인하기")
 	@Test
-	void existsByLink_Success() {
+	void postExistsByLink_Success() {
 		Post post = Post.builder()
 			.title("title1")
 			.content("content.content...")
@@ -92,9 +92,9 @@ class PostRepositoryTest extends AbstractContainerBaseTest {
 		assertTrue(postRepository.existsByLink("http://testlink.com"));
 	}
 
-	@DisplayName("게시글 Manager정보로 조회하기")
+	@DisplayName("Manager로 게시글 정보 가져오기")
 	@Test
-	void getByManager_Success() {
+	void postGetByManager_Success() {
 		Post post = Post.builder()
 			.title("title1")
 			.content("content.content...")
@@ -117,9 +117,9 @@ class PostRepositoryTest extends AbstractContainerBaseTest {
 		assertEquals(result.getWriter(), "naver");
 	}
 
-	@DisplayName("게시글 id로 삭제하기")
+	@DisplayName("게시글 ID로 게시글 삭제하기")
 	@Test
-	void deleteById_Success() {
+	void postDeleteById_Success() {
 		// given
 		Post post = Post.builder()
 			.title("title1")

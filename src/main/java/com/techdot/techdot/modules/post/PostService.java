@@ -60,7 +60,7 @@ public class PostService {
 	 * @throws NullPointerException 존재하지 않는 게시글 id이면 예외 발생
 	 */
 	public void update(final Long postId, final PostFormDto postForm) {
-		Post post = postRepository.findById(postId).orElseThrow(() -> new NullPointerException("존재하지 않는 게시글 입니다."));
+		Post post = postRepository.findById(postId).orElseThrow(() -> new NullPointerException(postId + "는 존재하지 않는 게시글 입니다."));
 		Category category = categoryRepository.getByViewName(postForm.getCategoryName());
 
 		post.update(postForm, category);
@@ -69,23 +69,47 @@ public class PostService {
 	}
 
 	/**
-	 * 게시글 id로 조회하기
-	 * @param id
-	 * @throws NullPointerException 존재하지 않는 게시글 id이면 예외 발생
+	 * id로 게시글 삭제하기
 	 */
-	public Post getById(final Long id) {
-		return postRepository.findById(id).orElseThrow(() -> new NullPointerException("존재하지 않는 게시글 입니다."));
+	public void remove(Long id) {
+		Post post = postRepository.getById(id);
+		String key = post.getThumbnailImageUrl();
+		postRepository.deleteById(id);
+		if(key != null) {
+			s3Service.delete(key);
+		}
+		log.info(id +"번 게시글이 정상적으로 삭제되었습니다.");
+	}
+
+
+	/**
+	 ****************************************** 쿼리 ********************************************
+	 */
+
+	/**
+	 * id로 게시글 조회하기
+	 */
+	public Optional<Post> findById(Long id) {
+		return postRepository.findById(id);
 	}
 
 	/**
-	 * 게시글 Manager로 조회하기
+	 * 게시글 id로 가져오기
+	 * @throws NullPointerException 존재하지 않는 게시글 id이면 예외 발생
+	 */
+	public Post getById(final Long id) {
+		return postRepository.findById(id).orElseThrow(() -> new NullPointerException(id + "는 존재하지 않는 게시글 입니다."));
+	}
+
+	/**
+	 * Manager로 게시글 가져오기
 	 */
 	public Page<MyUploadPostResponseDto> getByManager(final Member member, final Pageable pageable) {
 		return postRepository.getByManager(member, pageable);
 	}
 
 	/**
-	 * 카테고리별로 게시글 가져오기
+	 * 카테고리에 해당하는 게시글 가져오기
 	 */
 	public List<PostQueryResponseDto> getPostsByCategoryNameIfMemberWithMemberLikes(final Member member,
 		final String categoryViewName,
@@ -111,7 +135,7 @@ public class PostService {
 	}
 
 	/**
-	 * 멤버의 관심 카테고리 게시글 가져오기
+	 * 멤버 ID로 해당 멤버 관심 카테고리 목록에 속한 게시글 가져오기
 	 */
 	public List<PostQueryResponseDto> getPostsByInterestsMemberId(final Long memberId, final Pageable pageable) {
 		List<PostQueryResponseDto> allInterestPosts = postRepository.findAllDtoByInterestsMemberId(memberId, pageable);
@@ -119,7 +143,7 @@ public class PostService {
 	}
 
 	/**
-	 * keyword에 포함하는 게시글 검색하기
+	 * keyword에 포함하는 게시글 가쟈오기
 	 * 검색 범위
 	 * - 게시글 tite, content, writer
 	 * - 카테고리 name, title, viewName
@@ -132,24 +156,4 @@ public class PostService {
 		return postRepository.findAllDtoByKeyword(memberId, keyword, pageable);
 	}
 
-	/**
-	 * id로 게시글 삭제하기
-	 */
-	public void remove(Long id) {
-		Post post = postRepository.getById(id);
-		String key = post.getThumbnailImageUrl();
-		postRepository.deleteById(id);
-		if(key != null) {
-			s3Service.delete(key);
-		}
-
-		log.info(id +"번 게시글이 정상적으로 삭제되었습니다.");
-	}
-
-	/**
-	 * id로 게시글 조회하기
-	 */
-	public Optional<Post> findById(Long id) {
-		return postRepository.findById(id);
-	}
 }

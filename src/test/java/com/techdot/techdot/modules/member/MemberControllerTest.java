@@ -76,7 +76,7 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 		then(emailService).should().sendEmail(any(EmailMessageDto.class));
 	}
 
-	@DisplayName("회원 가입 폼 요청 실패 - 올바르지 않은 이메일 타입 오류")
+	@DisplayName("회원 가입 폼 요청 실패 - Email 타입 오류")
 	@Test
 	void memberJoinFrom_EmailIsNotValidType_Error() throws Exception {
 		mockMvc.perform(post("/join")
@@ -117,7 +117,7 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 		assertTrue(newMember.getEmailVerified());
 	}
 
-	@DisplayName("이메일 인증 확인 링크 요청 실패 - 올바르지 않은 토큰값 오류")
+	@DisplayName("이메일 인증 확인 링크 요청 실패 - 올바르지 않은 토큰")
 	@Test
 	void memberConfirmEmailLink_TokenIsWrongValue_Error() throws Exception {
 		// given

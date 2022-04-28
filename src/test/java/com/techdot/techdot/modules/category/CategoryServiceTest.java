@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,7 +27,7 @@ class CategoryServiceTest {
 		categoryService = new CategoryService(categoryRepository);
 	}
 
-	@DisplayName("카테고리 저장하기")
+	@DisplayName("카테고리 저장하기 성공")
 	@Test
 	void categorySave_Success(){
 		// given
@@ -40,6 +41,24 @@ class CategoryServiceTest {
 
 		// then
 		then(categoryRepository).should(times(1)).save(any());
+	}
+
+	@DisplayName("카테고리 업데이트하기 성공")
+	@Test
+	void categoryUpdate_Success(){
+		// given
+		Category category = Category.builder()
+			.viewName("java").title("자바").name("Java").build();
+		CategoryFormDto categoryFormDto = new CategoryFormDto();
+		categoryFormDto.setViewName("changeJava");
+		given(categoryRepository.findById(1L)).willReturn(Optional.of(category));
+
+		// when
+		categoryService.update(1L, categoryFormDto);
+
+		// then
+		then(categoryRepository).should(times(1)).findById(any());
+		assertEquals(category.getViewName(), "changeJava");
 	}
 
 	@DisplayName("카테고리 id로 삭제하기")

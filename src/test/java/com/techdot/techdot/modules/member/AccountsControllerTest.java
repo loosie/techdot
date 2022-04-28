@@ -45,7 +45,7 @@ class AccountsControllerTest extends AbstractContainerBaseTest {
 	@Test
 	void accountsProfileUpdateForm_Success() throws Exception {
 		String bio = "소개를 수정하는 경우";
-		mockMvc.perform(post(REQUEST_URL + ACCOUNTS_MAIN_VIEW_URL)
+		mockMvc.perform(post(REQUEST_URL)
 			.param("curNickname", TEST_NICKNAME)
 			.param("newNickname", TEST_NICKNAME)
 			.param("bio", bio)
@@ -64,7 +64,7 @@ class AccountsControllerTest extends AbstractContainerBaseTest {
 	@Test
 	void accountsProfileUpdateForm_BioTextLengthIsOutOfRange_Error() throws Exception {
 		String bio = "소개를 수정하는 길이가 너무 긴 경우.소개를 수정하는 길이가 너무 긴 경우.소개를 수정하는 길이가 너무 긴 경우.소개를 수정하는 길이가 너무 긴 경우.";
-		mockMvc.perform(post(REQUEST_URL + ACCOUNTS_MAIN_VIEW_URL)
+		mockMvc.perform(post(REQUEST_URL)
 			.param("curNickname", TEST_NICKNAME)
 			.param("newNickname", TEST_NICKNAME)
 			.param("bio", bio)
@@ -91,7 +91,7 @@ class AccountsControllerTest extends AbstractContainerBaseTest {
 			.emailVerified(true)
 			.build());
 
-		mockMvc.perform(post(REQUEST_URL + ACCOUNTS_MAIN_VIEW_URL)
+		mockMvc.perform(post(REQUEST_URL)
 			.param("curNickname", "test")
 			.param("newNickname", TEST_NICKNAME)
 			.param("bio", "bio")

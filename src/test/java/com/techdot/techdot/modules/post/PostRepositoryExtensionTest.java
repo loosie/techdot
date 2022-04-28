@@ -68,9 +68,9 @@ class PostRepositoryExtensionTest extends AbstractContainerBaseTest {
 		postRepository.save(post);
 	}
 
-	@DisplayName("모든 게시글 가져오기")
+	@DisplayName("모든 게시글 Dto 조회하기 - 페이징 적용")
 	@Test
-	void findAll() {
+	void postFindAllDto_ApplyPagination_Success() {
 		// when
 		List<PostQueryResponseDto> result = postRepository.findAllDto(-1L, PageRequest.of(1, 12));
 		PostQueryResponseDto post = result.get(0);
@@ -82,9 +82,9 @@ class PostRepositoryExtensionTest extends AbstractContainerBaseTest {
 		assertEquals(post.getType(), PostType.BLOG);
 	}
 
-	@DisplayName("카테고리별로 게시글 가져오기")
+	@DisplayName("카테고리 Viewname에 속하는 모든 게시글 Dto 가져오기 - 페이징 적용")
 	@Test
-	void findAllByCategoryName_postHasCategory_returnCategoryAllPosts() {
+	void postFindAllByCategoryName_ApplyPagination_Success() {
 		// when
 		List<PostQueryResponseDto> result = postRepository.findAllDtoByKeyword(-1L, "title", PageRequest.of(1, 12));
 		PostQueryResponseDto post = result.get(0);
@@ -96,9 +96,9 @@ class PostRepositoryExtensionTest extends AbstractContainerBaseTest {
 		assertEquals(post.getType(), PostType.BLOG);
 	}
 
-	@DisplayName("멤버가 좋아요한 게시글 가져오기")
+	@DisplayName("회원이 좋아요 누른 모든 게시글 Dto 가져오기 - 페이징 적용")
 	@Test
-	void findAllByLikesMemberId_existsMemberAddLikePost_returnLikeAllPosts() {
+	void postFindAllByLikesMemberId_ApplyPagination_Success() {
 		//given
 		likeRepository.save(Like.builder().member(member).post(post).build());
 
@@ -114,9 +114,9 @@ class PostRepositoryExtensionTest extends AbstractContainerBaseTest {
 		assertEquals(post.getType(), PostType.BLOG);
 	}
 
-	@DisplayName("멤버의 관심 카테고리에 해당하는 게시글 가져오기")
+	@DisplayName("회원 관심 카테고리 목록에 해당하는 모든 게시글 Dto 가져오기 - 페이징 적용")
 	@Test
-	void findAllByInterestMemberId_existsMemberAddInterestCategory_returnInterestAllPosts() {
+	void postFindAllByInterestMemberId_ApplyPagination_Success() {
 		//given
 		interestRepository.save(Interest.builder().member(member).category(category).build());
 
@@ -132,9 +132,9 @@ class PostRepositoryExtensionTest extends AbstractContainerBaseTest {
 		assertEquals(post.getType(), PostType.BLOG);
 	}
 
-	@DisplayName("keyword로 게시글(title, content, writer) 검색하기  (member가 존재하지 않는 경우 좋아요 여부 false)")
+	@DisplayName("keyword를 포함하고 있는 모든 게시글 Dto 가져오기 - 페이징 적용, 검색 범위(title, content, writer, category.name, category.title, category.viewName)")
 	@Test
-	void findAllByKeyword_IfNotExistedMemberThenLikeIsFalse_returnKeywordAllPosts() {
+	void postFindAllByKeyword_ApplyPagination_Success() {
 		// when
 		List<PostQueryResponseDto> result = postRepository.findAllDtoByKeyword(-1L, "title", PageRequest.of(1, 12));
 		PostQueryResponseDto post = result.get(0);
@@ -146,9 +146,9 @@ class PostRepositoryExtensionTest extends AbstractContainerBaseTest {
 		assertEquals(post.getType(), PostType.BLOG);
 	}
 
-	@DisplayName("keyword로 게시글(title, content, writer) 조회하기 (member가 존재하고 게시글 좋아요 등록한 경우 좋아요 여부 true)")
+	@DisplayName("keyword를 포함하고 있는 모든 게시글 Dto 가져오기 - 위 조건과 동일, 멤버가 존재하는 경우 게시글 좋아요 여부 조회")
 	@Test
-	void findAllByKeyword_IfExistedMemberAndAddLikePostThenLikeIsTrue_returnKeywordAllPosts() {
+	void postFindAllByKeyword_ApplyPaginationAndIfMemberExistsThenGetBooleanMemberIsLike_Success() {
 		//given
 		likeRepository.save(Like.builder().member(member).post(post).build());
 

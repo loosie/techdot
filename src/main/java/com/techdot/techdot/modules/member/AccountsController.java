@@ -39,7 +39,6 @@ import lombok.extern.slf4j.Slf4j;
 public class AccountsController {
 
 	static final String ACCOUNTS_PROFILE_VIEW_NAME = "accounts/profile";
-	static final String ACCOUNTS_MAIN_VIEW_URL = ""; // default: profile
 
 	static final String ACCOUNTS_PASSWORD_VIEW_NAME = "accounts/password";
 	static final String ACCOUNTS_PASSWORD_VIEW_URL = "/change-password";
@@ -69,9 +68,9 @@ public class AccountsController {
 	}
 
 	/**
-	 * 개인정보설정 메인 뷰 (프로필)
+	 * 계정 프로필 설정 뷰 (메인 뷰)
 	 */
-	@GetMapping(ACCOUNTS_MAIN_VIEW_URL)
+	@GetMapping("")
 	public String profileSettingView(final Model model, @CurrentUser final Member member) {
 		model.addAttribute(member);
 		model.addAttribute("profileForm", new ProfileFormDto(member));
@@ -81,7 +80,7 @@ public class AccountsController {
 	/**
 	 * 계정 프로필 변경 요청
 	 */
-	@PostMapping(ACCOUNTS_MAIN_VIEW_URL)
+	@PostMapping("")
 	public String profileSettingForm(@Valid @ModelAttribute("profileForm") final ProfileFormDto profileForm,
 		Errors errors,
 		Model model, @CurrentUser final Member member, final RedirectAttributes redirectAttributes) {
