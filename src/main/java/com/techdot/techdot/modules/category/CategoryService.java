@@ -6,7 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.techdot.techdot.modules.category.dto.CategoryFormDto;
-import com.techdot.techdot.modules.main.CategoryCanNotDeleteException;
+import com.techdot.techdot.modules.main.exception.CategoryCanNotDeleteException;
+import com.techdot.techdot.modules.main.exception.CategoryNotExistedException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,12 +43,11 @@ public class CategoryService {
 
 	/**
 	 * viewName으로 카테고리 가져오기
-	 * @param viewName
 	 * @throws NullPointerException viewName에 해당하는 카테고리가 없을 경우 예외 발생
 	 */
 	public Category getByViewName(final String viewName) {
 		return categoryRepository.findByViewName(viewName)
-			.orElseThrow(() -> new NullPointerException(viewName + " 해당 카테고리는 존재하지 않습니다."));
+			.orElseThrow(() -> new CategoryNotExistedException(viewName));
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class CategoryService {
 	 */
 	public void update(final Long id, final CategoryFormDto categoryForm) {
 		Category category = categoryRepository.findById(id)
-			.orElseThrow(() -> new NullPointerException("해당 카테고리는 존재하지 않습니다."));
+			.orElseThrow(() -> new CategoryNotExistedException(categoryForm.getViewName()));
 		category.update(categoryForm);
 	}
 

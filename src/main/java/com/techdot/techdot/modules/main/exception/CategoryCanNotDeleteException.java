@@ -1,4 +1,4 @@
-package com.techdot.techdot.modules.main;
+package com.techdot.techdot.modules.main.exception;
 
 import lombok.Getter;
 

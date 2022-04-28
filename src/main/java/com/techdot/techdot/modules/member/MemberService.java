@@ -19,7 +19,7 @@ import org.thymeleaf.context.Context;
 import com.techdot.techdot.infra.config.AppProperties;
 import com.techdot.techdot.infra.mail.EmailMessageDto;
 import com.techdot.techdot.infra.mail.EmailService;
-import com.techdot.techdot.modules.main.UserNotExistedException;
+import com.techdot.techdot.modules.main.exception.UserNotExistedException;
 import com.techdot.techdot.modules.member.auth.PrincipalDetails;
 import com.techdot.techdot.modules.member.dao.AuthDao;
 import com.techdot.techdot.modules.member.dto.JoinFormDto;

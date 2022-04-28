@@ -60,7 +60,7 @@ class LikeServiceTest {
 		likeService = new LikeService(memberRepository, postRepository, likeRepository);
 	}
 
-	@DisplayName("좋아요 정보 저장하기")
+	@DisplayName("좋아요 정보 저장하기 성공")
 	@Test
 	void likeAdd_Success() {
 		// given
@@ -113,7 +113,7 @@ class LikeServiceTest {
 		then(likeRepository).should(times(0)).save(Like.builder().member(member).post(post).build());
 	}
 
-	@DisplayName("좋아요 정보 삭제하기")
+	@DisplayName("좋아요 정보 삭제하기 성공")
 	@Test
 	void likeRemove_Success() {
 		// given
@@ -148,7 +148,7 @@ class LikeServiceTest {
 		given(likeRepository.findByMemberAndPost(member, post)).willReturn(Optional.empty());
 
 		// when
-		Assertions.assertThrows(NullPointerException.class, () -> likeService.remove(1L, 1L));
+		Assertions.assertThrows(IllegalArgumentException.class, () -> likeService.remove(1L, 1L));
 		then(memberRepository).should(times(1)).getById(any());
 		then(postRepository).should(times(1)).findById(any());
 		then(likeRepository).should(times(1)).findByMemberAndPost(any(), any());

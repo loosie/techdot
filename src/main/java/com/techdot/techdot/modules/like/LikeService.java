@@ -46,7 +46,7 @@ public class LikeService {
 	 * 좋아요 삭제하기
 	 * @param memberId
 	 * @param postId
-	 * @throws NullPointerException 등록된 좋아요 정보가 없을 경우 예외 발생
+	 * @throws NullPointerException postId에 해당하는 게시글이 존재하지 않거나 (member, post)로 등록된 좋아요 정보가 없을 경우 예외 발생
 	 */
 	public void remove(final Long memberId, final Long postId) {
 		// 엔티티 조회
@@ -54,7 +54,7 @@ public class LikeService {
 		Post findPost = postRepository.findById(postId).orElseThrow(() -> new NullPointerException(postId + "는 존재하지 않는 게시글입니다."));
 
 		Like like = likeRepository.findByMemberAndPost(findMember, findPost).orElseThrow(() ->
-			new NullPointerException("좋아요 정보가 올바르지 않습니다. 다시 시도해주세요."));
+			new IllegalArgumentException("좋아요 정보가 올바르지 않습니다."));
 
 		likeRepository.delete(like);
 	}

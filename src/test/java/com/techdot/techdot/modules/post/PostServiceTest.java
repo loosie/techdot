@@ -65,6 +65,7 @@ class PostServiceTest {
 			.build();
 
 		given(memberRepository.findById(1L)).willReturn(Optional.of(member));
+		given(categoryRepository.findByViewName("java")).willReturn(Optional.of(category));
 		given(postRepository.save(post)).willReturn(post);
 
 		// when
@@ -72,6 +73,7 @@ class PostServiceTest {
 
 		// then
 		then(memberRepository).should(times(1)).findById(any());
+		then(categoryRepository).should(times(1)).findByViewName(any());
 		then(postRepository).should(times(1)).save(any());
 		assertEquals(save.getTitle(), "title1");
 	}
@@ -99,7 +101,7 @@ class PostServiceTest {
 			.build();
 
 		given(postRepository.findById(1L)).willReturn(Optional.of(post));
-		given(categoryRepository.getByViewName("java")).willReturn(category);
+		given(categoryRepository.findByViewName("java")).willReturn(Optional.of(category));
 		given(postRepository.save(post)).willReturn(post);
 
 		PostFormDto postFormDto = new PostFormDto();
@@ -111,7 +113,7 @@ class PostServiceTest {
 
 		// then
 		then(postRepository).should(times(1)).findById(any());
-		then(categoryRepository).should(times(1)).getByViewName(any());
+		then(categoryRepository).should(times(1)).findByViewName(any());
 		then(postRepository).should(times(1)).save(any());
 		assertEquals(post.getTitle(), "changeTitle");
 	}

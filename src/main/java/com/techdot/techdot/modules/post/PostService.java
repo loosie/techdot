@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.techdot.techdot.modules.category.Category;
 import com.techdot.techdot.modules.category.CategoryRepository;
+import com.techdot.techdot.modules.main.exception.CategoryNotExistedException;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.member.MemberRepository;
 import com.techdot.techdot.modules.post.dto.MyUploadPostResponseDto;
@@ -37,7 +38,8 @@ public class PostService {
 	public Post save(final PostFormDto postForm, final Long memberId) {
 		// 엔티티 조회
 		Member manager = memberRepository.findById(memberId).get(); // 이미 인증된 객체
-		Category category = categoryRepository.getByViewName(postForm.getCategoryName());
+		Category category = categoryRepository.findByViewName(postForm.getCategoryName())
+			.orElseThrow(() -> new CategoryNotExistedException(postForm.getCategoryName()));
 
 		// 게시글 생성
 		Post newPost = Post.builder()
@@ -51,7 +53,6 @@ public class PostService {
 			.uploadDateTime(postForm.getUploadDateTime())
 			.build();
 
-		// 게시글 저장
 		return postRepository.save(newPost);
 	}
 
@@ -61,7 +62,8 @@ public class PostService {
 	 */
 	public void update(final Long postId, final PostFormDto postForm) {
 		Post post = postRepository.findById(postId).orElseThrow(() -> new NullPointerException(postId + "는 존재하지 않는 게시글 입니다."));
-		Category category = categoryRepository.getByViewName(postForm.getCategoryName());
+		Category category = categoryRepository.findByViewName(postForm.getCategoryName())
+			.orElseThrow(() -> new CategoryNotExistedException(postForm.getCategoryName()));
 
 		post.update(postForm, category);
 

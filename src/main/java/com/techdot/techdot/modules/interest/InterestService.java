@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.sun.jdi.request.DuplicateRequestException;
 import com.techdot.techdot.modules.category.Category;
+import com.techdot.techdot.modules.main.exception.CategoryNotExistedException;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.interest.dto.InterestCategoryResponseDto;
 import com.techdot.techdot.modules.category.CategoryRepository;
@@ -31,7 +32,8 @@ public class InterestService {
 	public void add(final Long memberId, final String categoryViewName) {
 		// 엔티티 조회
 		Member findMember = memberRepository.getById(memberId);
-		Category findCategory = categoryRepository.getByViewName(categoryViewName);
+		Category findCategory = categoryRepository.findByViewName(categoryViewName)
+			.orElseThrow(() -> new CategoryNotExistedException(categoryViewName));
 
 		if(interestRepository.findByMemberAndCategory(findMember, findCategory).isPresent()){
 			throw new DuplicateRequestException("이미 등록된 관심 카테고리입니다.");
@@ -55,10 +57,11 @@ public class InterestService {
 	public void remove(final Long memberId, final String categoryViewName) {
 		// 엔티티 조회
 		Member findMember = memberRepository.getById(memberId);
-		Category findCategory = categoryRepository.getByViewName(categoryViewName);
+		Category findCategory = categoryRepository.findByViewName(categoryViewName)
+			.orElseThrow(() -> new CategoryNotExistedException(categoryViewName));
 
 		Interest interest = interestRepository.findByMemberAndCategory(findMember, findCategory)
-			.orElseThrow(() -> new NullPointerException("등록된 관심 카테고리가 아닙니다."));
+			.orElseThrow(() -> new IllegalArgumentException("등록된 관심 카테고리가 아닙니다."));
 
 		interestRepository.delete(interest);
 	}

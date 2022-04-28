@@ -1,4 +1,4 @@
-package com.techdot.techdot.modules.main;
+package com.techdot.techdot.modules.main.exception;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
 		return "error/400";
 	}
 
-	@ExceptionHandler(NullPointerException.class)
+	@ExceptionHandler({NullPointerException.class, CategoryNotExistedException.class})
 	public String handleNullPointerException(NullPointerException ex, HttpServletRequest req) {
 		log.error("data not existed - {}", ex.getMessage());
 		req.setAttribute("message", ex.getMessage());

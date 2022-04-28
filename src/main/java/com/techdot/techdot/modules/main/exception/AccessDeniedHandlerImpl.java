@@ -1,4 +1,4 @@
-package com.techdot.techdot.modules.main;
+package com.techdot.techdot.modules.main.exception;
 
 import java.io.IOException;
 
@@ -14,6 +14,10 @@ import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Spring Security 접근 권한 거부 핸들러 커스텀
+ * - 만약 유저가 권한이 없는 경로로 접근하면 403 에러 뷰로 이동
+ */
 @Component
 @Slf4j
 public class AccessDeniedHandlerImpl implements AccessDeniedHandler {

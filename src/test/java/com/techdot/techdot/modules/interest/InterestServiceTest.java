@@ -7,6 +7,7 @@ import static org.mockito.BDDMockito.*;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.techdot.techdot.modules.category.Category;
 import com.techdot.techdot.modules.category.CategoryRepository;
 import com.techdot.techdot.modules.interest.dto.InterestCategoryResponseDto;
+import com.techdot.techdot.modules.like.Like;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.member.MemberRepository;
 
@@ -53,12 +55,12 @@ class InterestServiceTest {
 		interestService = new InterestService(memberRepository, categoryRepository, interestRepository);
 	}
 
-	@DisplayName("관심 목록 저장하기")
+	@DisplayName("관심 목록 저장하기 성공")
 	@Test
 	void interestAdd_Success() {
 		// given
 		given(memberRepository.getById(1L)).willReturn(member);
-		given(categoryRepository.getByViewName("java")).willReturn(category);
+		given(categoryRepository.findByViewName("java")).willReturn(Optional.of(category));
 		given(interestRepository.findByMemberAndCategory(member, category)).willReturn(Optional.empty());
 
 		// when
@@ -66,18 +68,18 @@ class InterestServiceTest {
 
 		// then
 		then(memberRepository).should(times(1)).getById(any());
-		then(categoryRepository).should(times(1)).getByViewName(any());
+		then(categoryRepository).should(times(1)).findByViewName(any());
 		then(interestRepository).should(times(1)).findByMemberAndCategory(any(), any());
 		then(interestRepository).should(times(1)).save(Interest.builder().member(member).category(category).build());
 	}
 
-	@DisplayName("관심 목록 삭제하기")
+	@DisplayName("관심 목록 삭제하기 성공")
 	@Test
 	void interestRemove_Success() {
 		// given
 		Interest interest = Interest.builder().member(member).category(category).build();
 		given(memberRepository.getById(1L)).willReturn(member);
-		given(categoryRepository.getByViewName("java")).willReturn(category);
+		given(categoryRepository.findByViewName("java")).willReturn(Optional.of(category));
 		given(interestRepository.findByMemberAndCategory(member, category)).willReturn(Optional.of(interest));
 
 		// when
@@ -85,9 +87,29 @@ class InterestServiceTest {
 
 		// then
 		then(memberRepository).should(times(1)).getById(any());
-		then(categoryRepository).should(times(1)).getByViewName(any());
+		then(categoryRepository).should(times(1)).findByViewName(any());
 		then(interestRepository).should(times(1)).findByMemberAndCategory(any(), any());
 		then(interestRepository).should(times(1)).delete(interest);
+	}
+
+	@DisplayName("관심 목록 삭제하기 실패 - 등록된 관심 목록 정보가 없을 경우")
+	@Test
+	void interestRemove_LikeIsNotExist_ExceptionThrown() {
+		// given
+		Interest interest = Interest.builder().member(member).category(category).build();
+		given(memberRepository.getById(1L)).willReturn(member);
+		given(categoryRepository.findByViewName("java")).willReturn(Optional.of(category));
+		given(interestRepository.findByMemberAndCategory(member, category)).willReturn(Optional.empty());
+
+		// when
+		Assertions.assertThrows(IllegalArgumentException.class, () ->interestService.remove(1L, "java"));
+
+		// then
+		then(memberRepository).should(times(1)).getById(any());
+		then(categoryRepository).should(times(1)).findByViewName(any());
+		then(interestRepository).should(times(1)).findByMemberAndCategory(any(), any());
+		then(interestRepository).should(times(0)).delete(interest);
+
 	}
 
 	@DisplayName("멤버 ID로 멤버 관심 카테고리 목록 가져오기")

@@ -14,7 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.techdot.techdot.modules.category.dto.CategoryFormDto;
-import com.techdot.techdot.modules.main.CategoryCanNotDeleteException;
+import com.techdot.techdot.modules.main.exception.CategoryCanNotDeleteException;
 
 @ExtendWith(MockitoExtension.class)
 class CategoryServiceTest {

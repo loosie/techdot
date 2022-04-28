@@ -85,7 +85,7 @@ class MemberServiceTest {
 		assertTrue(member.getRoles().contains(Role.ROLE_MEMBER));
 	}
 
-	@DisplayName("회원 정보 변경하기 - Nickname, Bio, ProfileImage")
+	@DisplayName("회원 정보 변경하기 성공 - Nickname, Bio, ProfileImage")
 	@Test
 	void memberUpdateProfile_ChangeNicknameAndBioAndProfileImage_Success(){
 		// given
@@ -110,7 +110,7 @@ class MemberServiceTest {
 		assertEquals(member.getBio(), "bio");
 	}
 
-	@DisplayName("회원 비밀번호 수정하기")
+	@DisplayName("회원 비밀번호 수정하기 성공")
 	@Test
 	void memberUpdatePassword_Success(){
 		// given
@@ -133,7 +133,7 @@ class MemberServiceTest {
 		assertEquals(member.getPassword(), "encodePassword");
 	}
 
-	@DisplayName("회원 탈퇴하기")
+	@DisplayName("회원 탈퇴하기 성공")
 	@Test
 	void memberWithdrawal_Success(){
 		// given

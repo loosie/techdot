@@ -17,10 +17,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -117,7 +114,7 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 		assertTrue(newMember.getEmailVerified());
 	}
 
-	@DisplayName("이메일 인증 확인 링크 요청 실패 - 올바르지 않은 토큰")
+	@DisplayName("이메일 인증 확인 링크 요청 실패 - 올바르지 않은 토큰값 오류")
 	@Test
 	void memberConfirmEmailLink_TokenIsWrongValue_Error() throws Exception {
 		// given
