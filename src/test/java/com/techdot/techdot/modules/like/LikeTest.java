@@ -14,7 +14,7 @@ import com.techdot.techdot.modules.post.PostType;
 
 class LikeTest {
 
-	@DisplayName("좋아요 생성 실패 - 입력 값 null인 경우")
+	@DisplayName("좋아요 생성 오유 - 입력 값 null인 경우")
 	@Test
 	void likeCreate_InsertValueIsNull_ExceptionThrown(){
 		// given
