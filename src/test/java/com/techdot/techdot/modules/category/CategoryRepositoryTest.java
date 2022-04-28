@@ -25,10 +25,10 @@ class CategoryRepositoryTest extends AbstractContainerBaseTest {
 			.build();
 
 		// when
-		categoryRepository.save(category);
+		Category save = categoryRepository.save(category);
 
 		// then
-		assertEquals(category.getTitle(), "JAVA");
+		assertEquals(save.getTitle(), "JAVA");
 	}
 
 	@DisplayName("카테고리 viewName으로 조회하기")

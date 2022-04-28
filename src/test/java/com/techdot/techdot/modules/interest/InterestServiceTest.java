@@ -53,7 +53,7 @@ class InterestServiceTest {
 		interestService = new InterestService(memberRepository, categoryRepository, interestRepository);
 	}
 
-	@DisplayName("관심 카테고리 추가하기")
+	@DisplayName("관심 목록 저장하기")
 	@Test
 	void interestAdd_Success() {
 		// given
@@ -71,7 +71,7 @@ class InterestServiceTest {
 		then(interestRepository).should(times(1)).save(Interest.builder().member(member).category(category).build());
 	}
 
-	@DisplayName("관심 카테고리 삭제하기")
+	@DisplayName("관심 목록 삭제하기")
 	@Test
 	void interestRemove_Success() {
 		// given
