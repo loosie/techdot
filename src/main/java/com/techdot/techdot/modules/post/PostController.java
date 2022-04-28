@@ -149,7 +149,7 @@ public class PostController {
 	 * 카테고리별 게시글 조회 API (로그인된 멤버일 경우, 멤버가 좋아요 누른 게시글인지 내부 쿼리로 조회)
 	 * 쿼리 발생 횟수 : 1 - PostQueryResponseDto 조회 쿼리
 	 */
-	@GetMapping("/posts/{categoryViewName}")
+	@GetMapping("/api/posts/{categoryViewName}")
 	public ResponseEntity<List<PostQueryResponseDto>> getPostsByCategory_scrolling(
 		@PathVariable final String categoryViewName,
 		@PageableDefault(page = 0, size = 12, sort = "uploadDateTime", direction = Sort.Direction.DESC) final Pageable pageable,
@@ -163,7 +163,7 @@ public class PostController {
 	 * 멤버가 좋아요 누른 게시글 조회 API
 	 * 쿼리 발생 횟수 : 1 - PostQueryResponseDto 조회 쿼리
 	 */
-	@GetMapping("/posts/me/likes")
+	@GetMapping("/api/posts/me/likes")
 	public ResponseEntity<List<PostQueryResponseDto>> getPostsByMemberLikes_scrolling(
 		@PageableDefault(page = 0, size = 12, sort = "uploadDateTime", direction = Sort.Direction.DESC) Pageable pageable,
 		@CurrentUser Member member) {
@@ -174,7 +174,7 @@ public class PostController {
 	 * 멤버 관심 카테고리에 속한 게시글 조회 API
 	 * 쿼리 발생 횟수 : 1 - PostQueryResponseDto 조회 쿼리
 	 */
-	@GetMapping("/posts/me/interests")
+	@GetMapping("/api/posts/me/interests")
 	public ResponseEntity<List<PostQueryResponseDto>> getPostsByMemberInterests_scrolling(
 		@PageableDefault(page = 0, size = 12, sort = "uploadDateTime", direction = Sort.Direction.DESC) final Pageable pageable,
 		@CurrentUser final Member member) {
@@ -185,7 +185,7 @@ public class PostController {
 	 * keyword 검색 API
 	 * 쿼리 발생 횟수 : 1 - PostQueryResponseDto 조회 쿼리
 	 */
-	@GetMapping("/search/{keyword}")
+	@GetMapping("/api/search/{keyword}")
 	public ResponseEntity<List<PostQueryResponseDto>> searchPostsByKeyword_scrolling(
 		@PathVariable String keyword, @CurrentUser final Member member,
 		@PageableDefault(page = 0, size = 12, sort = "uploadDateTime", direction = Sort.Direction.DESC) final Pageable pageable) {

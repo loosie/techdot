@@ -33,13 +33,13 @@
 
 <footer th:replace="fragments/footer.html :: footer"></footer>
 <div type="text/javascript" th:inline="javascript"
-     th:replace="fragments/post-factory.html :: post-factory(requestUrl = '/posts/', viewName = ${categoryMenuName})"></div>
+     th:replace="fragments/post-factory.html :: post-factory(requestUrl = '/api/posts/', viewName = ${categoryMenuName})"></div>
 <script type="application/javascript" th:inline="javascript">
     $(function () {
         const interestButton = $(".custom-control-input");
         function getMemberCategories() {
             $.ajax({
-                url: "/interests/me/list",
+                url: "/api/interests/me/list",
                 type: "GET"
             }).done(function (data, status) {
                 for (var i = 0; i < data.length; i++) {
@@ -67,7 +67,7 @@
 
         function interestRequest(action, e, interestSwitch) {
             $.ajax({
-                url: "/interest/" + action,
+                url: "/api/interest/" + action,
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify({

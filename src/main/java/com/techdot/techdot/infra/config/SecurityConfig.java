@@ -31,10 +31,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 			.mvcMatchers("/join", "/login").not().fullyAuthenticated()
 			.mvcMatchers("/", "/check-email",  "/email-login", "/login-by-email", "/confirm-email", "/resend-confirm-email/**", "/error/**",
-				"/posts/**", "/category/**",  "/search", "/search/**", "/app/profile").permitAll()
+				"/api/posts/**", "/category/**",  "/search", "/api/search/**", "/app/profile").permitAll()
 			.mvcMatchers("/me/**", "/accounts", "/accounts/change-password", "/accounts/settings", "/accounts/withdrawal").access("hasRole('ROLE_USER') or hasRole('ROLE_MEMBER') or hasRole('ROLE_ADMIN')")
-			.mvcMatchers("/interest/**", "/like/**").access("hasRole('ROLE_MEMBER') or hasRole('ROLE_ADMIN')")
-			.mvcMatchers("/new-post", "/post/**", "/accounts/my-upload", "/accounts/settings/category", "/api/**").access("hasRole('ROLE_ADMIN')")
+			.mvcMatchers("/api/interest/**", "/api/like/**").access("hasRole('ROLE_MEMBER') or hasRole('ROLE_ADMIN')")
+			.mvcMatchers("/new-post", "/post/**", "/accounts/my-upload", "/accounts/settings/category", "/api/post/**").access("hasRole('ROLE_ADMIN')")
 			.anyRequest().authenticated();
 
 		http.formLogin()

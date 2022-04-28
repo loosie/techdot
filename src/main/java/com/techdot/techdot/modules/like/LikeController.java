@@ -22,7 +22,7 @@ public class LikeController {
 	 * 조회 쿼리 발생 횟수 : 3
 	 * 멤버 조회 + 게시글 조회 + 좋아요 등록
 	 */
-	@PostMapping("/like/add")
+	@PostMapping("/api/like/add")
 	public ResponseEntity likeAdd(@CurrentUser final Member member, @RequestBody final LikeFormDto likeForm) {
 		likeService.add(member.getId(), likeForm.getPostId());
 		return ResponseEntity.ok().build();
@@ -33,7 +33,7 @@ public class LikeController {
 	 * 조회 쿼리 발생 횟수 : 3
 	 * 멤버 조회 + 게시글 조회 + 좋아요 삭제 
 	 */
-	@PostMapping("/like/remove")
+	@PostMapping("/api/like/remove")
 	public ResponseEntity likeRemove(@CurrentUser final Member member, @RequestBody final LikeFormDto likeForm) {
 		likeService.remove(member.getId(), likeForm.getPostId());
 		return ResponseEntity.ok().build();
