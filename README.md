@@ -1,4 +1,4 @@
-# TechDot (alpha v0.0.5)
+# TechDot (alpha v0.0.6)
 
 <p align="center"><img width="384" alt="스크린샷 2022-04-27 오후 5 41 46" src="https://user-images.githubusercontent.com/54282927/165478492-ffe7103f-67fd-42c0-8924-4290b62e67f4.png"></p>
 

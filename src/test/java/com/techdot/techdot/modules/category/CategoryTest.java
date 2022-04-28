@@ -23,7 +23,7 @@ class CategoryTest {
 			() -> Category.builder().viewName("java").title("자바").name(null).build());
 	}
 
-	@DisplayName("카테고리 정보 업데이트하기 ")
+	@DisplayName("카테고리 정보 업데이트하기")
 	@Test
 	void categoryUpdate_Success() {
 		// given
