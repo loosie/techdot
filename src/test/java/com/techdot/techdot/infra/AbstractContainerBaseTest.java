@@ -1,5 +1,7 @@
 package com.techdot.techdot.infra;
 
+import static com.techdot.techdot.infra.Constant.*;
+
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.GenericContainer;
@@ -7,8 +9,6 @@ import org.testcontainers.containers.MySQLContainer;
 
 
 public abstract class AbstractContainerBaseTest {
-	static final String MYSQL_IMAGE = "mysql:8";
-	static final String REDIS_IMAGE = "redis:6-alpine";
 	static final GenericContainer MYSQL_CONTAINER;
 	static final GenericContainer REDIS_CONTAINER;
 

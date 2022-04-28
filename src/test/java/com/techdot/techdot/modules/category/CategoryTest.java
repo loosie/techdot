@@ -8,6 +8,8 @@ import java.util.regex.Pattern;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import com.techdot.techdot.modules.category.dto.CategoryFormDto;
+
 class CategoryTest {
 
 	@DisplayName("카테고리 생성 오류 - 입력 값이 null인 경우")
@@ -19,6 +21,25 @@ class CategoryTest {
 			() -> Category.builder().viewName("java").title(null).name("Java").build());
 		assertThrows(IllegalArgumentException.class,
 			() -> Category.builder().viewName("java").title("자바").name(null).build());
+	}
+
+	@DisplayName("카테고리 정보 업데이트하기 ")
+	@Test
+	void categoryUpdate_Success() {
+		// given
+		Category category = Category.builder()
+			.viewName("java").title("자바").name("Java").build();
+
+		Category updateCategory = Category.builder()
+			.viewName("java2").title("자바2").name("Java2").build();
+
+		// when
+		category.update(new CategoryFormDto(updateCategory));
+
+		// then
+		assertEquals(category.getViewName(), "java2");
+		assertEquals(category.getTitle(), "자바2");
+		assertEquals(category.getName(), "Java2");
 	}
 
 	@DisplayName("카테고리 viewName 정규식 테스트")

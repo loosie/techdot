@@ -35,7 +35,7 @@ class CategoryControllerTest extends AbstractContainerBaseTest {
 
 	@DisplayName("카테고리 별로 뷰")
 	@Test
-	void categoryView_Success() throws Exception {
+	void categoryView_PathVariableIsViewName_Success() throws Exception {
 		Category category = categoryService.getByViewName("java");
 
 		mockMvc.perform(get("/category/" + category.getViewName()))
@@ -61,7 +61,7 @@ class CategoryControllerTest extends AbstractContainerBaseTest {
 	}
 
 	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
-	@DisplayName("카테고리 생성 성공")
+	@DisplayName("카테고리 생성 폼 요청 성공")
 	@Test
 	void categoryCreateForm_Success() throws Exception {
 		mockMvc.perform(post("/new-category")
@@ -75,9 +75,9 @@ class CategoryControllerTest extends AbstractContainerBaseTest {
 	}
 
 	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
-	@DisplayName("카테고리 생성 실패 - viewName 입력값 오류")
+	@DisplayName("카테고리 생성 폼 요청 실패 - viewName 입력값 오류")
 	@Test
-	void categoryCreate_ViewNameIsNotValidType_Error() throws Exception {
+	void categoryCreateForm_ViewNameIsNotValidType_Error() throws Exception {
 		mockMvc.perform(post("/new-category")
 			.param("name", "nav 이름")
 			.param("title", "메인 타이틀")
@@ -90,7 +90,7 @@ class CategoryControllerTest extends AbstractContainerBaseTest {
 	}
 
 	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
-	@DisplayName("카테고리 수정하기 성공")
+	@DisplayName("카테고리 수정하기 폼 요청 성공")
 	@Test
 	void categoryUpdateForm_Success() throws Exception {
 		// given
@@ -117,9 +117,9 @@ class CategoryControllerTest extends AbstractContainerBaseTest {
 	}
 
 	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
-	@DisplayName("카테고리 수정하기 실패 - 데이터 중복")
+	@DisplayName("카테고리 수정하기 폼 요청 실패 - 데이터 중복")
 	@Test
-	void categoryUpdate_ViewNameIsDuplicatedData_Error() throws Exception {
+	void categoryUpdateForm_ViewNameIsDuplicatedData_Error() throws Exception {
 		// given
 		categoryRepository.save(Category.builder()
 			.viewName("backend")

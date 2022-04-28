@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.techdot.techdot.modules.category.dto.CategoryFormDto;
 import com.techdot.techdot.modules.main.CategoryCanNotDeleteException;
 
 @ExtendWith(MockitoExtension.class)
@@ -25,9 +26,25 @@ class CategoryServiceTest {
 		categoryService = new CategoryService(categoryRepository);
 	}
 
+	@DisplayName("카테고리 저장하기")
+	@Test
+	void categorySave_Success(){
+		// given
+		Category category = Category.builder()
+			.viewName("java").title("자바").name("Java").build();
+		CategoryFormDto categoryFormDto = new CategoryFormDto(category);
+		given(categoryRepository.save(category)).willReturn(category);
+
+		// when
+		categoryService.save(categoryFormDto);
+
+		// then
+		then(categoryRepository).should(times(1)).save(any());
+	}
+
 	@DisplayName("카테고리 id로 삭제하기")
 	@Test
-	void removeCategoryById_Success(){
+	void categoryRemove_Success(){
 		// given
 		given(categoryRepository.findPostsByCategoryId(1L)).willReturn(List.of());
 
@@ -36,12 +53,11 @@ class CategoryServiceTest {
 
 		// then
 		then(categoryRepository).should(times(1)).findPostsByCategoryId(any());
-		assertTrue(categoryRepository.findById(1L).isEmpty());
 	}
 
 	@DisplayName("카테고리 id로 삭제하기 실패 - 해당 카테고리에 게시글이 존재할 경우")
 	@Test
-	void removeCategoryById_CategoryPostsIsExisted_ExceptionThrown(){
+	void categoryRemove_IfPostIsExistedInCategory_ExceptionThrown(){
 		// given
 		given(categoryRepository.findPostsByCategoryId(1L)).willReturn(List.of(1L));
 

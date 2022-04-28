@@ -1,4 +1,4 @@
-package com.techdot.techdot.infra;
+package com.techdot.techdot.infra.mail;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

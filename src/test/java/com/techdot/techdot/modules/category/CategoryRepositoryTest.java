@@ -33,7 +33,7 @@ class CategoryRepositoryTest extends AbstractContainerBaseTest {
 
 	@DisplayName("카테고리 viewName으로 조회하기")
 	@Test
-	void categoryFindViewName_Success() {
+	void categoryGetOrFindByViewName_Success() {
 		// given
 		Category category = Category.builder()
 			.viewName("java")
@@ -43,28 +43,30 @@ class CategoryRepositoryTest extends AbstractContainerBaseTest {
 		categoryRepository.save(category);
 
 		// when
-		Category findCategory = categoryRepository.getByViewName("java");
+		Category getCategory = categoryRepository.getByViewName("java");
+		Category findCategory = categoryRepository.findByViewName("java").get();
 
 		// then
-		assertEquals(findCategory.getViewName(), "java");
-		assertEquals(findCategory.getTitle(), "JAVA");
-		assertEquals(findCategory.getName(), "자바");
+		assertEquals(getCategory.getViewName(), "java");
+		assertEquals(getCategory.getTitle(), "JAVA");
+		assertEquals(getCategory.getName(), "자바");
+		assertEquals(findCategory.getViewName(), getCategory.getViewName());
+		assertEquals(findCategory.getTitle(), getCategory.getTitle());
+		assertEquals(findCategory.getName(), getCategory.getName());
 	}
 
 	@DisplayName("카테고리 존재여부 확인하기 (Name, Title, ViewName)")
 	@Test
-	void categoryCheckIsExisted_Success() {
+	void categoryExistsByNameOrTitleOrViewName_Success() {
 		// given
 		Category category = Category.builder()
 			.viewName("java")
 			.title("JAVA")
 			.name("자바")
 			.build();
-
-		// when
 		categoryRepository.save(category);
 
-		// then
+		// when, then
 		assertTrue(categoryRepository.existsByName("자바"));
 		assertTrue(categoryRepository.existsByTitle("JAVA"));
 		assertTrue(categoryRepository.existsByViewName("java"));
