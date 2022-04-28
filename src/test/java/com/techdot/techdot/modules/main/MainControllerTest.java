@@ -63,9 +63,9 @@ class MainControllerTest extends AbstractContainerBaseTest {
 			.andExpect(authenticated().withUsername("test@naver.com"));
 	}
 
-	@DisplayName("로그인 요청 실패 - 가입되지 않은 이메일일 경우")
+	@DisplayName("로그인 요청 실패 - 가입되지 않은 이메일인 경우")
 	@Test
-	void userLoginForm_IfUserEmailNotExist_RedirectErrorPage() throws Exception {
+	void userLoginForm_UserEmailNotExist_RedirectErrorPage() throws Exception {
 		mockMvc.perform(post("/login")
 			.param("username", "1111@naver.com")
 			.param("password", "12345678")

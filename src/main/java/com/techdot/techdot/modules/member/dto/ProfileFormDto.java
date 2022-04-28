@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Length;
 
 import com.techdot.techdot.modules.member.Member;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

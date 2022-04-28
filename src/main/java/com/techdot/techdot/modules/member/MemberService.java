@@ -63,7 +63,7 @@ public class MemberService {
 	 *
 	 */
 	public void sendConfirmEmail(final Member newMember) {
-		String token = authDao.saveAndGetAuthToken(newMember.getId(), generateToken(), EMAIL);;
+		String token = authDao.saveAndGetAuthToken(newMember.getId(), generateToken(), EMAIL);
 		if(token == null || token.isEmpty()){
 			throw new NullPointerException("올바르지 않은 토큰 값입니다.");
 		}

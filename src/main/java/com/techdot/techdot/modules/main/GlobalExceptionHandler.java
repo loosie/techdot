@@ -4,8 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.multipart.MultipartException;
-import org.springframework.web.server.MethodNotAllowedException;
 
 import com.sun.jdi.request.DuplicateRequestException;
 import com.techdot.techdot.modules.member.Member;
@@ -20,6 +18,20 @@ public class GlobalExceptionHandler {
 	// 400 : BAD REQUEST
 	// 404 : NOT FOUND
 	// 500 : INTERNAL SERVER ERROR
+
+	@ExceptionHandler(DuplicateRequestException.class)
+	public String handleDuplicateRequestException(DuplicateRequestException ex, HttpServletRequest req) {
+		log.error("duplicated request - {}", ex.getMessage());
+		req.setAttribute("message", ex.getMessage());
+		return "error/400";
+	}
+
+	@ExceptionHandler(CategoryCanNotDeleteException.class)
+	public String handleCategoryCanNotDeleteException(CategoryCanNotDeleteException ex, HttpServletRequest req) {
+		log.error("category can not deleted - {}", ex.getMessage());
+		req.setAttribute("message", ex.getMessage());
+		return "error/400";
+	}
 
 	@ExceptionHandler(NullPointerException.class)
 	public String handleNullPointerException(NullPointerException ex, HttpServletRequest req) {
@@ -41,20 +53,6 @@ public class GlobalExceptionHandler {
 		log.error("user not existed - {}", ex.getMessage());
 		req.setAttribute("message", ex.getMessage());
 		return ex.getViewName();
-	}
-
-	@ExceptionHandler(DuplicateRequestException.class)
-	public String handleDuplicateRequestException(DuplicateRequestException ex, HttpServletRequest req) {
-		log.error("duplicated request - {}", ex.getMessage());
-		req.setAttribute("message", ex.getMessage());
-		return "error/400";
-	}
-
-	@ExceptionHandler(CategoryCanNotDeleteException.class)
-	public String handleCategoryCanNotDeleteException(CategoryCanNotDeleteException ex, HttpServletRequest req) {
-		log.error("category can not deleted - {}", ex.getMessage());
-		req.setAttribute("message", ex.getMessage());
-		return "error/400";
 	}
 
 	@ExceptionHandler

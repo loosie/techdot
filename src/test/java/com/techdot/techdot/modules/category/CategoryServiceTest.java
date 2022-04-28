@@ -57,7 +57,7 @@ class CategoryServiceTest {
 
 	@DisplayName("카테고리 id로 삭제하기 실패 - 해당 카테고리에 게시글이 존재할 경우")
 	@Test
-	void categoryRemove_IfPostIsExistedInCategory_ExceptionThrown(){
+	void categoryRemove_PostIsExistedInCategory_ExceptionThrown(){
 		// given
 		given(categoryRepository.findPostsByCategoryId(1L)).willReturn(List.of(1L));
 

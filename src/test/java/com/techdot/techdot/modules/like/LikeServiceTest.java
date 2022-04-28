@@ -80,7 +80,7 @@ class LikeServiceTest {
 
 	@DisplayName("좋아요 정보 저장하기 실패 - post 정보가 null인 경우")
 	@Test
-	void likeAdd_IfPostIsNull_ExceptionThrown() {
+	void likeAdd_PostIsNull_ExceptionThrown() {
 		// given
 		given(memberRepository.getById(1L)).willReturn(member);
 		given(postRepository.findById(1L)).willThrow(NullPointerException.class);
@@ -95,7 +95,7 @@ class LikeServiceTest {
 
 	@DisplayName("좋아요 정보 저장하기 실패 - 이미 좋아요 누른 게시글일 경우")
 	@Test
-	void likeAdd_IfMemberAlreadyLikedAPost_ExceptionThrown() {
+	void likeAdd_MemberAlreadyLikedAPost_ExceptionThrown() {
 		// given
 		Like like = Like.builder()
 			.member(member)
@@ -137,7 +137,7 @@ class LikeServiceTest {
 
 	@DisplayName("좋아요 정보 삭제하기 실패 - 등록된 좋아요 정보가 없을 경우")
 	@Test
-	void likeRemove_IfLikeNotExist_ExceptionThrown() {
+	void likeRemove_LikeIsNotExist_ExceptionThrown() {
 		// given
 		Like like = Like.builder()
 			.member(member)

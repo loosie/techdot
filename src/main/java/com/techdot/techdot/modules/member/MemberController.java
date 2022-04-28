@@ -64,7 +64,7 @@ public class MemberController {
 	 * 이메일 인증 확인 링크
 	 */
 	@GetMapping("/confirm-email")
-	public String emailConfirm(final String token, final String email, Model model) {
+	public String confirmEmailLink(final String token, final String email, Model model) {
 		String view = "member/confirm-email";
 		Member member = memberService.getByEmail(email, view);
 
