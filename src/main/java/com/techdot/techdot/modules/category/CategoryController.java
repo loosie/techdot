@@ -96,6 +96,7 @@ public class CategoryController {
 
 		model.addAttribute(member);
 		model.addAttribute("categoryId", id);
+		model.addAttribute("categoryList", categoryService.getAll());
 		model.addAttribute("categoryForm", new CategoryFormDto(category));
 		return "category/updateForm";
 	}

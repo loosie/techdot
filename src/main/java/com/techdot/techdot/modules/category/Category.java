@@ -66,5 +66,10 @@ public class Category {
 		this.viewName = categoryForm.getViewName();
 		this.name = categoryForm.getName();
 		this.title = categoryForm.getTitle();
+		this.displayOrder = categoryForm.getDisplayOrder();
+	}
+
+	public void updateCategoryOrder(int displayOrder) {
+		this.displayOrder = displayOrder;
 	}
 }

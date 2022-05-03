@@ -62,6 +62,15 @@ public class CategoryService {
 	 * @throws NullPointerException id에 해당하는 카테고리가 없을 경우 예외 발생
 	 */
 	public void update(final Long id, final CategoryFormDto categoryForm) {
+		// 카테고리 displayOrder 변경한 경우 변경하는 번호에 해당하는 카테고리 displayOrder도 변경
+		final int beforeDisplayOrder = categoryForm.getCurDisplayOrder();
+		final int changeDisplayOrder = categoryForm.getDisplayOrder();
+		if (categoryForm.getCurDisplayOrder() != changeDisplayOrder) {
+			Category category = categoryRepository.findByDisplayOrder(changeDisplayOrder)
+				.orElseThrow(() -> new CategoryNotExistedException("displayOrder: " + changeDisplayOrder));
+			category.updateCategoryOrder(beforeDisplayOrder);
+		}
+
 		Category category = categoryRepository.findById(id)
 			.orElseThrow(() -> new CategoryNotExistedException(categoryForm.getViewName()));
 		category.update(categoryForm);
