@@ -28,9 +28,10 @@
                 <thead>
                 <tr>
                     <th scope="col-1">#</th>
-                    <th scope="col-2">카테고리 이름</th>
-                    <th scope="col-2">카테고리 타이틀</th>
-                    <th scope="col-2">카테고리 view</th>
+                    <th scope="col-2">네비게이션 이름</th>
+                    <th scope="col-2">메인 타이틀</th>
+                    <th scope="col-2">url 이름</th>
+                    <th scope="col-2">순서</th>
                     <th scope="col-1">수정</th>
                 </tr>
                 </thead>
@@ -40,7 +41,7 @@
                     <td th:text="${category.name}">name</td>
                     <td th:text="${category.title}">title</td>
                     <td th:text="${category.viewName}">viewName</td>
-
+                    <td th:text="${category.displayOrder}">displayOrder</td>
                     <td>
                         <a th:href="@{'/category/' + ${category.id} + '/edit'}" class="btn btn-light">수정</a>
                     </td>

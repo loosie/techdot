@@ -28,6 +28,7 @@ public class CategoryService {
 			.name(categoryForm.getName())
 			.title(categoryForm.getTitle())
 			.viewName(categoryForm.getViewName())
+			.displayOrder(categoryForm.getDisplayOrder())
 			.build();
 
 		categoryRepository.save(newCategory);

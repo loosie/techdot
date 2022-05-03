@@ -63,7 +63,9 @@ public class CategoryController {
 	@GetMapping("/new-category")
 	public String categoryCreateView(@CurrentUser final Member member, final Model model) {
 		model.addAttribute("member", member);
-		model.addAttribute("categoryForm", new CategoryFormDto());
+		CategoryFormDto categoryForm = new CategoryFormDto();
+		categoryForm.setDisplayOrder(categoryService.getAll().size()+1);
+		model.addAttribute("categoryForm", categoryForm);
 
 		return "category/form";
 	}
