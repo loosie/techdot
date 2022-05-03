@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.util.Assert;
 
 import com.techdot.techdot.modules.category.dto.CategoryFormDto;
@@ -55,6 +56,7 @@ public class Category {
 		Assert.notNull(viewName, "category.viewName 값이 존재하지 않습니다.");
 		Assert.notNull(name, "category.name 값이 존재하지 않습니다.");
 		Assert.notNull(title, "category.title 값이 존재하지 않습니다.");
+		Assert.notNull(displayOrder, "category.displayOrder 값이 존재하지 않습니다.");
 
 		this.viewName = viewName;
 		this.name = name;

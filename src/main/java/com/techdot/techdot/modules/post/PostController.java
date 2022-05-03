@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.techdot.techdot.modules.category.CategoryService;
+import com.techdot.techdot.modules.category.CategoryRepository;
 import com.techdot.techdot.modules.member.Member;
 import com.techdot.techdot.modules.member.auth.CurrentUser;
 import com.techdot.techdot.modules.post.dto.PostFormDto;
@@ -37,7 +37,7 @@ import lombok.RequiredArgsConstructor;
 public class PostController {
 
 	private final PostService postService;
-	private final CategoryService categoryService;
+	private final CategoryRepository categoryRepository;
 	private final PostFormValidator postFormValidator;
 
 	@InitBinder("postForm")
@@ -53,7 +53,7 @@ public class PostController {
 	public String newPostView(@CurrentUser final Member member, final Model model) {
 		model.addAttribute("member", member);
 		model.addAttribute("postForm", new PostFormDto());
-		model.addAttribute("categoryList", categoryService.getAll());
+		model.addAttribute("categoryList", categoryRepository.findAll());
 
 		return "post/form";
 	}
@@ -69,7 +69,7 @@ public class PostController {
 		@CurrentUser final Member member, final Model model) {
 		if (errors.hasErrors()) {
 			model.addAttribute(member);
-			model.addAttribute("categoryList", categoryService.getAll());
+			model.addAttribute("categoryList", categoryRepository.findAll());
 			return "post/form";
 		}
 
@@ -110,7 +110,7 @@ public class PostController {
 		model.addAttribute(member);
 		model.addAttribute("postId", id);
 		model.addAttribute("postForm", new PostFormDto(post));
-		model.addAttribute("categoryList", categoryService.getAll());
+		model.addAttribute("categoryList", categoryRepository.findAll());
 		return "post/updateForm";
 	}
 
