@@ -36,7 +36,6 @@ public class CategoryController {
 		webDataBinder.addValidators(categoryFormValidator);
 	}
 
-
 	/**
 	 * 카테고리별 게시글 뷰
 	 * 조회 쿼리 발생 횟수 : 3
@@ -104,8 +103,10 @@ public class CategoryController {
 	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/category/{id}/edit")
-	public String categoryUpdateForm(@PathVariable Long id, @Valid @ModelAttribute("categoryForm") final CategoryFormDto categoryForm,
-		Errors errors, @CurrentUser final Member member, final Model model, final RedirectAttributes redirectAttributes) {
+	public String categoryUpdateForm(@PathVariable Long id,
+		@Valid @ModelAttribute("categoryForm") final CategoryFormDto categoryForm,
+		Errors errors, @CurrentUser final Member member, final Model model,
+		final RedirectAttributes redirectAttributes) {
 		if (errors.hasErrors()) {
 			model.addAttribute(member);
 			return "category/updateForm";

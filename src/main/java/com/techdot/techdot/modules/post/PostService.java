@@ -61,7 +61,8 @@ public class PostService {
 	 * @throws NullPointerException 존재하지 않는 게시글 id이면 예외 발생
 	 */
 	public void update(final Long postId, final PostFormDto postForm) {
-		Post post = postRepository.findById(postId).orElseThrow(() -> new NullPointerException(postId + "는 존재하지 않는 게시글 입니다."));
+		Post post = postRepository.findById(postId)
+			.orElseThrow(() -> new NullPointerException(postId + "는 존재하지 않는 게시글 입니다."));
 		Category category = categoryRepository.findByViewName(postForm.getCategoryName())
 			.orElseThrow(() -> new CategoryNotExistedException(postForm.getCategoryName()));
 
@@ -77,12 +78,11 @@ public class PostService {
 		Post post = postRepository.getById(id);
 		String key = post.getThumbnailImageUrl();
 		postRepository.deleteById(id);
-		if(key != null) {
+		if (key != null) {
 			s3Service.delete(key);
 		}
-		log.info(id +"번 게시글이 정상적으로 삭제되었습니다.");
+		log.info(id + "번 게시글이 정상적으로 삭제되었습니다.");
 	}
-
 
 	/**
 	 ****************************************** 쿼리 ********************************************

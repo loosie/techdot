@@ -14,11 +14,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
-
-	// 400 : BAD REQUEST
-	// 404 : NOT FOUND
-	// 500 : INTERNAL SERVER ERROR
-
+	/**
+	 400 : BAD REQUEST
+	 404 : NOT FOUND
+	 403 : FORBIDDEN (Not Auth, AccessDenieDHandler에서 처리)
+	 500 : INTERNAL SERVER ERROR
+	 */
 	@ExceptionHandler(DuplicateRequestException.class)
 	public String handleDuplicateRequestException(DuplicateRequestException ex, HttpServletRequest req) {
 		log.error("duplicated request - {}", ex.getMessage());
@@ -46,7 +47,6 @@ public class GlobalExceptionHandler {
 		req.setAttribute("message", ex.getMessage());
 		return "error/404";
 	}
-
 
 	@ExceptionHandler(UserNotExistedException.class)
 	public String handleUserNotExistedException(UserNotExistedException ex, HttpServletRequest req) {

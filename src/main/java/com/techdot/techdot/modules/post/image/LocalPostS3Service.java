@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
-public class LocalPostS3Service implements PostS3Service{
+public class LocalPostS3Service implements PostS3Service {
 
 	private final AmazonS3 amazonS3;
 	private final PostRepository postRepository;
@@ -65,7 +65,7 @@ public class LocalPostS3Service implements PostS3Service{
 		post.setImageUrl(url);
 		postRepository.save(post);
 
-		log.info("s3 버킷 이미지 등록 완료 - {}",  url);
+		log.info("s3 버킷 이미지 등록 완료 - {}", url);
 		return url;
 	}
 
@@ -73,13 +73,12 @@ public class LocalPostS3Service implements PostS3Service{
 	 * bucket에 있는 key 삭제하기
 	 */
 	@Override
-	public void delete(String key){
+	public void delete(String key) {
 		key = FOLDER_NAME + key;
-		if(amazonS3.doesObjectExist(bucket, key)){
+		if (amazonS3.doesObjectExist(bucket, key)) {
 			amazonS3.deleteObject(bucket, key);
 			log.info("s3 버킷 이미지 삭제 완료 - {}", key);
 		}
 	}
-
 
 }

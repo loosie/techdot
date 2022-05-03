@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
-public class RealPostS3Service implements PostS3Service{
+public class RealPostS3Service implements PostS3Service {
 
 	private final AmazonS3 amazonS3;
 	private final PostRepository postRepository;
@@ -47,7 +47,7 @@ public class RealPostS3Service implements PostS3Service{
 		String fileName = file.getOriginalFilename();
 
 		int i = file.getOriginalFilename().indexOf("static/");
-		if(i != -1) {
+		if (i != -1) {
 			fileName = file.getOriginalFilename().substring(i + 7);
 		}
 		String fileStorageName = FOLDER_NAME + fileName;
@@ -85,7 +85,7 @@ public class RealPostS3Service implements PostS3Service{
 	private String savePostImageUrl(Long id, String fileName) {
 		Post post = postRepository.getById(id);
 		String url = "";
-		if(post.getThumbnailImageUrl() == null || post.getThumbnailImageUrl().isEmpty()){
+		if (post.getThumbnailImageUrl() == null || post.getThumbnailImageUrl().isEmpty()) {
 			url = PUBLIC_URL + FOLDER_NAME + fileName;
 			post.setImageUrl(url);
 			postRepository.save(post);
@@ -101,13 +101,12 @@ public class RealPostS3Service implements PostS3Service{
 	 * bucket에 있는 key 삭제하기
 	 */
 	@Override
-	public void delete(String key){
+	public void delete(String key) {
 		key = FOLDER_NAME + key;
-		if(amazonS3.doesObjectExist(BUCKET, key)){
+		if (amazonS3.doesObjectExist(BUCKET, key)) {
 			amazonS3.deleteObject(BUCKET, key);
 			log.info("s3 버킷 이미지 삭제 완료 - {}", key);
 		}
 	}
-
 
 }

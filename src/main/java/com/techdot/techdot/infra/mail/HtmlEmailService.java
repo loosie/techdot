@@ -11,13 +11,14 @@ import org.springframework.stereotype.Component;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Profile({"dev","real1","real2"})
+@Profile({"dev", "real1", "real2"})
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class HtmlEmailService implements EmailService{
+public class HtmlEmailService implements EmailService {
 
 	private final JavaMailSender javaMailSender;
+
 	@Override
 	public void sendEmail(EmailMessageDto emailMessageDto) {
 

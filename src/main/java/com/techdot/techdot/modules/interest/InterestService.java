@@ -15,7 +15,8 @@ import com.techdot.techdot.modules.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Service @Slf4j
+@Service
+@Slf4j
 @RequiredArgsConstructor
 public class InterestService {
 
@@ -35,7 +36,7 @@ public class InterestService {
 		Category findCategory = categoryRepository.findByViewName(categoryViewName)
 			.orElseThrow(() -> new CategoryNotExistedException(categoryViewName));
 
-		if(interestRepository.findByMemberAndCategory(findMember, findCategory).isPresent()){
+		if (interestRepository.findByMemberAndCategory(findMember, findCategory).isPresent()) {
 			throw new DuplicateRequestException("이미 등록된 관심 카테고리입니다.");
 		}
 
@@ -70,7 +71,7 @@ public class InterestService {
 	 * 멤버의 관심 카테고리 목록 가져오기
 	 * @param memberId
 	 */
-	public List<InterestCategoryResponseDto>  getInterestCategoriesByMember(final Long memberId) {
+	public List<InterestCategoryResponseDto> getInterestCategoriesByMember(final Long memberId) {
 		return interestRepository.findAllCategoriesByMemberId(memberId);
 	}
 }

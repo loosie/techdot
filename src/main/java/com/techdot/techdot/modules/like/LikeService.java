@@ -27,9 +27,10 @@ public class LikeService {
 	public void add(final Long memberId, final Long postId) {
 		// 엔티티 조회
 		Member findMember = memberRepository.getById(memberId); // 이미 인증된 객체
-		Post findPost = postRepository.findById(postId).orElseThrow(() -> new NullPointerException(postId + "는 존재하지 않는 게시글입니다."));
+		Post findPost = postRepository.findById(postId)
+			.orElseThrow(() -> new NullPointerException(postId + "는 존재하지 않는 게시글입니다."));
 
-		if(likeRepository.findByMemberAndPost(findMember, findPost).isPresent()){
+		if (likeRepository.findByMemberAndPost(findMember, findPost).isPresent()) {
 			throw new DuplicateRequestException("이미 좋아요를 누른 게시글입니다.");
 		}
 
@@ -51,7 +52,8 @@ public class LikeService {
 	public void remove(final Long memberId, final Long postId) {
 		// 엔티티 조회
 		Member findMember = memberRepository.getById(memberId); // 이미 인증된 객체
-		Post findPost = postRepository.findById(postId).orElseThrow(() -> new NullPointerException(postId + "는 존재하지 않는 게시글입니다."));
+		Post findPost = postRepository.findById(postId)
+			.orElseThrow(() -> new NullPointerException(postId + "는 존재하지 않는 게시글입니다."));
 
 		Like like = likeRepository.findByMemberAndPost(findMember, findPost).orElseThrow(() ->
 			new IllegalArgumentException("좋아요 정보가 올바르지 않습니다."));

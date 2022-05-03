@@ -166,7 +166,7 @@ public class AccountsController {
 	 * 계정 탈퇴
 	 */
 	@PostMapping("/withdrawal")
-	public String accountWithdrawal(@CurrentUser final Member member){
+	public String accountWithdrawal(@CurrentUser final Member member) {
 		memberService.withdrawal(member);
 		return "redirect:/";
 	}

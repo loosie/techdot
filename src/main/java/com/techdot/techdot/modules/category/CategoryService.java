@@ -33,7 +33,6 @@ public class CategoryService {
 		categoryRepository.save(newCategory);
 	}
 
-
 	/**
 	 * 모든 카테고리 가져오기
 	 */
@@ -72,11 +71,11 @@ public class CategoryService {
 	 * @throws CategoryCanNotDeleteException 카테고리에 해당하는 게시글이 1개 이상 존재할 경우 예외 발생
 	 */
 	public void remove(final Long id) {
-		if(categoryRepository.findPostsByCategoryId(id).size()>0) {
+		if (categoryRepository.findPostsByCategoryId(id).size() > 0) {
 			throw new CategoryCanNotDeleteException("게시글이 존재하는 카테고리는 삭제할 수 없습니다.");
 		}
 
 		categoryRepository.deleteById(id);
-		log.info(id +"번 카테고리가 정상적으로 삭제되었습니다.");
+		log.info(id + "번 카테고리가 정상적으로 삭제되었습니다.");
 	}
 }

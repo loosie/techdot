@@ -12,7 +12,8 @@ public interface PostRepositoryExtension {
 
 	List<PostQueryResponseDto> findAllDtoByKeyword(final Long memberId, final String keyword, final Pageable pageable);
 
-	List<PostQueryResponseDto> findAllDtoByCategoryViewName(final Long memberId, final String categoryViewName, final Pageable pageable);
+	List<PostQueryResponseDto> findAllDtoByCategoryViewName(final Long memberId, final String categoryViewName,
+		final Pageable pageable);
 
 	List<PostQueryResponseDto> findAllDtoByLikesMemberId(final Long memberId, final Pageable pageable);
 

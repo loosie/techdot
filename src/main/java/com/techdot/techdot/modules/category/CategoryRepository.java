@@ -10,14 +10,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 	Category getByViewName(final String viewName);
+
 	Optional<Category> findByViewName(final String viewName);
 
 	boolean existsByName(final String name);
+
 	boolean existsByTitle(final String title);
+
 	boolean existsByViewName(final String viewName);
 
 	@Query("select c.id from Category c join c.posts p where p.category.id = :id")
 	List<Long> findPostsByCategoryId(final Long id);
-
 
 }

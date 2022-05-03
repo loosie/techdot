@@ -18,8 +18,9 @@ public class S3Config {
 	private S3Properties s3Properties;
 
 	@Bean
-	public BasicAWSCredentials awsCredentialsProvider(){
-		BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(s3Properties.getAccessKey(), s3Properties.getSecretKey());
+	public BasicAWSCredentials awsCredentialsProvider() {
+		BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(s3Properties.getAccessKey(),
+			s3Properties.getSecretKey());
 		return basicAWSCredentials;
 	}
 
@@ -29,6 +30,5 @@ public class S3Config {
 			.withCredentials(new AWSStaticCredentialsProvider(awsCredentialsProvider()))
 			.build();
 	}
-
 
 }

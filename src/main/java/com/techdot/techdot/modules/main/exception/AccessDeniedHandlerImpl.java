@@ -25,8 +25,9 @@ public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
 	public void handle(HttpServletRequest req, HttpServletResponse res,
 		AccessDeniedException ex) throws IOException, ServletException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if(authentication != null){
-			log.warn("user [" + authentication.getName() +"] attempted to access the protected URL: " + req.getRequestURL());
+		if (authentication != null) {
+			log.warn("user [" + authentication.getName() + "] attempted to access the protected URL: "
+				+ req.getRequestURL());
 		}
 		req.setAttribute("message", "(Access Denied) 해당 경로에 접근할 수 없습니다");
 		req.getRequestDispatcher("/error/403").forward(req, res);

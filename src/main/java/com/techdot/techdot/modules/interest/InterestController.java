@@ -39,7 +39,8 @@ public class InterestController {
 	 * 멤버 조회 + 카테고리 조회 + 관심 조회 + 관심 삭제
 	 */
 	@PostMapping("/api/interest/remove")
-	public ResponseEntity likeRemove(@CurrentUser final Member member, @RequestBody final InterestFormDto interestForm) {
+	public ResponseEntity likeRemove(@CurrentUser final Member member,
+		@RequestBody final InterestFormDto interestForm) {
 		interestService.remove(member.getId(), interestForm.getCategoryViewName());
 		return ResponseEntity.ok().build();
 	}
@@ -48,9 +49,9 @@ public class InterestController {
 	 * 멤버 관심 카테고리 목록 조회 API
 	 */
 	@GetMapping("/api/interests/me/list")
-	public ResponseEntity<List<InterestCategoryResponseDto>> getInterestCategoriesByMember(@CurrentUser final Member member) {
+	public ResponseEntity<List<InterestCategoryResponseDto>> getInterestCategoriesByMember(
+		@CurrentUser final Member member) {
 		return new ResponseEntity<>(interestService.getInterestCategoriesByMember(member.getId()), HttpStatus.OK);
 	}
-
 
 }

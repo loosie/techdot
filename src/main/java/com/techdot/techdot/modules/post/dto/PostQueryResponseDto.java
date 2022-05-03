@@ -20,7 +20,7 @@ public class PostQueryResponseDto implements Serializable {
 	private String categoryDisplayName;
 	private Boolean isMemberLike;
 
-	public PostQueryResponseDto(final Long postId, final String title,final  String content,
+	public PostQueryResponseDto(final Long postId, final String title, final String content,
 		final String link, final String writer, final PostType type, final String thumbnailImageUrl,
 		final LocalDateTime uploadDateTime, final String categoryDisplayName, final Boolean isMemberLike) {
 		this.postId = postId;

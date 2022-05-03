@@ -121,10 +121,9 @@ public class Post extends BaseEntity {
 		updateDateTime();
 	}
 
-	private void updateCategory(final Category category){
+	private void updateCategory(final Category category) {
 		this.category = category;
 	}
-
 
 	public boolean isManager(final Member member) {
 		return manager.equals(member);

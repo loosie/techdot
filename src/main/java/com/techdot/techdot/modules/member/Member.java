@@ -94,7 +94,6 @@ public class Member extends BaseEntity {
 		this.emailSendTime = 1;
 	}
 
-
 	public void completeEmailVerified() {
 		updateRoleToMember();
 		this.emailVerified = true;

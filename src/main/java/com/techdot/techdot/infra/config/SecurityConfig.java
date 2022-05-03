@@ -29,13 +29,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-			.mvcMatchers("/join", "/login").not().fullyAuthenticated()
-			.mvcMatchers("/", "/check-email",  "/email-login", "/login-by-email", "/confirm-email", "/resend-confirm-email/**", "/error/**",
-				"/api/posts/**", "/category/**",  "/search", "/api/search/**", "/app/profile").permitAll()
-			.mvcMatchers("/me/**", "/accounts", "/accounts/change-password", "/accounts/settings", "/accounts/withdrawal").access("hasRole('ROLE_USER') or hasRole('ROLE_MEMBER') or hasRole('ROLE_ADMIN')")
-			.mvcMatchers("/api/interest/**", "/api/like/**").access("hasRole('ROLE_MEMBER') or hasRole('ROLE_ADMIN')")
-			.mvcMatchers("/new-post", "/post/**", "/accounts/my-upload", "/accounts/settings/category", "/api/post/**").access("hasRole('ROLE_ADMIN')")
-			.anyRequest().authenticated();
+			.mvcMatchers("/join", "/login")
+			.not()
+			.fullyAuthenticated()
+			.mvcMatchers("/", "/check-email", "/email-login", "/login-by-email", "/confirm-email",
+				"/resend-confirm-email/**", "/error/**",
+				"/api/posts/**", "/category/**", "/search", "/api/search/**", "/app/profile")
+			.permitAll()
+			.mvcMatchers("/me/**", "/accounts", "/accounts/change-password", "/accounts/settings",
+				"/accounts/withdrawal")
+			.access("hasRole('ROLE_USER') or hasRole('ROLE_MEMBER') or hasRole('ROLE_ADMIN')")
+			.mvcMatchers("/api/interest/**", "/api/like/**")
+			.access("hasRole('ROLE_MEMBER') or hasRole('ROLE_ADMIN')")
+			.mvcMatchers("/new-post", "/post/**", "/accounts/my-upload", "/accounts/settings/category", "/api/post/**")
+			.access("hasRole('ROLE_ADMIN')")
+			.anyRequest()
+			.authenticated();
 
 		http.formLogin()
 			.loginPage("/login").permitAll();
@@ -46,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.rememberMe()
 			.userDetailsService(userDetailsService)
 			.tokenRepository(tokenRepository())
-			.tokenValiditySeconds(60*60*24);
+			.tokenValiditySeconds(60 * 60 * 24);
 
 		http.exceptionHandling()
 			.accessDeniedPage("/error/403.html")
@@ -54,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
-	public PersistentTokenRepository tokenRepository(){
+	public PersistentTokenRepository tokenRepository() {
 		JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
 		jdbcTokenRepository.setDataSource(dataSource);
 		return jdbcTokenRepository;
