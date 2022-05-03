@@ -42,7 +42,8 @@ class PostRepositoryTest extends AbstractContainerBaseTest {
 			.emailVerified(false)
 			.build();
 
-		category = Category.builder().name("자바").title("Java title").viewName("java").build();
+		category = Category.builder()
+			.name("자바").title("Java title").viewName("java").displayOrder(1).build();
 
 		// when
 		memberRepository.save(member);

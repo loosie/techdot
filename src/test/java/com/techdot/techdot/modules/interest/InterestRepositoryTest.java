@@ -39,7 +39,7 @@ class InterestRepositoryTest extends AbstractContainerBaseTest {
 			.build();
 
 		memberRepository.save(member);
-		categoryRepository.save(Category.builder().viewName("java").title("자바").name("Java").build());
+		categoryRepository.save(Category.builder().viewName("java").title("자바").name("Java").displayOrder(1).build());
 	}
 
 	@DisplayName("관심 목록 생성하기")

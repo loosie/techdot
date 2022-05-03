@@ -25,6 +25,7 @@ class InterestTest {
 			.viewName("java")
 			.title("자바")
 			.name("Java")
+			.displayOrder(1)
 			.build();
 
 		// when, then

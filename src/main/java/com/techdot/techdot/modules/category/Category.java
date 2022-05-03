@@ -42,8 +42,8 @@ public class Category {
 	@Column(nullable = false)
 	private String title;
 
-	// @Column(nullable = false)
-	private int displayOrder;
+	@Column(nullable = false)
+	private Integer displayOrder;
 
 	@OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
 	private List<Interest> interests = new ArrayList<>();
@@ -52,7 +52,7 @@ public class Category {
 	private List<Post> posts = new ArrayList<>();
 
 	@Builder
-	public Category(final String viewName, final String name, final String title, final int displayOrder) {
+	public Category(final String viewName, final String name, final String title, final Integer displayOrder) {
 		Assert.notNull(viewName, "category.viewName 값이 존재하지 않습니다.");
 		Assert.notNull(name, "category.name 값이 존재하지 않습니다.");
 		Assert.notNull(title, "category.title 값이 존재하지 않습니다.");

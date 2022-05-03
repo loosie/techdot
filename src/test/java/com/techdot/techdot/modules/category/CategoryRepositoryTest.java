@@ -22,6 +22,7 @@ class CategoryRepositoryTest extends AbstractContainerBaseTest {
 			.viewName("java")
 			.title("JAVA")
 			.name("자바")
+			.displayOrder(1)
 			.build();
 
 		// when
@@ -39,6 +40,7 @@ class CategoryRepositoryTest extends AbstractContainerBaseTest {
 			.viewName("java")
 			.title("JAVA")
 			.name("자바")
+			.displayOrder(1)
 			.build();
 		categoryRepository.save(category);
 
@@ -63,6 +65,7 @@ class CategoryRepositoryTest extends AbstractContainerBaseTest {
 			.viewName("java")
 			.title("JAVA")
 			.name("자바")
+			.displayOrder(1)
 			.build();
 		categoryRepository.save(category);
 
@@ -80,6 +83,7 @@ class CategoryRepositoryTest extends AbstractContainerBaseTest {
 			.viewName("java")
 			.title("JAVA")
 			.name("자바")
+			.displayOrder(1)
 			.build();
 		categoryRepository.save(category);
 

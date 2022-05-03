@@ -43,6 +43,7 @@ class PostControllerTest extends AbstractContainerBaseTest {
 			.name("자바")
 			.title("Java title")
 			.viewName("java")
+			.displayOrder(1)
 			.build());
 	}
 

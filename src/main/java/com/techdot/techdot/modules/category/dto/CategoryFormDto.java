@@ -27,8 +27,8 @@ public class CategoryFormDto {
 	@Pattern(regexp = "^[a-z0-9,-]{1,20}$", message = "공백없이 영어 소문자, 숫자와 - 만 20자 내외로 입력이 가능합니다.")
 	private String viewName;
 
-	private int curDisplayOrder;
-	private int displayOrder;
+	private Integer curDisplayOrder;
+	private Integer displayOrder;
 
 	private String curName;
 	private String curTitle;

@@ -47,6 +47,7 @@ class InterestServiceTest {
 			.viewName("java")
 			.title("JAVA")
 			.name("자바")
+			.displayOrder(1)
 			.build();
 	}
 

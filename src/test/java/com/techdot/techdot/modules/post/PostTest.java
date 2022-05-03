@@ -24,7 +24,8 @@ class PostTest {
 			.email("jong9712@naver.com")
 			.emailVerified(false)
 			.build();
-		Category category = Category.builder().viewName("java").title("JAVA").name("자바").build();
+		Category category = Category.builder()
+			.viewName("java").title("JAVA").name("자바").displayOrder(1).build();
 		String content = "content.content...";
 		String title1 = "title1";
 		String link = "http://~~~.com";
@@ -57,7 +58,8 @@ class PostTest {
 			.email("jong9712@naver.com")
 			.emailVerified(false)
 			.build();
-		Category category = Category.builder().viewName("java").title("JAVA").name("자바").build();
+		Category category = Category.builder()
+			.viewName("java").title("JAVA").name("자바").displayOrder(1).build();
 		Post post = Post.builder()
 			.title("title1")
 			.content("content.content...")
@@ -71,7 +73,8 @@ class PostTest {
 
 		PostFormDto postFormDto = new PostFormDto();
 		postFormDto.setTitle("changeTitle");
-		Category changeCategory = Category.builder().viewName("changeJava").title("JAVA2").name("자바2").build();
+		Category changeCategory = Category.builder()
+			.viewName("changeJava").title("JAVA2").name("자바2").displayOrder(1).build();
 
 		// when
 		post.update(postFormDto, changeCategory);

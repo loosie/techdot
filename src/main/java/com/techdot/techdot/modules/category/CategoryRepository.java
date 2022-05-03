@@ -12,7 +12,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 	Category getByViewName(final String viewName);
 
 	Optional<Category> findByViewName(final String viewName);
-	Optional<Category> findByDisplayOrder(final int displayOrder);
+	Optional<Category> findByDisplayOrder(final Integer displayOrder);
 
 	boolean existsByName(final String name);
 

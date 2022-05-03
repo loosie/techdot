@@ -52,7 +52,8 @@ class PostServiceTest {
 			.email("jong9712@naver.com")
 			.emailVerified(false)
 			.build();
-		Category category = Category.builder().viewName("java").title("JAVA").name("자바").build();
+		Category category = Category.builder()
+			.viewName("java").title("JAVA").name("자바").displayOrder(1).build();
 		Post post = Post.builder()
 			.title("title1")
 			.content("content.content...")
@@ -88,7 +89,8 @@ class PostServiceTest {
 			.email("jong9712@naver.com")
 			.emailVerified(false)
 			.build();
-		Category category = Category.builder().viewName("java").title("JAVA").name("자바").build();
+		Category category = Category.builder()
+			.viewName("java").title("JAVA").name("자바").displayOrder(1).build();
 		Post post = Post.builder()
 			.title("title1")
 			.content("content.content...")
@@ -128,7 +130,8 @@ class PostServiceTest {
 			.email("jong9712@naver.com")
 			.emailVerified(false)
 			.build();
-		Category category = Category.builder().viewName("java").title("JAVA").name("자바").build();
+		Category category = Category.builder()
+			.viewName("java").title("JAVA").name("자바").displayOrder(1).build();
 		Post post = Post.builder()
 			.title("title1")
 			.content("content.content...")

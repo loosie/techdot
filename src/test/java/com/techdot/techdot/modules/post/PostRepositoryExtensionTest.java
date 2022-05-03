@@ -50,7 +50,8 @@ class PostRepositoryExtensionTest extends AbstractContainerBaseTest {
 			.email("jong9712@naver.com")
 			.emailVerified(true)
 			.build();
-		category = Category.builder().name("자바").title("Java title").viewName("java").build();
+		category = Category.builder()
+			.name("자바").title("Java title").viewName("java").displayOrder(1).build();
 		post = Post.builder()
 			.title("title1")
 			.content("content.content...")
