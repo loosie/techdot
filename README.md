@@ -5,8 +5,7 @@
 <br>
 
 ## 👋 TechDot, 기술 및 개발 콘텐츠 큐레이션 서비스
-TechDot은 기술 및 개발 콘텐츠를 큐레이팅한 게시글을 접해볼 수 있고 좋아요나 관심 카테고리 등록으로 원하는 콘텐츠 아카이빙이 가능한 서비스 입니다.
-
+TechDot은 테크 및 개발에 관련된 다양한 콘텐츠를 접해볼 수 있고 마음에 드는 콘텐츠를 아카이빙하여 보관할 수 있습니다.
 
 <br>
 
@@ -14,12 +13,12 @@ TechDot은 기술 및 개발 콘텐츠를 큐레이팅한 게시글을 접해볼
 - Back: Java 11, Spring Boot 2.6.4, Spring Security, Spring Data JPA, QueryDsl, MySQL, Redis
 - Front: Thymeleaf, BootStrap, Ajax, JQuery
 - Test: JUnit5, Mockito, TestContainers, ArchUnit
-- DevOps: AWS (EC2, RDS, ElasticCache, S3, CodeDeploy), Jenkins, Nginx
+- DevOps: AWS (EC2, RDS, ElasticCache, S3, CodeDeploy), Jenkins, Nginx, Cloudflare
 
 <br>
 
 ## 🌏 프로젝트 구성도
-<img width="920" alt="스크린샷 2022-04-26 오전 3 14 11" src="https://user-images.githubusercontent.com/54282927/165149071-60ef7426-b576-45f1-a092-80404994b679.png">
+<img width="920" alt="스크린샷 2022-05-04 오후 6 38 25" src="https://user-images.githubusercontent.com/54282927/166657339-edc91719-7334-488a-9f26-86253f3c5fab.png">
 
 
 <br>
