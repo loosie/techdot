@@ -23,13 +23,13 @@ public class LocalS3Config {
 
 	// GenericContainer start(), stop() 메서드로 생명주기 설정
 	@Bean(initMethod = "start", destroyMethod = "stop")
-	public LocalStackContainer localStackContainer(){
+	public LocalStackContainer localStackContainer() {
 		return new LocalStackContainer(LOCALSTACK_IMAGE)
 			.withServices(S3);
 	}
 
 	@Bean
-	public AmazonS3 amazonS3(LocalStackContainer localStackContainer){
+	public AmazonS3 amazonS3(LocalStackContainer localStackContainer) {
 		AmazonS3 amazonS3 = AmazonS3ClientBuilder
 			.standard()
 			.withEndpointConfiguration(localStackContainer.getEndpointConfiguration(S3))
@@ -38,6 +38,5 @@ public class LocalS3Config {
 		amazonS3.createBucket(bucket);
 		return amazonS3;
 	}
-
 
 }

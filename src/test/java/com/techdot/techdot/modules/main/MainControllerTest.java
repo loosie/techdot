@@ -34,9 +34,26 @@ class MainControllerTest extends AbstractContainerBaseTest {
 		memberService.save(joinFormDto);
 	}
 
-	@DisplayName("로그인 성공")
+	@DisplayName("메인 뷰")
 	@Test
-	void userLogin_Success() throws Exception {
+	void mainView_Success() throws Exception {
+		mockMvc.perform(get("/"))
+			.andExpect(model().attributeExists("categoryList"))
+			.andExpect(view().name("index"))
+			.andExpect(unauthenticated());
+	}
+
+	@DisplayName("로그인 뷰")
+	@Test
+	void userLoginView_Success() throws Exception {
+		mockMvc.perform(get("/login"))
+			.andExpect(view().name("login"))
+			.andExpect(unauthenticated());
+	}
+
+	@DisplayName("로그인 요청 성공")
+	@Test
+	void userLoginForm_Success() throws Exception {
 		mockMvc.perform(post("/login")
 			.param("username", "test@naver.com")
 			.param("password", "12345678")
@@ -46,9 +63,9 @@ class MainControllerTest extends AbstractContainerBaseTest {
 			.andExpect(authenticated().withUsername("test@naver.com"));
 	}
 
-	@DisplayName("로그인 실패 - 가입되지 않은 이메일")
+	@DisplayName("로그인 요청 실패 - 가입되지 않은 이메일인 경우")
 	@Test
-	void userLogin_NotExistedEmail_Fail() throws Exception {
+	void userLoginForm_UserEmailNotExist_RedirectErrorPage() throws Exception {
 		mockMvc.perform(post("/login")
 			.param("username", "1111@naver.com")
 			.param("password", "12345678")
@@ -58,9 +75,9 @@ class MainControllerTest extends AbstractContainerBaseTest {
 			.andExpect(unauthenticated());
 	}
 
-	@DisplayName("로그아웃")
+	@DisplayName("로그아웃 요청 성공")
 	@Test
-	void logout_Success() throws Exception {
+	void logoutForm_Success() throws Exception {
 		mockMvc.perform(post("/logout")
 			.with(csrf()))
 			.andExpect(status().is3xxRedirection())
@@ -70,7 +87,7 @@ class MainControllerTest extends AbstractContainerBaseTest {
 
 
 	@WithCurrentUser(value = TEST_EMAIL, role= MEMBER)
-	@DisplayName("관심 카테고리 뷰 - 이메일 인증 받은 경우")
+	@DisplayName("관심 카테고리 뷰 접근 가능 - 이메일 인증 받은 경우")
 	@Test
 	void mainMyInterestsView_MemberIsAuthenticated_Success() throws Exception {
 		mockMvc.perform(get("/me/interests"))
@@ -80,9 +97,9 @@ class MainControllerTest extends AbstractContainerBaseTest {
 	}
 
 	@WithCurrentUser(value = TEST_EMAIL, role= USER)
-	@DisplayName("관심 카테고리 뷰 - 이메일 인증 받지 않은 경우")
+	@DisplayName("관심 카테고리 뷰 접근 불가능 - 이메일 인증 받지 않은 경우")
 	@Test
-	void mainMyInterestsView_MemberIsUnAuthenticated_Success() throws Exception{
+	void mainMyInterestsView_MemberIsUnAuthenticated_RedirectCheckEmail() throws Exception{
 		mockMvc.perform(get("/me/interests"))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/check-email"))
@@ -105,9 +122,13 @@ class MainControllerTest extends AbstractContainerBaseTest {
 	@DisplayName("에러 뷰")
 	@Test
 	void errorView_Success() throws Exception{
-		mockMvc.perform(get("/error/403"))
-			.andExpect(status().isOk())
-			.andExpect(view().name("error/403"))
-			.andExpect(unauthenticated());
+		String[] errors = {"400", "403", "404", "500"};
+		for(String error : errors){
+			mockMvc.perform(get("/error/" + error))
+				.andExpect(status().isOk())
+				.andExpect(view().name("error/" + error))
+				.andExpect(unauthenticated());
+		}
+
 	}
 }

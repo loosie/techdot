@@ -27,7 +27,7 @@ class MemberRepositoryTest extends AbstractContainerBaseTest {
 			.build();
 	}
 
-	@DisplayName("멤버 생성하기 - 성공")
+	@DisplayName("회원 생성하기")
 	@Test
 	void memberCreate_Success() {
 		// given
@@ -38,9 +38,9 @@ class MemberRepositoryTest extends AbstractContainerBaseTest {
 		assertEquals(saveMember.getNickname(), member.getNickname());
 	}
 
-	@DisplayName("이메일로 멤버 존재여부 확인하기")
+	@DisplayName("이메일로 회원 정보 존재하는지 조회하기")
 	@Test
-	void memberExistedByEmail_Success(){
+	void memberExistsByEmail_Success(){
 		// given
 		memberRepository.save(member);
 
@@ -48,9 +48,9 @@ class MemberRepositoryTest extends AbstractContainerBaseTest {
 		assertTrue(memberRepository.existsByEmail(member.getEmail()));
 	}
 
-	@DisplayName("닉네임으로 멤버 존재여부 확인하기")
+	@DisplayName("닉네임으로 회원 정보 존재하는지 조회하기")
 	@Test
-	void memberIsExistedByNickname_Success(){
+	void memberExistsByNickname_Success(){
 		// given
 		 memberRepository.save(member);
 
@@ -58,7 +58,7 @@ class MemberRepositoryTest extends AbstractContainerBaseTest {
 		assertTrue(memberRepository.existsByNickname(member.getNickname()));
 	}
 
-	@DisplayName("이메일로 멤버 찾기")
+	@DisplayName("이메일로 회원 정보 조회하기")
 	@Test
 	void memberFindByEmail_Success(){
 		// given
@@ -68,7 +68,7 @@ class MemberRepositoryTest extends AbstractContainerBaseTest {
 		assertTrue(memberRepository.findByEmail(member.getEmail()).isPresent());
 	}
 
-	@DisplayName("닉네임로 멤버 찾기")
+	@DisplayName("닉네임로 회원 정보 조회하기")
 	@Test
 	void memberFindByNickname_Success(){
 		// given
@@ -78,7 +78,7 @@ class MemberRepositoryTest extends AbstractContainerBaseTest {
 		assertTrue(memberRepository.findByNickname(member.getNickname()).isPresent());
 	}
 
-	@DisplayName("멤버 삭제하기")
+	@DisplayName("회원 정보 삭제하기")
 	@Test
 	void memberDelete_Success(){
 		// when

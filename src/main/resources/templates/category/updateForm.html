@@ -39,6 +39,17 @@
                         <small class="form-text text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">title Error</small>
                     </div>
 
+                    <div class="form-group mb-4">
+                        <input id="curDisplayOrder" type="hidden" th:field="*{curDisplayOrder}" class="form-control" />
+                        <label for="title">카테고리 순서</label>
+                        <select id="displayOrder" class="form-select" th:field="*{displayOrder}" aria-label="display-order-select">
+                            <option th:each="category : ${categoryList}"
+                                    th:selected="${category.displayOrder} == *{displayOrder}"
+                                    th:value="${category.displayOrder}"
+                                    th:text="${category.displayOrder}">
+                            </option>
+                        </select>
+                    </div>
 
                     <div class="form-group">
                         <button class="btn btn-dark pull-right" type="submit" aria-describedby="submitHelp">

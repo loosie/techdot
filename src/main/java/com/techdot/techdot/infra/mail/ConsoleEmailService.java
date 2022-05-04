@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 @Profile({"local", "test"})
 @Component
 @Slf4j
-public class ConsoleEmailService implements EmailService{
+public class ConsoleEmailService implements EmailService {
 
 	@Override
 	public void sendEmail(EmailMessageDto emailMessageDto) {

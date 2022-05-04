@@ -85,14 +85,13 @@
 
         function likeRequest(action, e) {
             $.ajax({
-                url: "/like/" + action,
+                url: "/api/like/" + action,
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify({
                     postId: e.target.id
                 })
             }).done(function (data, status) {
-                // console.log(status);
                 const customLikeBox = e.target.parentElement;
                 customLikeBox.querySelector('i').remove();
                 const like = document.createElement('i');

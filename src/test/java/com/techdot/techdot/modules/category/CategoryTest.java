@@ -16,22 +16,24 @@ class CategoryTest {
 	@Test
 	void categoryCreate_InsertValueIsNull_ExceptionThrown() {
 		assertThrows(IllegalArgumentException.class,
-			() -> Category.builder().viewName(null).title("자바").name("Java").build());
+			() -> Category.builder().viewName(null).title("자바").name("Java").displayOrder(1).build());
 		assertThrows(IllegalArgumentException.class,
-			() -> Category.builder().viewName("java").title(null).name("Java").build());
+			() -> Category.builder().viewName("java").title(null).name("Java").displayOrder(1).build());
 		assertThrows(IllegalArgumentException.class,
-			() -> Category.builder().viewName("java").title("자바").name(null).build());
+			() -> Category.builder().viewName("java").title("자바").name(null).displayOrder(1).build());
+		assertThrows(IllegalArgumentException.class,
+			() -> Category.builder().viewName("java").title("자바").name("Java").displayOrder(null).build());
 	}
 
-	@DisplayName("카테고리 정보 업데이트하기 ")
+	@DisplayName("카테고리 정보 업데이트하기")
 	@Test
 	void categoryUpdate_Success() {
 		// given
 		Category category = Category.builder()
-			.viewName("java").title("자바").name("Java").build();
+			.viewName("java").title("자바").name("Java").displayOrder(1).build();
 
 		Category updateCategory = Category.builder()
-			.viewName("java2").title("자바2").name("Java2").build();
+			.viewName("java2").title("자바2").name("Java2").displayOrder(1).build();
 
 		// when
 		category.update(new CategoryFormDto(updateCategory));

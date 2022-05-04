@@ -1,19 +1,17 @@
 package com.techdot.techdot.infra.config;
 
+import static com.techdot.techdot.infra.Constant.*;
 import static org.testcontainers.containers.localstack.LocalStackContainer.Service.*;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.localstack.LocalStackContainer;
-import org.testcontainers.utility.DockerImageName;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
 @TestConfiguration
 public class LocalStackS3Config {
-	private static final DockerImageName LOCAL_STACK_IMAGE = DockerImageName.parse("localstack/localstack");
 	private static final LocalStackContainer LOCAL_STACK_CONTAINER = new LocalStackContainer(LOCAL_STACK_IMAGE)
 		.withServices(S3)
 		.withReuse(true);

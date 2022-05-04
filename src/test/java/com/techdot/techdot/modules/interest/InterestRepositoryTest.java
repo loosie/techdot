@@ -39,27 +39,30 @@ class InterestRepositoryTest extends AbstractContainerBaseTest {
 			.build();
 
 		memberRepository.save(member);
-		categoryRepository.save(Category.builder().viewName("java").title("자바").name("Java").build());
+		categoryRepository.save(Category.builder().viewName("java").title("자바").name("Java").displayOrder(1).build());
 	}
 
-	@DisplayName("관심 생성하기 - 성공")
+	@DisplayName("관심 목록 생성하기")
 	@Test
-	void likeCreate_success() {
+	void interestCreate_Success() {
+		// given
 		Category category = categoryRepository.getByViewName("java");
 		Interest interest = Interest.builder()
 			.member(member)
 			.category(category)
 			.build();
-		Interest saveInterest = interestRepository.save(interest);
+
+		// when
+		Interest save = interestRepository.save(interest);
 
 		// then
-		assertEquals(saveInterest.getCategory(), category);
-		assertEquals(saveInterest.getMember(), member);
+		assertEquals(save.getCategory(), category);
+		assertEquals(save.getMember(), member);
 	}
 
-	@DisplayName("멤버와 카테고리로 관심 조회하기")
+	@DisplayName("회원 정보와 카테고리로 관심 목록 조회하기")
 	@Test
-	void findByMemberAndCategory_Success() {
+	void interestFindByMemberAndCategory_Success() {
 		// given
 		Category category = categoryRepository.getByViewName("java");
 		Interest interest = Interest.builder()
@@ -77,9 +80,9 @@ class InterestRepositoryTest extends AbstractContainerBaseTest {
 		assertEquals(findInterest.getCategory(), category);
 	}
 
-	@DisplayName("멤버 ID로 관심 카테고리 모두 조회하기")
+	@DisplayName("회원 ID로 관심 목록 전체 조회하기")
 	@Test
-	void findAllInterestCategoriesByMemberId_Success() {
+	void interestFindAllByMemberId_Success() {
 		// given
 		List<Category> allCategories = categoryRepository.findAll();
 		for (Category category : allCategories) {
@@ -98,9 +101,9 @@ class InterestRepositoryTest extends AbstractContainerBaseTest {
 		assertEquals(allCategoriesByMemberId.size(), allCategories.size());
 	}
 
-	@DisplayName("멤버 id로 해당 멤버 관심 카테고리 모두 삭제하기")
+	@DisplayName("회원 ID로 해당 회원 관심 목록 모두 삭제하기")
 	@Test
-	void interestsAllDeleteByMemberId_Success() {
+	void interestDeleteAllByMemberId_Success() {
 		// given
 		Category category = categoryRepository.getByViewName("java");
 		Interest interest = Interest.builder()

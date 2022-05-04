@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class MainController {
 
 	private final CategoryService categoryService;
+
 	/**
 	 * 메인 뷰
 	 */
@@ -24,7 +25,8 @@ public class MainController {
 		if (member != null) {
 			model.addAttribute(member);
 		}
-		model.addAttribute("categoryList", categoryService.getAll());
+
+		model.addAttribute("categoryList", categoryService.getAllSortedByDisplayOrder());
 		return "index";
 	}
 
@@ -47,7 +49,7 @@ public class MainController {
 		}
 
 		model.addAttribute(member);
-		model.addAttribute("categoryList", categoryService.getAll());
+		model.addAttribute("categoryList", categoryService.getAllSortedByDisplayOrder());
 		return "main/my-interests-view";
 	}
 
@@ -56,11 +58,11 @@ public class MainController {
 	 */
 	@GetMapping("/search")
 	public String searchView(@CurrentUser final Member member, final String keyword, final Model model) {
-		if(member != null){
+		if (member != null) {
 			model.addAttribute(member);
 		}
 		model.addAttribute("keyword", keyword);
-		model.addAttribute("categoryList", categoryService.getAll());
+		model.addAttribute("categoryList", categoryService.getAllSortedByDisplayOrder());
 		return "search";
 	}
 

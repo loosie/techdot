@@ -17,10 +17,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,9 +42,9 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 
 	private final String TEST_EMAIL = "test@naver.com";
 
-	@DisplayName("회원 가입 화면 뷰")
+	@DisplayName("회원 가입 뷰")
 	@Test
-	void memberJoinView() throws Exception {
+	void memberJoinView_Success() throws Exception {
 		mockMvc.perform(get("/join"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("member/join"))
@@ -55,9 +52,9 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 			.andExpect(unauthenticated());
 	}
 
-	@DisplayName("회원 가입 테스트 - 정상")
+	@DisplayName("회원 가입 폼 요청 성공")
 	@Test
-	void memberJoin_Success() throws Exception {
+	void memberJoinForm_Success() throws Exception {
 		mockMvc.perform(post("/join")
 			.param("nickname", "testnickname")
 			.param("email", "test@naver.com")
@@ -76,9 +73,9 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 		then(emailService).should().sendEmail(any(EmailMessageDto.class));
 	}
 
-	@DisplayName("회원 가입 테스트 - 이메일 타 오류")
+	@DisplayName("회원 가입 폼 요청 실패 - Email 타입 오류")
 	@Test
-	void memberJoin_emailIsNotValidType_Error() throws Exception {
+	void memberJoinFrom_EmailIsNotValidType_Error() throws Exception {
 		mockMvc.perform(post("/join")
 			.param("nickname", "loosie")
 			.param("email", "email...")
@@ -90,10 +87,10 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 			.andExpect(unauthenticated());
 	}
 
-	@DisplayName("이메일 인증 메일 확인 - 정상")
+	@DisplayName("이메일 인증 확인 링크 요청 성공")
 	@Transactional
 	@Test
-	void emailConfirm_Success() throws Exception {
+	void memberConfirmEmailLink_Success() throws Exception {
 		// given
 		Member member = Member.builder()
 			.email("test@naver.com")
@@ -117,9 +114,9 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 		assertTrue(newMember.getEmailVerified());
 	}
 
-	@DisplayName("이메일 인증 메일 확인 - 토큰값 오류")
+	@DisplayName("이메일 인증 확인 링크 요청 실패 - 올바르지 않은 토큰값 오류")
 	@Test
-	void emailConfirm_TokenIsWrongValue_Error() throws Exception {
+	void memberConfirmEmailLink_TokenIsWrongValue_Error() throws Exception {
 		// given
 		Member member = Member.builder()
 			.email("test@naver.com")
@@ -140,9 +137,9 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 	}
 
 	@WithCurrentUser(value = TEST_EMAIL, role = USER)
-	@DisplayName("이메일 인증 확인 요청 뷰")
+	@DisplayName("이메일 인증 완료 뷰")
 	@Test
-	void checkEmailView() throws Exception {
+	void memberCheckEmailView_Success() throws Exception {
 		// given
 		mockMvc.perform(get("/check-email")
 			.param("email", TEST_EMAIL))
@@ -153,9 +150,9 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 	}
 
 	@WithCurrentUser(value = TEST_EMAIL, role = MEMBER)
-	@DisplayName("이메일 인증 확인 요청 뷰 - 이미 인증된 회원")
+	@DisplayName("이메일 인증 완료 뷰 - 이미 인증된 회원일 경우")
 	@Test
-	void checkEmailView_AlreadyAuthenticatedMember_Redirect() throws Exception {
+	void memberCheckEmailView_AlreadyAuthenticatedMember_RedirectMainPage() throws Exception {
 		mockMvc.perform(get("/check-email")
 			.param("email", TEST_EMAIL))
 			.andExpect(status().is3xxRedirection())
@@ -163,18 +160,18 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 			.andExpect(authenticated());
 	}
 
-	@DisplayName("이메일로 로그인하기 요청 뷰")
+	@DisplayName("이메일로 로그인하기 뷰")
 	@Test
-	void emailLoginView() throws Exception {
+	void memberEmailLoginView_Success() throws Exception {
 		mockMvc.perform(get("/email-login"))
 			.andExpect(view().name("member/email-login"))
 			.andExpect(unauthenticated());
 	}
 
 	@WithCurrentUser(value = TEST_EMAIL, role = MEMBER)
-	@DisplayName("이메일로 로그인 링크 보내기")
+	@DisplayName("이메일로 로그인하기 링크 보내기 성공")
 	@Test
-	void sendEmailLoginLink_Success() throws Exception {
+	void memberSendEmailLoginLink_Success() throws Exception {
 		mockMvc.perform(post("/email-login")
 			.param("email", TEST_EMAIL)
 			.with(csrf()))
@@ -185,9 +182,9 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 	}
 
 	@WithCurrentUser(value = TEST_EMAIL, role = MEMBER)
-	@DisplayName("이메일로 로그인 링크 보내기 - 요청 횟수가 초과할 경우")
+	@DisplayName("이메일로 로그인하기 링크 보내기 실패 - 회원에게 주어진 이메일 요청 횟수가 임계치를 초과했을 경우")
 	@Test
-	void sendEmailLoginLink_IfEmailSendingIsUnavailable_Error() throws Exception {
+	void memberSendEmailLoginLink_UserEmailSendTimeExceedThreshold_Error() throws Exception {
 		Member member = memberRepository.findByEmail(TEST_EMAIL).get();
 		while(member.canSendConfirmEmail()){
 		}
@@ -201,9 +198,9 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 	}
 
 	// 인증 메일 확인 테스트와 동일
-	@DisplayName("이메일로 로그인하기 - 정상")
+	@DisplayName("회원 이메일로 로그인하기 성공")
 	@Test
-	void emailLogin_Success() throws Exception {
+	void memberLoginByEmail_Success() throws Exception {
 		// given
 		Member member = Member.builder()
 			.email("test@naver.com")
@@ -224,9 +221,9 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 	}
 
 	// 인증 메일 확인 테스트와 동일
-	@DisplayName("이메일로 로그인하기 - 입력값 오류")
+	@DisplayName("회원 이메일로 로그인하기 실패 - 올바르지 않은 토큰값 오류")
 	@Test
-	void emailLogin_TokenIsWrongValue_Error() throws Exception {
+	void memberLoginByEmail_TokenIsWrongValue_Error() throws Exception {
 		// given
 		Member member = Member.builder()
 			.email("test@naver.com")
@@ -248,7 +245,7 @@ class MemberControllerTest extends AbstractContainerBaseTest {
 	@WithCurrentUser(value = TEST_EMAIL, role = MEMBER)
 	@DisplayName("내가 좋아요한 게시글 뷰")
 	@Test
-	void myLikesView_Success() throws Exception {
+	void memberMyLikesView_Success() throws Exception {
 		mockMvc.perform(get("/me/likes"))
 			.andExpect(status().isOk())
 			.andExpect(view().name(ME_LIKES_VIEW_NAME))

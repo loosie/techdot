@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "likes")
 @Getter
 @NoArgsConstructor
-@EqualsAndHashCode(of ="id", callSuper = false)
+@EqualsAndHashCode(of = "id", callSuper = false)
 public class Like extends BaseEntity {
 
 	@Id

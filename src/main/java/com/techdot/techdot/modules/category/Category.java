@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.util.Assert;
 
 import com.techdot.techdot.modules.category.dto.CategoryFormDto;
@@ -41,6 +42,9 @@ public class Category {
 	@Column(nullable = false)
 	private String title;
 
+	@Column(nullable = false)
+	private Integer displayOrder;
+
 	@OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
 	private List<Interest> interests = new ArrayList<>();
 
@@ -48,19 +52,26 @@ public class Category {
 	private List<Post> posts = new ArrayList<>();
 
 	@Builder
-	public Category(final String viewName, final String name, final String title) {
+	public Category(final String viewName, final String name, final String title, final Integer displayOrder) {
 		Assert.notNull(viewName, "category.viewName 값이 존재하지 않습니다.");
 		Assert.notNull(name, "category.name 값이 존재하지 않습니다.");
 		Assert.notNull(title, "category.title 값이 존재하지 않습니다.");
+		Assert.notNull(displayOrder, "category.displayOrder 값이 존재하지 않습니다.");
 
 		this.viewName = viewName;
 		this.name = name;
 		this.title = title;
+		this.displayOrder = displayOrder;
 	}
 
 	public void update(final CategoryFormDto categoryForm) {
 		this.viewName = categoryForm.getViewName();
 		this.name = categoryForm.getName();
 		this.title = categoryForm.getTitle();
+		this.displayOrder = categoryForm.getDisplayOrder();
+	}
+
+	public void updateCategoryOrder(int displayOrder) {
+		this.displayOrder = displayOrder;
 	}
 }

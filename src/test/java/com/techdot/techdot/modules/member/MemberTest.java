@@ -10,7 +10,7 @@ import com.techdot.techdot.modules.member.dto.ProfileFormDto;
 class MemberTest {
 
 
-	@DisplayName("멤버 생성 실패 - 입력값 null인 경우")
+	@DisplayName("멤버 생성 오류 - 입력값 null인 경우")
 	@Test
 	void memberCreate_insertValueIsNull_ExceptionThrown() {
 		assertThrows(IllegalArgumentException.class, () -> Member.builder()
@@ -24,9 +24,9 @@ class MemberTest {
 	}
 
 
-	@DisplayName("멤버 이메일 체크 토큰 생성 - 성공")
+	@DisplayName("회원 이메일 인증 토큰 정보 생성하기")
 	@Test
-	void memberGenerateEmailCheckToken_Success() {
+	void memberEmailCheckTokenInfoCreate_EmailCheckTokenSendAtAndEmailSendTime_Success() {
 		// given
 		Member member = Member.builder()
 			.nickname("loosie")
@@ -42,9 +42,9 @@ class MemberTest {
 	}
 
 
-	@DisplayName("멤버 이메일 인증 완료하기")
+	@DisplayName("회원 이메일 인증 성공 - ROLE_MEMBER 권한 업데이트")
 	@Test
-	void memberCompleteEmailVerified_Success() {
+	void memberCompleteEmailVerified_UpdateUserRoleToMember_Success() {
 		// given
 		Member member = Member.builder()
 			.nickname("loosie")
@@ -58,11 +58,12 @@ class MemberTest {
 
 		// then
 		assertTrue(member.getEmailVerified());
+		assertTrue(member.getRoles().contains(Role.ROLE_MEMBER));
 	}
 
-	@DisplayName("멤버 확인 이메일 전송 카운트하기")
+	@DisplayName("회원 인증 이메일 전송 횟수 카운트")
 	@Test
-	void countSendConfirmEmail_Success() {
+	void memberCountEmailSendTime_Success() {
 		// given
 		Member member = Member.builder()
 			.nickname("loosie")
@@ -79,7 +80,7 @@ class MemberTest {
 		assertFalse(member.canSendConfirmEmail());
 	}
 
-	@DisplayName("멤버 프로필 업데이트하기")
+	@DisplayName("회원 프로필 업데이트하기")
 	@Test
 	void memberUpdateProfile_Success() {
 		// given
@@ -104,7 +105,7 @@ class MemberTest {
 		assertEquals(member.getNickname(), "updateNickname");
 	}
 
-	@DisplayName("멤버 비밀번호 업데이트하기")
+	@DisplayName("회원 비밀번호 업데이트")
 	@Test
 	void memberUpdatePassword_Success() {
 		// given

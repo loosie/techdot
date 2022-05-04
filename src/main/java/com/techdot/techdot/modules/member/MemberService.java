@@ -19,7 +19,7 @@ import org.thymeleaf.context.Context;
 import com.techdot.techdot.infra.config.AppProperties;
 import com.techdot.techdot.infra.mail.EmailMessageDto;
 import com.techdot.techdot.infra.mail.EmailService;
-import com.techdot.techdot.modules.main.UserNotExistedException;
+import com.techdot.techdot.modules.main.exception.UserNotExistedException;
 import com.techdot.techdot.modules.member.auth.PrincipalDetails;
 import com.techdot.techdot.modules.member.dao.AuthDao;
 import com.techdot.techdot.modules.member.dto.JoinFormDto;
@@ -63,8 +63,8 @@ public class MemberService {
 	 *
 	 */
 	public void sendConfirmEmail(final Member newMember) {
-		String token = authDao.saveAndGetAuthToken(newMember.getId(), generateToken(), EMAIL);;
-		if(token == null || token.isEmpty()){
+		String token = authDao.saveAndGetAuthToken(newMember.getId(), generateToken(), EMAIL);
+		if (token == null || token.isEmpty()) {
 			throw new NullPointerException("올바르지 않은 토큰 값입니다.");
 		}
 

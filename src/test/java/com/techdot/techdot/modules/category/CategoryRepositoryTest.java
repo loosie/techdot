@@ -22,13 +22,14 @@ class CategoryRepositoryTest extends AbstractContainerBaseTest {
 			.viewName("java")
 			.title("JAVA")
 			.name("자바")
+			.displayOrder(1)
 			.build();
 
 		// when
-		categoryRepository.save(category);
+		Category save = categoryRepository.save(category);
 
 		// then
-		assertEquals(category.getTitle(), "JAVA");
+		assertEquals(save.getTitle(), "JAVA");
 	}
 
 	@DisplayName("카테고리 viewName으로 조회하기")
@@ -39,6 +40,7 @@ class CategoryRepositoryTest extends AbstractContainerBaseTest {
 			.viewName("java")
 			.title("JAVA")
 			.name("자바")
+			.displayOrder(1)
 			.build();
 		categoryRepository.save(category);
 
@@ -63,6 +65,7 @@ class CategoryRepositoryTest extends AbstractContainerBaseTest {
 			.viewName("java")
 			.title("JAVA")
 			.name("자바")
+			.displayOrder(1)
 			.build();
 		categoryRepository.save(category);
 
@@ -80,6 +83,7 @@ class CategoryRepositoryTest extends AbstractContainerBaseTest {
 			.viewName("java")
 			.title("JAVA")
 			.name("자바")
+			.displayOrder(1)
 			.build();
 		categoryRepository.save(category);
 

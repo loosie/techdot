@@ -30,6 +30,7 @@ class CategoryControllerTest extends AbstractContainerBaseTest {
 			.viewName("java")
 			.title("JAVA")
 			.name("자바")
+			.displayOrder(1)
 			.build());
 	}
 
@@ -68,6 +69,7 @@ class CategoryControllerTest extends AbstractContainerBaseTest {
 			.param("name", "nav 이름")
 			.param("title", "메인 타이틀")
 			.param("viewName", "view")
+			.param("displayOrder", "1")
 			.with(csrf()))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/accounts/settings/category"))
@@ -82,6 +84,7 @@ class CategoryControllerTest extends AbstractContainerBaseTest {
 			.param("name", "nav 이름")
 			.param("title", "메인 타이틀")
 			.param("viewName", "viewName오류")
+			.param("displayOrder", "1")
 			.with(csrf()))
 			.andExpect(status().isOk())
 			.andExpect(model().hasErrors())
@@ -101,9 +104,11 @@ class CategoryControllerTest extends AbstractContainerBaseTest {
 			.param("title", "Java title 222")
 			.param("name", "자바 222")
 			.param("viewName", "java-2")
+			.param("displayOrder", "1")
 			.param("curTitle", category.getTitle())
 			.param("curName", category.getName())
 			.param("curViewName", category.getViewName())
+			.param("curDisplayOrder", ""+category.getDisplayOrder())
 			.with(csrf()))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(flash().attributeExists("message"))
@@ -125,6 +130,7 @@ class CategoryControllerTest extends AbstractContainerBaseTest {
 			.viewName("backend")
 			.title("BACKEND")
 			.name("백엔드")
+			.displayOrder(1)
 			.build());
 		Category category = categoryService.getByViewName("java");
 
@@ -133,9 +139,11 @@ class CategoryControllerTest extends AbstractContainerBaseTest {
 			.param("title", "BACKEND...")
 			.param("name", "백엔드...")
 			.param("viewName", "backend") // 중복
+			.param("displayOrder", "1")
 			.param("curTitle", category.getTitle())
 			.param("curName", category.getName())
 			.param("curViewName", category.getViewName())
+			.param("curDisplayValue", ""+category.getDisplayOrder())
 			.with(csrf()))
 			.andExpect(status().isOk())
 			.andExpect(model().hasErrors())

@@ -25,11 +25,11 @@ public class PostFormValidator implements Validator {
 		PostFormDto postForm = (PostFormDto)target;
 
 		// 변경되지 않은 링크는 중복 처리 예외
-		if(!postForm.getCurLink().isEmpty() && postForm.getCurLink().equals(postForm.getLink())){
+		if (!postForm.getCurLink().isEmpty() && postForm.getCurLink().equals(postForm.getLink())) {
 			return;
 		}
 
-		if(postRepository.existsByLink(postForm.getLink())){
+		if (postRepository.existsByLink(postForm.getLink())) {
 			errors.rejectValue("link", "invalid.link", "이미 등록된 url입니다.");
 		}
 	}

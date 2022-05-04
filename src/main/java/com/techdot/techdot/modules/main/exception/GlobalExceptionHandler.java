@@ -1,11 +1,9 @@
-package com.techdot.techdot.modules.main;
+package com.techdot.techdot.modules.main.exception;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.multipart.MultipartException;
-import org.springframework.web.server.MethodNotAllowedException;
 
 import com.sun.jdi.request.DuplicateRequestException;
 import com.techdot.techdot.modules.member.Member;
@@ -16,12 +14,27 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
+	/**
+	 400 : BAD REQUEST
+	 404 : NOT FOUND
+	 403 : FORBIDDEN (Not Auth, AccessDenieDHandler에서 처리)
+	 500 : INTERNAL SERVER ERROR
+	 */
+	@ExceptionHandler(DuplicateRequestException.class)
+	public String handleDuplicateRequestException(DuplicateRequestException ex, HttpServletRequest req) {
+		log.error("duplicated request - {}", ex.getMessage());
+		req.setAttribute("message", ex.getMessage());
+		return "error/400";
+	}
 
-	// 400 : BAD REQUEST
-	// 404 : NOT FOUND
-	// 500 : INTERNAL SERVER ERROR
+	@ExceptionHandler(CategoryCanNotDeleteException.class)
+	public String handleCategoryCanNotDeleteException(CategoryCanNotDeleteException ex, HttpServletRequest req) {
+		log.error("category can not deleted - {}", ex.getMessage());
+		req.setAttribute("message", ex.getMessage());
+		return "error/400";
+	}
 
-	@ExceptionHandler(NullPointerException.class)
+	@ExceptionHandler({NullPointerException.class, CategoryNotExistedException.class})
 	public String handleNullPointerException(NullPointerException ex, HttpServletRequest req) {
 		log.error("data not existed - {}", ex.getMessage());
 		req.setAttribute("message", ex.getMessage());
@@ -35,26 +48,11 @@ public class GlobalExceptionHandler {
 		return "error/404";
 	}
 
-
 	@ExceptionHandler(UserNotExistedException.class)
 	public String handleUserNotExistedException(UserNotExistedException ex, HttpServletRequest req) {
 		log.error("user not existed - {}", ex.getMessage());
 		req.setAttribute("message", ex.getMessage());
 		return ex.getViewName();
-	}
-
-	@ExceptionHandler(DuplicateRequestException.class)
-	public String handleDuplicateRequestException(DuplicateRequestException ex, HttpServletRequest req) {
-		log.error("duplicated request - {}", ex.getMessage());
-		req.setAttribute("message", ex.getMessage());
-		return "error/400";
-	}
-
-	@ExceptionHandler(CategoryCanNotDeleteException.class)
-	public String handleCategoryCanNotDeleteException(CategoryCanNotDeleteException ex, HttpServletRequest req) {
-		log.error("category can not deleted - {}", ex.getMessage());
-		req.setAttribute("message", ex.getMessage());
-		return "error/400";
 	}
 
 	@ExceptionHandler

@@ -10,7 +10,7 @@ import com.techdot.techdot.modules.member.Member;
 
 class InterestTest {
 
-	@DisplayName("관심 생성 실패 - 입력값 null인 경우")
+	@DisplayName("관심 생성 오류 - 입력값 null인 경우")
 	@Test
 	void interestCreate_InsertValueIsNull_ExceptionThrown(){
 		// given
@@ -25,6 +25,7 @@ class InterestTest {
 			.viewName("java")
 			.title("자바")
 			.name("Java")
+			.displayOrder(1)
 			.build();
 
 		// when, then

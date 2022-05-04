@@ -42,7 +42,7 @@ class LikeRepositoryTest extends AbstractContainerBaseTest {
 		post = Post.builder()
 			.title("title1")
 			.content("content.content...")
-			.link("http://~~~.com")
+			.link("http://testurl.com")
 			.type(PostType.BLOG)
 			.uploadDateTime(LocalDateTime.now())
 			.writer("naver")
@@ -56,10 +56,13 @@ class LikeRepositoryTest extends AbstractContainerBaseTest {
 	@DisplayName("좋아요 생성하기 - 성공")
 	@Test
 	void likeCreate_Success() {
+		// given
 		Like like = Like.builder()
 			.member(member)
 			.post(post)
 			.build();
+
+		// when
 		Like saveLike = likeRepository.save(like);
 
 		// then
@@ -70,6 +73,7 @@ class LikeRepositoryTest extends AbstractContainerBaseTest {
 	@DisplayName("멤버와 게시글로 좋아요 조회하기")
 	@Test
 	void findByMemberAndPost_Success() {
+		// given
 		Like like = Like.builder()
 			.member(member)
 			.post(post)
@@ -84,9 +88,9 @@ class LikeRepositoryTest extends AbstractContainerBaseTest {
 		assertEquals(findLike.getMember(), member);
 	}
 
-	@DisplayName("멤버 id로 해당 멤버 좋아요 모두 삭제하기")
+	@DisplayName("회원 ID로 해당 회원 좋아요 목록 모두 삭제하기")
 	@Test
-	void likeAllDeleteByMemberId_Success(){
+	void likeDeleteAllByMemberId_Success(){
 		// given
 		Like like = Like.builder()
 			.member(member)

@@ -1,5 +1,8 @@
 package com.techdot.techdot.modules.category;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Pageable;
@@ -29,13 +32,13 @@ import lombok.RequiredArgsConstructor;
 public class CategoryController {
 
 	private final CategoryService categoryService;
+	private final CategoryRepository categoryRepository;
 	private final CategoryFormValidator categoryFormValidator;
 
 	@InitBinder("categoryForm")
 	public void initBinder(WebDataBinder webDataBinder) {
 		webDataBinder.addValidators(categoryFormValidator);
 	}
-
 
 	/**
 	 * 카테고리별 게시글 뷰
@@ -51,7 +54,7 @@ public class CategoryController {
 
 		Category category = categoryService.getByViewName(viewName);
 		model.addAttribute("category", category);
-		model.addAttribute("categoryList", categoryService.getAll());
+		model.addAttribute("categoryList", categoryService.getAllSortedByDisplayOrder());
 		model.addAttribute("sortProperty",
 			pageable.getSort().toString().contains("uploadDateTime") ? "uploadDateTime" : "createdDateTime");
 		return "main/category-view";
@@ -64,7 +67,9 @@ public class CategoryController {
 	@GetMapping("/new-category")
 	public String categoryCreateView(@CurrentUser final Member member, final Model model) {
 		model.addAttribute("member", member);
-		model.addAttribute("categoryForm", new CategoryFormDto());
+		CategoryFormDto categoryForm = new CategoryFormDto();
+		categoryForm.setDisplayOrder(categoryRepository.findAll().size() + 1);
+		model.addAttribute("categoryForm", categoryForm);
 
 		return "category/form";
 	}
@@ -91,10 +96,11 @@ public class CategoryController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/category/{id}/edit")
 	public String categoryUpdateView(@PathVariable final Long id, @CurrentUser final Member member, final Model model) {
-		Category category = categoryService.getById(id);
+		Category category = categoryRepository.getById(id);
 
 		model.addAttribute(member);
 		model.addAttribute("categoryId", id);
+		model.addAttribute("categoryList", categoryRepository.findAll());
 		model.addAttribute("categoryForm", new CategoryFormDto(category));
 		return "category/updateForm";
 	}
@@ -104,8 +110,10 @@ public class CategoryController {
 	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/category/{id}/edit")
-	public String categoryUpdateForm(@PathVariable Long id, @Valid @ModelAttribute("categoryForm") final CategoryFormDto categoryForm,
-		Errors errors, @CurrentUser final Member member, final Model model, final RedirectAttributes redirectAttributes) {
+	public String categoryUpdateForm(@PathVariable Long id,
+		@Valid @ModelAttribute("categoryForm") final CategoryFormDto categoryForm,
+		Errors errors, @CurrentUser final Member member, final Model model,
+		final RedirectAttributes redirectAttributes) {
 		if (errors.hasErrors()) {
 			model.addAttribute(member);
 			return "category/updateForm";

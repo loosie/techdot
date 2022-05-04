@@ -192,7 +192,6 @@
             },
             dataType: 'json'
         }).done(function (result) {
-            // console.log(result);
             if (result.length == 0) {
                 flag = false;
                 return;
@@ -259,7 +258,7 @@
 
     function likeRequest(action, e, customLikeBox) {
         $.ajax({
-            url: "/like/" + action,
+            url: "/api/like/" + action,
             type: "POST",
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify({

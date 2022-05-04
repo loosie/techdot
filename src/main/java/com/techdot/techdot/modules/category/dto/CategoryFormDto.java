@@ -27,6 +27,9 @@ public class CategoryFormDto {
 	@Pattern(regexp = "^[a-z0-9,-]{1,20}$", message = "공백없이 영어 소문자, 숫자와 - 만 20자 내외로 입력이 가능합니다.")
 	private String viewName;
 
+	private Integer curDisplayOrder;
+	private Integer displayOrder;
+
 	private String curName;
 	private String curTitle;
 	private String curViewName;
@@ -35,8 +38,10 @@ public class CategoryFormDto {
 		this.curName = category.getName();
 		this.curTitle = category.getTitle();
 		this.curViewName = category.getViewName();
+		this.curDisplayOrder = category.getDisplayOrder();
 		this.name = category.getName();
 		this.title = category.getTitle();
 		this.viewName = category.getViewName();
+		this.displayOrder = category.getDisplayOrder();
 	}
 }

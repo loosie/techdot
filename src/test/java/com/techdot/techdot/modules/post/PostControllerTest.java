@@ -43,11 +43,12 @@ class PostControllerTest extends AbstractContainerBaseTest {
 			.name("자바")
 			.title("Java title")
 			.viewName("java")
+			.displayOrder(1)
 			.build());
 	}
 
 	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
-	@DisplayName("게시글 업로드 뷰 테스트")
+	@DisplayName("게시글 업로드 뷰")
 	@Test
 	void postCreateView_Success() throws Exception {
 		mockMvc.perform(get("/new-post"))
@@ -58,9 +59,9 @@ class PostControllerTest extends AbstractContainerBaseTest {
 	}
 
 	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
-	@DisplayName("게시글 업로드 성공")
+	@DisplayName("게시글 업로드 폼 요청 성공")
 	@Test
-	void postCreate_Success() throws Exception {
+	void postCreateForm_Success() throws Exception {
 		mockMvc.perform(post("/new-post")
 			.param("title", "title")
 			.param("content", "content")
@@ -76,9 +77,9 @@ class PostControllerTest extends AbstractContainerBaseTest {
 	}
 
 	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
-	@DisplayName("게시글 업로드 실패 - link 입력값 오류")
+	@DisplayName("게시글 업로드 실패 - link 타입 오류")
 	@Test
-	void postCreate_LinkIsNotValidType_Fail() throws Exception {
+	void postCreateForm_LinkIsNotValidType_Error() throws Exception {
 		mockMvc.perform(post("/new-post")
 			.param("title", "title")
 			.param("content", "content")
@@ -96,7 +97,7 @@ class PostControllerTest extends AbstractContainerBaseTest {
 	}
 
 	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
-	@DisplayName("게시글 이미지 업로드 뷰 테스트")
+	@DisplayName("게시글 이미지 업로드 뷰")
 	@Test
 	void postImageUploadView_Success() throws Exception {
 		Member member = memberRepository.findByEmail(TEST_EMAIL).get();
@@ -122,9 +123,9 @@ class PostControllerTest extends AbstractContainerBaseTest {
 	}
 
 	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
-	@DisplayName("게시글 수정하기 성공")
+	@DisplayName("게시글 수정하기 폼 요청 성공")
 	@Test
-	void updatePost_Success() throws Exception {
+	void postEditForm_Success() throws Exception {
 		// given
 		Member member = memberRepository.findByEmail(TEST_EMAIL).get();
 		Category category = categoryRepository.getByViewName("java");
@@ -163,9 +164,9 @@ class PostControllerTest extends AbstractContainerBaseTest {
 
 	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
 	@Transactional
-	@DisplayName("게시글 수정하기 실패 - link 입력값 오류")
+	@DisplayName("게시글 수정하기 폼 요청 실패 - link 입력값 오류")
 	@Test
-	void updatePost_LinkIsNotValidType_Fail() throws Exception {
+	void postEditForm_LinkIsNotValidType_Error() throws Exception {
 		// given
 		Member member = memberRepository.findByEmail(TEST_EMAIL).get();
 		Category category = categoryRepository.getByViewName("java");
@@ -202,9 +203,9 @@ class PostControllerTest extends AbstractContainerBaseTest {
 
 	@WithCurrentUser(value = TEST_EMAIL, role = ADMIN)
 	@Transactional
-	@DisplayName("게시글 삭제하기 성공")
+	@DisplayName("게시글 삭제하기 폼 요청 성공")
 	@Test
-	void removePost_Success() throws Exception {
+	void postRemoveForm_Success() throws Exception {
 		// given
 		Member member = memberRepository.findByEmail(TEST_EMAIL).get();
 		Post post = Post.builder()
