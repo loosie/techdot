@@ -39,6 +39,12 @@ aws:
   s3:
     bucket: cdn.techdot.info
 
+log:
+  config:
+    path: ./logs
+    filename: default
+    maxHistory: 1
+    totalSizeCap: 1MB
 
 
 app:

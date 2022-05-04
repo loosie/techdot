@@ -10,7 +10,7 @@ TechDot은 기술 및 개발 콘텐츠를 큐레이팅한 게시글을 접해볼
 
 <br>
 
-## 💻 기술 사용 스택
+## 💻 기술 사용 스택Z
 - Back: Java 11, Spring Boot 2.6.4, Spring Security, Spring Data JPA, QueryDsl, MySQL, Redis
 - Front: Thymeleaf, BootStrap, Ajax, JQuery
 - Test: JUnit5, Mockito, TestContainers, ArchUnit
