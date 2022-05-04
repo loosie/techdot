@@ -68,8 +68,8 @@
         <root level="info">
             <appender-ref ref="STDOUT" />
         </root>
-        <logger name="org.springframework.web" level="debug">
-            <appender-ref ref="FILE" />
-        </logger>
+<!--        <logger name="org.springframework.web" level="debug">-->
+<!--            <appender-ref ref="FILE" />-->
+<!--        </logger>-->
     </springProfile>
 </configuration>
