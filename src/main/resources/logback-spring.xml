@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
-    <springProfile name="local, dev">
-        <property resource="application-dev-log.yml" />
+    <springProfile name="dev">
+        <property resource="application-local-log.yml" />
     </springProfile>
     <springProfile name="real1, real2">
         <property resource="application-real-log.yml" />

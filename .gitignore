@@ -48,14 +48,12 @@ logs
 
 ## config ##
 application-dev.yml
-application-dev-log.yml
 application-s3.yml
 application-mail.yml
 application-real1.yml
 application-real2.yml
 application-real-db.yml
 application-real-s3.yml
-application-real-log.yml
 
 ## init ##
 init.sql

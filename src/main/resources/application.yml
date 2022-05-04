@@ -1,8 +1,8 @@
 spring:
   profiles:
     group:
-      "default": "local, dev-log"
-      "dev": "dev, mail, s3, dev-log"
+      "default": "local"
+      "dev": "dev, mail, s3, local-log"
       "real1": "real-db, mail, real-s3, real-log"
       "real2": "real-db, mail, real-s3, real-log"
 
