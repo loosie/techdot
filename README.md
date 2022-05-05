@@ -24,7 +24,7 @@ TechDot은 테크 및 개발에 관련된 다양한 콘텐츠를 접해볼 수 �
 <br>
 
 ## 🔗 패키지 구조
-<img width="512" alt="스크린샷 2022-03-21 오후 1 10 32" src="https://user-images.githubusercontent.com/54282927/159204339-fae9a799-77f6-4f83-a45f-c329630a00ee.png">
+<img width="600" alt="스크린샷 2022-05-05 오후 10 20 58" src="https://user-images.githubusercontent.com/54282927/166931818-2c60e0f5-2972-463f-9a4b-d7fc050ca369.png">
 
 
 
