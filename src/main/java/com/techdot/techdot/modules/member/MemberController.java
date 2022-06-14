@@ -4,6 +4,7 @@ import static com.techdot.techdot.modules.member.dao.AuthDao.TokenType.*;
 
 import javax.validation.Valid;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -48,6 +49,7 @@ public class MemberController {
 
 	/**
 	 * 회원가입 요청
+	 * - 알파버전에서는 회원 가입이 불가능합니다. (프론트 단에서만 차단되어 있습니다.)
 	 */
 	@PostMapping("/join")
 	public String joinForm(@Valid @ModelAttribute("joinForm") final JoinFormDto joinForm,
